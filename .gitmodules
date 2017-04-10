@@ -1,0 +1,6 @@
+[submodule "copasi-dev/copasi-dependencies"]
+	path = copasi-dev/copasi-dependencies
+	url = git@github.com:copasi/copasi-dependencies.git
+[submodule "copasi-dev/COPASI"]
+	path = copasi-dev/COPASI
+	url = git@github.com:copasi/COPASI.git
