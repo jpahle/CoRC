@@ -1,0 +1,65 @@
+---
+title: "COPASI R API"
+output: html_notebook
+---
+
+# Initial Setup for MacOS
+
+Initial setup of the COPASI R API requires checking out the copasi-r-api repositiory at an appropriate location.
+Note the following dependencies for compiling the sources:
+
+
+```{bash}
+git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
+```
+
+In the copasi-r-api folder you need to start the Rproj file.
+
+**THERE NEEDS TO BE A FIX FOR COPASI SOURCE.**
+Compilation is performed first for dependencies.
+
+```{bash}
+cd copasi-dev/copasi-dependencies/
+./createOSX.sh
+cd ../../
+```
+
+Next we compile the R bindings.
+
+```{bash}
+cd copasi-dev/
+mkdir build_copasi_r_bindings
+cd build_copasi_r_bindings/
+cmake -DBUILD_GUI=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+make
+cd ../../
+```
+
+# Loading the COPASI-R-API
+
+```{r}
+dyn.load(paste("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext, sep=""))
+source("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI")
+cacheMetaData(1)
+```
+
+**NOW FUNCTIONS HAVE TO BE FIXED**
+
+```{r}
+enumToInteger <- function(name,type) {
+    if (is.character(name)) {
+        ans <- as.integer(get0(paste(".__E__", type, sep = ""))[name])
+        if (length(ans) == 0) {ans <- as.integer(get(paste(".__E__", substr(type, 3, nchar(type)), sep = ""))[name])}
+        if (is.na(ans)) {warning("enum not found ", name, " ", type)}
+        ans
+    }
+}
+  
+enumFromInteger <- function(i,type) {
+    itemlist <- get0(paste(".__E__", type, sep=""))
+    if (length(itemlist) == 0) {itemlist <- get(paste(".__E__", substr(type, 3, nchar(type)), sep = ""))}
+    names(itemlist)[match(i, itemlist)]
+}
+```
+
+The API is now loaded.
