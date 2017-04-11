@@ -1,11 +1,13 @@
 ---
-title: "COPASI R API"
+title: "Copasi R API"
 output: html_notebook
 ---
 
 # Initial Setup for MacOS
 
-Initial setup of the COPASI R API requires checking out the copasi-r-api repositiory at an appropriate location.
+## Initial checkout
+
+Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
 Note the following dependencies for compiling the sources:
 
 
@@ -13,10 +15,17 @@ Note the following dependencies for compiling the sources:
 git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
 ```
 
-In the copasi-r-api folder you need to start the Rproj file.
+In the copasi-r-api folder you need to start the .Rproj file.
 
-**THERE NEEDS TO BE A FIX FOR COPASI SOURCE.**
-Compilation is performed first for dependencies.
+## Fixing Copasi source
+
+```{bash}
+cd copasi-dev/COPASI/
+git apply ../fix-corefoundation-library.patch
+cd ../../
+```
+
+## Compiling Copasi dependencies
 
 ```{bash}
 cd copasi-dev/copasi-dependencies/
@@ -24,7 +33,7 @@ cd copasi-dev/copasi-dependencies/
 cd ../../
 ```
 
-Next we compile the R bindings.
+## Compiling Copasi from source
 
 ```{bash}
 cd copasi-dev/
