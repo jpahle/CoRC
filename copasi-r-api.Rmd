@@ -10,12 +10,11 @@ output: html_notebook
 Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
 Note the following dependencies for compiling the sources:
 
-
 ```{bash}
 git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
 ```
 
-In the copasi-r-api folder you need to start the .Rproj file.
+It is recommended to use this file with the .Rproj defined in the repository.
 
 ## Fixing Copasi source
 
@@ -52,7 +51,7 @@ source("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI")
 cacheMetaData(1)
 ```
 
-**NOW FUNCTIONS HAVE TO BE FIXED**
+## Fixing enumeration wrappers
 
 ```{r}
 enumToInteger <- function(name,type) {
