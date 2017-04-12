@@ -9,6 +9,7 @@ output: html_notebook
 
 Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
 Note the following dependencies for compiling the sources:
+cmake, swig
 
 ```{bash}
 git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
@@ -46,8 +47,8 @@ cd ../../
 # Loading the COPASI-R-API
 
 ```{r}
-dyn.load(paste("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext, sep=""))
-source("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI")
+dyn.load(paste0("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
+source("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI.R")
 cacheMetaData(1)
 ```
 
@@ -56,16 +57,16 @@ cacheMetaData(1)
 ```{r}
 enumToInteger <- function(name,type) {
     if (is.character(name)) {
-        ans <- as.integer(get0(paste(".__E__", type, sep = ""))[name])
-        if (length(ans) == 0) {ans <- as.integer(get(paste(".__E__", substr(type, 3, nchar(type)), sep = ""))[name])}
+        ans <- as.integer(get0(paste0(".__E__", type))[name])
+        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type)))[name]))}
         if (is.na(ans)) {warning("enum not found ", name, " ", type)}
         ans
     }
 }
   
 enumFromInteger <- function(i,type) {
-    itemlist <- get0(paste(".__E__", type, sep=""))
-    if (length(itemlist) == 0) {itemlist <- get(paste(".__E__", substr(type, 3, nchar(type)), sep = ""))}
+    itemlist <- get0(paste0(".__E__", type))
+    if (length(itemlist) == 0) {itemlist <- get(paste0(".__E__", substr(type, 3, nchar(type))))}
     names(itemlist)[match(i, itemlist)]
 }
 ```

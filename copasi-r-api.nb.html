@@ -176,7 +176,7 @@ $(document).ready(function () {
 <h1>Initial Setup for MacOS</h1>
 <div id="initial-checkout" class="section level2">
 <h2>Initial checkout</h2>
-<p>Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location. Note the following dependencies for compiling the sources:</p>
+<p>Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location. Note the following dependencies for compiling the sources: cmake, swig</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgYmFzaFxuZ2l0IGNsb25lIC0tcmVjdXJzaXZlIGdpdEBnaXRodWIuY29tOmpvbmFzZm9lL2NvcGFzaS1yLWFwaS5naXRcbmBgYCJ9 -->
@@ -230,9 +230,9 @@ cd ../../</code></pre>
 <h1>Loading the COPASI-R-API</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHluLmxvYWQocGFzdGUoXCJjb3Bhc2ktZGV2L2J1aWxkX2NvcGFzaV9yX2JpbmRpbmdzL2NvcGFzaS9iaW5kaW5ncy9SL0NPUEFTSVwiLCAuUGxhdGZvcm0kZHlubGliLmV4dCwgc2VwPVwiXCIpKVxuc291cmNlKFwiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0lcIilcbmNhY2hlTWV0YURhdGEoMSlcbmBgYCJ9 -->
-<pre class="r"><code>dyn.load(paste(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI&quot;, .Platform$dynlib.ext, sep=&quot;&quot;))
-source(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHluLmxvYWQocGFzdGUwKFwiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0lcIiwgLlBsYXRmb3JtJGR5bmxpYi5leHQpKVxuc291cmNlKFwiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0kuUlwiKVxuY2FjaGVNZXRhRGF0YSgxKVxuYGBgIn0= -->
+<pre class="r"><code>dyn.load(paste0(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI&quot;, .Platform$dynlib.ext))
+source(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI.R&quot;)
 cacheMetaData(1)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -241,19 +241,19 @@ cacheMetaData(1)</code></pre>
 <h2>Fixing enumeration wrappers</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW51bVRvSW50ZWdlciA8LSBmdW5jdGlvbihuYW1lLHR5cGUpIHtcbiAgICBpZiAoaXMuY2hhcmFjdGVyKG5hbWUpKSB7XG4gICAgICAgIGFucyA8LSBhcy5pbnRlZ2VyKGdldDAocGFzdGUoXCIuX19FX19cIiwgdHlwZSwgc2VwID0gXCJcIikpW25hbWVdKVxuICAgICAgICBpZiAobGVuZ3RoKGFucykgPT0gMCkge2FucyA8LSBhcy5pbnRlZ2VyKGdldChwYXN0ZShcIi5fX0VfX1wiLCBzdWJzdHIodHlwZSwgMywgbmNoYXIodHlwZSkpLCBzZXAgPSBcIlwiKSlbbmFtZV0pfVxuICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoXCJlbnVtIG5vdCBmb3VuZCBcIiwgbmFtZSwgXCIgXCIsIHR5cGUpfVxuICAgICAgICBhbnNcbiAgICB9XG59XG4gIFxuZW51bUZyb21JbnRlZ2VyIDwtIGZ1bmN0aW9uKGksdHlwZSkge1xuICAgIGl0ZW1saXN0IDwtIGdldDAocGFzdGUoXCIuX19FX19cIiwgdHlwZSwgc2VwPVwiXCIpKVxuICAgIGlmIChsZW5ndGgoaXRlbWxpc3QpID09IDApIHtpdGVtbGlzdCA8LSBnZXQocGFzdGUoXCIuX19FX19cIiwgc3Vic3RyKHR5cGUsIDMsIG5jaGFyKHR5cGUpKSwgc2VwID0gXCJcIikpfVxuICAgIG5hbWVzKGl0ZW1saXN0KVttYXRjaChpLCBpdGVtbGlzdCldXG59XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW51bVRvSW50ZWdlciA8LSBmdW5jdGlvbihuYW1lLHR5cGUpIHtcbiAgICBpZiAoaXMuY2hhcmFjdGVyKG5hbWUpKSB7XG4gICAgICAgIGFucyA8LSBhcy5pbnRlZ2VyKGdldDAocGFzdGUwKFwiLl9fRV9fXCIsIHR5cGUpKVtuYW1lXSlcbiAgICAgICAgaWYgKGxlbmd0aChhbnMpID09IDApIHthbnMgPC0gYXMuaW50ZWdlcihnZXQocGFzdGUwKFwiLl9fRV9fXCIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSkpW25hbWVdKSl9XG4gICAgICAgIGlmIChpcy5uYShhbnMpKSB7d2FybmluZyhcImVudW0gbm90IGZvdW5kIFwiLCBuYW1lLCBcIiBcIiwgdHlwZSl9XG4gICAgICAgIGFuc1xuICAgIH1cbn1cbiAgXG5lbnVtRnJvbUludGVnZXIgPC0gZnVuY3Rpb24oaSx0eXBlKSB7XG4gICAgaXRlbWxpc3QgPC0gZ2V0MChwYXN0ZTAoXCIuX19FX19cIiwgdHlwZSkpXG4gICAgaWYgKGxlbmd0aChpdGVtbGlzdCkgPT0gMCkge2l0ZW1saXN0IDwtIGdldChwYXN0ZTAoXCIuX19FX19cIiwgc3Vic3RyKHR5cGUsIDMsIG5jaGFyKHR5cGUpKSkpfVxuICAgIG5hbWVzKGl0ZW1saXN0KVttYXRjaChpLCBpdGVtbGlzdCldXG59XG5gYGAifQ== -->
 <pre class="r"><code>enumToInteger &lt;- function(name,type) {
     if (is.character(name)) {
-        ans &lt;- as.integer(get0(paste(&quot;.__E__&quot;, type, sep = &quot;&quot;))[name])
-        if (length(ans) == 0) {ans &lt;- as.integer(get(paste(&quot;.__E__&quot;, substr(type, 3, nchar(type)), sep = &quot;&quot;))[name])}
+        ans &lt;- as.integer(get0(paste0(&quot;.__E__&quot;, type))[name])
+        if (length(ans) == 0) {ans &lt;- as.integer(get(paste0(&quot;.__E__&quot;, substr(type, 3, nchar(type)))[name]))}
         if (is.na(ans)) {warning(&quot;enum not found &quot;, name, &quot; &quot;, type)}
         ans
     }
 }
   
 enumFromInteger &lt;- function(i,type) {
-    itemlist &lt;- get0(paste(&quot;.__E__&quot;, type, sep=&quot;&quot;))
-    if (length(itemlist) == 0) {itemlist &lt;- get(paste(&quot;.__E__&quot;, substr(type, 3, nchar(type)), sep = &quot;&quot;))}
+    itemlist &lt;- get0(paste0(&quot;.__E__&quot;, type))
+    if (length(itemlist) == 0) {itemlist &lt;- get(paste0(&quot;.__E__&quot;, substr(type, 3, nchar(type))))}
     names(itemlist)[match(i, itemlist)]
 }</code></pre>
 <!-- rnb-source-end -->
@@ -264,7 +264,7 @@ enumFromInteger &lt;- function(i,type) {
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29wYXNpIFIgQVBJIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIEluaXRpYWwgU2V0dXAgZm9yIE1hY09TCgojIyBJbml0aWFsIGNoZWNrb3V0CgpJbml0aWFsIHNldHVwIG9mIHRoZSBDb3Bhc2kgUiBBUEkgcmVxdWlyZXMgY2hlY2tpbmcgb3V0IHRoZSBjb3Bhc2ktci1hcGkgcmVwb3NpdGlvcnkgYXQgYW4gYXBwcm9wcmlhdGUgbG9jYXRpb24uCk5vdGUgdGhlIGZvbGxvd2luZyBkZXBlbmRlbmNpZXMgZm9yIGNvbXBpbGluZyB0aGUgc291cmNlczoKCmBgYHtiYXNofQpnaXQgY2xvbmUgLS1yZWN1cnNpdmUgZ2l0QGdpdGh1Yi5jb206am9uYXNmb2UvY29wYXNpLXItYXBpLmdpdApgYGAKCkl0IGlzIHJlY29tbWVuZGVkIHRvIHVzZSB0aGlzIGZpbGUgd2l0aCB0aGUgLlJwcm9qIGRlZmluZWQgaW4gdGhlIHJlcG9zaXRvcnkuCgojIyBGaXhpbmcgQ29wYXNpIHNvdXJjZQoKYGBge2Jhc2h9CmNkIGNvcGFzaS1kZXYvQ09QQVNJLwpnaXQgYXBwbHkgLi4vZml4LWNvcmVmb3VuZGF0aW9uLWxpYnJhcnkucGF0Y2gKY2QgLi4vLi4vCmBgYAoKIyMgQ29tcGlsaW5nIENvcGFzaSBkZXBlbmRlbmNpZXMKCmBgYHtiYXNofQpjZCBjb3Bhc2ktZGV2L2NvcGFzaS1kZXBlbmRlbmNpZXMvCi4vY3JlYXRlT1NYLnNoCmNkIC4uLy4uLwpgYGAKCiMjIENvbXBpbGluZyBDb3Bhc2kgZnJvbSBzb3VyY2UKCmBgYHtiYXNofQpjZCBjb3Bhc2ktZGV2Lwpta2RpciBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncwpjZCBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy8KY21ha2UgLURCVUlMRF9HVUk9T0ZGIC1ERU5BQkxFX1I9T04gLURDT1BBU0lfREVQRU5ERU5DWV9ESVI9Li4vY29wYXNpLWRlcGVuZGVuY2llcy9iaW4gLi4vQ09QQVNJCm1ha2UKY2QgLi4vLi4vCmBgYAoKIyBMb2FkaW5nIHRoZSBDT1BBU0ktUi1BUEkKCmBgYHtyfQpkeW4ubG9hZChwYXN0ZSgiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0kiLCAuUGxhdGZvcm0kZHlubGliLmV4dCwgc2VwPSIiKSkKc291cmNlKCJjb3Bhc2ktZGV2L2J1aWxkX2NvcGFzaV9yX2JpbmRpbmdzL2NvcGFzaS9iaW5kaW5ncy9SL0NPUEFTSSIpCmNhY2hlTWV0YURhdGEoMSkKYGBgCgojIyBGaXhpbmcgZW51bWVyYXRpb24gd3JhcHBlcnMKCmBgYHtyfQplbnVtVG9JbnRlZ2VyIDwtIGZ1bmN0aW9uKG5hbWUsdHlwZSkgewogICAgaWYgKGlzLmNoYXJhY3RlcihuYW1lKSkgewogICAgICAgIGFucyA8LSBhcy5pbnRlZ2VyKGdldDAocGFzdGUoIi5fX0VfXyIsIHR5cGUsIHNlcCA9ICIiKSlbbmFtZV0pCiAgICAgICAgaWYgKGxlbmd0aChhbnMpID09IDApIHthbnMgPC0gYXMuaW50ZWdlcihnZXQocGFzdGUoIi5fX0VfXyIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSksIHNlcCA9ICIiKSlbbmFtZV0pfQogICAgICAgIGlmIChpcy5uYShhbnMpKSB7d2FybmluZygiZW51bSBub3QgZm91bmQgIiwgbmFtZSwgIiAiLCB0eXBlKX0KICAgICAgICBhbnMKICAgIH0KfQogIAplbnVtRnJvbUludGVnZXIgPC0gZnVuY3Rpb24oaSx0eXBlKSB7CiAgICBpdGVtbGlzdCA8LSBnZXQwKHBhc3RlKCIuX19FX18iLCB0eXBlLCBzZXA9IiIpKQogICAgaWYgKGxlbmd0aChpdGVtbGlzdCkgPT0gMCkge2l0ZW1saXN0IDwtIGdldChwYXN0ZSgiLl9fRV9fIiwgc3Vic3RyKHR5cGUsIDMsIG5jaGFyKHR5cGUpKSwgc2VwID0gIiIpKX0KICAgIG5hbWVzKGl0ZW1saXN0KVttYXRjaChpLCBpdGVtbGlzdCldCn0KYGBgCgpUaGUgQVBJIGlzIG5vdyBsb2FkZWQuCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29wYXNpIFIgQVBJIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIEluaXRpYWwgU2V0dXAgZm9yIE1hY09TCgojIyBJbml0aWFsIGNoZWNrb3V0CgpJbml0aWFsIHNldHVwIG9mIHRoZSBDb3Bhc2kgUiBBUEkgcmVxdWlyZXMgY2hlY2tpbmcgb3V0IHRoZSBjb3Bhc2ktci1hcGkgcmVwb3NpdGlvcnkgYXQgYW4gYXBwcm9wcmlhdGUgbG9jYXRpb24uCk5vdGUgdGhlIGZvbGxvd2luZyBkZXBlbmRlbmNpZXMgZm9yIGNvbXBpbGluZyB0aGUgc291cmNlczoKY21ha2UsIHN3aWcKCmBgYHtiYXNofQpnaXQgY2xvbmUgLS1yZWN1cnNpdmUgZ2l0QGdpdGh1Yi5jb206am9uYXNmb2UvY29wYXNpLXItYXBpLmdpdApgYGAKCkl0IGlzIHJlY29tbWVuZGVkIHRvIHVzZSB0aGlzIGZpbGUgd2l0aCB0aGUgLlJwcm9qIGRlZmluZWQgaW4gdGhlIHJlcG9zaXRvcnkuCgojIyBGaXhpbmcgQ29wYXNpIHNvdXJjZQoKYGBge2Jhc2h9CmNkIGNvcGFzaS1kZXYvQ09QQVNJLwpnaXQgYXBwbHkgLi4vZml4LWNvcmVmb3VuZGF0aW9uLWxpYnJhcnkucGF0Y2gKY2QgLi4vLi4vCmBgYAoKIyMgQ29tcGlsaW5nIENvcGFzaSBkZXBlbmRlbmNpZXMKCmBgYHtiYXNofQpjZCBjb3Bhc2ktZGV2L2NvcGFzaS1kZXBlbmRlbmNpZXMvCi4vY3JlYXRlT1NYLnNoCmNkIC4uLy4uLwpgYGAKCiMjIENvbXBpbGluZyBDb3Bhc2kgZnJvbSBzb3VyY2UKCmBgYHtiYXNofQpjZCBjb3Bhc2ktZGV2Lwpta2RpciBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncwpjZCBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy8KY21ha2UgLURCVUlMRF9HVUk9T0ZGIC1ERU5BQkxFX1I9T04gLURDT1BBU0lfREVQRU5ERU5DWV9ESVI9Li4vY29wYXNpLWRlcGVuZGVuY2llcy9iaW4gLi4vQ09QQVNJCm1ha2UKY2QgLi4vLi4vCmBgYAoKIyBMb2FkaW5nIHRoZSBDT1BBU0ktUi1BUEkKCmBgYHtyfQpkeW4ubG9hZChwYXN0ZTAoImNvcGFzaS1kZXYvYnVpbGRfY29wYXNpX3JfYmluZGluZ3MvY29wYXNpL2JpbmRpbmdzL1IvQ09QQVNJIiwgLlBsYXRmb3JtJGR5bmxpYi5leHQpKQpzb3VyY2UoImNvcGFzaS1kZXYvYnVpbGRfY29wYXNpX3JfYmluZGluZ3MvY29wYXNpL2JpbmRpbmdzL1IvQ09QQVNJLlIiKQpjYWNoZU1ldGFEYXRhKDEpCmBgYAoKIyMgRml4aW5nIGVudW1lcmF0aW9uIHdyYXBwZXJzCgpgYGB7cn0KZW51bVRvSW50ZWdlciA8LSBmdW5jdGlvbihuYW1lLHR5cGUpIHsKICAgIGlmIChpcy5jaGFyYWN0ZXIobmFtZSkpIHsKICAgICAgICBhbnMgPC0gYXMuaW50ZWdlcihnZXQwKHBhc3RlMCgiLl9fRV9fIiwgdHlwZSkpW25hbWVdKQogICAgICAgIGlmIChsZW5ndGgoYW5zKSA9PSAwKSB7YW5zIDwtIGFzLmludGVnZXIoZ2V0KHBhc3RlMCgiLl9fRV9fIiwgc3Vic3RyKHR5cGUsIDMsIG5jaGFyKHR5cGUpKSlbbmFtZV0pKX0KICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoImVudW0gbm90IGZvdW5kICIsIG5hbWUsICIgIiwgdHlwZSl9CiAgICAgICAgYW5zCiAgICB9Cn0KICAKZW51bUZyb21JbnRlZ2VyIDwtIGZ1bmN0aW9uKGksdHlwZSkgewogICAgaXRlbWxpc3QgPC0gZ2V0MChwYXN0ZTAoIi5fX0VfXyIsIHR5cGUpKQogICAgaWYgKGxlbmd0aChpdGVtbGlzdCkgPT0gMCkge2l0ZW1saXN0IDwtIGdldChwYXN0ZTAoIi5fX0VfXyIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSkpKX0KICAgIG5hbWVzKGl0ZW1saXN0KVttYXRjaChpLCBpdGVtbGlzdCldCn0KYGBgCgpUaGUgQVBJIGlzIG5vdyBsb2FkZWQuCg==</div>
 
 
 
