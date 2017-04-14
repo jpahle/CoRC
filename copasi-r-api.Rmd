@@ -39,7 +39,7 @@ cd ../../
 cd copasi-dev/
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
 cd ../../
 ```
@@ -58,7 +58,7 @@ cacheMetaData(1)
 enumToInteger <- function(name,type) {
     if (is.character(name)) {
         ans <- as.integer(get0(paste0(".__E__", type))[name])
-        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type)))[name]))}
+        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type))))[name])}
         if (is.na(ans)) {warning("enum not found ", name, " ", type)}
         ans
     }

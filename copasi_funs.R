@@ -1,5 +1,7 @@
 library(tidyverse, warn.conflicts = FALSE)
 
+source("debug_help.R")
+
 #options(echo = FALSE) # disable echoing of input
 
 # This is an example on how to build models with the COPASI backend API.
@@ -15,7 +17,7 @@ cacheMetaData(1)
 enumToInteger <- function(name,type) {
     if (is.character(name)) {
         ans <- as.integer(get0(paste0(".__E__", type))[name])
-        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type)))[name]))}
+        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type))))[name])}
         if (is.na(ans)) {warning("enum not found ", name, " ", type)}
         ans
     }
