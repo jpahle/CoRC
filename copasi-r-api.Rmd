@@ -19,6 +19,9 @@ It is recommended to use this file with the .Rproj defined in the repository.
 
 ## Fixing Copasi source
 
+This removes a Mac-specific error during the build process but might not fully function as intended either.
+It also incorporates some changes to R specific modifications during the build process.
+
 ```{bash}
 cd copasi-dev/COPASI/
 git apply ../fix-corefoundation-library.patch
@@ -53,6 +56,9 @@ cacheMetaData(1)
 ```
 
 ## Fixing enumeration wrappers
+
+For platform independece, I have removed a cmake script that fixes enumeration wrappers during the build process.
+These wrappers are therefore overwritten in R after the fact to restore functionality.
 
 ```{r}
 enumToInteger <- function(name,type) {
