@@ -6,7 +6,7 @@ cop <- function() {
         load("copasi_cache.RData", envir = bind)
         
         # eg. example9 only works with cacheMetaData
-        cacheMetaData(1)
+        cacheMetaData(bind)
         
         dyn.load(paste0("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
     }
