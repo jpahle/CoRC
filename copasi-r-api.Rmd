@@ -8,14 +8,29 @@ output: html_notebook
 ## Initial checkout
 
 Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
-Note the following dependencies for compiling the sources:
-cmake, swig
 
+Use this command to clone the repository
 ```{bash}
 git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
 ```
 
-It is recommended to use this file with the .Rproj defined in the repository.
+If the repository is already cloned, use
+```{bash}
+git submodule update --init --recursive
+```
+
+This step makes sure the Copasi sources are cloned.
+
+## Dependencies for compilation of the Copasi sources
+
+The following dependencies exist for compiling the sources:
+
+cmake, swig
+
+Cosider using homebrew for MacOS to install them
+```{bash}
+brew install cmake swig
+```
 
 ## Fixing Copasi source
 
@@ -58,7 +73,7 @@ cacheMetaData(1)
 ## Fixing enumeration wrappers
 
 For platform independece, I have removed a cmake script that fixes enumeration wrappers during the build process.
-These wrappers are therefore overwritten in R after the fact to restore functionality.
+These wrappers are now overwritten in R after the fact to restore functionality.
 
 ```{r}
 enumToInteger <- function(name,type) {
