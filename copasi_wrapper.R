@@ -1,3 +1,6 @@
+## Load the COPASI swig package and initialize API.
+## This file attempts to load the API into its own environment called cop or in case of the bindings cop$bind.
+
 cop <- function() {
     bind <- new.env()
     

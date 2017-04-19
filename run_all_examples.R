@@ -1,3 +1,5 @@
+## Run all examples to find regressions.
+
 library(assertthat)
 
 rm(list = ls(all.names = T))
