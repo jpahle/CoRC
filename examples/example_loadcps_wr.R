@@ -1,3 +1,4 @@
+rm(list = ls(all.names = T))
 source("copasi_wrapper.R")
 
 filename <- "examples/brusselator.cps"
@@ -11,7 +12,10 @@ model <- cop$bind$CCopasiDataModel_getModel(dataModel)
 nMetab <- cop$bind$MetabVector_size(cop$bind$CModel_getMetabolites(model))
 message("Number of Metabolites: " , nMetab)
 
-filename <- "example1.cps"
+rm(list = ls(all.names = T))
+source("copasi_wrapper.R")
+
+filename <- "examples/brusselator.cps"
 
 message("File: ", filename)
 
