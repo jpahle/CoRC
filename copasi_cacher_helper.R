@@ -17,4 +17,4 @@ enumFromInteger <- function(i,type) {
     names(itemlist)[match(i, itemlist)]
 }
 
-save(list = ls(all.names = TRUE), file = "copasi_cache.RData", envir = .GlobalEnv)
+save(list = ls(all.names = TRUE), file = "copasi_cache.RData")
