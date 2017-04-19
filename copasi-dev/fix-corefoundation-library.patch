@@ -68,7 +68,7 @@ index 0d64a38d4..968c0f9fc 100644
 -
  file(READ "${FILENAME}" SOURCECODE)
  
-+# Needed on Ubuntu swig 3.0.8
++# Needed on Ubuntu swig 3.0.10
 +# Not needed on Mac swig 3.0.12
  string(REPLACE "'get''get'" "'get','get'" SOURCECODE "${SOURCECODE}" )
 -string(REPLACE "'get''get'" "'get','get'" SOURCECODE "${SOURCECODE}" )
