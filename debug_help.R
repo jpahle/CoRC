@@ -1,5 +1,7 @@
 ## Simple helper functions
 
-ls_d <- function(namex) {
+library(pryr)
+
+ls_d <- function(namex = "") {
     return(ls(all.names = TRUE, pattern = namex, envir = .GlobalEnv))
 }

@@ -1,4 +1,5 @@
 ## Load the COPASI swig package and initialize API.
+source("debug_help.R")
 
 source("copasi_cacher.R")
 load("copasi_cache.RData")
