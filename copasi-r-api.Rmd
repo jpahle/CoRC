@@ -1,6 +1,8 @@
 ---
 title: "Copasi R API"
-output: html_notebook
+output:
+  html_notebook: default
+  html_document: default
 ---
 
 # Initial Setup for MacOS
@@ -9,13 +11,15 @@ output: html_notebook
 
 Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
 
-Use this command to clone the repository
-```{bash}
+Use this command to clone the repository:
+
+```{bash, eval=FALSE}
 git clone --recursive git@github.com:jonasfoe/copasi-r-api.git
 ```
 
-If the repository is already cloned, use
-```{bash}
+If the repository is already cloned, use:
+
+```{bash, eval=FALSE}
 git submodule update --init --recursive
 ```
 
@@ -27,8 +31,9 @@ The following dependencies exist for compiling the sources:
 
 cmake, swig
 
-Cosider using homebrew for MacOS to install them
-```{bash}
+Cosider using homebrew for MacOS to install them:
+
+```{bash, eval=FALSE}
 brew install cmake swig
 ```
 
@@ -37,7 +42,7 @@ brew install cmake swig
 This removes a Mac-specific error during the build process but might not fully function as intended either.
 It also incorporates some changes to R specific modifications during the build process.
 
-```{bash}
+```{bash, eval=FALSE}
 cd copasi-dev/COPASI/
 git apply ../fix-corefoundation-library.patch
 cd ../../
@@ -45,7 +50,7 @@ cd ../../
 
 ## Compiling Copasi dependencies
 
-```{bash}
+```{bash, eval=FALSE}
 cd copasi-dev/copasi-dependencies/
 ./createOSX.sh
 cd ../../
@@ -53,7 +58,7 @@ cd ../../
 
 ## Compiling Copasi from source
 
-```{bash}
+```{bash, eval=FALSE}
 cd copasi-dev/
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
@@ -93,3 +98,80 @@ enumFromInteger <- function(i,type) {
 ```
 
 The API is now loaded.
+
+## Understanding the OO system
+
+The examples as used in the Copasi sources make use of R's S4 system which is a generic-function OO.
+With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this
+
+```{r}
+dataModel <- CCopasiRootContainer_addDatamodel()
+model <- CCopasiDataModel_getModel(dataModel)
+compartment <- CModel_createCompartment(model,"cell", 5.0)
+object <- CCopasiObject_getObject(compartment,CCopasiObjectName("Reference=InitialVolume"))
+```
+
+The object methods are called a generic functions that are usually in no way generic and require naming the actually, possibly inherited calls of the object.
+In the example, compartment is a CCompartment, which inherits from 7 other classes.
+
+```{r}
+is(compartment)
+```
+
+If you want to call getObject you have to know that this function is inherited from CCopasiObject.
+
+I have found that the SWIG implementation enables a more typical OO use, by overwriting the $ operator for many classes.
+I have rewritten example1.R in example1_rewrite.R to make us of this feature.
+The previous code chunk from example1 is now implemented as follows:
+
+```{r}
+dataModel <- CCopasiRootContainer_addDatamodel()
+model <- dataModel$getModel()
+compartment <- model$createCompartment("cell", 5.0)
+object <- compartment$getObject(CCopasiObjectName("Reference=InitialVolume"))
+```
+
+This works as a far cleaner approach for the copasi API.
+
+## Problems with this approach
+
+This approach can be problematic, because in typical R fashion, the $ operator allows for partial matches with no regard for inherited methods.
+
+```{r}
+glucose <- model$createMetabolite("glucose", compartment$getObjectName(), 10.0, "FIXED")
+try(glucose$getObject(CCopasiObjectName("Reference=InitialConcentration")))
+```
+
+This chunk doesn't actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.
+
+```{r}
+is(glucose)
+```
+
+I am considering to modify Copasi.R to replace the partially matching function pmatch with match in the $ operator.
+
+## Adressing CopasiVectors
+
+Adressing vectors has been problematic and I am trying to figure out a good approach.
+
+```{r}
+vector <- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, "TriFalse")
+vector$size()
+try(vector[0])
+```
+
+Example1 uses the following approach:
+
+```{r}
+# using the ___getitem__ function looks awkward, but I have not found out how else
+# I can get to the elements of wrapped std::vector instances
+CFunctionStdVector___getitem__(vector,0)
+```
+
+Instead I use:
+
+```{r}
+vector$"__getitem__"(0)
+```
+
+I have found this to be a good approach but I suspect that there is a better approach even.
