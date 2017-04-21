@@ -1,8 +1,8 @@
 ---
 title: "Copasi R API"
 output:
-  html_notebook: default
   html_document: default
+  html_notebook: default
 ---
 
 # Initial Setup for MacOS
@@ -150,6 +150,12 @@ is(glucose)
 
 I am considering to modify Copasi.R to replace the partially matching function pmatch with match in the $ operator.
 
+idx = pmatch(name, names(accessorFuns));
+
+->
+
+idx = match(name, names(accessorFuns));
+
 ## Adressing CopasiVectors
 
 Adressing vectors has been problematic and I am trying to figure out a good approach.
@@ -165,7 +171,7 @@ Example1 uses the following approach:
 ```{r}
 # using the ___getitem__ function looks awkward, but I have not found out how else
 # I can get to the elements of wrapped std::vector instances
-CFunctionStdVector___getitem__(vector,0)
+CFunctionStdVector___getitem__(vector, 0)
 ```
 
 Instead I use:

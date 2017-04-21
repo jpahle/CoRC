@@ -9,8 +9,19 @@ cacheMetaData(1)
 
 dyn.load(paste0("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
 
+API_CURRENT_DATAMODEL <- NULL
+
 loadModel <- function(filename) {
-    dataModel <- CCopasiRootContainer_addDatamodel()
-    CCopasiDataModel_loadModel(dataModel,filename)
-    CCopasiDataModel_getModel(dataModel)
+    assert_that(is.readable(filename))
+    
+    datamodel <- CCopasiRootContainer_addDatamodel()
+    success <- datamodel$loadModel(filename)
+    
+    if (!success) {
+        CCopasiRootContainer_removeDatamodel(datamodel)
+        stop("Couldn't load model file")
+    }
+    
+    API_CURRENT_DATAMODEL <<- datamodel
+    datamodel
 }

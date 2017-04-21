@@ -40,7 +40,7 @@ stopifnot(!is.null(glucose))
 ## OLD CODE -
 ##############
 # object <- glucose$getObject(CCopasiObjectName("Reference=InitialConcentration"))
-object <- CCopasiObject_getObject(glucose,CCopasiObjectName("Reference=InitialConcentration"))
+object <- CCopasiObject_getObject(glucose, CCopasiObjectName("Reference=InitialConcentration"))
 ##############
 ## - OLD CODE
 ##############
@@ -161,7 +161,7 @@ if (!is.null(fun)){
     ## OLD CODE -
     ##############
     # object <- parameter$getObject(CCopasiObjectName("Reference=Value"))
-    object <- CCopasiObject_getObject(parameter,CCopasiObjectName("Reference=Value"))
+    object <- CCopasiObject_getObject(parameter, CCopasiObjectName("Reference=Value"))
     ##############
     ## - OLD CODE
     ##############
