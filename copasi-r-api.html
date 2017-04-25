@@ -119,6 +119,26 @@ $(document).ready(function () {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#initial-setup-for-macos">Initial Setup for MacOS</a><ul>
+<li><a href="#initial-checkout">Initial checkout</a></li>
+<li><a href="#dependencies-for-compilation-of-the-copasi-sources">Dependencies for compilation of the Copasi sources</a></li>
+<li><a href="#fixing-copasi-source">Fixing Copasi source</a></li>
+<li><a href="#compiling-copasi-dependencies">Compiling Copasi dependencies</a></li>
+<li><a href="#compiling-copasi-from-source">Compiling Copasi from source</a></li>
+</ul></li>
+<li><a href="#loading-the-copasi-r-api">Loading the COPASI-R-API</a><ul>
+<li><a href="#fixing-enumeration-wrappers">Fixing enumeration wrappers</a></li>
+<li><a href="#understanding-the-oo-system">Understanding the OO system</a></li>
+<li><a href="#problems-with-this-approach">Problems with this approach</a></li>
+<li><a href="#adressing-vectors">Adressing Vectors</a><ul>
+<li><a href="#stdvector">std::vector</a></li>
+<li><a href="#ccopasivector">CCopasiVector</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
 
 <div id="initial-setup-for-macos" class="section level1">
 <h1>Initial Setup for MacOS</h1>
@@ -171,28 +191,31 @@ cacheMetaData(1)</code></pre>
 <p>For platform independece, I have removed a cmake script that fixes enumeration wrappers during the build process. These wrappers are now overwritten in R after the fact to restore functionality.</p>
 <pre class="r"><code>enumToInteger &lt;- function(name,type) {
     if (is.character(name)) {
-        ans &lt;- as.integer(get0(paste0(&quot;.__E__&quot;, type))[name])
-        if (length(ans) == 0) {ans &lt;- as.integer(get(paste0(&quot;.__E__&quot;, substr(type, 3, nchar(type))))[name])}
+        gettype &lt;- paste(&quot;.__E__&quot;, type, sep = &quot;&quot;)
+        if (!exists(gettype)) gettype &lt;- paste(&quot;.__E__&quot;, substr(type, 3, nchar(type)), sep = &quot;&quot;)
+        ans &lt;- as.integer(get(gettype)[name])
         if (is.na(ans)) {warning(&quot;enum not found &quot;, name, &quot; &quot;, type)}
         ans
-    }
+    } 
 }
-  
+
 enumFromInteger &lt;- function(i,type) {
-    itemlist &lt;- get0(paste0(&quot;.__E__&quot;, type))
-    if (length(itemlist) == 0) {itemlist &lt;- get(paste0(&quot;.__E__&quot;, substr(type, 3, nchar(type))))}
+    gettype &lt;- paste(&quot;.__E__&quot;, type, sep = &quot;&quot;)
+    if (!exists(gettype)) gettype &lt;- paste(&quot;.__E__&quot;, substr(type, 3, nchar(type)), sep = &quot;&quot;)
+    itemlist &lt;- get(gettype)
     names(itemlist)[match(i, itemlist)]
 }</code></pre>
 <p>The API is now loaded.</p>
 </div>
 <div id="understanding-the-oo-system" class="section level2">
 <h2>Understanding the OO system</h2>
-<p>The examples as used in the Copasi sources make use of R’s S4 system which is a generic-function OO. With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this</p>
+<p>The examples as used in the Copasi sources make use of R’s S4 system which is a generic-function OO. With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this:</p>
 <pre class="r"><code>dataModel &lt;- CCopasiRootContainer_addDatamodel()
 model &lt;- CCopasiDataModel_getModel(dataModel)
 compartment &lt;- CModel_createCompartment(model,&quot;cell&quot;, 5.0)
 object &lt;- CCopasiObject_getObject(compartment,CCopasiObjectName(&quot;Reference=InitialVolume&quot;))</code></pre>
-<p>The object methods are called a generic functions that are usually in no way generic and require naming the actually, possibly inherited calls of the object. In the example, compartment is a CCompartment, which inherits from 7 other classes.</p>
+<p>The object methods are called generic functions. In the SWIG bindings, these are usually in no way generic and require naming the actual, possibly inherited classes that the method belongs to. Discussion on this behavior of SWIG can be found here: <a href="https://github.com/swig/swig/issues/854" class="uri">https://github.com/swig/swig/issues/854</a>.</p>
+<p>In the example, compartment is a CCompartment, which inherits from 7 other classes.</p>
 <pre class="r"><code>is(compartment)</code></pre>
 <pre><code>## [1] &quot;_p_CCompartment&quot;     &quot;_p_CModelEntity&quot;     &quot;_p_CCopasiContainer&quot;
 ## [4] &quot;_p_CAnnotation&quot;      &quot;_p_CCopasiObject&quot;    &quot;_p_CObjectInterface&quot;
@@ -210,6 +233,9 @@ object &lt;- compartment$getObject(CCopasiObjectName(&quot;Reference=InitialVolu
 <p>This approach can be problematic, because in typical R fashion, the $ operator allows for partial matches with no regard for inherited methods.</p>
 <pre class="r"><code>glucose &lt;- model$createMetabolite(&quot;glucose&quot;, compartment$getObjectName(), 10.0, &quot;FIXED&quot;)
 try(glucose$getObject(CCopasiObjectName(&quot;Reference=InitialConcentration&quot;)))</code></pre>
+<pre><code>## An object of class &quot;_p_CObjectInterface&quot;
+## Slot &quot;ref&quot;:
+## &lt;pointer: 0x7f8720631a70&gt;</code></pre>
 <p>This chunk doesn’t actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.</p>
 <pre class="r"><code>is(glucose)</code></pre>
 <pre><code>## [1] &quot;_p_CMetab&quot;           &quot;_p_CModelEntity&quot;     &quot;_p_CCopasiContainer&quot;
@@ -220,30 +246,64 @@ try(glucose$getObject(CCopasiObjectName(&quot;Reference=InitialConcentration&quo
 <p>-&gt;</p>
 <p>idx = match(name, names(accessorFuns));</p>
 </div>
-<div id="adressing-copasivectors" class="section level2">
-<h2>Adressing CopasiVectors</h2>
+<div id="adressing-vectors" class="section level2">
+<h2>Adressing Vectors</h2>
 <p>Adressing vectors has been problematic and I am trying to figure out a good approach.</p>
-<pre class="r"><code>vector &lt;- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, &quot;TriFalse&quot;)
-vector$size()</code></pre>
+<div id="stdvector" class="section level3">
+<h3>std::vector</h3>
+<p>Representation of std::vectors is pretty functional.</p>
+<pre class="r"><code>stdvector &lt;- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, &quot;TriFalse&quot;)
+stdvector$size()</code></pre>
 <pre><code>## [1] 3</code></pre>
-<pre class="r"><code>try(vector[0])</code></pre>
-<pre><code>## [[1]]
-## An object of class &quot;_p_CFunction&quot;
-## Slot &quot;ref&quot;:
-## &lt;pointer: 0x7fb9145bb520&gt;</code></pre>
 <p>Example1 uses the following approach:</p>
 <pre class="r"><code># using the ___getitem__ function looks awkward, but I have not found out how else
 # I can get to the elements of wrapped std::vector instances
-CFunctionStdVector___getitem__(vector, 0)</code></pre>
+CFunctionStdVector___getitem__(stdvector, 0)</code></pre>
 <pre><code>## An object of class &quot;_p_CFunction&quot;
 ## Slot &quot;ref&quot;:
-## &lt;pointer: 0x7fb9144f5ca0&gt;</code></pre>
-<p>Instead I use:</p>
-<pre class="r"><code>vector$&quot;__getitem__&quot;(0)</code></pre>
+## &lt;pointer: 0x7f8720701720&gt;</code></pre>
+<p>This can be simplified:</p>
+<pre class="r"><code>stdvector$&quot;__getitem__&quot;(0)</code></pre>
 <pre><code>## An object of class &quot;_p_CFunction&quot;
 ## Slot &quot;ref&quot;:
-## &lt;pointer: 0x7fb9144f5ca0&gt;</code></pre>
-<p>I have found this to be a good approach but I suspect that there is a better approach even.</p>
+## &lt;pointer: 0x7f8720701720&gt;</code></pre>
+<p>This is a good approach to get single items but vectors can also be adressed more naturally:</p>
+<pre class="r"><code>is(stdvector[0:2])</code></pre>
+<pre><code>## [1] &quot;list&quot;   &quot;vector&quot;</code></pre>
+<pre class="r"><code>stdvector[0:2][[1]]</code></pre>
+<pre><code>## An object of class &quot;_p_CFunction&quot;
+## Slot &quot;ref&quot;:
+## &lt;pointer: 0x7f87205c1270&gt;</code></pre>
+<p>Using the [] operator will always return a list even for single items and therefore behaves similar to lists. There is however no implementation of the [[]] operator directly on the vector.</p>
+</div>
+<div id="ccopasivector" class="section level3">
+<h3>CCopasiVector</h3>
+<p>CCopasiVectors don’t seem to allow for the use of the [] operator.</p>
+<pre class="r"><code>copasivector &lt;- CCopasiRootContainer_getDatamodelList()
+is(copasivector)</code></pre>
+<pre><code>## [1] &quot;_p_CCopasiVectorT_CCopasiDataModel_t&quot;
+## [2] &quot;_p_CCopasiContainer&quot;                 
+## [3] &quot;_p_CCopasiObject&quot;                    
+## [4] &quot;_p_CObjectInterface&quot;                 
+## [5] &quot;C++Reference&quot;                        
+## [6] &quot;ExternalReference&quot;</code></pre>
+<pre class="r"><code>try(copasivector[0])</code></pre>
+<p>Instead, one has to find the right method to apply. In this case it seems to be DataModelVector_get(…) although I am unsure why as DataModelVector is not a class listed with is in the previous chunk.</p>
+<pre class="r"><code>DataModelVector_get(copasivector, 0)</code></pre>
+<pre><code>## An object of class &quot;_p_CCopasiObject&quot;
+## Slot &quot;ref&quot;:
+## &lt;pointer: 0x7f87240666f0&gt;</code></pre>
+<p>Using $get(…) is not functional due to what seems like a bug in SWIG. I have found a related discussion here: <a href="https://sourceforge.net/p/swig/mailman/message/35071142/" class="uri">https://sourceforge.net/p/swig/mailman/message/35071142/</a> SWIG seems to categorize any *_get function as an internal SWIG acessor helper for accessing public object attributes. With functions that are called get in C already this seems to cause a bug.</p>
+<p>I am considering to modify Copasi.R here too.</p>
+<p>vaccessors = c(‘get’,</p>
+<p>-&gt;</p>
+<p>vaccessors = c(</p>
+<p>This allows for get functions to be called again. This chunk should then work:</p>
+<pre class="r"><code>try(copasivector$get(0))</code></pre>
+<pre><code>## An object of class &quot;_p_CCopasiObject&quot;
+## Slot &quot;ref&quot;:
+## &lt;pointer: 0x7f87240666f0&gt;</code></pre>
+</div>
 </div>
 </div>
 

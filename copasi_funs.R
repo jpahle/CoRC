@@ -11,6 +11,12 @@ dyn.load(paste0("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .
 
 API_CURRENT_DATAMODEL <- NULL
 
+getCurrentModel <- function() {
+    if (is.null(API_CURRENT_DATAMODEL)) stop("No model currently in use.")
+    
+    API_CURRENT_DATAMODEL
+}
+
 loadModel <- function(filename) {
     assert_that(is.readable(filename))
     

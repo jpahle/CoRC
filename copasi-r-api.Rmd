@@ -1,7 +1,8 @@
 ---
 title: "Copasi R API"
 output:
-  html_document: default
+  html_document:
+    toc: yes
   html_notebook: default
 ---
 
@@ -83,16 +84,18 @@ These wrappers are now overwritten in R after the fact to restore functionality.
 ```{r}
 enumToInteger <- function(name,type) {
     if (is.character(name)) {
-        ans <- as.integer(get0(paste0(".__E__", type))[name])
-        if (length(ans) == 0) {ans <- as.integer(get(paste0(".__E__", substr(type, 3, nchar(type))))[name])}
+        gettype <- paste(".__E__", type, sep = "")
+        if (!exists(gettype)) gettype <- paste(".__E__", substr(type, 3, nchar(type)), sep = "")
+        ans <- as.integer(get(gettype)[name])
         if (is.na(ans)) {warning("enum not found ", name, " ", type)}
         ans
-    }
+    } 
 }
-  
+
 enumFromInteger <- function(i,type) {
-    itemlist <- get0(paste0(".__E__", type))
-    if (length(itemlist) == 0) {itemlist <- get(paste0(".__E__", substr(type, 3, nchar(type))))}
+    gettype <- paste(".__E__", type, sep = "")
+    if (!exists(gettype)) gettype <- paste(".__E__", substr(type, 3, nchar(type)), sep = "")
+    itemlist <- get(gettype)
     names(itemlist)[match(i, itemlist)]
 }
 ```
@@ -102,7 +105,7 @@ The API is now loaded.
 ## Understanding the OO system
 
 The examples as used in the Copasi sources make use of R's S4 system which is a generic-function OO.
-With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this
+With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this:
 
 ```{r}
 dataModel <- CCopasiRootContainer_addDatamodel()
@@ -111,7 +114,10 @@ compartment <- CModel_createCompartment(model,"cell", 5.0)
 object <- CCopasiObject_getObject(compartment,CCopasiObjectName("Reference=InitialVolume"))
 ```
 
-The object methods are called a generic functions that are usually in no way generic and require naming the actually, possibly inherited calls of the object.
+The object methods are called generic functions.
+In the SWIG bindings, these are usually in no way generic and require naming the actual, possibly inherited classes that the method belongs to.
+Discussion on this behavior of SWIG can be found here: https://github.com/swig/swig/issues/854.
+
 In the example, compartment is a CCompartment, which inherits from 7 other classes.
 
 ```{r}
@@ -156,14 +162,17 @@ idx = pmatch(name, names(accessorFuns));
 
 idx = match(name, names(accessorFuns));
 
-## Adressing CopasiVectors
+## Adressing Vectors
 
 Adressing vectors has been problematic and I am trying to figure out a good approach.
 
+### std::vector
+
+Representation of std::vectors is pretty functional.
+
 ```{r}
-vector <- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, "TriFalse")
-vector$size()
-try(vector[0])
+stdvector <- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, "TriFalse")
+stdvector$size()
 ```
 
 Example1 uses the following approach:
@@ -171,13 +180,58 @@ Example1 uses the following approach:
 ```{r}
 # using the ___getitem__ function looks awkward, but I have not found out how else
 # I can get to the elements of wrapped std::vector instances
-CFunctionStdVector___getitem__(vector, 0)
+CFunctionStdVector___getitem__(stdvector, 0)
 ```
 
-Instead I use:
+This can be simplified:
 
 ```{r}
-vector$"__getitem__"(0)
+stdvector$"__getitem__"(0)
 ```
 
-I have found this to be a good approach but I suspect that there is a better approach even.
+This is a good approach to get single items but vectors can also be adressed more naturally:
+
+```{r}
+is(stdvector[0:2])
+stdvector[0:2][[1]]
+```
+
+Using the [] operator will always return a list even for single items and therefore behaves similar to lists.
+There is however no implementation of the [[]] operator directly on the vector.
+
+### CCopasiVector
+
+CCopasiVectors don't seem to allow for the use of the [] operator.
+
+```{r}
+copasivector <- CCopasiRootContainer_getDatamodelList()
+is(copasivector)
+try(copasivector[0])
+```
+
+Instead, one has to find the right method to apply.
+In this case it seems to be DataModelVector_get(...) although I am unsure why as DataModelVector is not a class listed with is in the previous chunk.
+
+```{r}
+DataModelVector_get(copasivector, 0)
+```
+
+Using $get(...) is not functional due to what seems like a bug in SWIG.
+I have found a related discussion here: https://sourceforge.net/p/swig/mailman/message/35071142/
+SWIG seems to categorize any *_get function as an internal SWIG acessor helper for accessing public object attributes.
+With functions that are called get in C already this seems to cause a bug.
+
+I am considering to modify Copasi.R here too.
+
+vaccessors = c('get',
+
+->
+
+vaccessors = c(
+
+This allows for get functions to be called again.
+This chunk should then work:
+
+```{r}
+try(copasivector$get(0))
+```
