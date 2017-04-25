@@ -2,22 +2,22 @@ source("copasi_funs.R")
 
 MODEL_STRING <- '<?xml version="1.0" encoding="UTF-8"?>\n<!-- Created by COPASI version 4.5.30 (Debug) on 2009-03-30 08:01 with libSBML version 3.3.2. -->\n<sbml xmlns="http://www.sbml.org/sbml/level2" level="2" version="1">\n<model metaid="COPASI1" id="Model_1" name="Model">\n<listOfUnitDefinitions>\n<unitDefinition id="volume">\n<listOfUnits>\n<unit kind="litre" scale="-3"/>\n</listOfUnits>\n</unitDefinition>\n<unitDefinition id="substance">\n<listOfUnits>\n<unit kind="mole" scale="-3"/>\n</listOfUnits>\n</unitDefinition>\n</listOfUnitDefinitions>\n<listOfCompartments>\n<compartment id="compartment_1" name="compartment" size="1"/>\n</listOfCompartments>\n<listOfSpecies>\n<species id="species_1" name="A" compartment="compartment_1" initialConcentration="5"/>\n<species id="species_2" name="B" compartment="compartment_1" initialConcentration="0"/>\n<species id="species_3" name="C" compartment="compartment_1" initialConcentration="0"/>\n</listOfSpecies>\n<listOfReactions>\n<reaction id="reaction_1" name="reaction" reversible="false">\n<listOfReactants>\n<speciesReference species="species_1"/>\n</listOfReactants>\n<listOfProducts>\n<speciesReference species="species_2"/>\n</listOfProducts>\n<kineticLaw>\n<math xmlns="http://www.w3.org/1998/Math/MathML">\n<apply>\n<times/>\n<ci> compartment_1 </ci>\n<ci> k1 </ci>\n<ci> species_1 </ci>\n</apply>\n</math>\n<listOfParameters>\n<parameter id="k1" name="k1" value="0.03"/>\n</listOfParameters>\n</kineticLaw>\n</reaction>\n<reaction id="reaction_2" name="reaction_1" reversible="false">\n<listOfReactants>\n<speciesReference species="species_2"/>\n</listOfReactants>\n<listOfProducts>\n<speciesReference species="species_3"/>\n</listOfProducts>\n<kineticLaw>\n<math xmlns="http://www.w3.org/1998/Math/MathML">\n<apply>\n<times/>\n<ci> compartment_1 </ci>\n<ci> k1 </ci>\n<ci> species_2 </ci>\n</apply>\n</math>\n<listOfParameters>\n<parameter id="k1" name="k1" value="0.004"/>\n</listOfParameters>\n</kineticLaw>\n</reaction>\n</listOfReactions>\n</model>\n</sbml>'
 
-stopifnot(!is.null(CCopasiRootContainer_getRoot()))
+stopifnot(!is.null(CRootContainer_getRoot()))
 # create a datamodel
-dataModel <- CCopasiRootContainer_addDatamodel()
-stopifnot(DataModelVector_size(CCopasiRootContainer_getDatamodelList()) == 1)
+dataModel <- CRootContainer_addDatamodel()
+stopifnot(DataModelVector_size(CRootContainer_getDatamodelList()) == 1)
 # first we load a simple model
-tryCatch(invisible(CCopasiDataModel_importSBMLFromString(dataModel,MODEL_STRING)), error = function(e) {
+tryCatch(invisible(CDataModel_importSBMLFromString(dataModel,MODEL_STRING)), error = function(e) {
   write("Error while importing the model.", stderr())
   quit(save = "default", status = 1, runLast = TRUE)
 } )
 
-model <- CCopasiDataModel_getModel(dataModel)
+model <- CDataModel_getModel(dataModel)
 # now we need to run some time course simulation to get data to fit
 # against
 
 # get the trajectory task object
-trajectoryTask <- CCopasiDataModel_getTask(dataModel,"Time-Course")
+trajectoryTask <- CDataModel_getTask(dataModel,"Time-Course")
 stopifnot(!is.null(trajectoryTask))
 # if there isn't one
 if (is.null(trajectoryTask)) {
@@ -27,7 +27,7 @@ if (is.null(trajectoryTask)) {
     # add the time course task to the task list
     # this method makes sure that the object is now owned 
     # by the list and that it does not get deleted by SWIG
-    invisible(CCopasiTaskList_addAndOwn(CCopasiDataModel_getTaskList(dataModel), trajectoryTask))
+    invisible(CCopasiTaskList_addAndOwn(CDataModel_getTaskList(dataModel), trajectoryTask))
 }
 
 # run a deterministic time course
@@ -100,7 +100,7 @@ rand <- 0.0
 # redirect output to file
 sink("fakedata_example6.txt", append=FALSE, split=FALSE)
 cat("# time ")
-keyFactory <- CCopasiRootContainer_getKeyFactory()
+keyFactory <- CRootContainer_getKeyFactory()
 stopifnot(!is.null(keyFactory))
 i <- 1
 while (i < iMax) {
@@ -110,7 +110,7 @@ while (i < iMax) {
   # only write header data for metabolites
   # Since I don't know yet how to determine the real underlying class
   # in R, I changed the example to use the getObjectType method
-  if (CCopasiObject_getObjectType(object) == "Metabolite") {
+  if (CDataObject_getObjectType(object) == "Metabolite") {
     cat(", ")
     cat(CTimeSeries_getSBMLId(timeSeries,i,dataModel))
     indexSet <- c(indexSet,i)
@@ -166,7 +166,7 @@ stopifnot(CCopasiParameterGroup_size(CReaction_getParameters(reaction)) == 1)
 stopifnot(CReaction_isLocalParameter(reaction,0))
 invisible(CReaction_setParameterValue(reaction,"k1",rand))
 
-fitTask <- CCopasiDataModel_addTask(dataModel,"parameterFitting")
+fitTask <- CDataModel_addTask(dataModel,"parameterFitting")
 stopifnot(!is.null(fitTask))
 # the method in a fit task is an instance of COptMethod or a subclass of
 # it.
@@ -211,34 +211,34 @@ stopifnot(result == TRUE)
 stopifnot(CExperimentObjectMap_getRole(objectMap,0) == "time")
 
 stopifnot(!is.null(model))
-timeReference <- CObjectInterface_getObject(model,CCopasiObjectName("Reference=Time"))
+timeReference <- CObjectInterface_getObject(model,CCommonName("Reference=Time"))
 stopifnot(!is.null(timeReference))
-invisible(CExperimentObjectMap_setObjectCN(objectMap,0,CCopasiObjectName_getString(CCopasiObject_getCN(timeReference))))
+invisible(CExperimentObjectMap_setObjectCN(objectMap,0,CCommonName_getString(CDataObject_getCN(timeReference))))
 
 # now we tell COPASI which column contain the concentrations of
 # metabolites and belong to dependent variables
 invisible(CExperimentObjectMap_setRole(objectMap,1,"dependent"))
 metab <- metabVector[[1]]
 stopifnot(!is.null(metab))
-particleReference <- CObjectInterface_getObject(metab,CCopasiObjectName("Reference=Concentration"))
+particleReference <- CObjectInterface_getObject(metab,CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(CExperimentObjectMap_setObjectCN(objectMap,1,CCopasiObjectName_getString(CCopasiObject_getCN(particleReference))))
+invisible(CExperimentObjectMap_setObjectCN(objectMap,1,CCommonName_getString(CDataObject_getCN(particleReference))))
 
 invisible(CExperimentObjectMap_setRole(objectMap,2,"dependent"))
 
 metab <- metabVector[[2]]
 stopifnot(!is.null(metab))
-particleReference <- CObjectInterface_getObject(metab,CCopasiObjectName("Reference=Concentration"))
+particleReference <- CObjectInterface_getObject(metab,CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(CExperimentObjectMap_setObjectCN(objectMap,2,CCopasiObjectName_getString(CCopasiObject_getCN(particleReference))))
+invisible(CExperimentObjectMap_setObjectCN(objectMap,2,CCommonName_getString(CDataObject_getCN(particleReference))))
 
 invisible(CExperimentObjectMap_setRole(objectMap,3,"dependent"))
 
 metab <- metabVector[[3]]
 stopifnot(!is.null(metab))
-particleReference <- CObjectInterface_getObject(metab,CCopasiObjectName("Reference=Concentration"))
+particleReference <- CObjectInterface_getObject(metab,CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(CExperimentObjectMap_setObjectCN(objectMap,3,CCopasiObjectName_getString(CCopasiObject_getCN(particleReference))))
+invisible(CExperimentObjectMap_setObjectCN(objectMap,3,CCommonName_getString(CDataObject_getCN(particleReference))))
 
 invisible(CExperimentSet_addExperiment(experimentSet,experiment))
 stopifnot(CExperimentSet_getExperimentCount(experimentSet) == 1)
@@ -256,14 +256,14 @@ parameter <- CCopasiParameterGroup_getParameter(CReaction_getParameters(reaction
 stopifnot(!is.null(parameter))
 
 # define a CFitItem
-parameterReference <- CObjectInterface_getObject(parameter,CCopasiObjectName("Reference=Value"))
+parameterReference <- CObjectInterface_getObject(parameter,CCommonName("Reference=Value"))
 stopifnot(!is.null(parameterReference))
 fitItem1 <- CFitProblem_addFitItem(fitProblem, parameterReference$getCN())
 stopifnot(!is.null(fitItem1))
 #invisible(COptItem_setObjectCN(fitItem1,parameterReference$getCN()))
 invisible(COptItem_setStartValue(fitItem1,4.0))
-invisible(COptItem_setLowerBound(fitItem1,CCopasiObjectName("0.00001")))
-invisible(COptItem_setUpperBound(fitItem1,CCopasiObjectName("10")))
+invisible(COptItem_setLowerBound(fitItem1,CCommonName("0.00001")))
+invisible(COptItem_setUpperBound(fitItem1,CCommonName("10")))
 # add the fit item to the correct parameter group
 optimizationItemGroup <- CCopasiParameterGroup_getParameter(fitProblem,"OptimizationItemList")
 stopifnot(!is.null(optimizationItemGroup))
@@ -275,13 +275,13 @@ parameter <- CCopasiParameterGroup_getParameter(CReaction_getParameters(reaction
 stopifnot(!is.null(parameter))
 
 # define a CFitItem
-parameterReference <- CObjectInterface_getObject(parameter,CCopasiObjectName("Reference=Value"))
+parameterReference <- CObjectInterface_getObject(parameter,CCommonName("Reference=Value"))
 stopifnot(!is.null(parameterReference))
 fitItem2 <- CFitProblem_addFitItem(fitProblem, parameterReference$getCN())
 stopifnot(!is.null(fitItem2))
 invisible(COptItem_setStartValue(fitItem2,4.0))
-invisible(COptItem_setLowerBound(fitItem2,CCopasiObjectName("0.00001")))
-invisible(COptItem_setUpperBound(fitItem2,CCopasiObjectName("10")))
+invisible(COptItem_setLowerBound(fitItem2,CCommonName("0.00001")))
+invisible(COptItem_setUpperBound(fitItem2,CCommonName("10")))
 
 result <- TRUE
 # running the task for this example will probably take some time
@@ -303,8 +303,8 @@ optItem2 <- COptProblem_getOptItem(fitProblem, 1)
 solutionVariables <- COptProblem_getSolutionVariables(fitProblem);
 stopifnot(FloatVectorCore_size(solutionVariables) == 2)
 
-cat("value for " , CCopasiObjectName_getString(CCopasiObject_getCN(COptItem_getObject(optItem1))) , ": " , FloatVectorCore_get(solutionVariables,0), "\n", sep = "")
-cat("value for " , CCopasiObjectName_getString(CCopasiObject_getCN(COptItem_getObject(optItem2))) , ": " , FloatVectorCore_get(solutionVariables,1), "\n", sep = "")
+cat("value for " , CCommonName_getString(CDataObject_getCN(COptItem_getObject(optItem1))) , ": " , FloatVectorCore_get(solutionVariables,0), "\n", sep = "")
+cat("value for " , CCommonName_getString(CDataObject_getCN(COptItem_getObject(optItem2))) , ": " , FloatVectorCore_get(solutionVariables,1), "\n", sep = "")
 # depending on the noise, the fit can be quite bad, so we are a litle
 # relaxed here (we should be within 3% of the original values)
 stopifnot((abs(FloatVectorCore_get(solutionVariables,0) - 0.03) / 0.03) < 3e-2)

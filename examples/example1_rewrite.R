@@ -1,9 +1,9 @@
 source("copasi_funs.R")
 
-stopifnot(!is.null(CCopasiRootContainer_getRoot()))
+stopifnot(!is.null(CRootContainer_getRoot()))
 # create a new datamodel
-dataModel <- CCopasiRootContainer_addDatamodel()
-datamodel_list <- CCopasiRootContainer_getDatamodelList()
+dataModel <- CRootContainer_addDatamodel()
+datamodel_list <- CRootContainer_getDatamodelList()
 stopifnot(datamodel_list$size() == 1)
 # get the model from the datamodel
 model <- dataModel$getModel()
@@ -25,7 +25,7 @@ changedObjects <- ObjectStdVector()
 # create a compartment with the name cell and an initial volume of 5.0
 # microliter
 compartment <- model$createCompartment("cell", 5.0)
-object <- compartment$getObject(CCopasiObjectName("Reference=InitialVolume"))
+object <- compartment$getObject(CCommonName("Reference=InitialVolume"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(!is.null(compartment))
@@ -36,14 +36,7 @@ stopifnot(model$getCompartments()$size() == 1)
 # fixed
 glucose <- model$createMetabolite("glucose", compartment$getObjectName(), 10.0, "FIXED")
 stopifnot(!is.null(glucose))
-##############
-## OLD CODE -
-##############
-# object <- glucose$getObject(CCopasiObjectName("Reference=InitialConcentration"))
-object <- CCopasiObject_getObject(glucose, CCopasiObjectName("Reference=InitialConcentration"))
-##############
-## - OLD CODE
-##############
+object <- glucose$getObject(CCommonName("Reference=InitialConcentration"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(model$getMetabolites()$size() == 1)
@@ -51,42 +44,21 @@ stopifnot(model$getMetabolites()$size() == 1)
 # concentration of 0. This metabolite is to be changed by reactions
 g6p <- model$createMetabolite("glucose-6-phosphate", compartment$getObjectName(), 0.0, "REACTIONS")
 stopifnot(!is.null(g6p))
-##############
-## OLD CODE -
-##############
-# object <- g6p$getObject(CCopasiObjectName("Reference=InitialConcentration"))
-object <- CCopasiObject_getObject(g6p,CCopasiObjectName("Reference=InitialConcentration"))
-##############
-## - OLD CODE
-##############
+object <- g6p$getObject(CCommonName("Reference=InitialConcentration"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(model$getMetabolites()$size() == 2)
 # another metabolite for ATP, also fixed
 atp <- model$createMetabolite("ATP", compartment$getObjectName(), 10.0, "FIXED")
 stopifnot(!is.null(atp))
-##############
-## OLD CODE -
-##############
-# object <- atp$getObject(CCopasiObjectName("Reference=InitialConcentration"))
-object <- CCopasiObject_getObject(atp,CCopasiObjectName("Reference=InitialConcentration"))
-##############
-## - OLD CODE
-##############
+object <- atp$getObject(CCommonName("Reference=InitialConcentration"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(model$getMetabolites()$size() == 3)
 # and one for ADP
 adp <- model$createMetabolite("ADP", compartment$getObjectName(), 0.0, "REACTIONS")
 stopifnot(!is.null(adp))
-##############
-## OLD CODE -
-##############
-# object <- adp$getObject(CCopasiObjectName("Reference=InitialConcentration"))
-object <- CCopasiObject_getObject(adp,CCopasiObjectName("Reference=InitialConcentration"))
-##############
-## - OLD CODE
-##############
+object <- adp$getObject(CCommonName("Reference=InitialConcentration"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(model$getMetabolites()$size() == 4)
@@ -113,7 +85,7 @@ stopifnot(reaction$isReversible() == FALSE)
 # now we ned to set a kinetic law on the reaction
 # maybe constant flux would be OK
 # we need to get the function from the function database
-funDB <- CCopasiRootContainer_getFunctionList()
+funDB <- CRootContainer_getFunctionList()
 stopifnot(!is.null(funDB))
 # it should be in the list of suitable functions
 # lets get all suitable functions for an irreversible reaction with  2 substrates
@@ -128,9 +100,7 @@ while (index < maxIndex){
     # we just assume that the only suitable function with Constant in
     # it's name is the one we want
 
-    # using the ___getitem__ function looks awkward, but I have not found out how else
-    # I can get to the elements of wrapped std::vector instances
-    temp_fun <- suitableFunctions$"__getitem__"(index)
+    temp_fun <- suitableFunctions[index][[1]]
     name <- temp_fun$getObjectName()
     if (length(grep("Constant",name)) != 0) {
         fun <- temp_fun
@@ -157,14 +127,7 @@ if (!is.null(fun)){
     stopifnot(parameter$getType() == "DOUBLE")
     # now we set the value of the parameter to 0.5
     invisible(parameter$setDblValue(0.5))
-    ##############
-    ## OLD CODE -
-    ##############
-    # object <- parameter$getObject(CCopasiObjectName("Reference=Value"))
-    object <- CCopasiObject_getObject(parameter, CCopasiObjectName("Reference=Value"))
-    ##############
-    ## - OLD CODE
-    ##############
+    object <- parameter$getObject(CCommonName("Reference=Value"))
     stopifnot(!is.null(object))
     invisible(changedObjects$push_back(object))
 } else{
@@ -202,10 +165,7 @@ invisible(reaction$setFunction(massAction))
 stopifnot(!is.null(reaction$getFunction()))
 stopifnot(reaction$getFunctionParameters()$size() == 2)
 # so there should be two entries in the parameter mapping as well
-###### Somehow this test fails miserably
-###### The length function returns 1 as the result and if I use StringStdVector_size
-###### instead of length I get 6 as the result.
-###### stopifnot(length(CReaction_getParameterMappings(reaction)) == 2)
+stopifnot(reaction$getParameterMappings()$size() == 2)
 # mass action is a special case since the parameter mappings for the
 # substrates (and products) are in a vector
 
@@ -214,7 +174,7 @@ stopifnot(reaction$getFunctionParameters()$size() == 2)
 # it gets the name rateConstant and an initial value of 1.56
 modelValue <- model$createModelValue("rateConstant", 1.56)
 stopifnot(!is.null(modelValue))
-object <- modelValue$getObject(CCopasiObjectName("Reference=InitialValue"))
+object <- modelValue$getObject(CCommonName("Reference=InitialValue"))
 stopifnot(!is.null(object))
 invisible(changedObjects$push_back(object))
 stopifnot(model$getModelValues()$size() == 1)

@@ -40,14 +40,9 @@ brew install cmake swig
 
 ## Fixing Copasi source
 
-This removes a Mac-specific error during the build process but might not fully function as intended either.
-It also incorporates some changes to R specific modifications during the build process.
-
-```{bash, eval=FALSE}
-cd copasi-dev/COPASI/
-git apply ../fix-corefoundation-library.patch
-cd ../../
-```
+I am using my own Copasi fork repository to implement some changes to allow for successfull compilation on modern macOS and to fix some problems with SWIG.
+The repository is found at:
+https://github.com/jonasfoe/COPASI
 
 ## Compiling Copasi dependencies
 
@@ -70,10 +65,18 @@ cd ../../
 
 # Loading the COPASI-R-API
 
-```{r}
+A general workflow to load up the Copasi shared library looks like this:
+
+```{r, eval=FALSE}
 dyn.load(paste0("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
 source("copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI.R")
 cacheMetaData(1)
+```
+
+I have implemented a caching function to speed up this process.
+
+```{r}
+source('copasi_funs.R')
 ```
 
 ## Fixing enumeration wrappers
@@ -81,7 +84,7 @@ cacheMetaData(1)
 For platform independece, I have removed a cmake script that fixes enumeration wrappers during the build process.
 These wrappers are now overwritten in R after the fact to restore functionality.
 
-```{r}
+```{r, eval=FALSE}
 enumToInteger <- function(name,type) {
     if (is.character(name)) {
         gettype <- paste(".__E__", type, sep = "")
@@ -100,7 +103,9 @@ enumFromInteger <- function(i,type) {
 }
 ```
 
-The API is now loaded.
+These functions have since been implemented in the Copasi source repository.
+
+https://github.com/copasi/COPASI/commit/0766eb58fde43546edfd0f9e920f86ab8d905e0c
 
 ## Understanding the OO system
 
@@ -108,10 +113,10 @@ The examples as used in the Copasi sources make use of R's S4 system which is a 
 With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this:
 
 ```{r}
-dataModel <- CCopasiRootContainer_addDatamodel()
-model <- CCopasiDataModel_getModel(dataModel)
+dataModel <- CRootContainer_addDatamodel()
+model <- CDataModel_getModel(dataModel)
 compartment <- CModel_createCompartment(model,"cell", 5.0)
-object <- CCopasiObject_getObject(compartment,CCopasiObjectName("Reference=InitialVolume"))
+object <- CDataObject_getObject(compartment,CCommonName("Reference=InitialVolume"))
 ```
 
 The object methods are called generic functions.
@@ -131,10 +136,10 @@ I have rewritten example1.R in example1_rewrite.R to make us of this feature.
 The previous code chunk from example1 is now implemented as follows:
 
 ```{r}
-dataModel <- CCopasiRootContainer_addDatamodel()
+dataModel <- CRootContainer_addDatamodel()
 model <- dataModel$getModel()
 compartment <- model$createCompartment("cell", 5.0)
-object <- compartment$getObject(CCopasiObjectName("Reference=InitialVolume"))
+object <- compartment$getObject(CCommonName("Reference=InitialVolume"))
 ```
 
 This works as a far cleaner approach for the copasi API.
@@ -145,22 +150,22 @@ This approach can be problematic, because in typical R fashion, the $ operator a
 
 ```{r}
 glucose <- model$createMetabolite("glucose", compartment$getObjectName(), 10.0, "FIXED")
-try(glucose$getObject(CCopasiObjectName("Reference=InitialConcentration")))
+try(glucose$getObject(CCommonName("Reference=InitialConcentration")))
 ```
 
-This chunk doesn't actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.
+This chunk previously didn't actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.
 
 ```{r}
 is(glucose)
 ```
 
-I am considering to modify Copasi.R to replace the partially matching function pmatch with match in the $ operator.
+I have implemented a patch to replace the partially matching function pmatch with match in the $ operator.
 
-idx = pmatch(name, names(accessorFuns));
+https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6
 
-->
-
-idx = match(name, names(accessorFuns));
+```{cmake, eval=FALSE}
+string(REPLACE "idx = pmatch(name, names(accessorFuns));" "idx = match(name, names(accessorFuns));" SOURCECODE "${SOURCECODE}" )
+```
 
 ## Adressing Vectors
 
@@ -171,7 +176,7 @@ Adressing vectors has been problematic and I am trying to figure out a good appr
 Representation of std::vectors is pretty functional.
 
 ```{r}
-stdvector <- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, "TriFalse")
+stdvector <- CRootContainer_getFunctionList()$suitableFunctions(2, 2, "TriFalse")
 stdvector$size()
 ```
 
@@ -204,7 +209,7 @@ There is however no implementation of the [[]] operator directly on the vector.
 CCopasiVectors don't seem to allow for the use of the [] operator.
 
 ```{r}
-copasivector <- CCopasiRootContainer_getDatamodelList()
+copasivector <- CRootContainer_getDatamodelList()
 is(copasivector)
 try(copasivector[0])
 ```
@@ -219,15 +224,17 @@ DataModelVector_get(copasivector, 0)
 Using $get(...) is not functional due to what seems like a bug in SWIG.
 I have found a related discussion here: https://sourceforge.net/p/swig/mailman/message/35071142/
 SWIG seems to categorize any *_get function as an internal SWIG acessor helper for accessing public object attributes.
-With functions that are called get in C already this seems to cause a bug.
+With methods that are called 'get' in C already this seems to cause a bug.
 
-I am considering to modify Copasi.R here too.
+I have implemented a patch to remove all 'get' occurrences in the COPASI.R file generated by SWIG.
 
-vaccessors = c('get',
+https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6
 
-->
-
-vaccessors = c(
+```{cmake, eval=FALSE}
+string(REPLACE "vaccessors = c('get', " "vaccessors = c(" SOURCECODE "${SOURCECODE}" )
+string(REPLACE "vaccessors = c('get'," "vaccessors = c(" SOURCECODE "${SOURCECODE}" )
+string(REPLACE "vaccessors = c('get')" "vaccessors = c()" SOURCECODE "${SOURCECODE}" )
+```
 
 This allows for get functions to be called again.
 This chunk should then work:

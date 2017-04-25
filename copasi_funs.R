@@ -20,11 +20,11 @@ getCurrentModel <- function() {
 loadModel <- function(filename) {
     assert_that(is.readable(filename))
     
-    datamodel <- CCopasiRootContainer_addDatamodel()
+    datamodel <- CRootContainer_addDatamodel()
     success <- datamodel$loadModel(filename)
     
     if (!success) {
-        CCopasiRootContainer_removeDatamodel(datamodel)
+        CRootContainer_removeDatamodel(datamodel)
         stop("Couldn't load model file")
     }
     

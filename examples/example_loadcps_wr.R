@@ -5,11 +5,11 @@ filename <- "examples/brusselator.cps"
 
 message("File: ", filename)
 
-dataModel <- cop$bind$CCopasiRootContainer_addDatamodel()
-invisible(cop$bind$CCopasiDataModel_loadModel(dataModel,filename))
-model <- cop$bind$CCopasiDataModel_getModel(dataModel)
+dataModel <- cop$bind$CRootContainer_addDatamodel()
+invisible(dataModel$loadModel(filename))
+model <- dataModel$getModel()
 
-nMetab <- cop$bind$MetabVector_size(cop$bind$CModel_getMetabolites(model))
+nMetab <- model$getMetabolites()$size()
 message("Number of Metabolites: " , nMetab)
 
 rm(list = ls(all.names = T))
@@ -20,5 +20,5 @@ filename <- "examples/brusselator.cps"
 message("File: ", filename)
 
 model2 <- cop$loadModel(filename)
-nMetab2 <- cop$bind$MetabVector_size(cop$bind$CModel_getMetabolites(model2))
+nMetab2 <- model2$getMetabolites()$size()
 message("Number of Metabolites: " , nMetab2)

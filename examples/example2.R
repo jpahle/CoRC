@@ -1,9 +1,9 @@
 source("copasi_funs.R")
 
-stopifnot(!is.null(CCopasiRootContainer_getRoot()))
+stopifnot(!is.null(CRootContainer_getRoot()))
 # create a datamodel
-dataModel <- CCopasiRootContainer_addDatamodel()
-stopifnot(DataModelVector_size(CCopasiRootContainer_getDatamodelList()) == 1)
+dataModel <- CRootContainer_addDatamodel()
+stopifnot(DataModelVector_size(CRootContainer_getDatamodelList()) == 1)
 # the only argument to the main routine should be the name of a CPS file
 args <- "examples/brusselator.cps"
 if (length(args) == 1) {
@@ -11,14 +11,14 @@ if (length(args) == 1) {
     # load the model without progress report
    
     # I have no clue how exception handling in R works
-    tryCatch(CCopasiDataModel_loadModel(dataModel,filename), error = function(e) {
+    tryCatch(CDataModel_loadModel(dataModel,filename), error = function(e) {
       write(paste("Error while loading the model from file named \"" , filename , "\"."), stderr())
       quit(save = "default", status = 1, runLast = TRUE)
     } )
 
-    model <- CCopasiDataModel_getModel(dataModel)
+    model <- CDataModel_getModel(dataModel)
     stopifnot(!is.null(model))
-    cat('Model statistics for model "' , CCopasiObject_getObjectName(model) , '".\n', sep="")
+    cat('Model statistics for model "' , CDataObject_getObjectName(model) , '".\n', sep="")
 
     # output number and names of all compartments
     iMax <- CompartmentVector_size(CModel_getCompartments(model))
@@ -28,7 +28,7 @@ if (length(args) == 1) {
     while ( i < iMax) {
         compartment <- CModel_getCompartment(model,i)
         stopifnot(!is.null(compartment))
-        cat("    " , CCopasiObject_getObjectName(compartment), "\n", sep = "")
+        cat("    " , CDataObject_getObjectName(compartment), "\n", sep = "")
         i <- i + 1
     }
     # output number and names of all metabolites
@@ -39,7 +39,7 @@ if (length(args) == 1) {
     while (i < iMax) {
         metab <- CModel_getMetabolite(model,i)
         stopifnot(!is.null(metab))
-        cat("    " , CCopasiObject_getObjectName(metab), "\n", sep="")
+        cat("    " , CDataObject_getObjectName(metab), "\n", sep="")
         i <- i + 1
     }
     # output number and names of all reactions
@@ -50,7 +50,7 @@ if (length(args) == 1) {
     while ( i < iMax) {
         reaction <- CModel_getReaction(model,i)
         stopifnot(!is.null(reaction))
-        cat("    " , CCopasiObject_getObjectName(reaction) , "\n", sep="")
+        cat("    " , CDataObject_getObjectName(reaction) , "\n", sep="")
         i <- i + 1
     }
 } else {

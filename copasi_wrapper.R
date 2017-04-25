@@ -18,9 +18,18 @@ cop <- function() {
     setupEnvironment()
     
     loadModel <- function(filename) {
-        dataModel <- bind$CCopasiRootContainer_addDatamodel()
-        bind$CCopasiDataModel_loadModel(dataModel,filename)
-        bind$CCopasiDataModel_getModel(dataModel)
+        assert_that(is.readable(filename))
+        
+        datamodel <- CRootContainer_addDatamodel()
+        success <- datamodel$loadModel(filename)
+        
+        if (!success) {
+            CRootContainer_removeDatamodel(datamodel)
+            stop("Couldn't load model file")
+        }
+        
+        API_CURRENT_DATAMODEL <<- datamodel
+        datamodel
     }
     
     # this allows for the copasi wrapper to be supplied in its own environment

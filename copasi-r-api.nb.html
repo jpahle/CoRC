@@ -210,16 +210,7 @@ $(document).ready(function () {
 </div>
 <div id="fixing-copasi-source" class="section level2">
 <h2>Fixing Copasi source</h2>
-<p>This removes a Mac-specific error during the build process but might not fully function as intended either. It also incorporates some changes to R specific modifications during the build process.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImNkIGNvcGFzaS1kZXYvQ09QQVNJLyIsImdpdCBhcHBseSAuLi9maXgtY29yZWZvdW5kYXRpb24tbGlicmFyeS5wYXRjaCIsImNkIC4uLy4uLyJdfQ== -->
-<pre class="r"><code>cd copasi-dev/COPASI/
-git apply ../fix-corefoundation-library.patch
-cd ../../</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<p>I am using my own Copasi fork repository to implement some changes to allow for successfull compilation on modern macOS and to fix some problems with SWIG. The repository is found at: <a href="https://github.com/jonasfoe/COPASI" class="uri">https://github.com/jonasfoe/COPASI</a></p>
 </div>
 <div id="compiling-copasi-dependencies" class="section level2">
 <h2>Compiling Copasi dependencies</h2>
@@ -251,12 +242,21 @@ cd ../../</code></pre>
 </div>
 <div id="loading-the-copasi-r-api" class="section level1">
 <h1>Loading the COPASI-R-API</h1>
+<p>A general workflow to load up the Copasi shared library looks like this:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHluLmxvYWQocGFzdGUwKFwiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0lcIiwgLlBsYXRmb3JtJGR5bmxpYi5leHQpKVxuc291cmNlKFwiY29wYXNpLWRldi9idWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy9jb3Bhc2kvYmluZGluZ3MvUi9DT1BBU0kuUlwiKVxuY2FjaGVNZXRhRGF0YSgxKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjpbImR5bi5sb2FkKHBhc3RlMChcImNvcGFzaS1kZXYvYnVpbGRfY29wYXNpX3JfYmluZGluZ3MvY29wYXNpL2JpbmRpbmdzL1IvQ09QQVNJXCIsIC5QbGF0Zm9ybSRkeW5saWIuZXh0KSkiLCJzb3VyY2UoXCJjb3Bhc2ktZGV2L2J1aWxkX2NvcGFzaV9yX2JpbmRpbmdzL2NvcGFzaS9iaW5kaW5ncy9SL0NPUEFTSS5SXCIpIiwiY2FjaGVNZXRhRGF0YSgxKSJdfQ== -->
 <pre class="r"><code>dyn.load(paste0(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI&quot;, .Platform$dynlib.ext))
 source(&quot;copasi-dev/build_copasi_r_bindings/copasi/bindings/R/COPASI.R&quot;)
 cacheMetaData(1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>I have implemented a caching function to speed up this process.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKCdjb3Bhc2lfZnVucy5SJylcbmBgYCJ9 -->
+<pre class="r"><code>source('copasi_funs.R')</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -265,7 +265,7 @@ cacheMetaData(1)</code></pre>
 <p>For platform independece, I have removed a cmake script that fixes enumeration wrappers during the build process. These wrappers are now overwritten in R after the fact to restore functionality.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZW51bVRvSW50ZWdlciA8LSBmdW5jdGlvbihuYW1lLHR5cGUpIHtcbiAgICBpZiAoaXMuY2hhcmFjdGVyKG5hbWUpKSB7XG4gICAgICAgIGdldHR5cGUgPC0gcGFzdGUoXCIuX19FX19cIiwgdHlwZSwgc2VwID0gXCJcIilcbiAgICAgICAgaWYgKCFleGlzdHMoZ2V0dHlwZSkpIGdldHR5cGUgPC0gcGFzdGUoXCIuX19FX19cIiwgc3Vic3RyKHR5cGUsIDMsIG5jaGFyKHR5cGUpKSwgc2VwID0gXCJcIilcbiAgICAgICAgYW5zIDwtIGFzLmludGVnZXIoZ2V0KGdldHR5cGUpW25hbWVdKVxuICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoXCJlbnVtIG5vdCBmb3VuZCBcIiwgbmFtZSwgXCIgXCIsIHR5cGUpfVxuICAgICAgICBhbnNcbiAgICB9IFxufVxuXG5lbnVtRnJvbUludGVnZXIgPC0gZnVuY3Rpb24oaSx0eXBlKSB7XG4gICAgZ2V0dHlwZSA8LSBwYXN0ZShcIi5fX0VfX1wiLCB0eXBlLCBzZXAgPSBcIlwiKVxuICAgIGlmICghZXhpc3RzKGdldHR5cGUpKSBnZXR0eXBlIDwtIHBhc3RlKFwiLl9fRV9fXCIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSksIHNlcCA9IFwiXCIpXG4gICAgaXRlbWxpc3QgPC0gZ2V0KGdldHR5cGUpXG4gICAgbmFtZXMoaXRlbWxpc3QpW21hdGNoKGksIGl0ZW1saXN0KV1cbn1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjpbImVudW1Ub0ludGVnZXIgPC0gZnVuY3Rpb24obmFtZSx0eXBlKSB7IiwiICAgIGlmIChpcy5jaGFyYWN0ZXIobmFtZSkpIHsiLCIgICAgICAgIGdldHR5cGUgPC0gcGFzdGUoXCIuX19FX19cIiwgdHlwZSwgc2VwID0gXCJcIikiLCIgICAgICAgIGlmICghZXhpc3RzKGdldHR5cGUpKSBnZXR0eXBlIDwtIHBhc3RlKFwiLl9fRV9fXCIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSksIHNlcCA9IFwiXCIpIiwiICAgICAgICBhbnMgPC0gYXMuaW50ZWdlcihnZXQoZ2V0dHlwZSlbbmFtZV0pIiwiICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoXCJlbnVtIG5vdCBmb3VuZCBcIiwgbmFtZSwgXCIgXCIsIHR5cGUpfSIsIiAgICAgICAgYW5zIiwiICAgIH0gIiwifSIsIiIsImVudW1Gcm9tSW50ZWdlciA8LSBmdW5jdGlvbihpLHR5cGUpIHsiLCIgICAgZ2V0dHlwZSA8LSBwYXN0ZShcIi5fX0VfX1wiLCB0eXBlLCBzZXAgPSBcIlwiKSIsIiAgICBpZiAoIWV4aXN0cyhnZXR0eXBlKSkgZ2V0dHlwZSA8LSBwYXN0ZShcIi5fX0VfX1wiLCBzdWJzdHIodHlwZSwgMywgbmNoYXIodHlwZSkpLCBzZXAgPSBcIlwiKSIsIiAgICBpdGVtbGlzdCA8LSBnZXQoZ2V0dHlwZSkiLCIgICAgbmFtZXMoaXRlbWxpc3QpW21hdGNoKGksIGl0ZW1saXN0KV0iLCJ9Il19 -->
 <pre class="r"><code>enumToInteger &lt;- function(name,type) {
     if (is.character(name)) {
         gettype &lt;- paste(&quot;.__E__&quot;, type, sep = &quot;&quot;)
@@ -285,18 +285,19 @@ enumFromInteger &lt;- function(i,type) {
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>The API is now loaded.</p>
+<p>These functions have since been implemented in the Copasi source repository.</p>
+<p><a href="https://github.com/copasi/COPASI/commit/0766eb58fde43546edfd0f9e920f86ab8d905e0c" class="uri">https://github.com/copasi/COPASI/commit/0766eb58fde43546edfd0f9e920f86ab8d905e0c</a></p>
 </div>
 <div id="understanding-the-oo-system" class="section level2">
 <h2>Understanding the OO system</h2>
 <p>The examples as used in the Copasi sources make use of R’s S4 system which is a generic-function OO. With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YU1vZGVsIDwtIENDb3Bhc2lSb290Q29udGFpbmVyX2FkZERhdGFtb2RlbCgpXG5tb2RlbCA8LSBDQ29wYXNpRGF0YU1vZGVsX2dldE1vZGVsKGRhdGFNb2RlbClcbmNvbXBhcnRtZW50IDwtIENNb2RlbF9jcmVhdGVDb21wYXJ0bWVudChtb2RlbCxcImNlbGxcIiwgNS4wKVxub2JqZWN0IDwtIENDb3Bhc2lPYmplY3RfZ2V0T2JqZWN0KGNvbXBhcnRtZW50LENDb3Bhc2lPYmplY3ROYW1lKFwiUmVmZXJlbmNlPUluaXRpYWxWb2x1bWVcIikpXG5gYGAifQ== -->
-<pre class="r"><code>dataModel &lt;- CCopasiRootContainer_addDatamodel()
-model &lt;- CCopasiDataModel_getModel(dataModel)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YU1vZGVsIDwtIENSb290Q29udGFpbmVyX2FkZERhdGFtb2RlbCgpXG5tb2RlbCA8LSBDRGF0YU1vZGVsX2dldE1vZGVsKGRhdGFNb2RlbClcbmNvbXBhcnRtZW50IDwtIENNb2RlbF9jcmVhdGVDb21wYXJ0bWVudChtb2RlbCxcImNlbGxcIiwgNS4wKVxub2JqZWN0IDwtIENEYXRhT2JqZWN0X2dldE9iamVjdChjb21wYXJ0bWVudCxDQ29tbW9uTmFtZShcIlJlZmVyZW5jZT1Jbml0aWFsVm9sdW1lXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>dataModel &lt;- CRootContainer_addDatamodel()
+model &lt;- CDataModel_getModel(dataModel)
 compartment &lt;- CModel_createCompartment(model,&quot;cell&quot;, 5.0)
-object &lt;- CCopasiObject_getObject(compartment,CCopasiObjectName(&quot;Reference=InitialVolume&quot;))</code></pre>
+object &lt;- CDataObject_getObject(compartment,CCommonName(&quot;Reference=InitialVolume&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -307,9 +308,9 @@ object &lt;- CCopasiObject_getObject(compartment,CCopasiObjectName(&quot;Referen
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXMoY29tcGFydG1lbnQpXG5gYGAifQ== -->
 <pre class="r"><code>is(compartment)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ0NvbXBhcnRtZW50XCIgICAgIFwiX3BfQ01vZGVsRW50aXR5XCIgICAgIFwiX3BfQ0NvcGFzaUNvbnRhaW5lclwiIFwiX3BfQ0Fubm90YXRpb25cIiAgICAgXG5bNV0gXCJfcF9DQ29wYXNpT2JqZWN0XCIgICAgXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgXCJDKytSZWZlcmVuY2VcIiAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICBcbiJ9 -->
-<pre><code>[1] &quot;_p_CCompartment&quot;     &quot;_p_CModelEntity&quot;     &quot;_p_CCopasiContainer&quot; &quot;_p_CAnnotation&quot;     
-[5] &quot;_p_CCopasiObject&quot;    &quot;_p_CObjectInterface&quot; &quot;C++Reference&quot;        &quot;ExternalReference&quot;  </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ0NvbXBhcnRtZW50XCIgICAgIFwiX3BfQ01vZGVsRW50aXR5XCIgICAgIFwiX3BfQ0RhdGFDb250YWluZXJcIiAgIFwiX3BfQ0Fubm90YXRpb25cIiAgICAgXG5bNV0gXCJfcF9DRGF0YU9iamVjdFwiICAgICAgXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgXCJDKytSZWZlcmVuY2VcIiAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICBcbiJ9 -->
+<pre><code>[1] &quot;_p_CCompartment&quot;     &quot;_p_CModelEntity&quot;     &quot;_p_CDataContainer&quot;   &quot;_p_CAnnotation&quot;     
+[5] &quot;_p_CDataObject&quot;      &quot;_p_CObjectInterface&quot; &quot;C++Reference&quot;        &quot;ExternalReference&quot;  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -317,11 +318,11 @@ object &lt;- CCopasiObject_getObject(compartment,CCopasiObjectName(&quot;Referen
 <p>I have found that the SWIG implementation enables a more typical OO use, by overwriting the $ operator for many classes. I have rewritten example1.R in example1_rewrite.R to make us of this feature. The previous code chunk from example1 is now implemented as follows:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YU1vZGVsIDwtIENDb3Bhc2lSb290Q29udGFpbmVyX2FkZERhdGFtb2RlbCgpXG5tb2RlbCA8LSBkYXRhTW9kZWwkZ2V0TW9kZWwoKVxuY29tcGFydG1lbnQgPC0gbW9kZWwkY3JlYXRlQ29tcGFydG1lbnQoXCJjZWxsXCIsIDUuMClcbm9iamVjdCA8LSBjb21wYXJ0bWVudCRnZXRPYmplY3QoQ0NvcGFzaU9iamVjdE5hbWUoXCJSZWZlcmVuY2U9SW5pdGlhbFZvbHVtZVwiKSlcbmBgYCJ9 -->
-<pre class="r"><code>dataModel &lt;- CCopasiRootContainer_addDatamodel()
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YU1vZGVsIDwtIENSb290Q29udGFpbmVyX2FkZERhdGFtb2RlbCgpXG5tb2RlbCA8LSBkYXRhTW9kZWwkZ2V0TW9kZWwoKVxuY29tcGFydG1lbnQgPC0gbW9kZWwkY3JlYXRlQ29tcGFydG1lbnQoXCJjZWxsXCIsIDUuMClcbm9iamVjdCA8LSBjb21wYXJ0bWVudCRnZXRPYmplY3QoQ0NvbW1vbk5hbWUoXCJSZWZlcmVuY2U9SW5pdGlhbFZvbHVtZVwiKSlcbmBgYCJ9 -->
+<pre class="r"><code>dataModel &lt;- CRootContainer_addDatamodel()
 model &lt;- dataModel$getModel()
 compartment &lt;- model$createCompartment(&quot;cell&quot;, 5.0)
-object &lt;- compartment$getObject(CCopasiObjectName(&quot;Reference=InitialVolume&quot;))</code></pre>
+object &lt;- compartment$getObject(CCommonName(&quot;Reference=InitialVolume&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -332,33 +333,38 @@ object &lt;- compartment$getObject(CCopasiObjectName(&quot;Reference=InitialVolu
 <p>This approach can be problematic, because in typical R fashion, the $ operator allows for partial matches with no regard for inherited methods.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2x1Y29zZSA8LSBtb2RlbCRjcmVhdGVNZXRhYm9saXRlKFwiZ2x1Y29zZVwiLCBjb21wYXJ0bWVudCRnZXRPYmplY3ROYW1lKCksIDEwLjAsIFwiRklYRURcIilcbnRyeShnbHVjb3NlJGdldE9iamVjdChDQ29wYXNpT2JqZWN0TmFtZShcIlJlZmVyZW5jZT1Jbml0aWFsQ29uY2VudHJhdGlvblwiKSkpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2x1Y29zZSA8LSBtb2RlbCRjcmVhdGVNZXRhYm9saXRlKFwiZ2x1Y29zZVwiLCBjb21wYXJ0bWVudCRnZXRPYmplY3ROYW1lKCksIDEwLjAsIFwiRklYRURcIilcbnRyeShnbHVjb3NlJGdldE9iamVjdChDQ29tbW9uTmFtZShcIlJlZmVyZW5jZT1Jbml0aWFsQ29uY2VudHJhdGlvblwiKSkpXG5gYGAifQ== -->
 <pre class="r"><code>glucose &lt;- model$createMetabolite(&quot;glucose&quot;, compartment$getObjectName(), 10.0, &quot;FIXED&quot;)
-try(glucose$getObject(CCopasiObjectName(&quot;Reference=InitialConcentration&quot;)))</code></pre>
+try(glucose$getObject(CCommonName(&quot;Reference=InitialConcentration&quot;)))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ09iamVjdEludGVyZmFjZVwiXG5TbG90IFwicmVmXCI6XG48cG9pbnRlcjogMHgxMGRiMjgxMDA+XG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ09iamVjdEludGVyZmFjZVwiXG5TbG90IFwicmVmXCI6XG48cG9pbnRlcjogMHgxMTY2YTk2ZDA+XG4ifQ== -->
 <pre><code>An object of class &quot;_p_CObjectInterface&quot;
 Slot &quot;ref&quot;:
-&lt;pointer: 0x10db28100&gt;</code></pre>
+&lt;pointer: 0x1166a96d0&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>This chunk doesn’t actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.</p>
+<p>This chunk previously didn’t actually call the inherited method getObject but instead calls getObjectDisplayName which is a member of CMetab.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXMoZ2x1Y29zZSlcbmBgYCJ9 -->
 <pre class="r"><code>is(glucose)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ01ldGFiXCIgICAgICAgICAgIFwiX3BfQ01vZGVsRW50aXR5XCIgICAgIFwiX3BfQ0NvcGFzaUNvbnRhaW5lclwiIFwiX3BfQ0Fubm90YXRpb25cIiAgICAgXG5bNV0gXCJfcF9DQ29wYXNpT2JqZWN0XCIgICAgXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgXCJDKytSZWZlcmVuY2VcIiAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICBcbiJ9 -->
-<pre><code>[1] &quot;_p_CMetab&quot;           &quot;_p_CModelEntity&quot;     &quot;_p_CCopasiContainer&quot; &quot;_p_CAnnotation&quot;     
-[5] &quot;_p_CCopasiObject&quot;    &quot;_p_CObjectInterface&quot; &quot;C++Reference&quot;        &quot;ExternalReference&quot;  </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ01ldGFiXCIgICAgICAgICAgIFwiX3BfQ01vZGVsRW50aXR5XCIgICAgIFwiX3BfQ0RhdGFDb250YWluZXJcIiAgIFwiX3BfQ0Fubm90YXRpb25cIiAgICAgXG5bNV0gXCJfcF9DRGF0YU9iamVjdFwiICAgICAgXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgXCJDKytSZWZlcmVuY2VcIiAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICBcbiJ9 -->
+<pre><code>[1] &quot;_p_CMetab&quot;           &quot;_p_CModelEntity&quot;     &quot;_p_CDataContainer&quot;   &quot;_p_CAnnotation&quot;     
+[5] &quot;_p_CDataObject&quot;      &quot;_p_CObjectInterface&quot; &quot;C++Reference&quot;        &quot;ExternalReference&quot;  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>I am considering to modify Copasi.R to replace the partially matching function pmatch with match in the $ operator.</p>
-<p>idx = pmatch(name, names(accessorFuns));</p>
-<p>-&gt;</p>
-<p>idx = match(name, names(accessorFuns));</p>
+<p>I have implemented a patch to replace the partially matching function pmatch with match in the $ operator.</p>
+<p><a href="https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6" class="uri">https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6</a></p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoic3RyaW5nKFJFUExBQ0UgXCJpZHggPSBwbWF0Y2gobmFtZSwgbmFtZXMoYWNjZXNzb3JGdW5zKSk7XCIgXCJpZHggPSBtYXRjaChuYW1lLCBuYW1lcyhhY2Nlc3NvckZ1bnMpKTtcIiBTT1VSQ0VDT0RFIFwiJHtTT1VSQ0VDT0RFfVwiICkifQ== -->
+<pre class="r"><code>string(REPLACE &quot;idx = pmatch(name, names(accessorFuns));&quot; &quot;idx = match(name, names(accessorFuns));&quot; SOURCECODE &quot;${SOURCECODE}&quot; )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 <div id="adressing-vectors" class="section level2">
 <h2>Adressing Vectors</h2>
@@ -368,44 +374,32 @@ Slot &quot;ref&quot;:
 <p>Representation of std::vectors is pretty functional.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RkdmVjdG9yIDwtIENDb3Bhc2lSb290Q29udGFpbmVyX2dldEZ1bmN0aW9uTGlzdCgpJHN1aXRhYmxlRnVuY3Rpb25zKDIsIDIsIFwiVHJpRmFsc2VcIilcbnN0ZHZlY3RvciRzaXplKClcbmBgYCJ9 -->
-<pre class="r"><code>stdvector &lt;- CCopasiRootContainer_getFunctionList()$suitableFunctions(2, 2, &quot;TriFalse&quot;)
-stdvector$size()</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB1c2luZyB0aGUgX19fZ2V0aXRlbV9fIGZ1bmN0aW9uIGxvb2tzIGF3a3dhcmQsIGJ1dCBJIGhhdmUgbm90IGZvdW5kIG91dCBob3cgZWxzZVxuIyBJIGNhbiBnZXQgdG8gdGhlIGVsZW1lbnRzIG9mIHdyYXBwZWQgc3RkOjp2ZWN0b3IgaW5zdGFuY2VzXG5DRnVuY3Rpb25TdGRWZWN0b3JfX19nZXRpdGVtX18oc3RkdmVjdG9yLCAwKVxuYGBgIn0= -->
+<pre class="r"><code># using the ___getitem__ function looks awkward, but I have not found out how else
+# I can get to the elements of wrapped std::vector instances
+CFunctionStdVector___getitem__(stdvector, 0)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDNcbiJ9 -->
-<pre><code>[1] 3</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDExMmM4ODJmMD5cbiJ9 -->
+<pre><code>An object of class &quot;_p_CFunction&quot;
+Slot &quot;ref&quot;:
+&lt;pointer: 0x112c882f0&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Example1 uses the following approach:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyB1c2luZyB0aGUgX19fZ2V0aXRlbV9fIGZ1bmN0aW9uIGxvb2tzIGF3a3dhcmQsIGJ1dCBJIGhhdmUgbm90IGZvdW5kIG91dCBob3cgZWxzZVxuIyBJIGNhbiBnZXQgdG8gdGhlIGVsZW1lbnRzIG9mIHdyYXBwZWQgc3RkOjp2ZWN0b3IgaW5zdGFuY2VzXG5DRnVuY3Rpb25TdGRWZWN0b3JfX19nZXRpdGVtX18oc3RkdmVjdG9yLCAwKVxuYGBgIn0= -->
-<pre class="r"><code># using the ___getitem__ function looks awkward, but I have not found out how else
-# I can get to the elements of wrapped std::vector instances
-CFunctionStdVector___getitem__(stdvector, 0)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RkdmVjdG9yJFwiX19nZXRpdGVtX19cIigwKVxuYGBgIn0= -->
+<pre class="r"><code>stdvector$&quot;__getitem__&quot;(0)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDEwZTI2MjFjMD5cbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDExMmM4ODJmMD5cbiJ9 -->
 <pre><code>An object of class &quot;_p_CFunction&quot;
 Slot &quot;ref&quot;:
-&lt;pointer: 0x10e2621c0&gt;</code></pre>
+&lt;pointer: 0x112c882f0&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This can be simplified:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RkdmVjdG9yJFwiX19nZXRpdGVtX19cIigwKVxuYGBgIn0= -->
-<pre class="r"><code>stdvector$&quot;__getitem__&quot;(0)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDEwZTI2MjFjMD5cbiJ9 -->
-<pre><code>An object of class &quot;_p_CFunction&quot;
-Slot &quot;ref&quot;:
-&lt;pointer: 0x10e2621c0&gt;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This is a good approach to get single items but vectors can also be adressed more naturally:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaXMoc3RkdmVjdG9yWzA6Ml0pXG5gYGAifQ== -->
@@ -417,10 +411,29 @@ Slot &quot;ref&quot;:
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RkdmVjdG9yWzA6Ml1bWzFdXVxuYGBgIn0= -->
 <pre class="r"><code>stdvector[0:2][[1]]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDEwY2I4MDgyMD5cbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0Z1bmN0aW9uXCJcblNsb3QgXCJyZWZcIjpcbjxwb2ludGVyOiAweDExMmI1ZGExMD5cbiJ9 -->
 <pre><code>An object of class &quot;_p_CFunction&quot;
 Slot &quot;ref&quot;:
-&lt;pointer: 0x10cb80820&gt;</code></pre>
+&lt;pointer: 0x112b5da10&gt;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>This is a good approach to get single items but vectors can also be adressed more naturally:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29wYXNpdmVjdG9yIDwtIENSb290Q29udGFpbmVyX2dldERhdGFtb2RlbExpc3QoKVxuaXMoY29wYXNpdmVjdG9yKVxuYGBgIn0= -->
+<pre class="r"><code>copasivector &lt;- CRootContainer_getDatamodelList()
+is(copasivector)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ0RhdGFWZWN0b3JUX0NEYXRhTW9kZWxfdFwiIFwiX3BfQ0RhdGFDb250YWluZXJcIiAgICAgICAgICAgIFwiX3BfQ0RhdGFPYmplY3RcIiAgICAgICAgICAgICAgXG5bNF0gXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgICAgICAgICAgXCJDKytSZWZlcmVuY2VcIiAgICAgICAgICAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICAgICAgICAgICBcbiJ9 -->
+<pre><code>[1] &quot;_p_CDataVectorT_CDataModel_t&quot; &quot;_p_CDataContainer&quot;            &quot;_p_CDataObject&quot;              
+[4] &quot;_p_CObjectInterface&quot;          &quot;C++Reference&quot;                 &quot;ExternalReference&quot;           </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJ5KGNvcGFzaXZlY3RvclswXSlcbmBgYCJ9 -->
+<pre class="r"><code>try(copasivector[0])</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgOiBub2RlIHN0YWNrIG92ZXJmbG93XG4ifQ== -->
+<pre><code>Error : node stack overflow</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -431,41 +444,41 @@ Slot &quot;ref&quot;:
 <p>CCopasiVectors don’t seem to allow for the use of the [] operator.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29wYXNpdmVjdG9yIDwtIENDb3Bhc2lSb290Q29udGFpbmVyX2dldERhdGFtb2RlbExpc3QoKVxuaXMoY29wYXNpdmVjdG9yKVxuYGBgIn0= -->
-<pre class="r"><code>copasivector &lt;- CCopasiRootContainer_getDatamodelList()
-is(copasivector)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuRGF0YU1vZGVsVmVjdG9yX2dldChjb3Bhc2l2ZWN0b3IsIDApXG5gYGAifQ== -->
+<pre class="r"><code>DataModelVector_get(copasivector, 0)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiX3BfQ0NvcGFzaVZlY3RvclRfQ0NvcGFzaURhdGFNb2RlbF90XCIgXCJfcF9DQ29wYXNpQ29udGFpbmVyXCIgICAgICAgICAgICAgICAgIFxuWzNdIFwiX3BfQ0NvcGFzaU9iamVjdFwiICAgICAgICAgICAgICAgICAgICAgXCJfcF9DT2JqZWN0SW50ZXJmYWNlXCIgICAgICAgICAgICAgICAgIFxuWzVdIFwiQysrUmVmZXJlbmNlXCIgICAgICAgICAgICAgICAgICAgICAgICAgXCJFeHRlcm5hbFJlZmVyZW5jZVwiICAgICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>[1] &quot;_p_CCopasiVectorT_CCopasiDataModel_t&quot; &quot;_p_CCopasiContainer&quot;                 
-[3] &quot;_p_CCopasiObject&quot;                     &quot;_p_CObjectInterface&quot;                 
-[5] &quot;C++Reference&quot;                         &quot;ExternalReference&quot;                   </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJ5KGNvcGFzaXZlY3RvclswXSlcbmBgYCJ9 -->
-<pre class="r"><code>try(copasivector[0])</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgOiBub2RlIHN0YWNrIG92ZXJmbG93XG4ifQ== -->
-<pre><code>Error : node stack overflow</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0RhdGFPYmplY3RcIlxuU2xvdCBcInJlZlwiOlxuPHBvaW50ZXI6IDB4MTEyYmYwYjEwPlxuIn0= -->
+<pre><code>An object of class &quot;_p_CDataObject&quot;
+Slot &quot;ref&quot;:
+&lt;pointer: 0x112bf0b10&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Instead, one has to find the right method to apply. In this case it seems to be DataModelVector_get(…) although I am unsure why as DataModelVector is not a class listed with is in the previous chunk.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuRGF0YU1vZGVsVmVjdG9yX2dldChjb3Bhc2l2ZWN0b3IsIDApXG5gYGAifQ== -->
-<pre class="r"><code>DataModelVector_get(copasivector, 0)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJ5KGNvcGFzaXZlY3RvciRnZXQoMCkpXG5gYGAifQ== -->
+<pre class="r"><code>try(copasivector$get(0))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0NvcGFzaU9iamVjdFwiXG5TbG90IFwicmVmXCI6XG48cG9pbnRlcjogMHgxMGZmNzgyMzA+XG4ifQ== -->
-<pre><code>An object of class &quot;_p_CCopasiObject&quot;
+<!-- rnb-output-begin eyJkYXRhIjoiQW4gb2JqZWN0IG9mIGNsYXNzIFwiX3BfQ0RhdGFPYmplY3RcIlxuU2xvdCBcInJlZlwiOlxuPHBvaW50ZXI6IDB4MTEyYmYwYjEwPlxuIn0= -->
+<pre><code>An object of class &quot;_p_CDataObject&quot;
 Slot &quot;ref&quot;:
-&lt;pointer: 0x10ff78230&gt;</code></pre>
+&lt;pointer: 0x112bf0b10&gt;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Using $get(…) is not functional due to what seems like a bug in SWIG. I have found a related discussion here: <a href="https://sourceforge.net/p/swig/mailman/message/35071142/" class="uri">https://sourceforge.net/p/swig/mailman/message/35071142/</a> SWIG seems to categorize any *_get function as an internal SWIG acessor helper for accessing public object attributes. With functions that are called get in C already this seems to cause a bug.</p>
-<p>I am considering to modify Copasi.R here too.</p>
-<p>vaccessors = c(‘get’,</p>
-<p>-&gt;</p>
-<p>vaccessors = c(</p>
+<p>Using $get(…) is not functional due to what seems like a bug in SWIG. I have found a related discussion here: <a href="https://sourceforge.net/p/swig/mailman/message/35071142/" class="uri">https://sourceforge.net/p/swig/mailman/message/35071142/</a> SWIG seems to categorize any *_get function as an internal SWIG acessor helper for accessing public object attributes. With methods that are called ‘get’ in C already this seems to cause a bug.</p>
+<p>I have implemented a patch to remove all ‘get’ occurrences in the COPASI.R file generated by SWIG.</p>
+<p><a href="https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6" class="uri">https://github.com/jonasfoe/COPASI/commit/06fae030865f24ba79601c693ac3c9afa09f5fd6</a></p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInN0cmluZyhSRVBMQUNFIFwidmFjY2Vzc29ycyA9IGMoJ2dldCcsIFwiIFwidmFjY2Vzc29ycyA9IGMoXCIgU09VUkNFQ09ERSBcIiR7U09VUkNFQ09ERX1cIiApIiwic3RyaW5nKFJFUExBQ0UgXCJ2YWNjZXNzb3JzID0gYygnZ2V0JyxcIiBcInZhY2Nlc3NvcnMgPSBjKFwiIFNPVVJDRUNPREUgXCIke1NPVVJDRUNPREV9XCIgKSIsInN0cmluZyhSRVBMQUNFIFwidmFjY2Vzc29ycyA9IGMoJ2dldCcpXCIgXCJ2YWNjZXNzb3JzID0gYygpXCIgU09VUkNFQ09ERSBcIiR7U09VUkNFQ09ERX1cIiApIl19 -->
+<pre class="r"><code>string(REPLACE &quot;vaccessors = c('get', &quot; &quot;vaccessors = c(&quot; SOURCECODE &quot;${SOURCECODE}&quot; )
+string(REPLACE &quot;vaccessors = c('get',&quot; &quot;vaccessors = c(&quot; SOURCECODE &quot;${SOURCECODE}&quot; )
+string(REPLACE &quot;vaccessors = c('get')&quot; &quot;vaccessors = c()&quot; SOURCECODE &quot;${SOURCECODE}&quot; )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>This allows for get functions to be called again. This chunk should then work:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
@@ -477,7 +490,7 @@ Slot &quot;ref&quot;:
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29wYXNpIFIgQVBJIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogeWVzCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgSW5pdGlhbCBTZXR1cCBmb3IgTWFjT1MKCiMjIEluaXRpYWwgY2hlY2tvdXQKCkluaXRpYWwgc2V0dXAgb2YgdGhlIENvcGFzaSBSIEFQSSByZXF1aXJlcyBjaGVja2luZyBvdXQgdGhlIGNvcGFzaS1yLWFwaSByZXBvc2l0aW9yeSBhdCBhbiBhcHByb3ByaWF0ZSBsb2NhdGlvbi4KClVzZSB0aGlzIGNvbW1hbmQgdG8gY2xvbmUgdGhlIHJlcG9zaXRvcnk6CgpgYGB7YmFzaCwgZXZhbD1GQUxTRX0KZ2l0IGNsb25lIC0tcmVjdXJzaXZlIGdpdEBnaXRodWIuY29tOmpvbmFzZm9lL2NvcGFzaS1yLWFwaS5naXQKYGBgCgpJZiB0aGUgcmVwb3NpdG9yeSBpcyBhbHJlYWR5IGNsb25lZCwgdXNlOgoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmdpdCBzdWJtb2R1bGUgdXBkYXRlIC0taW5pdCAtLXJlY3Vyc2l2ZQpgYGAKClRoaXMgc3RlcCBtYWtlcyBzdXJlIHRoZSBDb3Bhc2kgc291cmNlcyBhcmUgY2xvbmVkLgoKIyMgRGVwZW5kZW5jaWVzIGZvciBjb21waWxhdGlvbiBvZiB0aGUgQ29wYXNpIHNvdXJjZXMKClRoZSBmb2xsb3dpbmcgZGVwZW5kZW5jaWVzIGV4aXN0IGZvciBjb21waWxpbmcgdGhlIHNvdXJjZXM6CgpjbWFrZSwgc3dpZwoKQ29zaWRlciB1c2luZyBob21lYnJldyBmb3IgTWFjT1MgdG8gaW5zdGFsbCB0aGVtOgoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmJyZXcgaW5zdGFsbCBjbWFrZSBzd2lnCmBgYAoKIyMgRml4aW5nIENvcGFzaSBzb3VyY2UKClRoaXMgcmVtb3ZlcyBhIE1hYy1zcGVjaWZpYyBlcnJvciBkdXJpbmcgdGhlIGJ1aWxkIHByb2Nlc3MgYnV0IG1pZ2h0IG5vdCBmdWxseSBmdW5jdGlvbiBhcyBpbnRlbmRlZCBlaXRoZXIuCkl0IGFsc28gaW5jb3Jwb3JhdGVzIHNvbWUgY2hhbmdlcyB0byBSIHNwZWNpZmljIG1vZGlmaWNhdGlvbnMgZHVyaW5nIHRoZSBidWlsZCBwcm9jZXNzLgoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmNkIGNvcGFzaS1kZXYvQ09QQVNJLwpnaXQgYXBwbHkgLi4vZml4LWNvcmVmb3VuZGF0aW9uLWxpYnJhcnkucGF0Y2gKY2QgLi4vLi4vCmBgYAoKIyMgQ29tcGlsaW5nIENvcGFzaSBkZXBlbmRlbmNpZXMKCmBgYHtiYXNoLCBldmFsPUZBTFNFfQpjZCBjb3Bhc2ktZGV2L2NvcGFzaS1kZXBlbmRlbmNpZXMvCi4vY3JlYXRlT1NYLnNoCmNkIC4uLy4uLwpgYGAKCiMjIENvbXBpbGluZyBDb3Bhc2kgZnJvbSBzb3VyY2UKCmBgYHtiYXNoLCBldmFsPUZBTFNFfQpjZCBjb3Bhc2ktZGV2Lwpta2RpciBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncwpjZCBidWlsZF9jb3Bhc2lfcl9iaW5kaW5ncy8KY21ha2UgLURCVUlMRF9HVUk9T0ZGIC1EQlVJTERfU0U9T0ZGIC1ERU5BQkxFX1I9T04gLURDT1BBU0lfREVQRU5ERU5DWV9ESVI9Li4vY29wYXNpLWRlcGVuZGVuY2llcy9iaW4gLi4vQ09QQVNJCm1ha2UKY2QgLi4vLi4vCmBgYAoKIyBMb2FkaW5nIHRoZSBDT1BBU0ktUi1BUEkKCmBgYHtyfQpkeW4ubG9hZChwYXN0ZTAoImNvcGFzaS1kZXYvYnVpbGRfY29wYXNpX3JfYmluZGluZ3MvY29wYXNpL2JpbmRpbmdzL1IvQ09QQVNJIiwgLlBsYXRmb3JtJGR5bmxpYi5leHQpKQpzb3VyY2UoImNvcGFzaS1kZXYvYnVpbGRfY29wYXNpX3JfYmluZGluZ3MvY29wYXNpL2JpbmRpbmdzL1IvQ09QQVNJLlIiKQpjYWNoZU1ldGFEYXRhKDEpCmBgYAoKIyMgRml4aW5nIGVudW1lcmF0aW9uIHdyYXBwZXJzCgpGb3IgcGxhdGZvcm0gaW5kZXBlbmRlY2UsIEkgaGF2ZSByZW1vdmVkIGEgY21ha2Ugc2NyaXB0IHRoYXQgZml4ZXMgZW51bWVyYXRpb24gd3JhcHBlcnMgZHVyaW5nIHRoZSBidWlsZCBwcm9jZXNzLgpUaGVzZSB3cmFwcGVycyBhcmUgbm93IG92ZXJ3cml0dGVuIGluIFIgYWZ0ZXIgdGhlIGZhY3QgdG8gcmVzdG9yZSBmdW5jdGlvbmFsaXR5LgoKYGBge3J9CmVudW1Ub0ludGVnZXIgPC0gZnVuY3Rpb24obmFtZSx0eXBlKSB7CiAgICBpZiAoaXMuY2hhcmFjdGVyKG5hbWUpKSB7CiAgICAgICAgZ2V0dHlwZSA8LSBwYXN0ZSgiLl9fRV9fIiwgdHlwZSwgc2VwID0gIiIpCiAgICAgICAgaWYgKCFleGlzdHMoZ2V0dHlwZSkpIGdldHR5cGUgPC0gcGFzdGUoIi5fX0VfXyIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSksIHNlcCA9ICIiKQogICAgICAgIGFucyA8LSBhcy5pbnRlZ2VyKGdldChnZXR0eXBlKVtuYW1lXSkKICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoImVudW0gbm90IGZvdW5kICIsIG5hbWUsICIgIiwgdHlwZSl9CiAgICAgICAgYW5zCiAgICB9IAp9CgplbnVtRnJvbUludGVnZXIgPC0gZnVuY3Rpb24oaSx0eXBlKSB7CiAgICBnZXR0eXBlIDwtIHBhc3RlKCIuX19FX18iLCB0eXBlLCBzZXAgPSAiIikKICAgIGlmICghZXhpc3RzKGdldHR5cGUpKSBnZXR0eXBlIDwtIHBhc3RlKCIuX19FX18iLCBzdWJzdHIodHlwZSwgMywgbmNoYXIodHlwZSkpLCBzZXAgPSAiIikKICAgIGl0ZW1saXN0IDwtIGdldChnZXR0eXBlKQogICAgbmFtZXMoaXRlbWxpc3QpW21hdGNoKGksIGl0ZW1saXN0KV0KfQpgYGAKClRoZSBBUEkgaXMgbm93IGxvYWRlZC4KCiMjIFVuZGVyc3RhbmRpbmcgdGhlIE9PIHN5c3RlbQoKVGhlIGV4YW1wbGVzIGFzIHVzZWQgaW4gdGhlIENvcGFzaSBzb3VyY2VzIG1ha2UgdXNlIG9mIFIncyBTNCBzeXN0ZW0gd2hpY2ggaXMgYSBnZW5lcmljLWZ1bmN0aW9uIE9PLgpXaXRoIHRoaXMgcGFyYWRpZ20sIG1ldGhvZHMgYXJlIG5vdCBwYXJ0IG9mIG9wamVjdHMgYW5kIGFzIGEgcmVzdWx0IHR5cGljYWwgY29kZSBhcyBleHRyYWN0ZWQgZnJvbSBleGFtcGxlIDEgbG9va3MgbGlrZSB0aGlzOgoKYGBge3J9CmRhdGFNb2RlbCA8LSBDQ29wYXNpUm9vdENvbnRhaW5lcl9hZGREYXRhbW9kZWwoKQptb2RlbCA8LSBDQ29wYXNpRGF0YU1vZGVsX2dldE1vZGVsKGRhdGFNb2RlbCkKY29tcGFydG1lbnQgPC0gQ01vZGVsX2NyZWF0ZUNvbXBhcnRtZW50KG1vZGVsLCJjZWxsIiwgNS4wKQpvYmplY3QgPC0gQ0NvcGFzaU9iamVjdF9nZXRPYmplY3QoY29tcGFydG1lbnQsQ0NvcGFzaU9iamVjdE5hbWUoIlJlZmVyZW5jZT1Jbml0aWFsVm9sdW1lIikpCmBgYAoKVGhlIG9iamVjdCBtZXRob2RzIGFyZSBjYWxsZWQgZ2VuZXJpYyBmdW5jdGlvbnMuCkluIHRoZSBTV0lHIGJpbmRpbmdzLCB0aGVzZSBhcmUgdXN1YWxseSBpbiBubyB3YXkgZ2VuZXJpYyBhbmQgcmVxdWlyZSBuYW1pbmcgdGhlIGFjdHVhbCwgcG9zc2libHkgaW5oZXJpdGVkIGNsYXNzZXMgdGhhdCB0aGUgbWV0aG9kIGJlbG9uZ3MgdG8uCkRpc2N1c3Npb24gb24gdGhpcyBiZWhhdmlvciBvZiBTV0lHIGNhbiBiZSBmb3VuZCBoZXJlOiBodHRwczovL2dpdGh1Yi5jb20vc3dpZy9zd2lnL2lzc3Vlcy84NTQuCgpJbiB0aGUgZXhhbXBsZSwgY29tcGFydG1lbnQgaXMgYSBDQ29tcGFydG1lbnQsIHdoaWNoIGluaGVyaXRzIGZyb20gNyBvdGhlciBjbGFzc2VzLgoKYGBge3J9CmlzKGNvbXBhcnRtZW50KQpgYGAKCklmIHlvdSB3YW50IHRvIGNhbGwgZ2V0T2JqZWN0IHlvdSBoYXZlIHRvIGtub3cgdGhhdCB0aGlzIGZ1bmN0aW9uIGlzIGluaGVyaXRlZCBmcm9tIENDb3Bhc2lPYmplY3QuCgpJIGhhdmUgZm91bmQgdGhhdCB0aGUgU1dJRyBpbXBsZW1lbnRhdGlvbiBlbmFibGVzIGEgbW9yZSB0eXBpY2FsIE9PIHVzZSwgYnkgb3ZlcndyaXRpbmcgdGhlICQgb3BlcmF0b3IgZm9yIG1hbnkgY2xhc3Nlcy4KSSBoYXZlIHJld3JpdHRlbiBleGFtcGxlMS5SIGluIGV4YW1wbGUxX3Jld3JpdGUuUiB0byBtYWtlIHVzIG9mIHRoaXMgZmVhdHVyZS4KVGhlIHByZXZpb3VzIGNvZGUgY2h1bmsgZnJvbSBleGFtcGxlMSBpcyBub3cgaW1wbGVtZW50ZWQgYXMgZm9sbG93czoKCmBgYHtyfQpkYXRhTW9kZWwgPC0gQ0NvcGFzaVJvb3RDb250YWluZXJfYWRkRGF0YW1vZGVsKCkKbW9kZWwgPC0gZGF0YU1vZGVsJGdldE1vZGVsKCkKY29tcGFydG1lbnQgPC0gbW9kZWwkY3JlYXRlQ29tcGFydG1lbnQoImNlbGwiLCA1LjApCm9iamVjdCA8LSBjb21wYXJ0bWVudCRnZXRPYmplY3QoQ0NvcGFzaU9iamVjdE5hbWUoIlJlZmVyZW5jZT1Jbml0aWFsVm9sdW1lIikpCmBgYAoKVGhpcyB3b3JrcyBhcyBhIGZhciBjbGVhbmVyIGFwcHJvYWNoIGZvciB0aGUgY29wYXNpIEFQSS4KCiMjIFByb2JsZW1zIHdpdGggdGhpcyBhcHByb2FjaAoKVGhpcyBhcHByb2FjaCBjYW4gYmUgcHJvYmxlbWF0aWMsIGJlY2F1c2UgaW4gdHlwaWNhbCBSIGZhc2hpb24sIHRoZSAkIG9wZXJhdG9yIGFsbG93cyBmb3IgcGFydGlhbCBtYXRjaGVzIHdpdGggbm8gcmVnYXJkIGZvciBpbmhlcml0ZWQgbWV0aG9kcy4KCmBgYHtyfQpnbHVjb3NlIDwtIG1vZGVsJGNyZWF0ZU1ldGFib2xpdGUoImdsdWNvc2UiLCBjb21wYXJ0bWVudCRnZXRPYmplY3ROYW1lKCksIDEwLjAsICJGSVhFRCIpCnRyeShnbHVjb3NlJGdldE9iamVjdChDQ29wYXNpT2JqZWN0TmFtZSgiUmVmZXJlbmNlPUluaXRpYWxDb25jZW50cmF0aW9uIikpKQpgYGAKClRoaXMgY2h1bmsgZG9lc24ndCBhY3R1YWxseSBjYWxsIHRoZSBpbmhlcml0ZWQgbWV0aG9kIGdldE9iamVjdCBidXQgaW5zdGVhZCBjYWxscyBnZXRPYmplY3REaXNwbGF5TmFtZSB3aGljaCBpcyBhIG1lbWJlciBvZiBDTWV0YWIuCgpgYGB7cn0KaXMoZ2x1Y29zZSkKYGBgCgpJIGFtIGNvbnNpZGVyaW5nIHRvIG1vZGlmeSBDb3Bhc2kuUiB0byByZXBsYWNlIHRoZSBwYXJ0aWFsbHkgbWF0Y2hpbmcgZnVuY3Rpb24gcG1hdGNoIHdpdGggbWF0Y2ggaW4gdGhlICQgb3BlcmF0b3IuCgppZHggPSBwbWF0Y2gobmFtZSwgbmFtZXMoYWNjZXNzb3JGdW5zKSk7CgotPgoKaWR4ID0gbWF0Y2gobmFtZSwgbmFtZXMoYWNjZXNzb3JGdW5zKSk7CgojIyBBZHJlc3NpbmcgVmVjdG9ycwoKQWRyZXNzaW5nIHZlY3RvcnMgaGFzIGJlZW4gcHJvYmxlbWF0aWMgYW5kIEkgYW0gdHJ5aW5nIHRvIGZpZ3VyZSBvdXQgYSBnb29kIGFwcHJvYWNoLgoKIyMjIHN0ZDo6dmVjdG9yCgpSZXByZXNlbnRhdGlvbiBvZiBzdGQ6OnZlY3RvcnMgaXMgcHJldHR5IGZ1bmN0aW9uYWwuCgpgYGB7cn0Kc3RkdmVjdG9yIDwtIENDb3Bhc2lSb290Q29udGFpbmVyX2dldEZ1bmN0aW9uTGlzdCgpJHN1aXRhYmxlRnVuY3Rpb25zKDIsIDIsICJUcmlGYWxzZSIpCnN0ZHZlY3RvciRzaXplKCkKYGBgCgpFeGFtcGxlMSB1c2VzIHRoZSBmb2xsb3dpbmcgYXBwcm9hY2g6CgpgYGB7cn0KIyB1c2luZyB0aGUgX19fZ2V0aXRlbV9fIGZ1bmN0aW9uIGxvb2tzIGF3a3dhcmQsIGJ1dCBJIGhhdmUgbm90IGZvdW5kIG91dCBob3cgZWxzZQojIEkgY2FuIGdldCB0byB0aGUgZWxlbWVudHMgb2Ygd3JhcHBlZCBzdGQ6OnZlY3RvciBpbnN0YW5jZXMKQ0Z1bmN0aW9uU3RkVmVjdG9yX19fZ2V0aXRlbV9fKHN0ZHZlY3RvciwgMCkKYGBgCgpUaGlzIGNhbiBiZSBzaW1wbGlmaWVkOgoKYGBge3J9CnN0ZHZlY3RvciQiX19nZXRpdGVtX18iKDApCmBgYAoKVGhpcyBpcyBhIGdvb2QgYXBwcm9hY2ggdG8gZ2V0IHNpbmdsZSBpdGVtcyBidXQgdmVjdG9ycyBjYW4gYWxzbyBiZSBhZHJlc3NlZCBtb3JlIG5hdHVyYWxseToKCmBgYHtyfQppcyhzdGR2ZWN0b3JbMDoyXSkKc3RkdmVjdG9yWzA6Ml1bWzFdXQpgYGAKClVzaW5nIHRoZSBbXSBvcGVyYXRvciB3aWxsIGFsd2F5cyByZXR1cm4gYSBsaXN0IGV2ZW4gZm9yIHNpbmdsZSBpdGVtcyBhbmQgdGhlcmVmb3JlIGJlaGF2ZXMgc2ltaWxhciB0byBsaXN0cy4KVGhlcmUgaXMgaG93ZXZlciBubyBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgW1tdXSBvcGVyYXRvciBkaXJlY3RseSBvbiB0aGUgdmVjdG9yLgoKIyMjIENDb3Bhc2lWZWN0b3IKCkNDb3Bhc2lWZWN0b3JzIGRvbid0IHNlZW0gdG8gYWxsb3cgZm9yIHRoZSB1c2Ugb2YgdGhlIFtdIG9wZXJhdG9yLgoKYGBge3J9CmNvcGFzaXZlY3RvciA8LSBDQ29wYXNpUm9vdENvbnRhaW5lcl9nZXREYXRhbW9kZWxMaXN0KCkKaXMoY29wYXNpdmVjdG9yKQp0cnkoY29wYXNpdmVjdG9yWzBdKQpgYGAKCkluc3RlYWQsIG9uZSBoYXMgdG8gZmluZCB0aGUgcmlnaHQgbWV0aG9kIHRvIGFwcGx5LgpJbiB0aGlzIGNhc2UgaXQgc2VlbXMgdG8gYmUgRGF0YU1vZGVsVmVjdG9yX2dldCguLi4pIGFsdGhvdWdoIEkgYW0gdW5zdXJlIHdoeSBhcyBEYXRhTW9kZWxWZWN0b3IgaXMgbm90IGEgY2xhc3MgbGlzdGVkIHdpdGggaXMgaW4gdGhlIHByZXZpb3VzIGNodW5rLgoKYGBge3J9CkRhdGFNb2RlbFZlY3Rvcl9nZXQoY29wYXNpdmVjdG9yLCAwKQpgYGAKClVzaW5nICRnZXQoLi4uKSBpcyBub3QgZnVuY3Rpb25hbCBkdWUgdG8gd2hhdCBzZWVtcyBsaWtlIGEgYnVnIGluIFNXSUcuCkkgaGF2ZSBmb3VuZCBhIHJlbGF0ZWQgZGlzY3Vzc2lvbiBoZXJlOiBodHRwczovL3NvdXJjZWZvcmdlLm5ldC9wL3N3aWcvbWFpbG1hbi9tZXNzYWdlLzM1MDcxMTQyLwpTV0lHIHNlZW1zIHRvIGNhdGVnb3JpemUgYW55ICpfZ2V0IGZ1bmN0aW9uIGFzIGFuIGludGVybmFsIFNXSUcgYWNlc3NvciBoZWxwZXIgZm9yIGFjY2Vzc2luZyBwdWJsaWMgb2JqZWN0IGF0dHJpYnV0ZXMuCldpdGggZnVuY3Rpb25zIHRoYXQgYXJlIGNhbGxlZCBnZXQgaW4gQyBhbHJlYWR5IHRoaXMgc2VlbXMgdG8gY2F1c2UgYSBidWcuCgpJIGFtIGNvbnNpZGVyaW5nIHRvIG1vZGlmeSBDb3Bhc2kuUiBoZXJlIHRvby4KCnZhY2Nlc3NvcnMgPSBjKCdnZXQnLAoKLT4KCnZhY2Nlc3NvcnMgPSBjKAoKVGhpcyBhbGxvd3MgZm9yIGdldCBmdW5jdGlvbnMgdG8gYmUgY2FsbGVkIGFnYWluLgpUaGlzIGNodW5rIHNob3VsZCB0aGVuIHdvcms6CgpgYGB7cn0KdHJ5KGNvcGFzaXZlY3RvciRnZXQoMCkpCmBgYAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29wYXNpIFIgQVBJIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogeWVzCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgSW5pdGlhbCBTZXR1cCBmb3IgTWFjT1MKCiMjIEluaXRpYWwgY2hlY2tvdXQKCkluaXRpYWwgc2V0dXAgb2YgdGhlIENvcGFzaSBSIEFQSSByZXF1aXJlcyBjaGVja2luZyBvdXQgdGhlIGNvcGFzaS1yLWFwaSByZXBvc2l0aW9yeSBhdCBhbiBhcHByb3ByaWF0ZSBsb2NhdGlvbi4KClVzZSB0aGlzIGNvbW1hbmQgdG8gY2xvbmUgdGhlIHJlcG9zaXRvcnk6CgpgYGB7YmFzaCwgZXZhbD1GQUxTRX0KZ2l0IGNsb25lIC0tcmVjdXJzaXZlIGdpdEBnaXRodWIuY29tOmpvbmFzZm9lL2NvcGFzaS1yLWFwaS5naXQKYGBgCgpJZiB0aGUgcmVwb3NpdG9yeSBpcyBhbHJlYWR5IGNsb25lZCwgdXNlOgoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmdpdCBzdWJtb2R1bGUgdXBkYXRlIC0taW5pdCAtLXJlY3Vyc2l2ZQpgYGAKClRoaXMgc3RlcCBtYWtlcyBzdXJlIHRoZSBDb3Bhc2kgc291cmNlcyBhcmUgY2xvbmVkLgoKIyMgRGVwZW5kZW5jaWVzIGZvciBjb21waWxhdGlvbiBvZiB0aGUgQ29wYXNpIHNvdXJjZXMKClRoZSBmb2xsb3dpbmcgZGVwZW5kZW5jaWVzIGV4aXN0IGZvciBjb21waWxpbmcgdGhlIHNvdXJjZXM6CgpjbWFrZSwgc3dpZwoKQ29zaWRlciB1c2luZyBob21lYnJldyBmb3IgTWFjT1MgdG8gaW5zdGFsbCB0aGVtOgoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmJyZXcgaW5zdGFsbCBjbWFrZSBzd2lnCmBgYAoKIyMgRml4aW5nIENvcGFzaSBzb3VyY2UKCkkgYW0gdXNpbmcgbXkgb3duIENvcGFzaSBmb3JrIHJlcG9zaXRvcnkgdG8gaW1wbGVtZW50IHNvbWUgY2hhbmdlcyB0byBhbGxvdyBmb3Igc3VjY2Vzc2Z1bGwgY29tcGlsYXRpb24gb24gbW9kZXJuIG1hY09TIGFuZCB0byBmaXggc29tZSBwcm9ibGVtcyB3aXRoIFNXSUcuClRoZSByZXBvc2l0b3J5IGlzIGZvdW5kIGF0OgpodHRwczovL2dpdGh1Yi5jb20vam9uYXNmb2UvQ09QQVNJCgojIyBDb21waWxpbmcgQ29wYXNpIGRlcGVuZGVuY2llcwoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmNkIGNvcGFzaS1kZXYvY29wYXNpLWRlcGVuZGVuY2llcy8KLi9jcmVhdGVPU1guc2gKY2QgLi4vLi4vCmBgYAoKIyMgQ29tcGlsaW5nIENvcGFzaSBmcm9tIHNvdXJjZQoKYGBge2Jhc2gsIGV2YWw9RkFMU0V9CmNkIGNvcGFzaS1kZXYvCm1rZGlyIGJ1aWxkX2NvcGFzaV9yX2JpbmRpbmdzCmNkIGJ1aWxkX2NvcGFzaV9yX2JpbmRpbmdzLwpjbWFrZSAtREJVSUxEX0dVST1PRkYgLURCVUlMRF9TRT1PRkYgLURFTkFCTEVfUj1PTiAtRENPUEFTSV9ERVBFTkRFTkNZX0RJUj0uLi9jb3Bhc2ktZGVwZW5kZW5jaWVzL2JpbiAuLi9DT1BBU0kKbWFrZQpjZCAuLi8uLi8KYGBgCgojIExvYWRpbmcgdGhlIENPUEFTSS1SLUFQSQoKQSBnZW5lcmFsIHdvcmtmbG93IHRvIGxvYWQgdXAgdGhlIENvcGFzaSBzaGFyZWQgbGlicmFyeSBsb29rcyBsaWtlIHRoaXM6CgpgYGB7ciwgZXZhbD1GQUxTRX0KZHluLmxvYWQocGFzdGUwKCJjb3Bhc2ktZGV2L2J1aWxkX2NvcGFzaV9yX2JpbmRpbmdzL2NvcGFzaS9iaW5kaW5ncy9SL0NPUEFTSSIsIC5QbGF0Zm9ybSRkeW5saWIuZXh0KSkKc291cmNlKCJjb3Bhc2ktZGV2L2J1aWxkX2NvcGFzaV9yX2JpbmRpbmdzL2NvcGFzaS9iaW5kaW5ncy9SL0NPUEFTSS5SIikKY2FjaGVNZXRhRGF0YSgxKQpgYGAKCkkgaGF2ZSBpbXBsZW1lbnRlZCBhIGNhY2hpbmcgZnVuY3Rpb24gdG8gc3BlZWQgdXAgdGhpcyBwcm9jZXNzLgoKYGBge3J9CnNvdXJjZSgnY29wYXNpX2Z1bnMuUicpCmBgYAoKIyMgRml4aW5nIGVudW1lcmF0aW9uIHdyYXBwZXJzCgpGb3IgcGxhdGZvcm0gaW5kZXBlbmRlY2UsIEkgaGF2ZSByZW1vdmVkIGEgY21ha2Ugc2NyaXB0IHRoYXQgZml4ZXMgZW51bWVyYXRpb24gd3JhcHBlcnMgZHVyaW5nIHRoZSBidWlsZCBwcm9jZXNzLgpUaGVzZSB3cmFwcGVycyBhcmUgbm93IG92ZXJ3cml0dGVuIGluIFIgYWZ0ZXIgdGhlIGZhY3QgdG8gcmVzdG9yZSBmdW5jdGlvbmFsaXR5LgoKYGBge3IsIGV2YWw9RkFMU0V9CmVudW1Ub0ludGVnZXIgPC0gZnVuY3Rpb24obmFtZSx0eXBlKSB7CiAgICBpZiAoaXMuY2hhcmFjdGVyKG5hbWUpKSB7CiAgICAgICAgZ2V0dHlwZSA8LSBwYXN0ZSgiLl9fRV9fIiwgdHlwZSwgc2VwID0gIiIpCiAgICAgICAgaWYgKCFleGlzdHMoZ2V0dHlwZSkpIGdldHR5cGUgPC0gcGFzdGUoIi5fX0VfXyIsIHN1YnN0cih0eXBlLCAzLCBuY2hhcih0eXBlKSksIHNlcCA9ICIiKQogICAgICAgIGFucyA8LSBhcy5pbnRlZ2VyKGdldChnZXR0eXBlKVtuYW1lXSkKICAgICAgICBpZiAoaXMubmEoYW5zKSkge3dhcm5pbmcoImVudW0gbm90IGZvdW5kICIsIG5hbWUsICIgIiwgdHlwZSl9CiAgICAgICAgYW5zCiAgICB9IAp9CgplbnVtRnJvbUludGVnZXIgPC0gZnVuY3Rpb24oaSx0eXBlKSB7CiAgICBnZXR0eXBlIDwtIHBhc3RlKCIuX19FX18iLCB0eXBlLCBzZXAgPSAiIikKICAgIGlmICghZXhpc3RzKGdldHR5cGUpKSBnZXR0eXBlIDwtIHBhc3RlKCIuX19FX18iLCBzdWJzdHIodHlwZSwgMywgbmNoYXIodHlwZSkpLCBzZXAgPSAiIikKICAgIGl0ZW1saXN0IDwtIGdldChnZXR0eXBlKQogICAgbmFtZXMoaXRlbWxpc3QpW21hdGNoKGksIGl0ZW1saXN0KV0KfQpgYGAKClRoZXNlIGZ1bmN0aW9ucyBoYXZlIHNpbmNlIGJlZW4gaW1wbGVtZW50ZWQgaW4gdGhlIENvcGFzaSBzb3VyY2UgcmVwb3NpdG9yeS4KCmh0dHBzOi8vZ2l0aHViLmNvbS9jb3Bhc2kvQ09QQVNJL2NvbW1pdC8wNzY2ZWI1OGZkZTQzNTQ2ZWRmZDBmOWU5MjBmODZhYjhkOTA1ZTBjCgojIyBVbmRlcnN0YW5kaW5nIHRoZSBPTyBzeXN0ZW0KClRoZSBleGFtcGxlcyBhcyB1c2VkIGluIHRoZSBDb3Bhc2kgc291cmNlcyBtYWtlIHVzZSBvZiBSJ3MgUzQgc3lzdGVtIHdoaWNoIGlzIGEgZ2VuZXJpYy1mdW5jdGlvbiBPTy4KV2l0aCB0aGlzIHBhcmFkaWdtLCBtZXRob2RzIGFyZSBub3QgcGFydCBvZiBvcGplY3RzIGFuZCBhcyBhIHJlc3VsdCB0eXBpY2FsIGNvZGUgYXMgZXh0cmFjdGVkIGZyb20gZXhhbXBsZSAxIGxvb2tzIGxpa2UgdGhpczoKCmBgYHtyfQpkYXRhTW9kZWwgPC0gQ1Jvb3RDb250YWluZXJfYWRkRGF0YW1vZGVsKCkKbW9kZWwgPC0gQ0RhdGFNb2RlbF9nZXRNb2RlbChkYXRhTW9kZWwpCmNvbXBhcnRtZW50IDwtIENNb2RlbF9jcmVhdGVDb21wYXJ0bWVudChtb2RlbCwiY2VsbCIsIDUuMCkKb2JqZWN0IDwtIENEYXRhT2JqZWN0X2dldE9iamVjdChjb21wYXJ0bWVudCxDQ29tbW9uTmFtZSgiUmVmZXJlbmNlPUluaXRpYWxWb2x1bWUiKSkKYGBgCgpUaGUgb2JqZWN0IG1ldGhvZHMgYXJlIGNhbGxlZCBnZW5lcmljIGZ1bmN0aW9ucy4KSW4gdGhlIFNXSUcgYmluZGluZ3MsIHRoZXNlIGFyZSB1c3VhbGx5IGluIG5vIHdheSBnZW5lcmljIGFuZCByZXF1aXJlIG5hbWluZyB0aGUgYWN0dWFsLCBwb3NzaWJseSBpbmhlcml0ZWQgY2xhc3NlcyB0aGF0IHRoZSBtZXRob2QgYmVsb25ncyB0by4KRGlzY3Vzc2lvbiBvbiB0aGlzIGJlaGF2aW9yIG9mIFNXSUcgY2FuIGJlIGZvdW5kIGhlcmU6IGh0dHBzOi8vZ2l0aHViLmNvbS9zd2lnL3N3aWcvaXNzdWVzLzg1NC4KCkluIHRoZSBleGFtcGxlLCBjb21wYXJ0bWVudCBpcyBhIENDb21wYXJ0bWVudCwgd2hpY2ggaW5oZXJpdHMgZnJvbSA3IG90aGVyIGNsYXNzZXMuCgpgYGB7cn0KaXMoY29tcGFydG1lbnQpCmBgYAoKSWYgeW91IHdhbnQgdG8gY2FsbCBnZXRPYmplY3QgeW91IGhhdmUgdG8ga25vdyB0aGF0IHRoaXMgZnVuY3Rpb24gaXMgaW5oZXJpdGVkIGZyb20gQ0NvcGFzaU9iamVjdC4KCkkgaGF2ZSBmb3VuZCB0aGF0IHRoZSBTV0lHIGltcGxlbWVudGF0aW9uIGVuYWJsZXMgYSBtb3JlIHR5cGljYWwgT08gdXNlLCBieSBvdmVyd3JpdGluZyB0aGUgJCBvcGVyYXRvciBmb3IgbWFueSBjbGFzc2VzLgpJIGhhdmUgcmV3cml0dGVuIGV4YW1wbGUxLlIgaW4gZXhhbXBsZTFfcmV3cml0ZS5SIHRvIG1ha2UgdXMgb2YgdGhpcyBmZWF0dXJlLgpUaGUgcHJldmlvdXMgY29kZSBjaHVuayBmcm9tIGV4YW1wbGUxIGlzIG5vdyBpbXBsZW1lbnRlZCBhcyBmb2xsb3dzOgoKYGBge3J9CmRhdGFNb2RlbCA8LSBDUm9vdENvbnRhaW5lcl9hZGREYXRhbW9kZWwoKQptb2RlbCA8LSBkYXRhTW9kZWwkZ2V0TW9kZWwoKQpjb21wYXJ0bWVudCA8LSBtb2RlbCRjcmVhdGVDb21wYXJ0bWVudCgiY2VsbCIsIDUuMCkKb2JqZWN0IDwtIGNvbXBhcnRtZW50JGdldE9iamVjdChDQ29tbW9uTmFtZSgiUmVmZXJlbmNlPUluaXRpYWxWb2x1bWUiKSkKYGBgCgpUaGlzIHdvcmtzIGFzIGEgZmFyIGNsZWFuZXIgYXBwcm9hY2ggZm9yIHRoZSBjb3Bhc2kgQVBJLgoKIyMgUHJvYmxlbXMgd2l0aCB0aGlzIGFwcHJvYWNoCgpUaGlzIGFwcHJvYWNoIGNhbiBiZSBwcm9ibGVtYXRpYywgYmVjYXVzZSBpbiB0eXBpY2FsIFIgZmFzaGlvbiwgdGhlICQgb3BlcmF0b3IgYWxsb3dzIGZvciBwYXJ0aWFsIG1hdGNoZXMgd2l0aCBubyByZWdhcmQgZm9yIGluaGVyaXRlZCBtZXRob2RzLgoKYGBge3J9CmdsdWNvc2UgPC0gbW9kZWwkY3JlYXRlTWV0YWJvbGl0ZSgiZ2x1Y29zZSIsIGNvbXBhcnRtZW50JGdldE9iamVjdE5hbWUoKSwgMTAuMCwgIkZJWEVEIikKdHJ5KGdsdWNvc2UkZ2V0T2JqZWN0KENDb21tb25OYW1lKCJSZWZlcmVuY2U9SW5pdGlhbENvbmNlbnRyYXRpb24iKSkpCmBgYAoKVGhpcyBjaHVuayBwcmV2aW91c2x5IGRpZG4ndCBhY3R1YWxseSBjYWxsIHRoZSBpbmhlcml0ZWQgbWV0aG9kIGdldE9iamVjdCBidXQgaW5zdGVhZCBjYWxscyBnZXRPYmplY3REaXNwbGF5TmFtZSB3aGljaCBpcyBhIG1lbWJlciBvZiBDTWV0YWIuCgpgYGB7cn0KaXMoZ2x1Y29zZSkKYGBgCgpJIGhhdmUgaW1wbGVtZW50ZWQgYSBwYXRjaCB0byByZXBsYWNlIHRoZSBwYXJ0aWFsbHkgbWF0Y2hpbmcgZnVuY3Rpb24gcG1hdGNoIHdpdGggbWF0Y2ggaW4gdGhlICQgb3BlcmF0b3IuCgpodHRwczovL2dpdGh1Yi5jb20vam9uYXNmb2UvQ09QQVNJL2NvbW1pdC8wNmZhZTAzMDg2NWYyNGJhNzk2MDFjNjkzYWMzYzlhZmEwOWY1ZmQ2CgpgYGB7Y21ha2UsIGV2YWw9RkFMU0V9CnN0cmluZyhSRVBMQUNFICJpZHggPSBwbWF0Y2gobmFtZSwgbmFtZXMoYWNjZXNzb3JGdW5zKSk7IiAiaWR4ID0gbWF0Y2gobmFtZSwgbmFtZXMoYWNjZXNzb3JGdW5zKSk7IiBTT1VSQ0VDT0RFICIke1NPVVJDRUNPREV9IiApCmBgYAoKIyMgQWRyZXNzaW5nIFZlY3RvcnMKCkFkcmVzc2luZyB2ZWN0b3JzIGhhcyBiZWVuIHByb2JsZW1hdGljIGFuZCBJIGFtIHRyeWluZyB0byBmaWd1cmUgb3V0IGEgZ29vZCBhcHByb2FjaC4KCiMjIyBzdGQ6OnZlY3RvcgoKUmVwcmVzZW50YXRpb24gb2Ygc3RkOjp2ZWN0b3JzIGlzIHByZXR0eSBmdW5jdGlvbmFsLgoKYGBge3J9CnN0ZHZlY3RvciA8LSBDUm9vdENvbnRhaW5lcl9nZXRGdW5jdGlvbkxpc3QoKSRzdWl0YWJsZUZ1bmN0aW9ucygyLCAyLCAiVHJpRmFsc2UiKQpzdGR2ZWN0b3Ikc2l6ZSgpCmBgYAoKRXhhbXBsZTEgdXNlcyB0aGUgZm9sbG93aW5nIGFwcHJvYWNoOgoKYGBge3J9CiMgdXNpbmcgdGhlIF9fX2dldGl0ZW1fXyBmdW5jdGlvbiBsb29rcyBhd2t3YXJkLCBidXQgSSBoYXZlIG5vdCBmb3VuZCBvdXQgaG93IGVsc2UKIyBJIGNhbiBnZXQgdG8gdGhlIGVsZW1lbnRzIG9mIHdyYXBwZWQgc3RkOjp2ZWN0b3IgaW5zdGFuY2VzCkNGdW5jdGlvblN0ZFZlY3Rvcl9fX2dldGl0ZW1fXyhzdGR2ZWN0b3IsIDApCmBgYAoKVGhpcyBjYW4gYmUgc2ltcGxpZmllZDoKCmBgYHtyfQpzdGR2ZWN0b3IkIl9fZ2V0aXRlbV9fIigwKQpgYGAKClRoaXMgaXMgYSBnb29kIGFwcHJvYWNoIHRvIGdldCBzaW5nbGUgaXRlbXMgYnV0IHZlY3RvcnMgY2FuIGFsc28gYmUgYWRyZXNzZWQgbW9yZSBuYXR1cmFsbHk6CgpgYGB7cn0KaXMoc3RkdmVjdG9yWzA6Ml0pCnN0ZHZlY3RvclswOjJdW1sxXV0KYGBgCgpVc2luZyB0aGUgW10gb3BlcmF0b3Igd2lsbCBhbHdheXMgcmV0dXJuIGEgbGlzdCBldmVuIGZvciBzaW5nbGUgaXRlbXMgYW5kIHRoZXJlZm9yZSBiZWhhdmVzIHNpbWlsYXIgdG8gbGlzdHMuClRoZXJlIGlzIGhvd2V2ZXIgbm8gaW1wbGVtZW50YXRpb24gb2YgdGhlIFtbXV0gb3BlcmF0b3IgZGlyZWN0bHkgb24gdGhlIHZlY3Rvci4KCiMjIyBDQ29wYXNpVmVjdG9yCgpDQ29wYXNpVmVjdG9ycyBkb24ndCBzZWVtIHRvIGFsbG93IGZvciB0aGUgdXNlIG9mIHRoZSBbXSBvcGVyYXRvci4KCmBgYHtyfQpjb3Bhc2l2ZWN0b3IgPC0gQ1Jvb3RDb250YWluZXJfZ2V0RGF0YW1vZGVsTGlzdCgpCmlzKGNvcGFzaXZlY3RvcikKdHJ5KGNvcGFzaXZlY3RvclswXSkKYGBgCgpJbnN0ZWFkLCBvbmUgaGFzIHRvIGZpbmQgdGhlIHJpZ2h0IG1ldGhvZCB0byBhcHBseS4KSW4gdGhpcyBjYXNlIGl0IHNlZW1zIHRvIGJlIERhdGFNb2RlbFZlY3Rvcl9nZXQoLi4uKSBhbHRob3VnaCBJIGFtIHVuc3VyZSB3aHkgYXMgRGF0YU1vZGVsVmVjdG9yIGlzIG5vdCBhIGNsYXNzIGxpc3RlZCB3aXRoIGlzIGluIHRoZSBwcmV2aW91cyBjaHVuay4KCmBgYHtyfQpEYXRhTW9kZWxWZWN0b3JfZ2V0KGNvcGFzaXZlY3RvciwgMCkKYGBgCgpVc2luZyAkZ2V0KC4uLikgaXMgbm90IGZ1bmN0aW9uYWwgZHVlIHRvIHdoYXQgc2VlbXMgbGlrZSBhIGJ1ZyBpbiBTV0lHLgpJIGhhdmUgZm91bmQgYSByZWxhdGVkIGRpc2N1c3Npb24gaGVyZTogaHR0cHM6Ly9zb3VyY2Vmb3JnZS5uZXQvcC9zd2lnL21haWxtYW4vbWVzc2FnZS8zNTA3MTE0Mi8KU1dJRyBzZWVtcyB0byBjYXRlZ29yaXplIGFueSAqX2dldCBmdW5jdGlvbiBhcyBhbiBpbnRlcm5hbCBTV0lHIGFjZXNzb3IgaGVscGVyIGZvciBhY2Nlc3NpbmcgcHVibGljIG9iamVjdCBhdHRyaWJ1dGVzLgpXaXRoIG1ldGhvZHMgdGhhdCBhcmUgY2FsbGVkICdnZXQnIGluIEMgYWxyZWFkeSB0aGlzIHNlZW1zIHRvIGNhdXNlIGEgYnVnLgoKSSBoYXZlIGltcGxlbWVudGVkIGEgcGF0Y2ggdG8gcmVtb3ZlIGFsbCAnZ2V0JyBvY2N1cnJlbmNlcyBpbiB0aGUgQ09QQVNJLlIgZmlsZSBnZW5lcmF0ZWQgYnkgU1dJRy4KCmh0dHBzOi8vZ2l0aHViLmNvbS9qb25hc2ZvZS9DT1BBU0kvY29tbWl0LzA2ZmFlMDMwODY1ZjI0YmE3OTYwMWM2OTNhYzNjOWFmYTA5ZjVmZDYKCmBgYHtjbWFrZSwgZXZhbD1GQUxTRX0Kc3RyaW5nKFJFUExBQ0UgInZhY2Nlc3NvcnMgPSBjKCdnZXQnLCAiICJ2YWNjZXNzb3JzID0gYygiIFNPVVJDRUNPREUgIiR7U09VUkNFQ09ERX0iICkKc3RyaW5nKFJFUExBQ0UgInZhY2Nlc3NvcnMgPSBjKCdnZXQnLCIgInZhY2Nlc3NvcnMgPSBjKCIgU09VUkNFQ09ERSAiJHtTT1VSQ0VDT0RFfSIgKQpzdHJpbmcoUkVQTEFDRSAidmFjY2Vzc29ycyA9IGMoJ2dldCcpIiAidmFjY2Vzc29ycyA9IGMoKSIgU09VUkNFQ09ERSAiJHtTT1VSQ0VDT0RFfSIgKQpgYGAKClRoaXMgYWxsb3dzIGZvciBnZXQgZnVuY3Rpb25zIHRvIGJlIGNhbGxlZCBhZ2Fpbi4KVGhpcyBjaHVuayBzaG91bGQgdGhlbiB3b3JrOgoKYGBge3J9CnRyeShjb3Bhc2l2ZWN0b3IkZ2V0KDApKQpgYGAK</div>
 
 
 
