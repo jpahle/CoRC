@@ -4,86 +4,109 @@ library(assertthat)
 
 rm(list = ls(all.names = T))
 
-### Example 1
-try(
-    source("examples/example1.R")
+t <- list()
+
+t$runtest <- c(
+    std = F,
+    rewrite = T,
+    api = F
 )
-validate_that(!(FALSE %in% file.exists("example1.cps", "example1.xml")))
-file.remove("example1.cps", "example1.xml")
-###
 
-rm(list = ls(all.names = T))
-
-### Example 2
-try(
-    source("examples/example2.R")
+t$tests <- list(
+    std = c(
+        "example1",
+        "example2",
+        "example3",
+        "example4",
+        "example5",
+        "example6",
+        "example7",
+        "example8",
+        "example9"
+    ),
+    rewrite = c(
+        "example1_rewrite",
+        "example2_rewrite",
+        "example3_rewrite",
+        "example4_rewrite",
+        "example5_rewrite",
+        "example6_rewrite",
+        "example7_rewrite",
+        "example8_rewrite",
+        "example9_rewrite"
+    ),
+    api = c(
+        
+    )
 )
-###
 
-rm(list = ls(all.names = T))
-
-### Example 3
-try(
-    source("examples/example3.R")
+t$validations = list(
+    example1 = quote({
+        validate_that(!(FALSE %in% file.exists("example1.cps", "example1.xml")))
+        file.remove("example1.cps", "example1.xml")
+    }),
+    example1_rewrite = quote({
+        validate_that(!(FALSE %in% file.exists("example1.cps", "example1.xml")))
+        file.remove("example1.cps", "example1.xml")
+    }),
+    example3 = quote({
+        validate_that(file.exists("examples/example3.txt"))
+        file.remove("examples/example3.txt")
+    }),
+    example3_rewrite = quote({
+        validate_that(file.exists("examples/example3.txt"))
+        file.remove("examples/example3.txt")
+    }),
+    example4 = quote({
+        validate_that(file.exists("example4.txt"))
+        file.remove("example4.txt")
+    }),
+    example4_rewrite = quote({
+        validate_that(file.exists("example4.txt"))
+        file.remove("example4.txt")
+    }),
+    example5 = quote({
+        validate_that(file.exists("example5.txt"))
+        file.remove("example5.txt")
+    }),
+    example5_rewrite = quote({
+        validate_that(file.exists("example5.txt"))
+        file.remove("example5.txt")
+    }),
+    example6 = quote({
+        validate_that(file.exists("fakedata_example6.txt"))
+        file.remove("fakedata_example6.txt")
+    }),
+    example6_rewrite = quote({
+        validate_that(file.exists("fakedata_example6.txt"))
+        file.remove("fakedata_example6.txt")
+    }),
+    example7 = quote({
+        validate_that(!(FALSE %in% file.exists("example7.cps", "example7.xml")))
+        file.remove("example7.cps", "example7.xml")
+    }),
+    example7_rewrite = quote({
+        validate_that(!(FALSE %in% file.exists("example7.cps", "example7.xml")))
+        file.remove("example7.cps", "example7.xml")
+    })
 )
-validate_that(file.exists("examples/example3.txt"))
-file.remove("examples/example3.txt")
-###
 
-rm(list = ls(all.names = T))
-
-### Example 4
-try(
-    source("examples/example4.R")
-)
-validate_that(file.exists("example4.txt"))
-file.remove("example4.txt")
-###
-
-rm(list = ls(all.names = T))
-
-### Example 5
-try(
-    source("examples/example5.R")
-)
-validate_that(file.exists("example5.txt"))
-file.remove("example5.txt")
-###
-
-rm(list = ls(all.names = T))
-
-### Example 6
-try(
-    source("examples/example6.R")
-)
-validate_that(file.exists("fakedata_example6.txt"))
-file.remove("fakedata_example6.txt")
-###
-
-rm(list = ls(all.names = T))
-
-### Example 7
-try(
-    source("examples/example7.R")
-)
-validate_that(!(FALSE %in% file.exists("example7.cps", "example7.xml")))
-file.remove("example7.cps", "example7.xml")
-###
-
-rm(list = ls(all.names = T))
-
-### Example 8
-try(
-    source("examples/example8.R")
-)
-###
-
-rm(list = ls(all.names = T))
-
-### Example 9
-try(
-    source("examples/example9.R")
-)
-###
+for (t_test in names(t$runtest)) {
+    if (t$runtest[t_test]) {
+        t$testfiles <- t$tests[[t_test]]
+        
+        for (t_testfile in t$testfiles) {
+            del <- ls(all.names = T)
+            del <- del[del != "t" & del != "t_test" & del != "t_testfile"]
+            rm(list = del)
+            
+            message("###START### ", t_testfile, " ###START###")
+            source(paste0("examples/", t_testfile, ".R"), echo = F)
+            
+            if (t_testfile %in% names(t$validations)) eval(t$validations[[t_testfile]])
+            message("####END#### ", t_testfile, " ####END####")
+        }
+    }
+}
 
 rm(list = ls(all.names = T))
