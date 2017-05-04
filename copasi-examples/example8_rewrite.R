@@ -11,7 +11,7 @@ stopifnot(CRootContainer_getDatamodelList()$size() == 1)
 # next we import a simple SBML model from a string
 
 # clear the message queue so that we only have error messages from the import in the queue
-invisible(CCopasiMessage_clearDeque())
+CCopasiMessage_clearDeque()
 result <- TRUE
 tryCatch(result <- dataModel$importSBMLFromString(MODEL_STRING), error = function(e) {
   write("Import of model failed miserably.", stderr())
@@ -49,7 +49,7 @@ if (!is.null(model)) {
     # the initial values are transferred to the current state before the calculation begins.
     # If we use low level calculation methods like the one to calculate the jacobian, we
     # have to make sure the the initial values are applied to the state
-    invisible(model$applyInitialValues())
+    model$applyInitialValues()
     # we need an array that stores the result
     # the size of the matrix does not really matter because
     # the calculateJacobian autoamtically resizes it to the correct
@@ -63,7 +63,7 @@ if (!is.null(model)) {
     # so it does not matter what value you give here.
     
     container <- model$getMathContainer()
-    invisible(container$calculateJacobian(jacobian, 1e-12, FALSE))
+    container$calculateJacobian(jacobian, 1e-12, FALSE)
    
     # now we print the result
     # the jacobian stores the values in the order they are
@@ -125,7 +125,7 @@ if (!is.null(model)) {
 
     # we can also calculate the jacobian of the reduced system
     # in a similar way
-    invisible(container$calculateJacobian(jacobian, 1e-12, TRUE))
+    container$calculateJacobian(jacobian, 1e-12, TRUE)
     # this time generating the output is actually simpler because the rows
     # and columns are ordered in the same way as the independent variables of the state temple
     cat("\n")

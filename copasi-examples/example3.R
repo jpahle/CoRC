@@ -5,7 +5,7 @@ stopifnot(!is.null(CRootContainer_getRoot()))
 dataModel <- CRootContainer_addDatamodel()
 stopifnot(DataModelVector_size(CRootContainer_getDatamodelList()) == 1)
 # the only argument to the main routine should be the name of an SBML file
-args <- "examples/brusselator-model.xml"
+args <- "copasi-examples/brusselator-model.xml"
 if (length(args) == 1) {
     filename <- args[1]
     tryCatch(CDataModel_importSBML(dataModel,filename), error = function(e) {

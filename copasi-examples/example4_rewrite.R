@@ -21,11 +21,11 @@ reports <- dataModel$getReportDefinitionList()
 # create a report definition object
 report <- reports$createReportDefinition("Report", "Output for timecourse")
 # set the task type for the report definition to timecourse
-invisible(report$setTaskType("timeCourse"))
+report$setTaskType("timeCourse")
 # we don't want a table
-invisible(report$setIsTable(FALSE))
+report$setIsTable(FALSE)
 # the entries in the output should be seperated by a ", "
-invisible(report$setSeparator(CCopasiReportSeparator(", ")))
+report$setSeparator(CCopasiReportSeparator(", "))
 
 # we need a handle to the header and the body
 # the header will display the ids of the metabolites and "time" for
@@ -36,11 +36,11 @@ sep_string <- sep$getCN()$getString()
 header <- report$getHeaderAddr()
 body <- report$getBodyAddr()
 time_string <- CCommonName_getString(CCommonName(paste(model$getCN()$getString(), ",Reference=Time", sep = "")))
-invisible(body$push_back(CRegisteredCommonName(time_string)))
-invisible(body$push_back(CRegisteredCommonName(sep_string)))
+body$push_back(CRegisteredCommonName(time_string))
+body$push_back(CRegisteredCommonName(sep_string))
 time_string <- CCommonName_getString(CDataObject_getCN(CDataString("time")))
-invisible(header$push_back(CRegisteredCommonName(time_string)))
-invisible(header$push_back(CRegisteredCommonName(sep_string)))
+header$push_back(CRegisteredCommonName(time_string))
+header$push_back(CRegisteredCommonName(sep_string))
 
 iMax <- model$getMetabolites()$size()
 i <- 0
@@ -54,18 +54,18 @@ while (i < iMax) {
         # particle number
         conc <- metab$getObject(CCommonName("Reference=Concentration"))
         conc_string <- conc$getCN()$getString()
-        invisible(body$push_back(CRegisteredCommonName(conc_string)))
+        body$push_back(CRegisteredCommonName(conc_string))
         # add the corresponding id to the header
         sbml_id <- metab$getSBMLId()
         sbml_string <- CCommonName_getString(CDataObject_getCN(CDataString(sbml_id)))
-        invisible(header$push_back(CRegisteredCommonName(sbml_string)))
+        header$push_back(CRegisteredCommonName(sbml_string))
         
         if (i != iMax-1) {
           # after each entry, we need a seperator
-          invisible(body$push_back(CRegisteredCommonName(sep_string)))
+          body$push_back(CRegisteredCommonName(sep_string))
 
           # and a seperator
-          invisible(header$push_back(CRegisteredCommonName(sep_string)))
+          header$push_back(CRegisteredCommonName(sep_string))
         }
     }
     i <- i + 1
@@ -81,31 +81,31 @@ if (is.null(trajectoryTask)) {
     # add the time course task to the task list
     # this method makes sure the object is now owned by the list
     # and that SWIG does not delete it
-    invisible(dataModel$getTaskList()$addAndOwn(trajectoryTask))
+    dataModel$getTaskList()$addAndOwn(trajectoryTask)
 }
 
 
 # run a stochastic time course
-invisible(trajectoryTask$setMethodType("stochastic"))
+trajectoryTask$setMethodType("stochastic")
 
 # get the problem for the task to set some parameters
 problem <- as(trajectoryTask$getProblem(), "_p_CTrajectoryProblem")
 
 # pass a pointer of the model to the problem
-invisible(problem$setModel(model))
+problem$setModel(model)
 
 # we don't want the trajectory task to run by itself, but we want to
 # run it from a scan, so we deactivate the standalone trajectory task
-invisible(trajectoryTask$setScheduled(FALSE))
+trajectoryTask$setScheduled(FALSE)
 
 # simulate 100 steps
-invisible(problem$setStepNumber(100))
+problem$setStepNumber(100)
 # start at time 0
-invisible(model$setInitialTime(0.0))
+model$setInitialTime(0.0)
 # simulate a duration of 10 time units
-invisible(problem$setDuration(10))
+problem$setDuration(10)
 # tell the problem to actually generate time series data
-invisible(problem$setTimeSeriesRequested(TRUE))
+problem$setTimeSeriesRequested(TRUE)
 
 # now we set up the scan
 scanTask <- dataModel$getTask("Scan")
@@ -116,7 +116,7 @@ if (is.null(scanTask)) {
     # add the scan task
     # this method makes sure the object is now owned by the list
     # and that SWIG does not delete it
-    invisible(dataModel$getTaskList()$addAndOwn(scanTask))
+    dataModel$getTaskList()$addAndOwn(scanTask)
 }
 
 # get the problem
@@ -124,34 +124,34 @@ scanProblem <- as(scanTask$getProblem(), "_p_CScanProblem")
 stopifnot(!is.null(scanProblem))
 
 # set the model for the problem
-invisible(scanProblem$setModel(model))
+scanProblem$setModel(model)
 
 # activate the task so that is is run
 # if the model is saved and passed to CopasiSE
-invisible(scanTask$setScheduled(TRUE))
+scanTask$setScheduled(TRUE)
 
 # set the report for the task
-invisible(scanTask$getReport()$setReportDefinition(report))
+scanTask$getReport()$setReportDefinition(report)
 
 # set the output file for the report
-invisible(scanTask$getReport()$setTarget("example4.txt"))
+scanTask$getReport()$setTarget("example4.txt")
 # don't append to an existing file, but overwrite
-invisible(scanTask$getReport()$setAppend(FALSE))
+scanTask$getReport()$setAppend(FALSE)
 
 # tell the scan that we want to make a scan over a trajectory task
-invisible(scanProblem$setSubtask("timeCourse"))
+scanProblem$setSubtask("timeCourse")
 
 # we just want to run the timecourse task a number of times, so we
 # create a repeat item with 100 repeats
-invisible(scanProblem <- as(scanProblem, '_p_CScanProblem'))
-invisible(scanProblem$addScanItem("SCAN_REPEAT", 100))
+scanProblem <- as(scanProblem, '_p_CScanProblem')
+scanProblem$addScanItem("SCAN_REPEAT", 100)
 
 # we want the output from the trajectory task
-invisible(scanProblem$setOutputInSubtask(TRUE))
+scanProblem$setOutputInSubtask(TRUE)
 
 # we don't want to set the initial conditions of the model to the end
 # state of the last run
-invisible(scanProblem$setContinueFromCurrentState(FALSE))
+scanProblem$setContinueFromCurrentState(FALSE)
 
 tryCatch(scanTask$process(TRUE), error = function(e) {
   write("Error. Running the scan failed.", stderr())

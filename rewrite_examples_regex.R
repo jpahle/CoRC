@@ -12,6 +12,9 @@ subs_long <- "\\2$\\1^^^^^^(\\4)"
 pattern_short <- "\\w+?_(\\w+)\\(([\\w$^]+(\\(\\))?)\\)"
 subs_short <- "\\2$\\1^^^^^^()"
 
+pattern_invis <- "^(\\s*)invisible\\((.*)\\)(\\s*)$"
+subs_invis <- "\\1\\2\\3"
+
 pattern_getitem <- "\\$__getitem__\\((\\w+)\\)"
 subs_getitem <- "[\\1][[1]]"
 
@@ -64,8 +67,8 @@ fixes <- list(
 )
 
 for (ex in examples) {
-    fileName <- paste0("examples/", ex, ".R")
-    newFileName <- paste0("examples/", ex, "_rewrite.R")
+    fileName <- paste0("copasi-examples/", ex, ".R")
+    newFileName <- paste0("copasi-examples/", ex, "_rewrite.R")
     
     exFile <- readLines(fileName)
     
@@ -158,6 +161,13 @@ for (ex in examples) {
         replacement = subs_fix,
         x = exFile,
         fixed = TRUE
+    )
+    
+    exFile <- gsub(
+        pattern = pattern_invis,
+        replacement = subs_invis,
+        x = exFile,
+        perl = TRUE
     )
     
     exFile <- gsub(

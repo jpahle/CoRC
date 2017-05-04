@@ -14,7 +14,7 @@ stopifnot(CRootContainer_getDatamodelList()$size() == 1)
 # next we import a simple SBML model from a string
 
 # clear the message queue so that we only have error messages from the import in the queue
-invisible(CCopasiMessage_clearDeque())
+CCopasiMessage_clearDeque()
 result <- TRUE
 tryCatch(result <- dataModel$importSBMLFromString(MODEL_STRING), error = function(e) {
   write("An exception has occured during the import of the SBML model", stderr())
@@ -46,10 +46,10 @@ if (is.null(task)) {
     # create a new one
     task <- CSteadyStateTask()
     # add the new task to the task list
-    invisible(dataModel$getTaskList()$addAndOwn(task))
+    dataModel$getTaskList()$addAndOwn(task)
 }
 
-invisible(CCopasiMessage_clearDeque())
+CCopasiMessage_clearDeque()
 
 tryCatch(invisible(task$process(TRUE)), error = function(e) {
   write("Error. Running the scan failed.", stderr())

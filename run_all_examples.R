@@ -50,12 +50,12 @@ t$validations = list(
         file.remove("example1.cps", "example1.xml")
     }),
     example3 = quote({
-        validate_that(file.exists("examples/example3.txt"))
-        file.remove("examples/example3.txt")
+        validate_that(file.exists("copasi-examples/example3.txt"))
+        file.remove("copasi-examples/example3.txt")
     }),
     example3_rewrite = quote({
-        validate_that(file.exists("examples/example3.txt"))
-        file.remove("examples/example3.txt")
+        validate_that(file.exists("copasi-examples/example3.txt"))
+        file.remove("copasi-examples/example3.txt")
     }),
     example4 = quote({
         validate_that(file.exists("example4.txt"))
@@ -101,7 +101,7 @@ for (t_test in names(t$runtest)) {
             rm(list = del)
             
             message("###START### ", t_testfile, " ###START###")
-            source(paste0("examples/", t_testfile, ".R"), echo = F)
+            source(paste0("copasi-examples/", t_testfile, ".R"), echo = F)
             
             if (t_testfile %in% names(t$validations)) eval(t$validations[[t_testfile]])
             message("####END#### ", t_testfile, " ####END####")

@@ -1,7 +1,7 @@
 rm(list = ls(all.names = T))
 source("copasi_wrapper.R")
 
-filename <- "examples/brusselator.cps"
+filename <- "examples/brusselator_1.cps"
 
 message("File: ", filename)
 
@@ -15,7 +15,7 @@ message("Number of Metabolites: " , nMetab)
 rm(list = ls(all.names = T))
 source("copasi_wrapper.R")
 
-filename <- "examples/brusselator.cps"
+filename <- "examples/brusselator_1.cps"
 
 message("File: ", filename)
 

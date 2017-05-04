@@ -5,7 +5,7 @@ stopifnot(!is.null(CRootContainer_getRoot()))
 dataModel <- CRootContainer_addDatamodel()
 stopifnot(CRootContainer_getDatamodelList()$size() == 1)
 # the only argument to the main routine should be the name of an SBML file
-args <- "examples/brusselator-model.xml"
+args <- "copasi-examples/brusselator-model.xml"
 if (length(args) == 1) {
     filename <- args[1]
     tryCatch(dataModel$importSBML(filename), error = function(e) {
@@ -21,11 +21,11 @@ if (length(args) == 1) {
     # create a report definition object
     report <- reports$createReportDefinition("Report", "Output for timecourse")
     # set the task type for the report definition to timecourse
-    invisible(report$setTaskType("timeCourse"))
+    report$setTaskType("timeCourse")
     # we don't want a table
-    invisible(report$setIsTable(FALSE))
+    report$setIsTable(FALSE)
     # the entries in the output should be seperated by a ", "
-    invisible(report$setSeparator(CCopasiReportSeparator(", ")))
+    report$setSeparator(CCopasiReportSeparator(", "))
 
     # we need a handle to the header and the body
     # the header will display the ids of the metabolites and "time" for
@@ -42,7 +42,7 @@ if (length(args) == 1) {
     cn_string <- paste(cn_string,",Reference=Time", sep = "")
     on <- CRegisteredCommonName(cn_string)
     stopifnot(!is.null(on))
-    invisible(body$push_back(on))
+    body$push_back(on)
 
     separator <- report$getSeparator()
     stopifnot(!is.null(separator))
@@ -51,7 +51,7 @@ if (length(args) == 1) {
     cn_string <- cn$getString()
     sep_on <- CRegisteredCommonName(cn_string)
     stopifnot(!is.null(on))
-    invisible(body$push_back(sep_on))
+    body$push_back(sep_on)
 
     s <- CDataString("time")
     stopifnot(!is.null(s))
@@ -61,8 +61,8 @@ if (length(args) == 1) {
     on <- CRegisteredCommonName(cn_string)
     stopifnot(!is.null(on))
 
-    invisible(header$push_back(on))
-    invisible(header$push_back(sep_on))
+    header$push_back(on)
+    header$push_back(sep_on)
    
     iMax <- model$getMetabolites()$size()
     i <- 0
@@ -80,17 +80,17 @@ if (length(args) == 1) {
             cn <- obj$getCN()
             cn_string <- cn$getString()
             on <- CRegisteredCommonName(cn_string)
-            invisible(body$push_back(on))
+            body$push_back(on)
             # add the corresponding id to the header
             s <- CDataString(metab$getSBMLId())
             cn <- s$getCN()
             cn_string <- cn$getString()
             on <- CRegisteredCommonName(cn_string)
-            invisible(header$push_back(on))
+            header$push_back(on)
             # after each entry, we need a seperator
             if( i != (iMax-1) ) {
-              invisible(body$push_back(sep_on))
-              invisible(header$push_back(sep_on))
+              body$push_back(sep_on)
+              header$push_back(sep_on)
             }
         }
         i <- i + 1
@@ -104,11 +104,11 @@ if (length(args) == 1) {
         # add the time course task to the task list
         # this method makes sure the object is now owned by the list
         # and that SWIG does not delete it
-        invisible(dataModel$getTaskList()$addAndOwn(trajectoryTask))
+        dataModel$getTaskList()$addAndOwn(trajectoryTask)
     }
 
     # run a deterministic time course
-    invisible(trajectoryTask$setMethodType("deterministic"))
+    trajectoryTask$setMethodType("deterministic")
 
     # pass a pointer of the model to the problem
     # Most problem classes have their own method for setting the model, the trajectory task
@@ -118,27 +118,27 @@ if (length(args) == 1) {
     
     # get the problem for the task to set some parameters
     problem <- as(trajectoryTask$getProblem(), "_p_CTrajectoryProblem")
-    invisible(problem$setModel(dataModel$getModel()))
+    problem$setModel(dataModel$getModel())
 
     # actiavate the task so that it will be run when the model is saved
     # and passed to CopasiSE
-    invisible(trajectoryTask$setScheduled(TRUE))
+    trajectoryTask$setScheduled(TRUE)
 
     # set the report for the task
-    invisible(trajectoryTask$getReport()$setReportDefinition(report))
+    trajectoryTask$getReport()$setReportDefinition(report)
     # set the output filename
-    invisible(trajectoryTask$getReport()$setTarget("example3.txt"))
+    trajectoryTask$getReport()$setTarget("example3.txt")
     # don't append output if the file exists, but overwrite the file
-    invisible(trajectoryTask$getReport()$setAppend(FALSE))
+    trajectoryTask$getReport()$setAppend(FALSE)
 
     # simulate 100 steps
-    invisible(problem$setStepNumber(100))
+    problem$setStepNumber(100)
     # start at time 0
-    invisible(dataModel$getModel()$setInitialTime(0.0))
+    dataModel$getModel()$setInitialTime(0.0)
     # simulate a duration of 10 time units
-    invisible(problem$setDuration(10))
+    problem$setDuration(10)
     # tell the problem to actually generate time series data
-    invisible(problem$setTimeSeriesRequested(TRUE))
+    problem$setTimeSeriesRequested(TRUE)
 
     # set some parameters for the LSODA method through the method
     method <- trajectoryTask$getMethod()
@@ -146,10 +146,10 @@ if (length(args) == 1) {
     parameter <- method$getParameter("Absolute Tolerance")
     stopifnot(!is.null(parameter))
     stopifnot(parameter$getType() == "UDOUBLE")
-    invisible(parameter$setDblValue(1.0e-12))
+    parameter$setDblValue(1.0e-12)
 
     result <- TRUE
-    invisible(CCopasiMessage_clearDeque())
+    CCopasiMessage_clearDeque()
     # now we run the actual trajectory
     tryCatch(result <- trajectoryTask$process(TRUE), error = function(e) {
       write("Error. Running the time course simulation failed.", stderr())

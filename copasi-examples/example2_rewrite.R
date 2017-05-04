@@ -5,7 +5,7 @@ stopifnot(!is.null(CRootContainer_getRoot()))
 dataModel <- CRootContainer_addDatamodel()
 stopifnot(CRootContainer_getDatamodelList()$size() == 1)
 # the only argument to the main routine should be the name of a CPS file
-args <- "examples/brusselator.cps"
+args <- "copasi-examples/brusselator.cps"
 if (length(args) == 1) {
     filename <- args[1]
     # load the model without progress report

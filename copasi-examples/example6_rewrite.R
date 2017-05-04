@@ -27,34 +27,34 @@ if (is.null(trajectoryTask)) {
     # add the time course task to the task list
     # this method makes sure that the object is now owned 
     # by the list and that it does not get deleted by SWIG
-    invisible(dataModel$getTaskList()$addAndOwn(trajectoryTask))
+    dataModel$getTaskList()$addAndOwn(trajectoryTask)
 }
 
 # run a deterministic time course
-invisible(trajectoryTask$setMethodType("deterministic"))
+trajectoryTask$setMethodType("deterministic")
 
 # pass a pointer of the model to the problem
 problem <- as(trajectoryTask$getProblem(), "_p_CTrajectoryProblem")
-invisible(problem$setModel(model))
+problem$setModel(model)
 
 # activate the task so that it will be run when the model is saved
 # and passed to CopasiSE
-invisible(trajectoryTask$setScheduled(TRUE))
+trajectoryTask$setScheduled(TRUE)
 
 # simulate 4000 steps
-invisible(problem$setStepNumber(4000))
+problem$setStepNumber(4000)
 # start at time 0
-invisible(model$setInitialTime(0.0))
+model$setInitialTime(0.0)
 # simulate a duration of 400 time units
-invisible(problem$setDuration(400))
+problem$setDuration(400)
 # tell the problem to actually generate time series data
-invisible(problem$setTimeSeriesRequested(TRUE))
+problem$setTimeSeriesRequested(TRUE)
 
 # set some parameters for the LSODA method through the method
 method <- trajectoryTask$getMethod()
 
 result <- TRUE
-invisible(CCopasiMessage_clearDeque())
+CCopasiMessage_clearDeque()
 tryCatch(result <- trajectoryTask$process(TRUE), error = function(e) {
   write("Error. Running the time course simulation failed.", stderr()) 
   # check if there are additional error messages
@@ -157,14 +157,14 @@ reaction <- model$getReaction(0)
 stopifnot(reaction$getParameters()$size() == 1)
 stopifnot(reaction$isLocalParameter(0))
 # the parameter of a irreversible mass action is called k1
-invisible(reaction$setParameterValue("k1",rand))
+reaction$setParameterValue("k1",rand)
 
 reaction <- model$getReaction(1)
 # we know that it is an irreversible mass action, so there is one
 # parameter
 stopifnot(reaction$getParameters()$size() == 1)
 stopifnot(reaction$isLocalParameter(0))
-invisible(reaction$setParameterValue("k1",rand))
+reaction$setParameterValue("k1",rand)
 
 fitTask <- dataModel$addTask("parameterFitting")
 stopifnot(!is.null(fitTask))
@@ -175,11 +175,11 @@ stopifnot(!is.null(fitMethod))
 # the object must be an instance of COptMethod or a subclass thereof
 # (CFitMethod)
 fitProblem <- as(fitTask$getProblem(), "_p_CFitProblem")
-invisible(as(fitProblem, '_p_CFitProblem'))
+as(fitProblem, '_p_CFitProblem')
 stopifnot(!is.null(fitProblem))
 
 experimentSet <- fitProblem$getParameter("Experiment Set")
-invisible(experimentSet <- as(experimentSet, '_p_CExperimentSet'))
+experimentSet <- as(experimentSet, '_p_CExperimentSet')
 stopifnot(!is.null(experimentSet))
 
 # first experiment (we only have one here)
@@ -187,20 +187,20 @@ experiment <- CExperiment(dataModel)
 stopifnot(!is.null(experiment))
 # tell COPASI where to find the data
 # reading data from string is not possible with the current C++ API
-invisible(experiment$setFileName("fakedata_example6.txt"))
+experiment$setFileName("fakedata_example6.txt")
 # we have to tell COPASI that the data for the experiment is a komma
 # separated list (the default is TAB separated)
-invisible(experiment$setSeparator(","))
+experiment$setSeparator(",")
 # the data start in row 1 and goes to row 4001
-invisible(experiment$setFirstRow(1))
+experiment$setFirstRow(1)
 stopifnot(experiment$getFirstRow() == 1)
-invisible(experiment$setLastRow(4001))
+experiment$setLastRow(4001)
 stopifnot(experiment$getLastRow() == 4001)
-invisible(experiment$setHeaderRow(1))
+experiment$setHeaderRow(1)
 stopifnot(experiment$getHeaderRow() == 1)
-invisible(experiment$setExperimentType("timeCourse"))
+experiment$setExperimentType("timeCourse")
 stopifnot(experiment$getExperimentType() == "timeCourse")
-invisible(experiment$setNumColumns(4))
+experiment$setNumColumns(4)
 stopifnot(experiment$getNumColumns() == 4)
 objectMap <- experiment$getObjectMap()
 stopifnot(!is.null(objectMap))
@@ -213,34 +213,34 @@ stopifnot(objectMap$getRole(0) == "time")
 stopifnot(!is.null(model))
 timeReference <- model$getObject(CCommonName("Reference=Time"))
 stopifnot(!is.null(timeReference))
-invisible(objectMap$setObjectCN(0,timeReference$getCN()$getString()))
+objectMap$setObjectCN(0,timeReference$getCN()$getString())
 
 # now we tell COPASI which column contain the concentrations of
 # metabolites and belong to dependent variables
-invisible(objectMap$setRole(1,"dependent"))
+objectMap$setRole(1,"dependent")
 metab <- metabVector[[1]]
 stopifnot(!is.null(metab))
 particleReference <- metab$getObject(CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(objectMap$setObjectCN(1,particleReference$getCN()$getString()))
+objectMap$setObjectCN(1,particleReference$getCN()$getString())
 
-invisible(objectMap$setRole(2,"dependent"))
+objectMap$setRole(2,"dependent")
 
 metab <- metabVector[[2]]
 stopifnot(!is.null(metab))
 particleReference <- metab$getObject(CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(objectMap$setObjectCN(2,particleReference$getCN()$getString()))
+objectMap$setObjectCN(2,particleReference$getCN()$getString())
 
-invisible(objectMap$setRole(3,"dependent"))
+objectMap$setRole(3,"dependent")
 
 metab <- metabVector[[3]]
 stopifnot(!is.null(metab))
 particleReference <- metab$getObject(CCommonName("Reference=Concentration"))
 stopifnot(!is.null(particleReference))
-invisible(objectMap$setObjectCN(3,particleReference$getCN()$getString()))
+objectMap$setObjectCN(3,particleReference$getCN()$getString())
 
-invisible(experimentSet$addExperiment(experiment))
+experimentSet$addExperiment(experiment)
 stopifnot(experimentSet$getExperimentCount() == 1)
 # addExperiment makes a copy, so we need to get the added experiment
 # again
@@ -261,9 +261,9 @@ stopifnot(!is.null(parameterReference))
 fitItem1 <- fitProblem$addFitItem(parameterReference$getCN())
 stopifnot(!is.null(fitItem1))
 #invisible(fitItem1$setObjectCN(parameterReference$getCN()))
-invisible(fitItem1$setStartValue(4.0))
-invisible(fitItem1$setLowerBound(CCommonName("0.00001")))
-invisible(fitItem1$setUpperBound(CCommonName("10")))
+fitItem1$setStartValue(4.0)
+fitItem1$setLowerBound(CCommonName("0.00001"))
+fitItem1$setUpperBound(CCommonName("10"))
 # add the fit item to the correct parameter group
 optimizationItemGroup <- fitProblem$getParameter("OptimizationItemList")
 stopifnot(!is.null(optimizationItemGroup))
@@ -279,9 +279,9 @@ parameterReference <- parameter$getObject(CCommonName("Reference=Value"))
 stopifnot(!is.null(parameterReference))
 fitItem2 <- fitProblem$addFitItem(parameterReference$getCN())
 stopifnot(!is.null(fitItem2))
-invisible(fitItem2$setStartValue(4.0))
-invisible(fitItem2$setLowerBound(CCommonName("0.00001")))
-invisible(fitItem2$setUpperBound(CCommonName("10")))
+fitItem2$setStartValue(4.0)
+fitItem2$setLowerBound(CCommonName("0.00001"))
+fitItem2$setUpperBound(CCommonName("10"))
 
 result <- TRUE
 # running the task for this example will probably take some time
