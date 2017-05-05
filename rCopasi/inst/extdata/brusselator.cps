@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.12.65 (Source) (http://www.copasi.org) at 2017-05-04 12:37:34 UTC -->
+<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-05-02 11:22:36 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
-<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="12" versionDevel="65" copasiSourcesModified="0">
+<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="19" versionDevel="140" copasiSourcesModified="0">
   <ListOfFunctions>
     <Function key="Function_13" name="Mass action (irreversible)" type="MassAction" reversible="false">
       <MiriamAnnotation>
@@ -23,15 +23,17 @@ Reaction scheme where the products are created from the reactants and the change
         k1*PRODUCT&lt;substrate_i>
       </Expression>
       <ListOfParameterDescriptions>
-        <ParameterDescription key="FunctionParameter_80" name="k1" order="0" role="constant"/>
-        <ParameterDescription key="FunctionParameter_81" name="substrate" order="1" role="substrate"/>
+        <ParameterDescription key="FunctionParameter_81" name="k1" order="0" role="constant"/>
+        <ParameterDescription key="FunctionParameter_79" name="substrate" order="1" role="substrate"/>
       </ListOfParameterDescriptions>
     </Function>
   </ListOfFunctions>
-  <Model key="Model_1" name="The Brusselator" simulationType="time" timeUnit="s" volumeUnit="ml" areaUnit="m²" lengthUnit="m" quantityUnit="mmol" type="deterministic" avogadroConstant="6.0221415e+23">
+  <Model key="Model_3" name="The Brusselator" simulationType="time" timeUnit="s" volumeUnit="ml" areaUnit="m²" lengthUnit="m" quantityUnit="mmol" type="deterministic" avogadroConstant="6.0221415e+23">
     <MiriamAnnotation>
-<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Model_1">
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Model_3">
     <dcterms:created>
       <rdf:Description>
         <dcterms:W3CDTF>2014-04-15T09:23:42Z</dcterms:W3CDTF>
@@ -39,6 +41,7 @@ Reaction scheme where the products are created from the reactants and the change
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
+
     </MiriamAnnotation>
     <Comment>
       <html xmlns="http://www.w3.org/1999/xhtml"><head><meta name="qrichtext" content="1" /></head><body style="font-family:MS Shell Dlg">
@@ -46,46 +49,16 @@ Reaction scheme where the products are created from the reactants and the change
 </body></html>
     </Comment>
     <ListOfCompartments>
-      <Compartment key="Compartment_0" name="compartment" simulationType="fixed" dimensionality="3" addNoise="false">
+      <Compartment key="Compartment_1" name="compartment" simulationType="fixed" dimensionality="3">
       </Compartment>
     </ListOfCompartments>
     <ListOfMetabolites>
-      <Metabolite key="Metabolite_2" name="A" simulationType="fixed" compartment="Compartment_0" addNoise="false">
+      <Metabolite key="Metabolite_1" name="X" simulationType="reactions" compartment="Compartment_1">
+      </Metabolite>
+      <Metabolite key="Metabolite_3" name="Y" simulationType="reactions" compartment="Compartment_1">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Metabolite_2">
-    <dcterms:created>
-      <rdf:Description>
-        <dcterms:W3CDTF>2014-04-15T09:23:50Z</dcterms:W3CDTF>
-      </rdf:Description>
-    </dcterms:created>
-  </rdf:Description>
-</rdf:RDF>
-        </MiriamAnnotation>
-      </Metabolite>
-      <Metabolite key="Metabolite_3" name="B" simulationType="fixed" compartment="Compartment_0" addNoise="false">
-      </Metabolite>
-      <Metabolite key="Metabolite_4" name="D" simulationType="fixed" compartment="Compartment_0" addNoise="false">
-        <MiriamAnnotation>
-<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Metabolite_4">
-    <dcterms:created>
-      <rdf:Description>
-        <dcterms:W3CDTF>2014-04-15T09:23:50Z</dcterms:W3CDTF>
-      </rdf:Description>
-    </dcterms:created>
-  </rdf:Description>
-</rdf:RDF>
-        </MiriamAnnotation>
-      </Metabolite>
-      <Metabolite key="Metabolite_5" name="E" simulationType="fixed" compartment="Compartment_0" addNoise="false">
-      </Metabolite>
-      <Metabolite key="Metabolite_0" name="X" simulationType="reactions" compartment="Compartment_0" addNoise="false">
-      </Metabolite>
-      <Metabolite key="Metabolite_1" name="Y" simulationType="reactions" compartment="Compartment_0" addNoise="false">
-        <MiriamAnnotation>
-<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Metabolite_1">
+  <rdf:Description rdf:about="#Metabolite_3">
     <dcterms:created>
       <rdf:Description>
         <dcterms:W3CDTF>2014-04-15T09:23:51Z</dcterms:W3CDTF>
@@ -95,9 +68,39 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
       </Metabolite>
+      <Metabolite key="Metabolite_5" name="A" simulationType="fixed" compartment="Compartment_1">
+        <MiriamAnnotation>
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Metabolite_5">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2014-04-15T09:23:50Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+        </MiriamAnnotation>
+      </Metabolite>
+      <Metabolite key="Metabolite_7" name="B" simulationType="fixed" compartment="Compartment_1">
+      </Metabolite>
+      <Metabolite key="Metabolite_9" name="D" simulationType="fixed" compartment="Compartment_1">
+        <MiriamAnnotation>
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Metabolite_9">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2014-04-15T09:23:50Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+        </MiriamAnnotation>
+      </Metabolite>
+      <Metabolite key="Metabolite_11" name="E" simulationType="fixed" compartment="Compartment_1">
+      </Metabolite>
     </ListOfMetabolites>
     <ListOfReactions>
-      <Reaction key="Reaction_0" name="R1" reversible="false" fast="false" addNoise="false">
+      <Reaction key="Reaction_0" name="R1" reversible="false" fast="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_0">
@@ -110,90 +113,90 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
         <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_2" stoichiometry="1"/>
-        </ListOfSubstrates>
-        <ListOfProducts>
-          <Product metabolite="Metabolite_0" stoichiometry="1"/>
-        </ListOfProducts>
-        <ListOfConstants>
-          <Constant key="Parameter_163" name="k1" value="1"/>
-        </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
-          <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_80">
-              <SourceParameter reference="Parameter_163"/>
-            </CallParameter>
-            <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Metabolite_2"/>
-            </CallParameter>
-          </ListOfCallParameters>
-        </KineticLaw>
-      </Reaction>
-      <Reaction key="Reaction_1" name="R2" reversible="false" fast="false" addNoise="false">
-        <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_0" stoichiometry="2"/>
-          <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
-        </ListOfSubstrates>
-        <ListOfProducts>
-          <Product metabolite="Metabolite_0" stoichiometry="3"/>
-        </ListOfProducts>
-        <ListOfConstants>
-          <Constant key="Parameter_164" name="k1" value="1"/>
-        </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
-          <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_80">
-              <SourceParameter reference="Parameter_164"/>
-            </CallParameter>
-            <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Metabolite_0"/>
-              <SourceParameter reference="Metabolite_0"/>
-              <SourceParameter reference="Metabolite_1"/>
-            </CallParameter>
-          </ListOfCallParameters>
-        </KineticLaw>
-      </Reaction>
-      <Reaction key="Reaction_2" name="R3" reversible="false" fast="false" addNoise="false">
-        <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_0" stoichiometry="1"/>
-          <Substrate metabolite="Metabolite_3" stoichiometry="1"/>
+          <Substrate metabolite="Metabolite_5" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfProducts>
           <Product metabolite="Metabolite_1" stoichiometry="1"/>
-          <Product metabolite="Metabolite_4" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_165" name="k1" value="1"/>
+          <Constant key="Parameter_4373" name="k1" value="1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
           <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_80">
-              <SourceParameter reference="Parameter_165"/>
-            </CallParameter>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Metabolite_0"/>
+              <SourceParameter reference="Parameter_4373"/>
+            </CallParameter>
+            <CallParameter functionParameter="FunctionParameter_79">
+              <SourceParameter reference="Metabolite_5"/>
+            </CallParameter>
+          </ListOfCallParameters>
+        </KineticLaw>
+      </Reaction>
+      <Reaction key="Reaction_1" name="R2" reversible="false" fast="false">
+        <ListOfSubstrates>
+          <Substrate metabolite="Metabolite_1" stoichiometry="2"/>
+          <Substrate metabolite="Metabolite_3" stoichiometry="1"/>
+        </ListOfSubstrates>
+        <ListOfProducts>
+          <Product metabolite="Metabolite_1" stoichiometry="3"/>
+        </ListOfProducts>
+        <ListOfConstants>
+          <Constant key="Parameter_4372" name="k1" value="1"/>
+        </ListOfConstants>
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
+          <ListOfCallParameters>
+            <CallParameter functionParameter="FunctionParameter_81">
+              <SourceParameter reference="Parameter_4372"/>
+            </CallParameter>
+            <CallParameter functionParameter="FunctionParameter_79">
+              <SourceParameter reference="Metabolite_1"/>
+              <SourceParameter reference="Metabolite_1"/>
               <SourceParameter reference="Metabolite_3"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
       </Reaction>
-      <Reaction key="Reaction_3" name="R4" reversible="false" fast="false" addNoise="false">
+      <Reaction key="Reaction_2" name="R3" reversible="false" fast="false">
         <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_0" stoichiometry="1"/>
+          <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
+          <Substrate metabolite="Metabolite_7" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfProducts>
-          <Product metabolite="Metabolite_5" stoichiometry="1"/>
+          <Product metabolite="Metabolite_3" stoichiometry="1"/>
+          <Product metabolite="Metabolite_9" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_166" name="k1" value="1"/>
+          <Constant key="Parameter_4371" name="k1" value="1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
           <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_80">
-              <SourceParameter reference="Parameter_166"/>
-            </CallParameter>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Metabolite_0"/>
+              <SourceParameter reference="Parameter_4371"/>
+            </CallParameter>
+            <CallParameter functionParameter="FunctionParameter_79">
+              <SourceParameter reference="Metabolite_1"/>
+              <SourceParameter reference="Metabolite_7"/>
+            </CallParameter>
+          </ListOfCallParameters>
+        </KineticLaw>
+      </Reaction>
+      <Reaction key="Reaction_3" name="R4" reversible="false" fast="false">
+        <ListOfSubstrates>
+          <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
+        </ListOfSubstrates>
+        <ListOfProducts>
+          <Product metabolite="Metabolite_11" stoichiometry="1"/>
+        </ListOfProducts>
+        <ListOfConstants>
+          <Constant key="Parameter_4370" name="k1" value="1"/>
+        </ListOfConstants>
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]">
+          <ListOfCallParameters>
+            <CallParameter functionParameter="FunctionParameter_81">
+              <SourceParameter reference="Parameter_4370"/>
+            </CallParameter>
+            <CallParameter functionParameter="FunctionParameter_79">
+              <SourceParameter reference="Metabolite_1"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
@@ -208,10 +211,10 @@ Reaction scheme where the products are created from the reactants and the change
           <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment]" value="1" type="Compartment" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
-          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X]" value="3.6132849e+21" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[Y]" value="3.6132849e+21" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[A]" value="6.022141500000002e+20" type="Species" simulationType="fixed"/>
-          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[B]" value="3.6132849e+21" type="Species" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X]" value="1.80664245e+21" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[Y]" value="1.80664245e+21" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[A]" value="3.011070750000001e+20" type="Species" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[B]" value="1.80664245e+21" type="Species" simulationType="fixed"/>
           <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[D]" value="0" type="Species" simulationType="fixed"/>
           <ModelParameter cn="CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[E]" value="0" type="Species" simulationType="fixed"/>
         </ModelParameterGroup>
@@ -234,17 +237,17 @@ Reaction scheme where the products are created from the reactants and the change
       </ModelParameterSet>
     </ListOfModelParameterSets>
     <StateTemplate>
-      <StateTemplateVariable objectReference="Model_1"/>
-      <StateTemplateVariable objectReference="Metabolite_0"/>
+      <StateTemplateVariable objectReference="Model_3"/>
       <StateTemplateVariable objectReference="Metabolite_1"/>
-      <StateTemplateVariable objectReference="Metabolite_2"/>
       <StateTemplateVariable objectReference="Metabolite_3"/>
-      <StateTemplateVariable objectReference="Metabolite_4"/>
       <StateTemplateVariable objectReference="Metabolite_5"/>
-      <StateTemplateVariable objectReference="Compartment_0"/>
+      <StateTemplateVariable objectReference="Metabolite_7"/>
+      <StateTemplateVariable objectReference="Metabolite_9"/>
+      <StateTemplateVariable objectReference="Metabolite_11"/>
+      <StateTemplateVariable objectReference="Compartment_1"/>
     </StateTemplate>
     <InitialState type="initialState">
-      0 3.6132849e+21 3.6132849e+21 6.022141500000002e+20 3.6132849e+21 0 0 1 
+      0 1.80664245e+21 1.80664245e+21 3.011070750000001e+20 1.80664245e+21 0 0 1 
     </InitialState>
   </Model>
   <ListOfTasks>
@@ -404,7 +407,7 @@ Reaction scheme where the products are created from the reactants and the change
         <ParameterGroup name="ListOfVariables">
           <ParameterGroup name="Variables">
             <Parameter name="SingleObject" type="cn" value=""/>
-            <Parameter name="ObjectListType" type="unsignedInteger" value="0"/>
+            <Parameter name="ObjectListType" type="unsignedInteger" value="41"/>
           </ParameterGroup>
           <ParameterGroup name="Variables">
             <Parameter name="SingleObject" type="cn" value=""/>
@@ -659,41 +662,43 @@ Reaction scheme where the products are created from the reactants and the change
       </ListOfPlotItems>
     </PlotSpecification>
   </ListOfPlots>
+  <GUI>
+  </GUI>
   <ListOfLayouts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Layout key="Layout_2" name="COPASI autolayout">
       <Dimensions width="518.0082868417473" height="244.2198232023391"/>
       <ListOfMetabGlyphs>
-        <MetaboliteGlyph key="Layout_3" name="MetabGlyph" metabolite="Metabolite_1">
+        <MetaboliteGlyph key="Layout_3" name="MetabGlyph" metabolite="Metabolite_3">
           <BoundingBox>
             <Position x="71.94928123362001" y="181.8295212346802"/>
             <Dimensions width="28" height="28"/>
           </BoundingBox>
         </MetaboliteGlyph>
-        <MetaboliteGlyph key="Layout_4" name="MetabGlyph" metabolite="Metabolite_4">
+        <MetaboliteGlyph key="Layout_4" name="MetabGlyph" metabolite="Metabolite_9">
           <BoundingBox>
             <Position x="0" y="114.2960223284924"/>
             <Dimensions width="28" height="28"/>
           </BoundingBox>
         </MetaboliteGlyph>
-        <MetaboliteGlyph key="Layout_5" name="MetabGlyph" metabolite="Metabolite_2">
+        <MetaboliteGlyph key="Layout_5" name="MetabGlyph" metabolite="Metabolite_5">
           <BoundingBox>
             <Position x="292.9359568348632" y="0"/>
             <Dimensions width="28" height="28"/>
           </BoundingBox>
         </MetaboliteGlyph>
-        <MetaboliteGlyph key="Layout_6" name="MetabGlyph" metabolite="Metabolite_5">
+        <MetaboliteGlyph key="Layout_6" name="MetabGlyph" metabolite="Metabolite_11">
           <BoundingBox>
             <Position x="322.2760304627032" y="220.96754201204"/>
             <Dimensions width="28" height="28"/>
           </BoundingBox>
         </MetaboliteGlyph>
-        <MetaboliteGlyph key="Layout_7" name="MetabGlyph" metabolite="Metabolite_3">
+        <MetaboliteGlyph key="Layout_7" name="MetabGlyph" metabolite="Metabolite_7">
           <BoundingBox>
             <Position x="98.96539633846805" y="15.34882367176255"/>
             <Dimensions width="28" height="28"/>
           </BoundingBox>
         </MetaboliteGlyph>
-        <MetaboliteGlyph key="Layout_8" name="MetabGlyph" metabolite="Metabolite_0">
+        <MetaboliteGlyph key="Layout_8" name="MetabGlyph" metabolite="Metabolite_1">
           <BoundingBox>
             <Position x="185.7097087071927" y="125.3562558842796"/>
             <Dimensions width="28" height="28"/>
@@ -883,37 +888,37 @@ Reaction scheme where the products are created from the reactants and the change
         </ReactionGlyph>
       </ListOfReactionGlyphs>
       <ListOfTextGlyphs>
-        <TextGlyph key="Layout_24" name="TextGlyph" graphicalObject="Layout_3" originOfText="Metabolite_1">
+        <TextGlyph key="Layout_24" name="TextGlyph" graphicalObject="Layout_3" originOfText="Metabolite_3">
           <BoundingBox>
             <Position x="71.94928123362001" y="181.8295212346802"/>
             <Dimensions width="24" height="24"/>
           </BoundingBox>
         </TextGlyph>
-        <TextGlyph key="Layout_25" name="TextGlyph" graphicalObject="Layout_4" originOfText="Metabolite_4">
+        <TextGlyph key="Layout_25" name="TextGlyph" graphicalObject="Layout_4" originOfText="Metabolite_9">
           <BoundingBox>
             <Position x="0" y="114.2960223284924"/>
             <Dimensions width="24" height="24"/>
           </BoundingBox>
         </TextGlyph>
-        <TextGlyph key="Layout_26" name="TextGlyph" graphicalObject="Layout_5" originOfText="Metabolite_2">
+        <TextGlyph key="Layout_26" name="TextGlyph" graphicalObject="Layout_5" originOfText="Metabolite_5">
           <BoundingBox>
             <Position x="292.9359568348632" y="0"/>
             <Dimensions width="24" height="24"/>
           </BoundingBox>
         </TextGlyph>
-        <TextGlyph key="Layout_27" name="TextGlyph" graphicalObject="Layout_6" originOfText="Metabolite_5">
+        <TextGlyph key="Layout_27" name="TextGlyph" graphicalObject="Layout_6" originOfText="Metabolite_11">
           <BoundingBox>
             <Position x="322.2760304627032" y="220.96754201204"/>
             <Dimensions width="24" height="24"/>
           </BoundingBox>
         </TextGlyph>
-        <TextGlyph key="Layout_28" name="TextGlyph" graphicalObject="Layout_7" originOfText="Metabolite_3">
+        <TextGlyph key="Layout_28" name="TextGlyph" graphicalObject="Layout_7" originOfText="Metabolite_7">
           <BoundingBox>
             <Position x="98.96539633846805" y="15.34882367176255"/>
             <Dimensions width="24" height="24"/>
           </BoundingBox>
         </TextGlyph>
-        <TextGlyph key="Layout_29" name="TextGlyph" graphicalObject="Layout_8" originOfText="Metabolite_0">
+        <TextGlyph key="Layout_29" name="TextGlyph" graphicalObject="Layout_8" originOfText="Metabolite_1">
           <BoundingBox>
             <Position x="185.7097087071927" y="125.3562558842796"/>
             <Dimensions width="24" height="24"/>
@@ -931,26 +936,6 @@ Reaction scheme where the products are created from the reactants and the change
     <UnitDefinition key="Unit_2" name="second" symbol="s">
       <Expression>
         s
-      </Expression>
-    </UnitDefinition>
-    <UnitDefinition key="Unit_6" name="Avogadro" symbol="Avogadro">
-      <Expression>
-        Avogadro
-      </Expression>
-    </UnitDefinition>
-    <UnitDefinition key="Unit_8" name="item" symbol="#">
-      <Expression>
-        #
-      </Expression>
-    </UnitDefinition>
-    <UnitDefinition key="Unit_17" name="liter" symbol="l">
-      <Expression>
-        0.001*m^3
-      </Expression>
-    </UnitDefinition>
-    <UnitDefinition key="Unit_20" name="mole" symbol="mol">
-      <Expression>
-        Avogadro*#
       </Expression>
     </UnitDefinition>
   </ListOfUnitDefinitions>

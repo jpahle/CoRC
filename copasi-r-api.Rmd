@@ -30,9 +30,15 @@ This step makes sure the Copasi sources are cloned.
 
 The following dependencies exist for compiling the sources:
 
-cmake, swig
+xcode command line tools
 
-Cosider using homebrew for MacOS to install them:
+```{bash, eval=FALSE}
+xcode-select --install
+```
+
+Cosider using homebrew for MacOS to install other dependencies:
+
+cmake, swig
 
 ```{bash, eval=FALSE}
 brew install cmake swig
@@ -40,8 +46,8 @@ brew install cmake swig
 
 ## Fixing Copasi source
 
-I am using my own Copasi fork repository to implement some changes to allow for successfull compilation on modern macOS and to fix some problems with SWIG.
-The repository is found at:
+I am using my own Copasi fork repository to implement some changes to allow for successful compilation on modern macOS and to fix some problems with SWIG.
+The repository is located at:
 https://github.com/jonasfoe/COPASI
 
 ## Compiling Copasi dependencies
@@ -218,7 +224,8 @@ Instead, one has to find the right method to apply.
 In this case it seems to be DataModelVector_get(...) although I am unsure why as DataModelVector is not a class listed with is in the previous chunk.
 
 ```{r}
-DataModelVector_get(copasivector, 0)
+datamodel <- DataModelVector_get(copasivector, 0)
+datamodel
 ```
 
 Using $get(...) is not functional due to what seems like a bug in SWIG.
@@ -240,5 +247,23 @@ This allows for get functions to be called again.
 This chunk should then work:
 
 ```{r}
-try(copasivector$get(0))
+datamodel <- copasivector$get(0)
+datamodel
+```
+
+Objects gathered like this commonly do not have the appropriate class assigned.
+This can be fixed by assigning the class manually.
+
+```{r}
+datamodel <- as(datamodel, "_p_CDataModel")
+datamodel
+```
+
+# The rCopasi package
+
+## Building the package
+
+```{r}
+source("update-swig-in-package.R")
+devtools::install_local("rCopasi", force = TRUE)
 ```

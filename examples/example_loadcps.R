@@ -13,7 +13,7 @@ nMetab <- model$getMetabolites()$size()
 message("Number of Metabolites: " , nMetab)
 
 rm(list = ls(all.names = T))
-source("copasi_funs.R")
+library(rCopasi)
 
 filename <- "examples/brusselator_1.cps"
 

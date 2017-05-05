@@ -13,7 +13,7 @@ library(tidyverse, warn.conflicts = FALSE)
 # Initialize the API
 
 ```{r}
-source("copasi_funs.R")
+library(rCopasi)
 ```
 
 # Load a model cps file

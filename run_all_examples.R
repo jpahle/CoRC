@@ -7,7 +7,7 @@ rm(list = ls(all.names = T))
 t <- list()
 
 t$runtest <- c(
-    std = F,
+    std = T,
     rewrite = T,
     api = F
 )
@@ -36,7 +36,7 @@ t$tests <- list(
         "example9_rewrite"
     ),
     api = c(
-        
+
     )
 )
 
@@ -94,15 +94,15 @@ t$validations = list(
 for (t_test in names(t$runtest)) {
     if (t$runtest[t_test]) {
         t$testfiles <- t$tests[[t_test]]
-        
+
         for (t_testfile in t$testfiles) {
             del <- ls(all.names = T)
             del <- del[del != "t" & del != "t_test" & del != "t_testfile"]
             rm(list = del)
-            
+
             message("###START### ", t_testfile, " ###START###")
             source(paste0("copasi-examples/", t_testfile, ".R"), echo = F)
-            
+
             if (t_testfile %in% names(t$validations)) eval(t$validations[[t_testfile]])
             message("####END#### ", t_testfile, " ####END####")
         }
