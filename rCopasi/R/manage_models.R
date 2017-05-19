@@ -5,7 +5,7 @@
 #' @return a model object
 #' @export
 getCurrentModel <- function() {
-  assert_that(!purrr::is_null(pkg_env$curr_dm), msg = "No model currently in use.")
+  assert_that(!is_null(pkg_env$curr_dm), msg = "No model currently in use.")
 
   pkg_env$curr_dm
 }
@@ -54,7 +54,7 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
-  assert_that(assertthat::is.string(filename))
+  assert_that(is_scalar_character(filename))
 
   if (!assertthat::has_extension(filename, "cps")) {
     filename <- paste0(filename, ".cps")

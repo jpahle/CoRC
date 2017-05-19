@@ -10,7 +10,7 @@ runTimecourse <- function(duration, steps = 1000, initialtime = datamodel$getMod
   assert_that(confirmDatamodel(datamodel))
 
   trajectoryTask <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  assert_that(!purrr::is_null(trajectoryTask))
+  assert_that(!is_null(trajectoryTask))
 
   trajectoryTask$setMethodType("deterministic")
 
@@ -35,7 +35,7 @@ runTimecourse <- function(duration, steps = 1000, initialtime = datamodel$getMod
           timeSeries$getConcentrationData(i_step - 1L, i_var - 1L)
         }) %>%
         list() %>%
-        magrittr::set_names(timeSeries$getTitle(i_var - 1L))
+        set_names(timeSeries$getTitle(i_var - 1L))
     }) %>%
     dplyr::bind_cols()
 }

@@ -265,5 +265,5 @@ datamodel
 
 ```{r}
 source("update-swig-in-package.R")
-devtools::install_local("rCopasi", force = TRUE)
+devtools::install("rCopasi/")
 ```

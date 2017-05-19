@@ -11,8 +11,7 @@ format._p_CDataModel <- function(x, ...) {
 
   string <- ""
   string <- paste0(string, 'Model name: "' , model$getObjectName() , '"\n')
-  print(x@ref)
-  # string <- paste0(string, '@ref is set to: "' , datamodel@ref , '"\n')
+  string <- paste0(string, '@ref is set to: ' , capture.output(datamodel@ref) , '\n')
   n <- model$getCompartments()$size()
   string <- paste0(string, "Number of Compartments: " , n, "\n")
   n <- model$getMetabolites()$size()

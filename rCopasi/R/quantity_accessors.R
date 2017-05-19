@@ -30,7 +30,7 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is(species, "tbl_df"), !anyNA(species$key), purrr::is_character(species$name), purrr::is_double(species$concentration))
+  assert_that(confirmDatamodel(datamodel), is(species, "tbl_df"), !anyNA(species$key), is_character(species$name), is_double(species$concentration))
 
   metabs <- datamodel$getModel()$getMetabolites()
 
@@ -42,7 +42,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
     dplyr::mutate(key = object %>% map_chr(~ .x$getKey()))
 
   # add an id column to species, so I dont lose the sorting order
-  species <- species %>% tibble::add_column(id = seq_len(nrow(species)) - 1)
+  species <- species %>% dplyr::mutate(id = row_number() - 1)
 
   # join both dataframes but only accept rows with key that exists in the model
   metab_df <-
@@ -51,7 +51,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
 
   # apply values to all species
   metab_df %>%
-    purrrlyr::invoke_rows(.f = function(name, concentration, object, ...) {
+    pwalk(function(name, concentration, object, ...) {
       if (!is.na(name)) object$setObjectName(name)
       if (!is.na(concentration)) object$setInitialConcentration(concentration)
     })
@@ -59,7 +59,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   # if all species were given, accept the new sorting order by reshuffeling the copasi vector
   if (!anyNA(metab_df$id)) {
     metab_df %>%
-      purrrlyr::invoke_rows(.f = function(id, object, ...) {
+      pwalk(function(id, object, ...) {
         old_id <- metabs$getIndex(object)
         metabs$swap(id, old_id)
       })
