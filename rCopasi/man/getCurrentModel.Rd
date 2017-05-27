@@ -10,5 +10,5 @@ getCurrentModel()
 a model object
 }
 \description{
-\code{getCurrentModel} returns the currently active model
+\code{getCurrentModel} returns the currently active model.
 }

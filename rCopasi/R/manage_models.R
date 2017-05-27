@@ -1,6 +1,6 @@
 #' Get the currently active model
 #'
-#' \code{getCurrentModel} returns the currently active model
+#' \code{getCurrentModel} returns the currently active model.
 #'
 #' @return a model object
 #' @export
@@ -8,6 +8,31 @@ getCurrentModel <- function() {
   assert_that(!is_null(pkg_env$curr_dm), msg = "No model currently in use.")
 
   pkg_env$curr_dm
+}
+
+#' Set the currently active model
+#'
+#' \code{setCurrentModel} sets the given model as the currently active model.
+#'
+#' @param datamodel a model object
+#' @export
+setCurrentModel <- function(datamodel) {
+  assert_that(confirmDatamodel(datamodel))
+
+  pkg_env$curr_dm <- datamodel
+}
+
+#' Get a list of loaded models
+#'
+#' \code{getLoadedModels} returns a list of all loaded models.
+#'
+#' @return a list of model objects
+#' @export
+getLoadedModels <- function() {
+  dm_list <- CRootContainer_getDatamodelList()
+
+  seq_along_cv(dm_list) %>%
+    map(~ get_from_cv(dm_list, .x))
 }
 
 #' Load a model
@@ -43,6 +68,22 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel))
 
   datamodel <- CRootContainer_removeDatamodel(datamodel)
+
+  pkg_env$curr_dm <- NULL
+}
+
+#' Unload all loaded models
+#'
+#' \code{unloadAllModels} frees memory by unloading all currently active models from copasi
+#'
+#' @export
+unloadAllModels <- function() {
+  dm_list <- CRootContainer_getDatamodelList()
+
+  seq_along_cv(dm_list) %>%
+    walk(~ CRootContainer_removeDatamodel(get_from_cv(dm_list, 0)))
+
+  pkg_env$curr_dm <- NULL
 }
 
 #' Save a model as a .cps file
@@ -54,7 +95,7 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
-  assert_that(is_scalar_character(filename))
+  assert_that(confirmDatamodel(datamodel), is_scalar_character(filename))
 
   if (!assertthat::has_extension(filename, "cps")) {
     filename <- paste0(filename, ".cps")
@@ -65,4 +106,32 @@ saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
   assert_that(success, msg = paste0("Model failed to save at: ", filename))
 
   invisible(success)
+}
+
+#' Open the given model in Copasi
+#'
+#' @param datamodel a model object
+#' @export
+openCopasi <- function(datamodel = pkg_env$curr_dm) {
+  file <- tempfile(fileext = ".cps")
+  datamodel$saveModel(file, overwriteFile = TRUE)
+
+  copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+
+  if (!file.exists(copasi_loc))  copasi_loc <- "CopasiUI"
+
+  system(paste0(copasi_loc, " ", file, "&"))
+}
+
+#' Load example models
+#'
+#' \code{loadExamples} loads several example models and returns them in a list.
+#'
+#' @return a list of model objects
+#' @export
+loadExamples <- function() {
+  list(
+    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = "rCopasi")),
+    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = "rCopasi"))
+  )
 }

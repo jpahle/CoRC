@@ -32,7 +32,8 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is(species, "tbl_df"), !anyNA(species$key), is_character(species$name), is_double(species$concentration))
 
-  metabs <- datamodel$getModel()$getMetabolites()
+  model <- datamodel$getModel()
+  metabs <- model$getMetabolites()
 
   # assemble dataframe with the models species
   metab_df <-
@@ -49,13 +50,6 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
     metab_df %>%
     dplyr::left_join(species, by = "key")
 
-  # apply values to all species
-  metab_df %>%
-    pwalk(function(name, concentration, object, ...) {
-      if (!is.na(name)) object$setObjectName(name)
-      if (!is.na(concentration)) object$setInitialConcentration(concentration)
-    })
-
   # if all species were given, accept the new sorting order by reshuffeling the copasi vector
   if (!anyNA(metab_df$id)) {
     metab_df %>%
@@ -66,15 +60,24 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   }
 
   # apparently I need to give changedObjects because I cant update initial values without
-  # for now it just adds all species
   changedObjects <- ObjectStdVector()
-  metab_df$object %>% walk(~ changedObjects$push_back(.x$getObject(CCommonName("Reference=InitialConcentration"))))
 
-  datamodel$getModel()$updateInitialValues(changedObjects)
+  # apply values to all species
+  metab_df %>%
+    pwalk(function(name, concentration, object, ...) {
+      if (!is.na(name)) object$setObjectName(name)
+      if (!is.na(concentration)) {
+        object$setInitialConcentration(concentration)
+        changedObjects$push_back(object$getObject(CCommonName("Reference=InitialConcentration")))
+      }
+    })
 
-  # datamodel$getModel()$compileIfNecessary()
+  model$updateInitialValues(changedObjects)
+  delete_ObjectStdVector(changedObjects)
 
-  # datamodel$getModel()$initializeMetabolites()
+  # model$compileIfNecessary()
+
+  # model$initializeMetabolites()
 
   invisible()
 }
