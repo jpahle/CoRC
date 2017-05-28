@@ -79,7 +79,7 @@ get_from_cv <- function(copasivector, index) {
   type <- is(copasivector)[1L]
 
   # exise the items class from the classname of the vector
-  type <- paste0("_p_", stringr::str_sub(type, 17L, -3L))
+  type <- paste0("_p_", stringr::str_match(type, "_p_CDataVector\\w\\w?_(\\w+)_t")[2])
 
   # typecasting the result
   as(copasivector$get(index), type)

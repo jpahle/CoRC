@@ -1,9 +1,9 @@
 #'  Get species
 #'
-#' \code{getSpecies} returns all species as a dataframe.
+#' \code{getSpecies} returns all species as a data frame.
 #'
 #' @param datamodel a model object
-#' @return a dataframe with species and associated information
+#' @return a data frame with species and associated information
 #' @export
 getSpecies <- function(datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel))
@@ -12,8 +12,8 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 
   # assemble output dataframe
   seq_along_cv(metabs) %>%
-    map_df(function(x) {
-      metab <- get_from_cv(metabs, x)
+    map_df(~ {
+      metab <- get_from_cv(metabs, .x)
       list(
         key = metab$getKey(),
         name = metab$getObjectName(),
@@ -24,18 +24,18 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 
 #' Set species
 #'
-#' \code{setSpecies} accepts a dataframe of species and attempts to apply given values to the model depending on the 'key' column.
+#' \code{setSpecies} accepts a data frame of species and attempts to apply given values to the model depending on the 'key' column.
 #'
-#' @param species a dataframe as given from getSpecies()
+#' @param species a data frame as given from getSpecies()
 #' @param datamodel a model object
 #' @export
 setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is(species, "tbl_df"), !anyNA(species$key), is_character(species$name), is_double(species$concentration))
+  assert_that(confirmDatamodel(datamodel), is.data.frame(species), !anyNA(species$key), is_character(species$name), is_double(species$concentration))
 
   model <- datamodel$getModel()
   metabs <- model$getMetabolites()
 
-  # assemble dataframe with the models species
+  # assemble data frame with the model's species
   metab_df <-
     tibble::tibble(
       object = seq_along_cv(metabs) %>% map(~ get_from_cv(metabs, .x))

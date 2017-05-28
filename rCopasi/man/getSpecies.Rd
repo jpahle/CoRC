@@ -10,8 +10,8 @@ getSpecies(datamodel = pkg_env$curr_dm)
 \item{datamodel}{a model object}
 }
 \value{
-a dataframe with species and associated information
+a data frame with species and associated information
 }
 \description{
-\code{getSpecies} returns all species as a dataframe.
+\code{getSpecies} returns all species as a data frame.
 }

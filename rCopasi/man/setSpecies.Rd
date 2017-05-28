@@ -7,10 +7,10 @@
 setSpecies(species, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{species}{a dataframe as given from getSpecies()}
+\item{species}{a data frame as given from getSpecies()}
 
 \item{datamodel}{a model object}
 }
 \description{
-\code{setSpecies} accepts a dataframe of species and attempts to apply given values to the model depending on the 'key' column.
+\code{setSpecies} accepts a data frame of species and attempts to apply given values to the model depending on the 'key' column.
 }
