@@ -23,22 +23,47 @@ format._p_CDataModel <- function(x, ...) {
 #' @include swig_wrapper.R
 #' @export
 setMethod("print",
-          "_p_CDataModel",
-          function(x, ...) {
-              cat(format(x, ...), "\n")
-              invisible(x)
-          }
+  "_p_CDataModel",
+  function(x, ...) {
+    cat(format(x, ...), "\n")
+    invisible(x)
+  }
 )
 
 #' @include swig_wrapper.R
 #' @export
 setMethod("show",
-          "_p_CDataModel",
-          function(object) {
-              print(object)
-              invisible(object)
-          }
+  "_p_CDataModel",
+  function(object) {
+    print(object)
+    invisible(object)
+  }
 )
+
+#' Autoplot method for copasi timeseries objects.
+#'
+#' Uses ggplot2 to plot timeseries.
+#'
+#' @param object A copasi timeseries object
+#' @param \dots Species names selected for plotting
+#' @return A ggplot2 plot
+#' @importFrom ggplot2 autoplot
+#' @export
+autoplot.copasi_ts <- function(object, ...) {
+  selected <- flatten_chr(list(...)) %>% pmatch(names(object))
+  
+  if (anyNA(selected)) {
+    warning("Partial matching failed for some species")
+    selected <- selected[!is.na(selected)]
+  }
+  
+  if (!is_empty(selected)) object <- object %>% dplyr::select_(~Time, .dots = as.list(selected))
+  
+  object %>%
+    tidyr::gather(Species, Concentration, -Time) %>%
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = Concentration, group = Species, color = Species)) +
+    ggplot2::geom_line()
+}
 
 # Works like seq_along for CDataVectors (0 based index)
 seq_along_cv <- function(copasivector) {

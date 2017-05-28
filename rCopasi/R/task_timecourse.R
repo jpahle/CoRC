@@ -37,5 +37,6 @@ runTimecourse <- function(duration, steps = 1000, initialtime = datamodel$getMod
         list() %>%
         set_names(timeSeries$getTitle(i_var - 1L))
     }) %>%
-    dplyr::bind_cols()
+    dplyr::bind_cols() %>%
+    (function(x) {class(x) <- c("copasi_ts", class(x)); x})()
 }
