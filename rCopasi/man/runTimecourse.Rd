@@ -10,6 +10,8 @@ runTimecourse(duration, steps = 1000,
 }
 \arguments{
 \item{duration}{timecourse duration}
+
+\item{datamodel}{a model object}
 }
 \value{
 a data frame with a time column and species concentration columns

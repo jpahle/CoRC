@@ -16,4 +16,5 @@ A ggplot2 plot
 }
 \description{
 Uses ggplot2 to plot timeseries.
+The plot has a geom_line layer.
 }

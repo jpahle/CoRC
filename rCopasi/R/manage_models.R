@@ -40,7 +40,6 @@ getLoadedModels <- function() {
 #' \code{loadModel} loads a model into copasi and returns a reference to it.
 #'
 #' @param filename path to model
-#'
 #' @return a model object
 #' @export
 loadModel <- function(filename) {

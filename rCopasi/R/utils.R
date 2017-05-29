@@ -43,6 +43,7 @@ setMethod("show",
 #' Autoplot method for copasi timeseries objects.
 #'
 #' Uses ggplot2 to plot timeseries.
+#' The plot has a geom_line layer.
 #'
 #' @param object A copasi timeseries object
 #' @param \dots Species names selected for plotting
@@ -92,4 +93,9 @@ confirmDatamodel <- function(datamodel) {
   if (success) pkg_env$curr_dm <- datamodel
 
   success
+}
+
+# Better error message for assert_that
+assertthat::on_failure(confirmDatamodel) <- function(call, env) {
+  paste0(deparse(call$datamodel), " is not a datamodel")
 }
