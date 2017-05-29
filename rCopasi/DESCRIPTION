@@ -23,11 +23,12 @@ Imports:
     tidyr (>= 0.6.3)
 Suggests:
     testthat
-Collate:
+Collate: 
     'manage_models.R'
     'quantity_accessors.R'
     'rCopasi.R'
     'swig_wrapper.R'
+    'task_steadystate.R'
     'task_timecourse.R'
     'utils.R'
     'zzz.R'
