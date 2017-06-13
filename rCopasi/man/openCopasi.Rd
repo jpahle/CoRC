@@ -4,9 +4,13 @@
 \alias{openCopasi}
 \title{Open the given model in Copasi}
 \usage{
-openCopasi(datamodel = pkg_env$curr_dm)
+openCopasi(readin = FALSE, copasi_loc, datamodel = pkg_env$curr_dm)
 }
 \arguments{
+\item{readin}{if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel}
+
+\item{copasi_loc}{location of CopasiUI}
+
 \item{datamodel}{a model object}
 }
 \description{

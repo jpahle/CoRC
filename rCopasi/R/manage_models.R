@@ -109,17 +109,30 @@ saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
 
 #' Open the given model in Copasi
 #'
+#' @param readin if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
+#' @param copasi_loc location of CopasiUI
 #' @param datamodel a model object
 #' @export
-openCopasi <- function(datamodel = pkg_env$curr_dm) {
+openCopasi <- function(readin = FALSE, copasi_loc, datamodel = pkg_env$curr_dm) {
+  assert_that(version$os != "windows", msg = "openCopasi function is not yet implemented for windows")
+  
+  if (missing(copasi_loc)) {
+    if (substr(version$os, 1, 6) == "darwin") copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+  }
+  
+  assert_that(confirmDatamodel(datamodel), is_scalar_logical(readin), is_scalar_character(copasi_loc), assertthat::is.readable(copasi_loc))
+  
   file <- tempfile(fileext = ".cps")
   datamodel$saveModel(file, overwriteFile = TRUE)
 
-  copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
-
-  if (!file.exists(copasi_loc))  copasi_loc <- "CopasiUI"
-
-  system(paste0(copasi_loc, " ", file, "&"))
+  if (readin) {
+    system(paste0(copasi_loc, " ", file))
+    datamodel$loadModel(file)
+  } else {
+    system(paste0(copasi_loc, " ", file, "&"))
+  }
+  
+  invisible()
 }
 
 #' Load example models
