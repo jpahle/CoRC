@@ -14,13 +14,13 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
   seq_along_cv(metabs) %>%
     map_df(~ {
       metab <- get_from_cv(metabs, .x)
-      metab$compileIsInitialValueChangeAllowed()
+      # metab$compileIsInitialValueChangeAllowed()
       list(
         key = metab$getKey(),
         name = metab$getObjectName(),
         concentration = metab$getInitialConcentration(),
-        particlenum = metab$getInitialValue(),
-        modifiable = as.logical(metab$isInitialValueChangeAllowed("Concentration"))
+        particlenum = metab$getInitialValue()
+        # modifiable = as.logical(metab$isInitialValueChangeAllowed("Concentration"))
       )
     })
 }
