@@ -42,7 +42,7 @@ runTimeCourse <- function(duration, dt, intervals, suppressOutputBefore, outputE
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
 
   restoreCall <-
-    prepareTimeCourse(
+    setupTimeCourse(
       problem = problem,
       duration = duration,
       dt = dt,
@@ -66,25 +66,29 @@ runTimeCourse <- function(duration, dt, intervals, suppressOutputBefore, outputE
   if (problem$timeSeriesRequested()) {
     timeSeries <- task$getTimeSeries()
 
+    recordedSteps <- timeSeries$getRecordedSteps()
     # assemble output dataframe
     ret <-
-      1L:timeSeries$getNumVariables() %>%
+      0L:(timeSeries$getNumVariables() - 1L) %>%
       map(function(i_var) {
-        1L:timeSeries$getRecordedSteps() %>%
+        0L:(recordedSteps - 1L) %>%
           map_dbl(function(i_step) {
-            timeSeries$getConcentrationData(i_step - 1L, i_var - 1L)
+            # timeSeries$getConcentrationData(i_step, i_var)
+            CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
           }) %>%
           list() %>%
-          set_names(timeSeries$getTitle(i_var - 1L))
+          # set_names(timeSeries$getTitle(i_var))
+          set_names(CTimeSeries_getTitle(timeSeries, i_var))
       }) %>%
       dplyr::bind_cols()
+    
+    class(ret) <- prepend(class(ret), "copasi_ts")
   } else {
-    ret <- "results not saved"
+    ret <- NULL
+    if (missing(saveResultInMemory)) warning("No results generated because saveResultInMemory is set to FALSE in the model")
   }
 
-  class(ret) <- prepend(class(ret), "copasi_ts")
-
-  do.call(setupTimeCourse, list(restoreCall))
+  do.call(setupTimeCourse, restoreCall)
 
   ret
 }
