@@ -40,7 +40,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
     tibble::tibble(
       object = seq_along_cv(metabs) %>% map(~ get_from_cv(metabs, .x))
     ) %>%
-    dplyr::mutate(key = object %>% map_chr(~ .x$getKey()))
+    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getKey()))
 
   # add an id column to species, so I dont lose the sorting order
   species <- species %>% dplyr::mutate(id = row_number() - 1)
@@ -124,7 +124,7 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
     tibble::tibble(
       object = seq_along_cv(quants) %>% map(~ get_from_cv(quants, .x))
     ) %>%
-    dplyr::mutate(key = object %>% map_chr(~ .x$getKey()))
+    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getKey()))
   
   # add an id column to quantities, so I dont lose the sorting order
   quantities <- quantities %>% dplyr::mutate(id = row_number() - 1)

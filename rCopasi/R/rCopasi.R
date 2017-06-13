@@ -9,5 +9,6 @@
 #' @importFrom assertthat assert_that
 #' @import methods
 #' @import purrr
+#' @importFrom rlang .data
 #' @importFrom utils capture.output
 "_PACKAGE"

@@ -51,6 +51,7 @@ setMethod("show",
 #' @importFrom ggplot2 autoplot
 #' @export
 autoplot.copasi_ts <- function(object, ...) {
+  # use partial matching with ... args
   selected <- flatten_chr(list(...)) %>% pmatch(names(object))
   
   if (anyNA(selected)) {
@@ -58,8 +59,10 @@ autoplot.copasi_ts <- function(object, ...) {
     selected <- selected[!is.na(selected)]
   }
   
-  if (!is_empty(selected)) object <- object %>% dplyr::select_(~Time, .dots = as.list(selected))
+  # only add species selected in ...
+  if (!is_empty(selected)) object <- object %>% dplyr::select(Time, !!!selected)
   
+  # reshape data frame for ggplot and define the plot
   object %>%
     tidyr::gather(Species, Concentration, -Time) %>%
     ggplot2::ggplot(ggplot2::aes(x = Time, y = Concentration, group = Species, color = Species)) +
