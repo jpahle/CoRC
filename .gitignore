@@ -3,4 +3,4 @@
 .RData
 .Ruserdata
 *.DS_Store
-copasi-dev/build_copasi_r_bindings/
+development/copasi-source/build_copasi_r_bindings/
