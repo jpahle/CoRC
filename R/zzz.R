@@ -12,6 +12,6 @@
 .onUnload <- function(libpath) {
   # This is to make devtools::load_all work but can be removed later.
   # Same in .onLoad
-  if ("COPASI" %in% map_chr(.dynLibs(), "name")) library.dynam.unload("COPASI", libpath)
+  if ("COPASI" %in% names(getLoadedDLLs())) library.dynam.unload("COPASI", libpath)
   #
 }
