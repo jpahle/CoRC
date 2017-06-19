@@ -17,6 +17,8 @@
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
+  # use the worker function to apply all given arguments
+  # the worker function returns all args needed to restore previous settings
   restorationCall <- do.call(set_tcs_worker, tail(as.list(sys.call()), -1))
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
@@ -24,35 +26,47 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
 
   # datamodel$getModel()$setInitialTime(initialtime)
+  
+  # task$initialize(CCopasiTask.OUTPUT_UI):
+  # print ("could not initialize mca task")
+  # print(CCopasiMessage_getAllMessageText())
+  
+  # Tells copasi to run the task
+  success <- task$process(TRUE)
+  # success <- task$processWithOutputFlags(TRUE, 200)
 
-  task$process(TRUE)
-
-  if (problem$timeSeriesRequested()) {
-    timeSeries <- task$getTimeSeries()
-
-    recordedSteps <- timeSeries$getRecordedSteps()
-    # assemble output dataframe
-    ret <-
-      0L:(timeSeries$getNumVariables() - 1L) %>%
-      map(function(i_var) {
-        0L:(recordedSteps - 1L) %>%
-          map_dbl(function(i_step) {
-            # timeSeries$getConcentrationData(i_step, i_var)
-            CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
-          }) %>%
-          list() %>%
-          # set_names(timeSeries$getTitle(i_var))
-          set_names(CTimeSeries_getTitle(timeSeries, i_var))
-      }) %>%
-      dplyr::bind_cols()
-    
-    class(ret) <- prepend(class(ret), "copasi_ts")
-  } else {
-    ret <- NULL
-    if (is.null(saveResultInMemory)) warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
-  }
-
+  # Call the worker again to restore previous settings.
   do.call(set_tcs_worker, restorationCall)
+
+  ret <- NULL
+  if (success) {
+    if (problem$timeSeriesRequested()) {
+      timeSeries <- task$getTimeSeries()
+  
+      recordedSteps <- timeSeries$getRecordedSteps()
+      # assemble output dataframe
+      # Iterates over all species/variables and all timepoints/steps
+      # Inner loops creates numeric() wrapped in a named list
+      # Outer loop binds all lists to a data frame
+      ret <-
+        0L:(timeSeries$getNumVariables() - 1L) %>%
+        map(function(i_var) {
+          0L:(recordedSteps - 1L) %>%
+            map_dbl(function(i_step) {
+              # timeSeries$getConcentrationData(i_step, i_var)
+              CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+            }) %>%
+            list() %>%
+            # set_names(timeSeries$getTitle(i_var))
+            set_names(CTimeSeries_getTitle(timeSeries, i_var))
+        }) %>%
+        dplyr::bind_cols()
+      
+      class(ret) <- prepend(class(ret), "copasi_ts")
+    } else if (is.null(saveResultInMemory)) warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
+  } else {
+    stop("Processing the task failed:\n", task$getProcessError())
+  }
 
   ret
 }
@@ -75,6 +89,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
+  # Call the worker to set all settings
   do.call(set_tcs_worker, tail(as.list(sys.call()), -1))
   
   invisible()
@@ -101,6 +116,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   
   if (!is.null(method)) {
     if (is_scalar_character(method)) method <- list(method = method)
+    # hack to get nice error message if method string is not accepted.
     with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
   }
   
@@ -144,6 +160,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   if (!is.null(updateModel)) warning("updateModel not yet implemented")
   
   if (!is.null(method)) {
+    # We need to keep track of the previously set method
     restorationCall$method_old = task$getMethod()$getSubType()
     
     task$setMethodType(method$method)
@@ -162,6 +179,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
       method <- method[validmethods]
       positions <- positions[validmethods]
       
+      # assemble for all given parameters a list of name, oldval and whether writing it was successful
       status <-
         seq_along(method) %>%
         map(~{
@@ -177,14 +195,17 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
       
       failures <- status[!map_lgl(status, "success")]
       
+      # Only work with successfully written parameters now.
       status <- transpose(status[map_lgl(status, "success")])
       
+      # Overwritten parameters need to be in the restorationCall
       if (!is_empty(status)) {
         restorationCall$method <-
           restorationCall$method %>%
           append(set_names(status$oldval, flatten_chr(status$param)))
       }
       
+      # First restore everything and then give complete feedback error.
       if (!is_empty(bad_names) || !is_empty(failures)) {
         do.call(set_tcs_worker, restorationCall)
         errmsg <- ""
@@ -195,50 +216,10 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     }
   }
   
+  # method_old is only set if the purpose of calling the function was a restorationCall
   if (!is.null(method_old)) {
     task$setMethodType(method_old)
   }
   
   restorationCall
-}
-
-cparameter_set_functions <-
-  list(
-    DOUBLE = CCopasiParameter_setDblValue,
-    UDOUBLE = CCopasiParameter_setUDblValue,
-    INT = CCopasiParameter_setIntValue,
-    UINT = CCopasiParameter_setUIntValue,
-    BOOL = CCopasiParameter_setBoolValue,
-    STRING = CCopasiParameter_setStringValue,
-    GROUP = NULL, # setGroupValue
-    CN = NULL, # setCNValue
-    KEY = NULL, # setKeyValue
-    FILE = NULL, # setFileValue
-    EXPRESSION = NULL,
-    INVALID = NULL
-  )
-
-cparameter_get_functions <-
-  list(
-    DOUBLE = CCopasiParameter_getDblValue,
-    UDOUBLE = CCopasiParameter_getUDblValue,
-    INT = CCopasiParameter_getIntValue,
-    UINT = CCopasiParameter_getUIntValue,
-    BOOL = CCopasiParameter_getBoolValue,
-    STRING = CCopasiParameter_getStringValue,
-    GROUP = NULL, # setGroupValue
-    CN = NULL, # setCNValue
-    KEY = NULL, # setKeyValue
-    FILE = NULL, # setFileValue
-    EXPRESSION = NULL,
-    INVALID = NULL
-  )
-
-methodstructure <- function(method) {
-  names <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getObjectName()) %>% make.names(unique = TRUE)
-  
-  types <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getType())
-  if (contains(types, NULL)) warning("Unknown type found with parameters: ", paste(names[map_lgl(types, is.null)], collapse = "; "))
-
-  types %>% set_names(names)
 }

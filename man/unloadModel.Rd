@@ -10,5 +10,5 @@ unloadModel(datamodel = pkg_env$curr_dm)
 \item{datamodel}{a model object}
 }
 \description{
-\code{unloadModel} frees memory by unloading a currently active model from copasi
+\code{unloadModel} frees memory by unloading a model from copasi
 }

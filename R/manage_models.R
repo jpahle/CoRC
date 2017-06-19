@@ -59,7 +59,7 @@ loadModel <- function(filename) {
 
 #' Unload a model
 #'
-#' \code{unloadModel} frees memory by unloading a currently active model from copasi
+#' \code{unloadModel} frees memory by unloading a model from copasi
 #'
 #' @param datamodel a model object
 #' @export
@@ -73,7 +73,7 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 
 #' Unload all loaded models
 #'
-#' \code{unloadAllModels} frees memory by unloading all currently active models from copasi
+#' \code{unloadAllModels} frees memory by unloading all loaded models from copasi
 #'
 #' @export
 unloadAllModels <- function() {
@@ -93,7 +93,7 @@ unloadAllModels <- function() {
 #' @param overwrite is overwriting existing files allowed?
 #' @param datamodel a model object
 #' @export
-saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
+saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(filename))
 
   if (!assertthat::has_extension(filename, "cps")) {
@@ -107,7 +107,7 @@ saveCPS <- function(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm) {
   invisible(success)
 }
 
-#' Open the given model in Copasi
+#' Open the given model in the Copasi UI
 #'
 #' @param readin if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
 #' @param copasi_loc location of CopasiUI
@@ -128,6 +128,7 @@ openCopasi <- function(readin = FALSE, copasi_loc, datamodel = pkg_env$curr_dm) 
   if (readin) {
     system(paste0(copasi_loc, " ", file))
     datamodel$loadModel(file)
+    file.remove(file)
   } else {
     system(paste0(copasi_loc, " ", file, "&"))
   }

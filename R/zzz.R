@@ -3,7 +3,8 @@
   
   # This is to make devtools::load_all work but can be removed later.
   # Same in .onUnload
-  library.dynam("COPASI", "CoRC", .libPaths())
+  # library.dynam("COPASI", pkgname, libname)
+  library.dynam("COPASI", pkgname, .libPaths())
   #
   
   invisible()

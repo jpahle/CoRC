@@ -10,5 +10,5 @@
 #' @import methods
 #' @import purrr
 #' @importFrom rlang .data
-#' @importFrom utils capture.output
+#' @importFrom utils capture.output head tail
 "_PACKAGE"

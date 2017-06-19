@@ -1,5 +1,5 @@
 library(purrr)
-autoplot <- ggplot2::autoplot
+library(ggplot2)
 .data <- rlang::.data
 library(assertthat)
 library(devtools)
@@ -12,3 +12,5 @@ setCurrentModel(
 datamodel <- getCurrentModel()
 setTimeCourseSettings(duration = 100, dt = 1)
 # devtools::document(); devtools::install()
+
+ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}

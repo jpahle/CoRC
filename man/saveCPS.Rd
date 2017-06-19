@@ -4,7 +4,8 @@
 \alias{saveCPS}
 \title{Save a model as a .cps file}
 \usage{
-saveCPS(filename, overwrite = FALSE, datamodel = pkg_env$curr_dm)
+saveCPS(filename = datamodel$getFileName(), overwrite = FALSE,
+  datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{filename}{a path to save to}

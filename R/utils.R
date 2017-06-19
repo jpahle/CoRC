@@ -102,3 +102,46 @@ confirmDatamodel <- function(datamodel) {
 assertthat::on_failure(confirmDatamodel) <- function(call, env) {
   paste0(deparse(call$datamodel), " is not a datamodel")
 }
+
+# CParameter gives us only feedback on what kind of value it needs.
+# It is our responsibility to call the right function which is why this list is needed.
+cparameter_set_functions <-
+  list(
+    DOUBLE = CCopasiParameter_setDblValue,
+    UDOUBLE = CCopasiParameter_setUDblValue,
+    INT = CCopasiParameter_setIntValue,
+    UINT = CCopasiParameter_setUIntValue,
+    BOOL = CCopasiParameter_setBoolValue,
+    STRING = CCopasiParameter_setStringValue,
+    GROUP = NULL, # setGroupValue
+    CN = NULL, # setCNValue
+    KEY = NULL, # setKeyValue
+    FILE = NULL, # setFileValue
+    EXPRESSION = NULL,
+    INVALID = NULL
+  )
+
+cparameter_get_functions <-
+  list(
+    DOUBLE = CCopasiParameter_getDblValue,
+    UDOUBLE = CCopasiParameter_getUDblValue,
+    INT = CCopasiParameter_getIntValue,
+    UINT = CCopasiParameter_getUIntValue,
+    BOOL = CCopasiParameter_getBoolValue,
+    STRING = CCopasiParameter_getStringValue,
+    GROUP = NULL, # setGroupValue
+    CN = NULL, # setCNValue
+    KEY = NULL, # setKeyValue
+    FILE = NULL, # setFileValue
+    EXPRESSION = NULL,
+    INVALID = NULL
+  )
+
+methodstructure <- function(method) {
+  names <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getObjectName()) %>% make.names(unique = TRUE)
+  
+  types <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getType())
+  if (contains(types, NULL)) warning("Unknown type found with parameters: ", paste(names[map_lgl(types, is.null)], collapse = "; "))
+  
+  types %>% set_names(names)
+}
