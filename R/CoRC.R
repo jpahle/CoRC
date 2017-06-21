@@ -5,7 +5,6 @@
 #' @section quantity accessors:
 #' Use dataframes to manipulate species and quantities and stuff
 #'
-#' @useDynLib COPASI
 #' @importFrom assertthat assert_that
 #' @import methods
 #' @import purrr

@@ -2,6 +2,7 @@
 
 S3method(autoplot,copasi_ts)
 S3method(format,"_p_CDataModel")
+export(getCopasi)
 export(getCurrentModel)
 export(getGlobalQuantities)
 export(getLoadedModels)
@@ -32,4 +33,3 @@ importFrom(rlang,.data)
 importFrom(utils,capture.output)
 importFrom(utils,head)
 importFrom(utils,tail)
-useDynLib(COPASI)
