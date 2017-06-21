@@ -28,6 +28,7 @@ Suggests:
 Collate: 
     'CoRC.R'
     'manage_models.R'
+    'manage_properties.R'
     'quantity_accessors.R'
     'swig_wrapper.R'
     'task_steadystate.R'
