@@ -19,7 +19,18 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
-  restorationCall <- do.call(set_tcs_worker, tail(as.list(sys.call()), -1))
+  restorationCall <- set_tcs_worker(
+    duration = duration,
+    dt = dt,
+    intervals = intervals,
+    suppressOutputBefore = suppressOutputBefore,
+    outputEvents = outputEvents,
+    saveResultInMemory = saveResultInMemory,
+    startInSteadyState = startInSteadyState,
+    updateModel = updateModel,
+    method = method,
+    datamodel = datamodel
+  )
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
@@ -90,7 +101,18 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
   assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
   # Call the worker to set all settings
-  do.call(set_tcs_worker, tail(as.list(sys.call()), -1))
+  set_tcs_worker(
+    duration = duration,
+    dt = dt,
+    intervals = intervals,
+    suppressOutputBefore = suppressOutputBefore,
+    outputEvents = outputEvents,
+    saveResultInMemory = saveResultInMemory,
+    startInSteadyState = startInSteadyState,
+    updateModel = updateModel,
+    method = method,
+    datamodel = datamodel
+  )
   
   invisible()
 }
