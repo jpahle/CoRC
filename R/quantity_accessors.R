@@ -113,7 +113,7 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
 #'
 #' \code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
 #'
-#' @param species a data frame as given from getGlobalQuantities()
+#' @param quantities a data frame as given from getGlobalQuantities()
 #' @param datamodel a model object
 #' @export
 setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {

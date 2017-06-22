@@ -42,7 +42,7 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
 #'
 #' \code{setT} .
 #'
-#' @param x 
+#' @param unit 
 #' @param datamodel a model object
 ##' @export
 setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {

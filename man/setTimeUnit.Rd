@@ -7,9 +7,9 @@
 setTimeUnit(unit, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{unit}{}
 
-\item{x}{}
+\item{datamodel}{a model object}
 }
 \description{
 \code{setT} .

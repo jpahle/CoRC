@@ -7,9 +7,9 @@
 setGlobalQuantities(quantities, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{quantities}{a data frame as given from getGlobalQuantities()}
 
-\item{species}{a data frame as given from getGlobalQuantities()}
+\item{datamodel}{a model object}
 }
 \description{
 \code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
