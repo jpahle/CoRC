@@ -9,6 +9,9 @@ getTimeUnit(datamodel = pkg_env$curr_dm)
 \arguments{
 \item{datamodel}{a model object}
 }
+\value{
+unit of time
+}
 \description{
 \code{getTimeUnit} gets the unit used for time.
 }

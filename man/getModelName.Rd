@@ -9,6 +9,9 @@ getModelName(datamodel = pkg_env$curr_dm)
 \arguments{
 \item{datamodel}{a model object}
 }
+\value{
+name
+}
 \description{
-\code{getModelName} gives the name of the currently active model.
+\code{getModelName} gives the name of the model.
 }

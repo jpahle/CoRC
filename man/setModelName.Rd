@@ -12,5 +12,5 @@ setModelName(name, datamodel = pkg_env$curr_dm)
 \item{datamodel}{a model object}
 }
 \description{
-\code{setModelName} .
+\code{setModelName} sets the name of the model.
 }

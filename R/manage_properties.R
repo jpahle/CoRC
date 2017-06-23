@@ -1,8 +1,9 @@
 #' Get a model's name
 #'
-#' \code{getModelName} gives the name of the currently active model.
+#' \code{getModelName} gives the name of the model.
 #'
 #' @param datamodel a model object
+#' @return name
 #' @export
 getModelName <- function(datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel))
@@ -12,7 +13,7 @@ getModelName <- function(datamodel = pkg_env$curr_dm) {
 
 #' Set a model's name
 #'
-#' \code{setModelName} .
+#' \code{setModelName} sets the name of the model.
 #'
 #' @param name the new model name
 #' @param datamodel a model object
@@ -24,6 +25,8 @@ setModelName <- function(name, datamodel = pkg_env$curr_dm) {
     datamodel$getModel()$setObjectName(name),
     msg = "Setting model name failed."
   )
+  
+  invisible()
 }
 
 #' Get the unit of time
@@ -31,6 +34,7 @@ setModelName <- function(name, datamodel = pkg_env$curr_dm) {
 #' \code{getTimeUnit} gets the unit used for time.
 #'
 #' @param datamodel a model object
+#' @return unit of time
 #' @export
 getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel))
@@ -38,54 +42,130 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
   datamodel$getModel()$getTimeUnitName()
 }
 
-#' Set
+#' Set the unit of time
 #'
-#' \code{setT} .
+#' \code{setTimeUnit} sets the unit used for time.
 #'
-#' @param unit 
+#' @param unit string
 #' @param datamodel a model object
-##' @export
+#' @export
 setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
   cunit <- CUnit(unit)
-  
-  assert_that(
-    cunit$isUnitType("time"),
-    msg = paste0(unit, "is not a valid time unit.")
-  )
-  
+  accepted <- cunit$isUnitType("time")
   delete(cunit)
+  
+  assert_that(accepted, msg = paste0(unit, " is not a valid time unit."))
   
   assert_that(
     datamodel$getModel()$setTimeUnitFromString(unit),
     msg = "Setting time unit failed."
   )
+  
+  invisible()
 }
 
-#' #' Get 
-#' #'
-#' #' \code{getT} .
-#' #'
-#' #' @param datamodel a model object
-#' ##' @export
-#' getT <- function(datamodel = pkg_env$curr_dm) {
-#'   assert_that(confirmDatamodel(datamodel))
-#' }
-#' 
-#' #' Set
-#' #'
-#' #' \code{setT} .
-#' #'
-#' #' @param x 
-#' #' @param datamodel a model object
-#' ##' @export
-#' setT <- function(x, datamodel = pkg_env$curr_dm) {
-#'   assert_that(confirmDatamodel(datamodel), )
-#'   
-#'   assert_that(
-#'     do(x),
-#'     msg = "Setting x failed."
-#'   )
-#' }
-#' 
+#' Get the unit of volume
+#'
+#' \code{getTimeUnit} gets the unit used for volume.
+#'
+#' @param datamodel a model object
+#' @return unit of volume
+#' @export
+getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  datamodel$getModel()$getVolumeUnitName()
+}
+
+#' Set the unit of volume
+#'
+#' \code{setVolumeUnit} sets the unit used for volume.
+#'
+#' @param unit string
+#' @param datamodel a model object
+#' @export
+setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
+  
+  cunit <- CUnit(unit)
+  
+  cunit <- CUnit(unit)
+  accepted <- cunit$isUnitType("volume")
+  delete(cunit)
+  
+  assert_that(accepted, msg = paste0(unit, " is not a valid volume unit."))
+  
+  assert_that(
+    datamodel$getModel()$setVolumeUnitFromString(unit),
+    msg = "Setting volume unit failed."
+  )
+  
+  invisible()
+}
+
+#' Get the unit of quantity
+#'
+#' \code{getQuantityUnit} gets the unit used for quantitiy.
+#'
+#' @param datamodel a model object
+#' @return unit of quantity
+#' @export
+getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  datamodel$getModel()$getQuantityUnitName()
+}
+
+#' Set the unit of quantity
+#'
+#' \code{setQuantityUnit} sets the unit used for quantity.
+#'
+#' @param unit string
+#' @param datamodel a model object
+#' @export
+setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
+  
+  cunit <- CUnit(unit)
+  accepted <- cunit$isUnitType("quantity")
+  delete(cunit)
+  
+  assert_that(accepted, msg = paste0(unit, " is not a valid quantity unit."))
+  
+  assert_that(
+    datamodel$getModel()$setQuantityUnitFromString(unit),
+    msg = "Setting volume unit failed."
+  )
+  
+  invisible()
+}
+
+
+#' Get the model's inital time
+#'
+#' \code{getInitialTime} gets the initial time of the model.
+#'
+#' @param datamodel a model object
+#' @export
+getInitialTime <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  datamodel$getModel()$getInitialTime()
+}
+
+#' Set the model's initial time
+#'
+#' \code{setInitialTime} sets the initial time of the model.
+#'
+#' @param time numeric
+#' @param datamodel a model object
+#' @export
+setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel), is_scalar_numeric(time), time >= 0)
+  
+  datamodel$getModel()$setInitialTime(time)
+  
+  invisible()
+}
