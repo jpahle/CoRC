@@ -15,10 +15,10 @@ Initial setup of the Copasi R API requires checking out the copasi-r-api reposit
 Use this command to clone the repository:
 
 ```{bash, eval=FALSE}
-git clone --recursive https://github.com/jpahle/CoRC
+git clone https://github.com/jpahle/CoRC
 ```
 
-If the repository is already cloned, use:
+Once the repository is cloned, use:
 
 ```{bash, eval=FALSE}
 git submodule update --init --recursive
