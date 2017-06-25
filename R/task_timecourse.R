@@ -49,36 +49,38 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   # Call the worker again to restore previous settings.
   do.call(set_tcs_worker, restorationCall)
 
-  ret <- NULL
-  if (success) {
-    if (problem$timeSeriesRequested()) {
-      timeSeries <- task$getTimeSeries()
+  assert_that(
+    success,
+    msg = paste0("Processing the task failed:\n", task$getProcessError())
+  )
   
-      recordedSteps <- timeSeries$getRecordedSteps()
-      # assemble output dataframe
-      # Iterates over all species/variables and all timepoints/steps
-      # Inner loops creates numeric() wrapped in a named list
-      # Outer loop binds all lists to a data frame
-      ret <-
-        0L:(timeSeries$getNumVariables() - 1L) %>%
-        map(function(i_var) {
-          0L:(recordedSteps - 1L) %>%
-            map_dbl(function(i_step) {
-              # timeSeries$getConcentrationData(i_step, i_var)
-              CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
-            }) %>%
-            list() %>%
-            # set_names(timeSeries$getTitle(i_var))
-            set_names(CTimeSeries_getTitle(timeSeries, i_var))
-        }) %>%
-        dplyr::bind_cols()
-      
-      class(ret) <- prepend(class(ret), "copasi_ts")
-    } else if (is.null(saveResultInMemory)) warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
-  } else {
-    stop("Processing the task failed:\n", task$getProcessError())
-  }
+  ret <- NULL
+  if (problem$timeSeriesRequested()) {
+    timeSeries <- task$getTimeSeries()
 
+    recordedSteps <- timeSeries$getRecordedSteps()
+    # assemble output dataframe
+    # Iterates over all species/variables and all timepoints/steps
+    # Inner loops creates numeric() wrapped in a named list
+    # Outer loop binds all lists to a data frame
+    ret <-
+      0L:(timeSeries$getNumVariables() - 1L) %>%
+      map(function(i_var) {
+        0L:(recordedSteps - 1L) %>%
+          map_dbl(function(i_step) {
+            # timeSeries$getConcentrationData(i_step, i_var)
+            CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+          }) %>%
+          list() %>%
+          # set_names(timeSeries$getTitle(i_var))
+          set_names(CTimeSeries_getTitle(timeSeries, i_var))
+      }) %>%
+      dplyr::bind_cols()
+    
+    class(ret) <- prepend(class(ret), "copasi_ts")
+  } else if (is.null(saveResultInMemory))
+    warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
+  
   ret
 }
 
@@ -179,7 +181,10 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     problem$setStartInSteadyState(startInSteadyState)
   }
   
-  if (!is.null(updateModel)) warning("updateModel not yet implemented")
+  if (!is.null(updateModel)) {
+    restorationCall$updateModel <- (task$isUpdateModel() == 1)
+    task$setUpdateModel(updateModel)
+  }
   
   if (!is.null(method)) {
     # We need to keep track of the previously set method
