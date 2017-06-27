@@ -113,24 +113,32 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
 #' @param copasi_loc location of CopasiUI
 #' @param datamodel a model object
 #' @export
-openCopasi <- function(readin = FALSE, copasi_loc, datamodel = pkg_env$curr_dm) {
-  assert_that(version$os != "windows", msg = "openCopasi function is not yet implemented for windows")
+openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel), is_scalar_logical(readin), is_scalar_character(copasi_loc))
   
-  if (missing(copasi_loc)) {
-    if (substr(version$os, 1, 6) == "darwin") copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+  if (.Platform$OS.type == "windows") {
+    found <- !suppressWarnings(system2("where", args = copasi_loc, stdout = FALSE, stderr = FALSE))
+    if (!found && !missing(copasi_loc)) found <- assertthat::is.readable(copasi_loc)
+  } else if (.Platform$OS.type == "unix") {
+    if (substr(version$os, 1, 6) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc)) copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+    
+    found <- !system2("which", args = c("-s", copasi_loc))
   }
   
-  assert_that(confirmDatamodel(datamodel), is_scalar_logical(readin), is_scalar_character(copasi_loc), assertthat::is.readable(copasi_loc))
+  assert_that(
+    found,
+    msg = "Could not find CopasiUI."
+  )
   
   file <- tempfile(fileext = ".cps")
   datamodel$saveModel(file, overwriteFile = TRUE)
 
   if (readin) {
-    system(paste0(copasi_loc, " ", file))
+    system2(copasi_loc, file, invisible = FALSE)
     datamodel$loadModel(file)
     file.remove(file)
   } else {
-    system(paste0(copasi_loc, " ", file, "&"))
+    system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
   }
   
   invisible()
