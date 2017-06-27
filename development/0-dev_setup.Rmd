@@ -5,6 +5,18 @@ output: html_notebook
 
 ```{r setup}
 knitr::opts_knit$set(root.dir = normalizePath("../")) 
+
+ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
+reset_copasi <- function() {
+  unloadAllModels()
+  
+  setCurrentModel(
+    loadExamples()[[2]]
+  )
+  
+  assign("datamodel", getCurrentModel(), envir = .GlobalEnv)
+  setTimeCourseSettings(duration = 100, dt = 1)
+}
 ```
 
 # Document the Package
@@ -19,6 +31,14 @@ devtools::document()
 devtools::install()
 ```
 
+# Load the Package
+
+```{r}
+library(CoRC)
+
+reset_copasi()
+```
+
 # Load Development Environment
 
 ```{r}
@@ -28,18 +48,6 @@ library(ggplot2)
 library(assertthat)
 devtools::load_all()
 
-ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
-reset_copasi <- function() {
-  unloadAllModels()
-  
-  setCurrentModel(
-    loadExamples()[[2]]
-  )
-  
-  assign("datamodel", getCurrentModel(), envir = .GlobalEnv)
-  setTimeCourseSettings(duration = 100, dt = 1)
-}
-
 reset_copasi()
 ```
 
@@ -47,4 +55,10 @@ reset_copasi()
 
 ```{r}
 reset_copasi()
+```
+
+# Tests
+
+```{r}
+
 ```
