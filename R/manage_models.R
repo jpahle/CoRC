@@ -46,7 +46,7 @@ loadModel <- function(filename) {
   assert_that(assertthat::is.readable(filename))
 
   datamodel <- CRootContainer_addDatamodel()
-  success <- datamodel$loadModel(filename)
+  success <- datamodel$loadModel(normalizePath(filename))
 
   if (!success) {
     CRootContainer_removeDatamodel(datamodel)
@@ -100,7 +100,7 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
     filename <- paste0(filename, ".cps")
   }
 
-  success <- datamodel$saveModel(filename, overwriteFile = overwrite)
+  success <- datamodel$saveModel(normalizePath(filename), overwriteFile = overwrite)
 
   assert_that(success, msg = paste0("Model failed to save at: ", filename))
 
