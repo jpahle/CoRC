@@ -165,7 +165,39 @@ getInitialTime <- function(datamodel = pkg_env$curr_dm) {
 setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_numeric(time), time >= 0)
   
-  datamodel$getModel()$setInitialTime(time)
+  model <- datamodel$getModel()
+  
+  assert_that(
+    !model$isAutonomous(),
+    msg = "Model is autonomous. Can't set initial time. Consider using resetInitialTime() to reset time to 0."
+  )
+  
+  model$setInitialTime(time)
+  
+  invisible()
+}
+
+
+#' Reset the model's initial time
+#'
+#' \code{resetInitialTime} resets the initial time of the model.
+#'
+#' @param datamodel a model object
+#' @export
+resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  model <- datamodel$getModel()
+  
+  assert_that(
+    model$isAutonomous(),
+    msg = "This function is meant as a workaround for autonomous models. Consider using setInitialTime(0) to reset time to 0."
+  )
+  
+  params <- model$getActiveModelParameterSet()
+  
+  params$createFromModel()
+  params$updateModel()
   
   invisible()
 }
