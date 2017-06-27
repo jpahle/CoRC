@@ -118,8 +118,11 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
   
   if (.Platform$OS.type == "windows") {
     found <- !suppressWarnings(system2("where", args = copasi_loc, stdout = FALSE, stderr = FALSE))
+    
+    # where command can't find executables with full paths. Just test if readable for now.
     if (!found && !missing(copasi_loc)) found <- assertthat::is.readable(copasi_loc)
   } else if (.Platform$OS.type == "unix") {
+    # On darwin, CopasiUI doesn't seem to be in path so try a default location if copasi_loc wasn't given.
     if (substr(version$os, 1, 6) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc)) copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
     
     found <- !system2("which", args = c("-s", copasi_loc))
@@ -134,11 +137,18 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
   datamodel$saveModel(file, overwriteFile = TRUE)
 
   if (readin) {
-    system2(copasi_loc, file, invisible = FALSE)
+    if (.Platform$OS.type == "windows")
+      system2(copasi_loc, file, wait = TRUE, invisible = FALSE)
+    else
+      system2(copasi_loc, file, wait = TRUE)
+    
     datamodel$loadModel(file)
     file.remove(file)
   } else {
-    system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
+    if (.Platform$OS.type == "windows")
+      system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
+    else
+      system2(copasi_loc, file, wait = FALSE)
   }
   
   invisible()
