@@ -3,6 +3,22 @@ title: "0-dev_setup"
 output: html_notebook
 ---
 
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath("../")) 
+```
+
+# Document the Package
+
+```{r}
+devtools::document()
+```
+
+# Install the Package
+
+```{r}
+devtools::install()
+```
+
 # Load Development Environment
 
 ```{r}
