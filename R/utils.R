@@ -9,15 +9,14 @@ pkg_env$curr_dm <- NULL
 format._p_CDataModel <- function(x, ...) {
   model <- x$getModel()
 
-  string <- ""
-  string <- paste0(string, 'Model name: "' , model$getObjectName() , '"\n')
-  string <- paste0(string, '@ref is set to: ' , capture.output(x@ref) , '\n')
-  n <- model$getCompartments()$size()
-  string <- paste0(string, "Number of Compartments: " , n, "\n")
-  n <- model$getMetabolites()$size()
-  string <- paste0(string, "Number of Species: " , n, "\n")
-  n <- model$getReactions()$size()
-  paste0(string, "Number of Reactions: " , n, "\n")
+  string <- "# A copasi model reference:\n"
+  string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
+  string <- paste0(string, "@ref is set to: " , capture.output(x@ref) , "\n")
+  string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
+  string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
+  string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
+  
+  string
 }
 
 #' @include swig_wrapper.R

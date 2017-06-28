@@ -161,9 +161,11 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
 #' @return a list of model objects
 #' @export
 loadExamples <- function() {
+  pkgname <- getPackageName()
+  
   list(
-    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = "CoRC")),
-    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = "CoRC")),
-    multicomp = loadModel(system.file("extdata", "multicomp.cps", package = "CoRC"))
+    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = pkgname)),
+    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = pkgname)),
+    multicomp = loadModel(system.file("extdata", "multicomp.cps", package = pkgname))
   )
 }
