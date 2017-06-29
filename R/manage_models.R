@@ -133,6 +133,8 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
     msg = "Could not find CopasiUI."
   )
   
+  # Create a temp file for the model to open in the UI
+  # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
   file <- tempfile(fileext = ".cps")
   datamodel$saveModel(file, overwriteFile = TRUE)
 

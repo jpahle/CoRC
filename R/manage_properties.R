@@ -185,6 +185,9 @@ setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
+  # I think this issue was fixed lately:
+  # https://github.com/copasi/COPASI/commit/886f13dea2f58517ec757758c14358243e59bce9
+  # This function can likely be removed soon.
   assert_that(confirmDatamodel(datamodel))
   
   model <- datamodel$getModel()
