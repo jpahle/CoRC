@@ -161,6 +161,22 @@ cparameter_get_functions <-
     INVALID = NULL
   )
 
+cparameter_control_functions <-
+  list(
+    DOUBLE = is_numeric,
+    UDOUBLE = (function(x) {is_scalar_numeric(x) && x >= 0}),
+    INT = rlang::is_scalar_integerish,
+    UINT = (function(x) {rlang::is_scalar_integerish && x >= 0}),
+    BOOL = is_scalar_logical,
+    STRING = is_scalar_character,
+    GROUP = NULL, # setGroupValue
+    CN = NULL, # setCNValue
+    KEY = NULL, # setKeyValue
+    FILE = NULL, # setFileValue
+    EXPRESSION = NULL,
+    INVALID = NULL
+  )
+
 methodstructure <- function(method) {
   names <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getObjectName()) %>% make.names(unique = TRUE)
   

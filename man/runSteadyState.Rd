@@ -4,14 +4,23 @@
 \alias{runSteadyState}
 \title{Run to stready state}
 \usage{
-runSteadyState(datamodel = pkg_env$curr_dm)
+runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
+  updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
+\item{calculateJacobian}{boolean}
+
+\item{performStabilityAnalysis}{boolean}
+
+\item{updateModel}{boolean}
+
+\item{method}{list}
+
 \item{datamodel}{a model object}
 }
 \value{
-a metabolite data frame
+a list of results
 }
 \description{
-\code{runSteadyState} calculates the steady state and returns the species concentrations as a data frame
+\code{runSteadyState} calculates the steady state and returns the species concentrations as a data frame.
 }
