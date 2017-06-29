@@ -6,18 +6,21 @@ pkg_env$curr_dm <- NULL
 # Format function for the CDataModel class which is used as a basis for the print method
 #' @include swig_wrapper.R
 #' @export
-format._p_CDataModel <- function(x, ...) {
-  model <- x$getModel()
+setMethod("format",
+  "_p_CDataModel",
+  function(x, ...) {
+    model <- x$getModel()
 
-  string <- "# A copasi model reference:\n"
-  string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-  string <- paste0(string, "@ref is set to: " , capture.output(x@ref) , "\n")
-  string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
-  string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
-  string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
-  
-  string
-}
+    string <- "# A copasi model reference:\n"
+    string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
+    string <- paste0(string, "@ref is set to: " , capture.output(x@ref) , "\n")
+    string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
+    string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
+    string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
+
+    string
+  }
+)
 
 #' @include swig_wrapper.R
 #' @export
