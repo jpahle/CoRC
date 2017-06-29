@@ -14,13 +14,13 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
   seq_along_cv(metabs) %>%
     map_df(~ {
       metab <- get_from_cv(metabs, .x)
-      # metab$compileIsInitialValueChangeAllowed()
       list(
-        key = metab$getKey(),
+        key = list(structure(metab$getCN()$getString(), class = "copasi_key")),
         name = metab$getObjectName(),
+        compartment = metab$getCompartment()$getObjectName(),
+        type = stringr::str_to_lower(metab$getStatus()),
         concentration = metab$getInitialConcentration(),
         particlenum = metab$getInitialValue()
-        # modifiable = as.logical(metab$isInitialValueChangeAllowed("Concentration"))
       )
     })
 }
@@ -43,10 +43,15 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
     tibble::tibble(
       object = seq_along_cv(metabs) %>% map(~ get_from_cv(metabs, .x))
     ) %>%
-    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getKey()))
+    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
 
   # add an id column to species, so I dont lose the sorting order
-  species <- species %>% dplyr::mutate(id = row_number() - 1)
+  species <-
+    species %>%
+    dplyr::mutate(
+      id = row_number() - 1L,
+      key = as.character(key)
+    )
 
   # join both dataframes but only accept rows with key that exists in the model
   metab_df <-
@@ -87,7 +92,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
 
 #'  Get Global Quantities
 #'
-#' \code{getGlobalQuantities} returns all species as a data frame.
+#' \code{getGlobalQuantities} returns all global quantities as a data frame.
 #'
 #' @param datamodel a model object
 #' @return a data frame with global quantities and associated information
@@ -102,8 +107,9 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
     map_df(~ {
       quantity <- get_from_cv(quantities, .x)
       list(
-        key = quantity$getKey(),
+        key = list(structure(quantity$getCN()$getString(), class = "copasi_key")),
         name = quantity$getObjectName(),
+        type = stringr::str_to_lower(quantity$getStatus()),
         concentration = quantity$getInitialValue()
       )
     })
@@ -127,10 +133,10 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
     tibble::tibble(
       object = seq_along_cv(quants) %>% map(~ get_from_cv(quants, .x))
     ) %>%
-    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getKey()))
+    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
   
   # add an id column to quantities, so I dont lose the sorting order
-  quantities <- quantities %>% dplyr::mutate(id = row_number() - 1)
+  quantities <- quantities %>% dplyr::mutate(id = row_number() - 1L)
   
   # join both data frames but only accept rows with key that exists in the model
   quantity_df <-

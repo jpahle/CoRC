@@ -1,6 +1,6 @@
 #' Run a time course
 #'
-#' \code{runTimeCourse} runs a time course and returns the species data as a data frame
+#' \code{runTimeCourse} runs a time course and returns the species data as a data frame.
 #'
 #' @param duration numeric time course duration
 #' @param dt numeric
@@ -9,7 +9,7 @@
 #' @param outputEvents boolean
 #' @param saveResultInMemory boolean
 #' @param startInSteadyState boolean
-#' @param updateModel not yet implemented
+#' @param updateModel boolean
 #' @param method character or list
 #' @param datamodel a model object
 #' @return a data frame with a time column and species concentration columns
@@ -35,8 +35,6 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
-
-  # datamodel$getModel()$setInitialTime(initialtime)
   
   # task$initialize(CCopasiTask.OUTPUT_UI):
   # print ("could not initialize mca task")
@@ -86,7 +84,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 
 #' Set time course settings
 #'
-#' \code{setTimeCourseSettings} sets time course settings including method options
+#' \code{setTimeCourseSettings} sets time course settings including method options.
 #'
 #' @param duration numeric time course duration
 #' @param dt numeric
@@ -119,7 +117,7 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
   invisible()
 }
 
-set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, datamodel = pkg_env$curr_dm) {
+set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, datamodel = NULL) {
   assert_that(confirmDatamodel(datamodel))
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
@@ -182,7 +180,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- (task$isUpdateModel() == 1)
+    restorationCall$updateModel <- (task$isUpdateModel() == 1L)
     task$setUpdateModel(updateModel)
   }
   

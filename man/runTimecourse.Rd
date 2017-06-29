@@ -24,7 +24,7 @@ runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{startInSteadyState}{boolean}
 
-\item{updateModel}{not yet implemented}
+\item{updateModel}{boolean}
 
 \item{method}{character or list}
 
@@ -34,5 +34,5 @@ runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
 a data frame with a time column and species concentration columns
 }
 \description{
-\code{runTimeCourse} runs a time course and returns the species data as a data frame
+\code{runTimeCourse} runs a time course and returns the species data as a data frame.
 }

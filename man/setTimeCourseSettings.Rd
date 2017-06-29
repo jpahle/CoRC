@@ -31,5 +31,5 @@ setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
 \item{datamodel}{a model object}
 }
 \description{
-\code{setTimeCourseSettings} sets time course settings including method options
+\code{setTimeCourseSettings} sets time course settings including method options.
 }

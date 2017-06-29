@@ -39,6 +39,31 @@ setMethod("show",
   }
 )
 
+#' @export
+format.copasi_key <- function(x, ...) {
+  paste0("# A copasi species key: ", stringr::str_match(x, "([^\\[]+)\\]$")[2L])
+}
+
+#' @importFrom tibble type_sum
+#' @export
+type_sum.copasi_key <- function(x) {
+  paste0("key: ", stringr::str_match(x, "([^\\[]+)\\]$")[2L])
+}
+
+#' @export
+print.copasi_key <-
+  function(x, ...) {
+    cat(format(x, ...), "\n")
+    invisible(x)
+  }
+
+#' @export
+show.copasi_key <-
+  function(object) {
+    print(object)
+    invisible(object)
+  }
+
 #' Autoplot method for copasi timeseries objects.
 #'
 #' Uses ggplot2 to plot timeseries.
@@ -82,7 +107,7 @@ get_from_cv <- function(copasivector, index) {
   type <- is(copasivector)[1L]
 
   # exise the items class from the classname of the vector
-  type <- paste0("_p_", stringr::str_match(type, "_p_CDataVector\\w\\w?_(\\w+)_t")[2])
+  type <- paste0("_p_", stringr::str_match(type, "^_p_CDataVector\\w+_(\\w+)_t$")[2L])
 
   # typecasting the result
   as(copasivector$get(index), type)

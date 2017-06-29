@@ -13,5 +13,5 @@ getGlobalQuantities(datamodel = pkg_env$curr_dm)
 a data frame with global quantities and associated information
 }
 \description{
-\code{getGlobalQuantities} returns all species as a data frame.
+\code{getGlobalQuantities} returns all global quantities as a data frame.
 }
