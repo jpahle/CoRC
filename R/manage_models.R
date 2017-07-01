@@ -58,7 +58,7 @@ loadModel <- function(path) {
   
   if (!success) {
     CRootContainer_removeDatamodel(datamodel)
-    stop("Couldn't load SBML data.")
+    stop("Couldn't load model file.")
   }
   
   pkg_env$curr_dm <- datamodel
