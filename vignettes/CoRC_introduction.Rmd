@@ -40,8 +40,8 @@ CoRC comes with the Artistic License 2.0. By using CoRC you agree to this licens
 to be extended...
 
 ```{r}
-require(CoRC)
-require(ggplot2)
+library(CoRC)
+library(ggplot2)
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
 timecourse <- runTimeCourse(50, 0.1)
 autoplot(timecourse)
