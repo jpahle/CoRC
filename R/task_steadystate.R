@@ -92,11 +92,14 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param calculateJacobian boolean
 #' @param performStabilityAnalysis boolean
 #' @param updateModel boolean
+#' @param executable boolean
 #' @param method list
 #' @param datamodel a model object
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  # Call the worker to set all settings
+setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, executable = NULL, datamodel = pkg_env$curr_dm) {
+  assert_that(is.null(executable) || is_scalar_logical(executable))
+  
+  # Call the worker to set most settings
   set_sss_worker(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
@@ -104,6 +107,10 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
     method = method,
     datamodel = datamodel
   )
+  
+  if (!is.null(executable)) {
+    datamodel$getTask("Steady-State")$setScheduled(executable)
+  }
   
   invisible()
 }
