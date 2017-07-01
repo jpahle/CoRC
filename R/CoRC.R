@@ -48,15 +48,19 @@ COPASI_BIN_HASHES <-
 getCopasi <- function(path = NULL) {
   assert_that(is.null(path) || assertthat::is.readable(path))
   
+  # if no path is given we download the binaries
   if (is_null(path)) {
     dlurl <- "http://juergen.pahle.de/CoRC_libs/"
     dlurl <- paste0(dlurl, "v", floor(COPASI_BIN_VERSION / 10), COPASI_BIN_VERSION %% 10L, "/")
     
+    x64folder <- FALSE
     if (.Platform$OS.type == "windows") {
       platform <- "win"
+      x64folder <- TRUE
     } else if (substr(version$os, 1L, 6L) == "darwin") {
       platform <- "darwin"
     } else {
+      # Gather data about os (created for ubuntu but may work for other unix os)
       id = character()
       version = character()
       if (file.exists("/etc/os-release")) {
@@ -83,10 +87,12 @@ getCopasi <- function(path = NULL) {
     
     path <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
-    success = download.file(url = dlurl, destfile = path, method = "auto")
+    # download the binaries
+    success = download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
     
     assert_that(success == 0, msg = "Downloading copasi binaries failed.")
     
+    # Check if the hash matches
     assert_that(
       digest::digest(path, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[platform]],
       msg = "Downloaded copasi binaries are corrupted."
@@ -96,16 +102,20 @@ getCopasi <- function(path = NULL) {
   libsdir <- file.path(system.file(package = getPackageName()), "libs")
   
   # It seems in some cases a x64 folder is needed inside libs but I am unsure when and if it needs to contain files.
-  # if (version$arch == "x86_64") libsdir <- file.path(libsdir, "x64")
+  if (x64folder && version$arch == "x86_64") libsdir <- file.path(libsdir, "x64")
   
   success <- TRUE
   if (!dir.exists(libsdir)) success <- dir.create(libsdir, recursive = TRUE)
   
-  libfile <- file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext))
-  if (success) success <- file.copy(path, libfile, overwrite = TRUE)
+  # Try to unload COPASI if loaded so the binaries can be overwritten
+  try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
+  
+  # Copy file into package folder
+  if (success) success <- file.copy(path, file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 
   assert_that(success, msg = "Copying copasi binaries into package folder failed.")
   
+  # Reload libary
   library.dynam("COPASI", getPackageName(), .libPaths())
   message(getPackageName(), ": Successfully loaded copasi binaries.")
 }
