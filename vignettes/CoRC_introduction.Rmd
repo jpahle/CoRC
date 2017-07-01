@@ -29,6 +29,7 @@ You can install CoRC from [github](http://github.com) with:
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("jpahle/CoRC")
+CoRC::getCopasi()
 ```
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
@@ -38,9 +39,10 @@ CoRC comes with the Artistic License 2.0. By using CoRC you agree to this licens
 
 to be extended...
 
-```{r eval=FALSE}
+```{r}
+require(CoRC)
 require(ggplot2)
-importSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
-timecourse <- simulate()
-qplot(timecourse)
+loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+timecourse <- runTimeCourse(50, 0.1)
+autoplot(timecourse)
 ```

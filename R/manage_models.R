@@ -38,22 +38,64 @@ getLoadedModels <- function() {
 #'
 #' \code{loadModel} loads a model into copasi and returns a reference to it.
 #'
-#' @param filename path to model
+#' @param path url or path
 #' @return a model object
 #' @export
-loadModel <- function(filename) {
-  assert_that(assertthat::is.readable(filename))
-
+loadModel <- function(path) {
+  assert_that(is_scalar_character(path))
+  
   datamodel <- CRootContainer_addDatamodel()
-  success <- datamodel$loadModel(normalizePath(filename))
-
+  
+  con <- try(url(path), silent = TRUE)
+  if (!is(con, "try-error")) {
+    success <- con %>% readLines() %>% paste0(collapse = "\n") %>% datamodel$loadModelFromString()
+    close(con)
+  } else {
+    assert_that(assertthat::is.readable(path))
+    
+    success <- datamodel$loadModel(normalizePath(path))
+  }
+  
   if (!success) {
     CRootContainer_removeDatamodel(datamodel)
-    stop("Couldn't load model file.")
+    stop("Couldn't load SBML data.")
   }
-
+  
   pkg_env$curr_dm <- datamodel
-  datamodel
+  
+  invisible(datamodel)
+}
+
+#' Load SBML data
+#'
+#' \code{loadSBML} loads SBML data into copasi and returns a reference to it.
+#'
+#' @param path url or path
+#' @return a model object
+#' @export
+loadSBML <- function(path) {
+  assert_that(is_scalar_character(path))
+  
+  datamodel <- CRootContainer_addDatamodel()
+  
+  con <- try(url(path), silent = TRUE)
+  if (!is(con, "try-error")) {
+    success <- con %>% readLines() %>% paste0(collapse = "\n") %>% datamodel$importSBMLFromString()
+    close(con)
+  } else {
+    assert_that(assertthat::is.readable(path))
+    
+    success <- datamodel$importSBML(normalizePath(path))
+  }
+  
+  if (!success) {
+    CRootContainer_removeDatamodel(datamodel)
+    stop("Couldn't load SBML data.")
+  }
+  
+  pkg_env$curr_dm <- datamodel
+  
+  invisible(datamodel)
 }
 
 #' Unload a model
