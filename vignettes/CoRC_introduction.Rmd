@@ -1,0 +1,46 @@
+---
+title: "CoRC - the Copasi R Connector"
+author: "Jonas Förster & Jürgen Pahle"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+# <img src="logo/CoRC.svg" alt="CoRC logo" width="200"> --- the <b>Co</b>pasi <b>R</b> <b>C</b>onnector
+
+CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or send to cluster or cloud facilities for more demanding calculations.
+
+CoRC features:
+
+* high-level API for Copasi in the R language
+* ...
+
+You can get more information or download CoRC from <https://github.com/jpahle/CoRC/>.
+
+
+# Installation
+
+You can install CoRC from [github](http://github.com) with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("jpahle/CoRC")
+```
+
+CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
+
+
+# Examples, case-studies and workflows
+
+to be extended...
+
+```{r eval=FALSE}
+require(ggplot2)
+importSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+timecourse <- simulate()
+qplot(timecourse)
+```

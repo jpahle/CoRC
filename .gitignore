@@ -5,3 +5,4 @@
 *.DS_Store
 development/copasi-source/build_copasi_r_bindings/
 development/0-dev_setup.nb.html
+inst/doc
