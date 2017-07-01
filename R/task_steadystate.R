@@ -12,7 +12,7 @@
 runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
-  restorationCall <- set_ss_worker(
+  restorationCall <- set_sss_worker(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
@@ -30,7 +30,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 
   success <- task$process(TRUE)
   
-  do.call(set_ss_worker, restorationCall)
+  do.call(set_sss_worker, restorationCall)
   
   assert_that(
     success,
@@ -51,38 +51,32 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   
   ret$result <- task$getResult()
 
-  metabs <- model$getMetabolites()
-
   ret$species <-
-    seq_along_cv(metabs) %>%
+    get_cv(model$getMetabolites()) %>%
     map_df(~ {
-      metab <- get_from_cv(metabs, .x)
-      transit <- metab$getTransitionTime()
+      transit <- .x$getTransitionTime()
       if (!is.na(transit)) {
         list(
-          key = list(structure(metab$getCN()$getString(), class = "copasi_key")),
-          name = metab$getObjectDisplayName(),
-          type = stringr::str_to_lower(metab$getStatus()),
-          concentration = metab$getConcentration(),
-          concentration.rate = metab$getConcentrationRate(),
-          particlenum = metab$getValue(),
-          particlenum.rate = metab$getRate(),
+          key = list(structure(.x$getCN()$getString(), class = "copasi_key")),
+          name = .x$getObjectName(),
+          type = stringr::str_to_lower(.x$getStatus()),
+          concentration = .x$getConcentration(),
+          concentration.rate = .x$getConcentrationRate(),
+          particlenum = .x$getValue(),
+          particlenum.rate = .x$getRate(),
           transitiontime = transit
         )
       }
     })
   
-  reactions <- model$getReactions()
-  
   ret$reactions <-
-    seq_along_cv(reactions) %>%
+    get_cv(model$getReactions()) %>%
     map_df(~ {
-      reaction <- get_from_cv(reactions, .x)
       list(
-        key = list(structure(reaction$getCN()$getString(), class = "copasi_key")),
-        name = reaction$getObjectName(),
-        concentration.flux = reaction$getFlux(),
-        particlenum.flux = reaction$getParticleFlux()
+        key = list(structure(.x$getCN()$getString(), class = "copasi_key")),
+        name = .x$getObjectName(),
+        concentration.flux = .x$getFlux(),
+        particlenum.flux = .x$getParticleFlux()
       )
     })
   
@@ -103,7 +97,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @export
 setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   # Call the worker to set all settings
-  set_ss_worker(
+  set_sss_worker(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
@@ -114,7 +108,7 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
   invisible()
 }
 
-set_ss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = NULL) {
+set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = NULL) {
   assert_that(confirmDatamodel(datamodel))
   
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
@@ -150,45 +144,40 @@ set_ss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = N
   if (!is.null(method) && !is_empty(method)) {
     method_cop = as(task$getMethod(), "_p_CTrajectoryMethod")
   
-    validstruct <- methodstructure(method_cop)
+    # get some info on what parameters the method has
+    methodstruct <- methodstructure(method_cop) %>% tibble::rowid_to_column()
     
     method <-
-      tibble::tibble(name = names(method), value = method) %>%
-      dplyr::mutate(varposition = pmatch(name, names(validstruct)))
+      tibble::tibble(value = method) %>%
+      dplyr::mutate(rowid = pmatch(names(value), methodstruct$name))
     
     # all names that are not names of method parameters
-    bad_names <- method$name[is.na(method$varposition)]
+    bad_names <- names(method$value)[is.na(method$rowid)]
     
-    method <- dplyr::filter(method, !is.na(varposition), !map_lgl(value, is_null))
+    # merge method with relevant lines from methodstruct and check if the given values is allowed
+    method <-
+      method %>%
+      dplyr::filter(!is.na(rowid), !map_lgl(value, is_null)) %>%
+      dplyr::left_join(methodstruct, by = "rowid") %>%
+      dplyr::mutate(
+        allowed = map2_lgl(control_fun, value, ~ {
+          if (!is_null(.x)) .x(.y)
+          else TRUE
+        })
+      )
     
-    method <- dplyr::mutate(
-      method,
-      name = names(validstruct)[varposition],
-      type = validstruct[varposition],
-      allowed = map2_lgl(type, value, ~ {
-        fun <- cparameter_control_functions[[.x]]
-        if (!is_null(fun)) {
-          fun(.y)
-        } else {
-          TRUE
-        }
-      })
-    )
-    
-    # all parameters that did not satisfy the tests in cparameter_control_functions
+    # all parameters that did not satisfy the tests in methodstruct$control_fun
     forbidden <- dplyr::filter(method, !allowed)
     
     method <- dplyr::filter(method, allowed)
     
-    method <- dplyr::mutate(
-      method,
-      param = map(varposition, ~ method_cop$getParameter(.x - 1L)),
-      oldval = map2(type, param, ~ cparameter_get_functions[[.x]](.y)),
-      success = pmap_lgl(
-        list(type = type, param = param, value = value),
-        function(type, param, value) {cparameter_set_functions[[type]](param, value)}
+    # gather old value and then set new value
+    method <-
+      method %>%
+      dplyr::mutate(
+        oldval = map2(get_fun, object, ~ .x(.y)),
+        success = pmap_lgl(., function(set_fun, object, value, ...) {set_fun(object, value)})
       )
-    )
     
     # parameters where trying to set it somehow failed as per feedback from copasi
     failures <- dplyr::filter(method, !success)
@@ -202,9 +191,9 @@ set_ss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = N
     
     # First restore everything and then give complete feedback error.
     if (!is_empty(bad_names) || nrow(forbidden) != 0 || nrow(failures) != 0) {
-      do.call(set_ss_worker, restorationCall)
+      do.call(set_sss_worker, restorationCall)
       errmsg <- ""
-      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(names(validstruct), collapse = "\", \""), "\"\n")
+      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
       if (nrow(forbidden) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
       if (nrow(failures) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
       stop(errmsg)

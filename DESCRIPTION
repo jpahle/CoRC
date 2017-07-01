@@ -14,6 +14,7 @@ Depends:
     R (>= 3.4.0)
 Imports:
     assertthat (>= 0.2.0),
+    digest (>= 0.6.12),
     dplyr (>= 0.7.0),
     ggplot2 (>= 2.2.1),
     methods,
@@ -34,4 +35,5 @@ Collate:
     'task_steadystate.R'
     'task_timecourse.R'
     'utils.R'
-    'zzz.R'
+    'utils_copasi_key.R'
+    'utils_copasi_vector.R'

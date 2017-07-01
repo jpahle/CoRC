@@ -195,47 +195,59 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     method <- method[names(method) != "method"]
     
     if (!is_empty(method)) {
-      validstruct <- methodstructure(method_cop)
+      # get some info on what parameters the method has
+      methodstruct <- methodstructure(method_cop) %>% tibble::rowid_to_column()
       
-      positions <- pmatch(names(method), names(validstruct))
-      bad_names <- names(method)[is.na(positions)]
+      method <-
+        tibble::tibble(value = method) %>%
+        dplyr::mutate(rowid = pmatch(names(value), methodstruct$name))
       
-      validmethods <- !(is.na(positions) | map_lgl(method, is_null))
-      method <- method[validmethods]
-      positions <- positions[validmethods]
+      # all names that are not names of method parameters
+      bad_names <- names(method$value)[is.na(method$rowid)]
       
-      # assemble for all given parameters a list of name, oldval and whether writing it was successful
-      status <-
-        seq_along(method) %>%
-        map(~{
-          curr_pos <- positions[.x]
-          curr_param <- method_cop$getParameter(curr_pos - 1L)
-          curr_type <- validstruct[[curr_pos]]
-          list(
-            param = names(validstruct)[curr_pos],
-            oldval = cparameter_get_functions[[curr_type]](curr_param, method[[.x]]),
-            success = cparameter_set_functions[[curr_type]](curr_param, method[[.x]])
-          )
-        })
+      # merge method with relevant lines from methodstruct and check if the given values is allowed
+      method <-
+        method %>%
+        dplyr::filter(!is.na(rowid), !map_lgl(value, is_null)) %>%
+        dplyr::left_join(methodstruct, by = "rowid") %>%
+        dplyr::mutate(
+          allowed = map2_lgl(control_fun, value, ~ {
+            if (!is_null(.x)) .x(.y)
+            else TRUE
+          })
+        )
       
-      failures <- status[!map_lgl(status, "success")]
+      # all parameters that did not satisfy the tests in methodstruct$control_fun
+      forbidden <- dplyr::filter(method, !allowed)
       
-      # Only work with successfully written parameters now.
-      status <- transpose(status[map_lgl(status, "success")])
+      method <- dplyr::filter(method, allowed)
+      
+      # gather old value and then set new value
+      method <-
+        method %>%
+        dplyr::mutate(
+          oldval = map2(get_fun, object, ~ .x(.y)),
+          success = pmap_lgl(., function(set_fun, object, value, ...) {set_fun(object, value)})
+        )
+      
+      # parameters where trying to set it somehow failed as per feedback from copasi
+      failures <- dplyr::filter(method, !success)
+      
+      method <- dplyr::filter(method, success)
       
       # Overwritten parameters need to be in the restorationCall
-      if (!is_empty(status)) {
-        restorationCall$method <-
-          restorationCall$method %>%
-          append(set_names(status$oldval, flatten_chr(status$param)))
+      if (nrow(method) != 0) {
+        restorationCall$method <- 
+          append(restorationCall$method, method %>% dplyr::select(name, oldval) %>% tibble::deframe())
       }
       
       # First restore everything and then give complete feedback error.
-      if (!is_empty(bad_names) || !is_empty(failures)) {
+      if (!is_empty(bad_names) || nrow(forbidden) != 0 || nrow(failures) != 0) {
         do.call(set_tcs_worker, restorationCall)
         errmsg <- ""
-        if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(names(validstruct), collapse = "\", \""), "\"\n")
-        if (!is_empty(failures)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(map_chr(failures, "param"), collapse = "\", \""), "\" could not be set.\n")
+        if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
+        if (nrow(forbidden) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
+        if (nrow(failures) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
         stop(errmsg)
       }
     }

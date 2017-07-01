@@ -11,16 +11,15 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
   metabs <- datamodel$getModel()$getMetabolites()
 
   # assemble output dataframe
-  seq_along_cv(metabs) %>%
+  get_cv(metabs) %>%
     map_df(~ {
-      metab <- get_from_cv(metabs, .x)
       list(
-        key = list(structure(metab$getCN()$getString(), class = "copasi_key")),
-        name = metab$getObjectName(),
-        compartment = metab$getCompartment()$getObjectName(),
-        type = stringr::str_to_lower(metab$getStatus()),
-        concentration = metab$getInitialConcentration(),
-        particlenum = metab$getInitialValue()
+        key = list(as.copasi_key(.x$getCN()$getString())),
+        name = .x$getObjectName(),
+        compartment = .x$getCompartment()$getObjectName(),
+        type = stringr::str_to_lower(.x$getStatus()),
+        concentration = .x$getInitialConcentration(),
+        particlenum = .x$getInitialValue()
       )
     })
 }
@@ -29,58 +28,100 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 #'
 #' \code{setSpecies} accepts a data frame of species and attempts to apply given values to the model depending on the 'key' column.
 #'
-#' @param species a data frame as given from getSpecies()
+#' @param species a data frame as given by getSpecies()
 #' @param datamodel a model object
 #' @export
 setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is.data.frame(species), !anyNA(species$key), is_character(species$name), is_double(species$concentration))
+  assert_that(
+    confirmDatamodel(datamodel),
+    is.data.frame(species),
+    has_name(species, "key"), !anyNA(species$key),
+    !has_name(species, "name") || is_character(species$name),
+    !has_name(species, "concentration") || is_numeric(species$concentration),
+    !has_name(species, "particlenum") || rlang::is_integerish(species$particlenum)
+  )
 
-  model <- datamodel$getModel()
-  metabs <- model$getMetabolites()
-
-  # assemble data frame with the model's species
-  metab_df <-
-    tibble::tibble(
-      object = seq_along_cv(metabs) %>% map(~ get_from_cv(metabs, .x))
-    ) %>%
-    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
-
-  # add an id column to species, so I dont lose the sorting order
   species <-
     species %>%
+    tibble::as_tibble() %>%
     dplyr::mutate(
-      id = row_number() - 1L,
-      key = as.character(key)
+      object = cn_to_object(key, datamodel, "_p_CMetab")
     )
+  
+  assert_that(
+    !any(map_lgl(species$object, is_null)),
+    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(species$object, is_null)), collapse = ", "), " are invalid.")
+  )
+  
+  # metabs <- model$getMetabolites()
+  
+  # # assemble data frame with the model's species
+  # metab_df <-
+  #   tibble::tibble(
+  #     object = get_cv(metabs)
+  #   ) %>%
+  #   dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
 
-  # join both dataframes but only accept rows with key that exists in the model
-  metab_df <-
-    metab_df %>%
-    dplyr::left_join(species, by = "key")
+  # # add an id column to species, so I dont lose the sorting order
+  # species <-
+  #   species %>%
+  #   dplyr::mutate(
+  #     id = row_number() - 1L,
+  #     key = as.character(key)
+  #   )
+  
+  # # join both dataframes but only accept rows with key that exists in the model
+  # metab_df <-
+  #   metab_df %>%
+  #   dplyr::left_join(species, by = "key")
 
-  # if all species were given, accept the new sorting order by reshuffeling the copasi vector
-  if (!anyNA(metab_df$id)) {
-    metab_df %>%
-      pwalk(function(id, object, ...) {
-        old_id <- metabs$getIndex(object)
-        metabs$swap(id, old_id)
-      })
-  }
+  # # if all species were given, accept the new sorting order by reshuffeling the copasi vector
+  # if (!anyNA(metab_df$id)) {
+  #   metab_df %>%
+  #     pwalk(function(id, object, ...) {
+  #       old_id <- metabs$getIndex(object)
+  #       metabs$swap(id, old_id)
+  #     })
+  # }
 
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
-
-  # apply values to all species
-  metab_df %>%
-    pwalk(function(name, concentration, object, ...) {
-      if (!is.na(name)) object$setObjectName(name)
-      if (!is.na(concentration)) {
-        object$setInitialConcentration(concentration)
-        changedObjects$push_back(object$getObject(CCommonName("Reference=InitialConcentration")))
+  
+  # apply names
+  if (has_name(species, "name")) {
+    walk2(
+      species$object, species$name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  # apply concentrations
+  if (has_name(species, "concentration")) {
+    walk2(
+      species$object, species$concentration,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setInitialConcentration(.y)
+          changedObjects$push_back(.x$getInitialConcentrationReference())
+        }
       }
-    })
-
-  model$updateInitialValues(changedObjects)
+    )
+  }
+  
+  # apply particlenum
+  if (has_name(species, "particlenum")) {
+    walk2(
+      species$object, species$particlenum,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setInitialValue(.y)
+          changedObjects$push_back(.x$getInitialValueReference())
+        }
+      }
+    )
+  }
+  
+  datamodel$getModel()$updateInitialValues(changedObjects)
   delete_ObjectStdVector(changedObjects)
 
   # model$compileIfNecessary()
@@ -103,14 +144,13 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
   quantities <- datamodel$getModel()$getModelValues()
   
   # assemble output dataframe
-  seq_along_cv(quantities) %>%
+  get_cv(quantities) %>%
     map_df(~ {
-      quantity <- get_from_cv(quantities, .x)
       list(
-        key = list(structure(quantity$getCN()$getString(), class = "copasi_key")),
-        name = quantity$getObjectName(),
-        type = stringr::str_to_lower(quantity$getStatus()),
-        concentration = quantity$getInitialValue()
+        key = list(as.copasi_key(.x$getCN()$getString())),
+        name = .x$getObjectName(),
+        type = stringr::str_to_lower(.x$getStatus()),
+        value = .x$getInitialValue()
       )
     })
 }
@@ -119,53 +159,200 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
 #'
 #' \code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
 #'
-#' @param quantities a data frame as given from getGlobalQuantities()
+#' @param quantities a data frame as given by getGlobalQuantities()
 #' @param datamodel a model object
 #' @export
 setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is.data.frame(quantities), !anyNA(quantities$key), is_character(quantities$name), is_double(quantities$concentration))
+  assert_that(
+    confirmDatamodel(datamodel),
+    is.data.frame(quantities),
+    has_name(quantities, "key"), !anyNA(quantities$key),
+    !has_name(quantities, "name") || is_character(quantities$name),
+    !has_name(quantities, "value") || is_numeric(quantities$value)
+  )
   
-  model <- datamodel$getModel()
-  quants <- model$getModelValues()
+  quantities <-
+    quantities %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(
+      object = cn_to_object(key, datamodel, "_p_CModelValue")
+    )
   
-  # assemble data frame with the model's quantities
-  quantity_df <-
-    tibble::tibble(
-      object = seq_along_cv(quants) %>% map(~ get_from_cv(quants, .x))
-    ) %>%
-    dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
-  
-  # add an id column to quantities, so I dont lose the sorting order
-  quantities <- quantities %>% dplyr::mutate(id = row_number() - 1L)
-  
-  # join both data frames but only accept rows with key that exists in the model
-  quantity_df <-
-    quantity_df %>%
-    dplyr::left_join(quantities, by = "key")
-  
-  # if all quantities were given, accept the new sorting order by reshuffeling the copasi vector
-  if (!anyNA(quantity_df$id)) {
-    quantity_df %>%
-      pwalk(function(id, object, ...) {
-        old_id <- quants$getIndex(object)
-        quants$swap(id, old_id)
-      })
-  }
+  assert_that(
+    !any(map_lgl(quantities$object, is_null)),
+    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(quantities$object, is_null)), collapse = ", "), " are invalid.")
+  )
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
   
-  # apply values to all quantities
-  quantity_df %>%
-    pwalk(function(name, concentration, object, ...) {
-      if (!is.na(name)) object$setObjectName(name)
-      if (!is.na(concentration)) {
-        object$setInitialValue(concentration)
-        changedObjects$push_back(object$getObject(CCommonName("Reference=InitialValue")))
-      }
-    })
+  # apply names
+  if (has_name(quantities, "name")) {
+    walk2(
+      quantities$object, quantities$name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
   
-  model$updateInitialValues(changedObjects)
+  # apply value
+  if (has_name(quantities, "value")) {
+    walk2(
+      quantities$object, quantities$value,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setInitialValue(.y)
+          changedObjects$push_back(.x$getInitialValueReference())
+        }
+      }
+    )
+  }
+  
+  datamodel$getModel()$updateInitialValues(changedObjects)
+  delete_ObjectStdVector(changedObjects)
+  
+  # model$compileIfNecessary()
+  
+  # model$initializeMetabolites()
+  
+  invisible()
+}
+
+#'  Get Reactions
+#'
+#' \code{getReactions} returns all reactions as a data frame.
+#'
+#' @param datamodel a model object
+#' @return a data frame with reactions and associated information
+#' @export
+getReactions <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  reactions <- datamodel$getModel()$getReactions()
+  
+  # assemble output dataframe
+  get_cv(reactions) %>%
+    map_df(~ {
+      list(
+        key = list(as.copasi_key(.x$getCN()$getString())),
+        name = .x$getObjectName()
+      )
+    })
+}
+
+#' Set Reactions
+#'
+#' \code{setReactions} accepts a data frame of reactions and attempts to apply given values to the model depending on the 'key' column.
+#'
+#' @param reactions a data frame as given by getReactions()
+#' @param datamodel a model object
+#' @export
+setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
+  assert_that(
+    confirmDatamodel(datamodel),
+    is.data.frame(reactions),
+    has_name(reactions, "key"), !anyNA(reactions$key),
+    !has_name(reactions, "name") || is_character(reactions$name)
+  )
+  
+  reactions <-
+    reactions %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(
+      object = cn_to_object(key, datamodel, "_p_CReaction")
+    )
+  
+  assert_that(
+    !any(map_lgl(reactions$object, is_null)),
+    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(reactions$object, is_null)), collapse = ", "), " are invalid.")
+  )
+  
+  # apply names
+  if (has_name(reactions, "name")) {
+    walk2(
+      reactions$object, reactions$name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  invisible()
+}
+
+#'  Get Compartments
+#'
+#' \code{getCompartments} returns all compartments as a data frame.
+#'
+#' @param datamodel a model object
+#' @return a data frame with compartments and associated information
+#' @export
+getCompartments <- function(datamodel = pkg_env$curr_dm) {
+  assert_that(confirmDatamodel(datamodel))
+  
+  compartments <- datamodel$getModel()$getCompartments()
+  
+  # assemble output dataframe
+  get_cv(compartments) %>%
+    map_df(~ {
+      list(
+        key = list(as.copasi_key(.x$getCN()$getString())),
+        name = .x$getObjectName(),
+        volume = .x$getInitialValue()
+      )
+    })
+}
+
+#' Set Compartments
+#'
+#' \code{setCompartments} accepts a data frame of compartments and attempts to apply given values to the model depending on the 'key' column.
+#'
+#' @param compartments a data frame as given by getCompartments()
+#' @param datamodel a model object
+#' @export
+setCompartments <- function(compartments, datamodel = pkg_env$curr_dm) {
+  assert_that(
+    confirmDatamodel(datamodel),
+    is.data.frame(compartments),
+    has_name(compartments, "key"), !anyNA(compartments$key),
+    !has_name(compartments, "name") || is_character(compartments$name),
+    !has_name(compartments, "volume") || is_numeric(compartments$value)
+  )
+  
+  compartments <-
+    compartments %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(
+      object = cn_to_object(key, datamodel, "_p_CModelValue")
+    )
+  
+  assert_that(
+    !any(map_lgl(compartments$object, is_null)),
+    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(compartments$object, is_null)), collapse = ", "), " are invalid.")
+  )
+  
+  # apparently I need to give changedObjects because I cant update initial values without
+  changedObjects <- ObjectStdVector()
+  
+  # apply names
+  if (has_name(compartments, "name")) {
+    walk2(
+      compartments$object, compartments$name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  # apply volume
+  if (has_name(compartments, "volume")) {
+    walk2(
+      compartments$object, compartments$volume,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setInitialValue(.y)
+          changedObjects$push_back(.x$getInitialValueReference())
+        }
+      }
+    )
+  }
+  
+  datamodel$getModel()$updateInitialValues(changedObjects)
   delete_ObjectStdVector(changedObjects)
   
   # model$compileIfNecessary()

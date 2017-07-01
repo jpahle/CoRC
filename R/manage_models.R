@@ -31,8 +31,7 @@ setCurrentModel <- function(datamodel) {
 getLoadedModels <- function() {
   dm_list <- CRootContainer_getDatamodelList()
 
-  seq_along_cv(dm_list) %>%
-    map(~ get_from_cv(dm_list, .x))
+  get_cv(dm_list)
 }
 
 #' Load a model
@@ -79,8 +78,8 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 unloadAllModels <- function() {
   dm_list <- CRootContainer_getDatamodelList()
 
-  seq_along_cv(dm_list) %>%
-    walk(~ CRootContainer_removeDatamodel(get_from_cv(dm_list, 0L)))
+  get_cv(dm_list) %>%
+    walk(~ CRootContainer_removeDatamodel(.x))
 
   pkg_env$curr_dm <- NULL
 }
@@ -105,6 +104,22 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
   assert_that(success, msg = paste0("Model failed to save at: ", filename))
 
   invisible(success)
+}
+
+#' Load example models
+#'
+#' \code{loadExamples} loads several example models and returns them in a list.
+#'
+#' @return a list of model objects
+#' @export
+loadExamples <- function() {
+  pkgname <- getPackageName()
+  
+  list(
+    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = pkgname)),
+    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = pkgname)),
+    multicomp = loadModel(system.file("extdata", "multicomp.cps", package = pkgname))
+  )
 }
 
 #' Open the given model in the Copasi UI
@@ -137,7 +152,7 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
   # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
   file <- tempfile(fileext = ".cps")
   datamodel$saveModel(file, overwriteFile = TRUE)
-
+  
   if (readin) {
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = TRUE, invisible = FALSE)
@@ -154,20 +169,4 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
   }
   
   invisible()
-}
-
-#' Load example models
-#'
-#' \code{loadExamples} loads several example models and returns them in a list.
-#'
-#' @return a list of model objects
-#' @export
-loadExamples <- function() {
-  pkgname <- getPackageName()
-  
-  list(
-    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = pkgname)),
-    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = pkgname)),
-    multicomp = loadModel(system.file("extdata", "multicomp.cps", package = pkgname))
-  )
 }

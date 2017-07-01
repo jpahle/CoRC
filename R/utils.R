@@ -42,30 +42,19 @@ setMethod("show",
   }
 )
 
-#' @export
-format.copasi_key <- function(x, ...) {
-  paste0("# A copasi species key: ", stringr::str_match(x, "([^\\[]+)\\]$")[2L])
+# Checks whether the datamodel parameter is valid
+confirmDatamodel <- function(datamodel) {
+  success <- is(datamodel, "_p_CDataModel")
+
+  if (success) pkg_env$curr_dm <- datamodel
+
+  success
 }
 
-#' @importFrom tibble type_sum
-#' @export
-type_sum.copasi_key <- function(x) {
-  paste0("key: ", stringr::str_match(x, "([^\\[]+)\\]$")[2L])
+# Better error message for assert_that
+assertthat::on_failure(confirmDatamodel) <- function(call, env) {
+  paste0(deparse(call$datamodel), " is not a datamodel")
 }
-
-#' @export
-print.copasi_key <-
-  function(x, ...) {
-    cat(format(x, ...), "\n")
-    invisible(x)
-  }
-
-#' @export
-show.copasi_key <-
-  function(object) {
-    print(object)
-    invisible(object)
-  }
 
 #' Autoplot method for copasi timeseries objects.
 #'
@@ -96,54 +85,20 @@ autoplot.copasi_ts <- function(object, ...) {
     ggplot2::geom_line()
 }
 
-# Works like seq_along for CDataVectors (0 based index)
-seq_along_cv <- function(copasivector) {
-  len <- copasivector$size()
-  
-  if (len == 0L) return(integer())
-  
-  0L:(len - 1L)
-}
-
-# Attempts to guess what Object a CDataVector returns when $get() is called
-get_from_cv <- function(copasivector, index) {
-  type <- is(copasivector)[1L]
-
-  # exise the items class from the classname of the vector
-  type <- paste0("_p_", stringr::str_match(type, "^_p_CDataVector\\w+_(\\w+)_t$")[2L])
-
-  # typecasting the result
-  as(copasivector$get(index), type)
-}
-
-# Checks whether the datamodel parameter is valid
-confirmDatamodel <- function(datamodel) {
-  success <- is(datamodel, "_p_CDataModel")
-
-  if (success) pkg_env$curr_dm <- datamodel
-
-  success
-}
-
-# Better error message for assert_that
-assertthat::on_failure(confirmDatamodel) <- function(call, env) {
-  paste0(deparse(call$datamodel), " is not a datamodel")
-}
-
 # CParameter gives us only feedback on what kind of value it needs.
 # It is our responsibility to call the right function which is why this list is needed.
-cparameter_set_functions <-
+cparameter_control_functions <-
   list(
-    DOUBLE = CCopasiParameter_setDblValue,
-    UDOUBLE = CCopasiParameter_setUDblValue,
-    INT = CCopasiParameter_setIntValue,
-    UINT = CCopasiParameter_setUIntValue,
-    BOOL = CCopasiParameter_setBoolValue,
-    STRING = CCopasiParameter_setStringValue,
-    GROUP = NULL, # setGroupValue
-    CN = NULL, # setCNValue
-    KEY = NULL, # setKeyValue
-    FILE = NULL, # setFileValue
+    DOUBLE = is_numeric,
+    UDOUBLE = (function(x) {is_scalar_numeric(x) && x >= 0}),
+    INT = rlang::is_scalar_integerish,
+    UINT = (function(x) {rlang::is_scalar_integerish && x >= 0}),
+    BOOL = is_scalar_logical,
+    STRING = is_scalar_character,
+    GROUP = NULL,
+    CN = NULL,
+    KEY = NULL,
+    FILE = NULL,
     EXPRESSION = NULL,
     INVALID = NULL
   )
@@ -156,35 +111,42 @@ cparameter_get_functions <-
     UINT = CCopasiParameter_getUIntValue,
     BOOL = CCopasiParameter_getBoolValue,
     STRING = CCopasiParameter_getStringValue,
-    GROUP = NULL, # setGroupValue
-    CN = NULL, # setCNValue
-    KEY = NULL, # setKeyValue
-    FILE = NULL, # setFileValue
+    GROUP = CCopasiParameter_setGroupValue,
+    CN = CCopasiParameter_setCNValue,
+    KEY = CCopasiParameter_setKeyValue,
+    FILE = CCopasiParameter_setFileValue,
     EXPRESSION = NULL,
     INVALID = NULL
   )
 
-cparameter_control_functions <-
+cparameter_set_functions <-
   list(
-    DOUBLE = is_numeric,
-    UDOUBLE = (function(x) {is_scalar_numeric(x) && x >= 0}),
-    INT = rlang::is_scalar_integerish,
-    UINT = (function(x) {rlang::is_scalar_integerish && x >= 0}),
-    BOOL = is_scalar_logical,
-    STRING = is_scalar_character,
-    GROUP = NULL, # setGroupValue
-    CN = NULL, # setCNValue
-    KEY = NULL, # setKeyValue
-    FILE = NULL, # setFileValue
+    DOUBLE = CCopasiParameter_setDblValue,
+    UDOUBLE = CCopasiParameter_setUDblValue,
+    INT = CCopasiParameter_setIntValue,
+    UINT = CCopasiParameter_setUIntValue,
+    BOOL = CCopasiParameter_setBoolValue,
+    STRING = CCopasiParameter_setStringValue,
+    GROUP = CCopasiParameter_setGroupValue,
+    CN = CCopasiParameter_setCNValue,
+    KEY = CCopasiParameter_setKeyValue,
+    FILE = CCopasiParameter_setFileValue,
     EXPRESSION = NULL,
     INVALID = NULL
   )
 
 methodstructure <- function(method) {
-  names <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getObjectName()) %>% make.names(unique = TRUE)
+  struct <-
+    tibble::tibble(
+      object = seq_along_cv(method) %>% map(~ method$getParameter(.x)),
+      name = object %>% map_chr(~ .x$getObjectName()) %>% make.names(unique = TRUE),
+      type = object %>% map_chr(~ .x$getType()),
+      control_fun = cparameter_control_functions[type],
+      get_fun = cparameter_get_functions[type],
+      set_fun = cparameter_set_functions[type]
+    )
   
-  types <- seq_along_cv(method) %>% map_chr(~ method$getParameter(.x)$getType())
-  if (contains(types, NULL)) warning("Unknown type found with parameters: ", paste(names[map_lgl(types, is.null)], collapse = "; "))
+  if (contains(struct$control_fun, NULL)) warning("Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is_null)], collapse = "; "))
   
-  types %>% set_names(names)
+  struct
 }

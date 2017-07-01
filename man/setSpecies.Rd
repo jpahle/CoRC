@@ -7,7 +7,7 @@
 setSpecies(species, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{species}{a data frame as given from getSpecies()}
+\item{species}{a data frame as given by getSpecies()}
 
 \item{datamodel}{a model object}
 }

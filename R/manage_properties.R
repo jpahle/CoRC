@@ -90,8 +90,6 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
   cunit <- CUnit(unit)
-  
-  cunit <- CUnit(unit)
   accepted <- cunit$isUnitType("volume")
   delete(cunit)
   

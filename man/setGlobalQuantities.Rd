@@ -7,7 +7,7 @@
 setGlobalQuantities(quantities, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{quantities}{a data frame as given from getGlobalQuantities()}
+\item{quantities}{a data frame as given by getGlobalQuantities()}
 
 \item{datamodel}{a model object}
 }
