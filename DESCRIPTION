@@ -24,8 +24,10 @@ Imports:
     tidyr (>= 0.6.3),
     utils
 Suggests:
-    testthat
-Collate: 
+    testthat,
+    knitr,
+    rmarkdown
+Collate:
     'CoRC.R'
     'manage_models.R'
     'manage_properties.R'
@@ -35,3 +37,4 @@ Collate:
     'task_timecourse.R'
     'utils.R'
     'zzz.R'
+VignetteBuilder: knitr
