@@ -34,6 +34,7 @@ Collate:
     'manage_properties.R'
     'quantity_accessors.R'
     'swig_wrapper.R'
+    'task_parameterestimation.R'
     'task_steadystate.R'
     'task_timecourse.R'
     'utils.R'

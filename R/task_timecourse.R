@@ -1,6 +1,6 @@
 #' Run a time course
 #'
-#' \code{runTimeCourse} runs a time course and returns the species data as a data frame.
+#' \code{runTimeCourse} runs a time course and returns the time course data as a data frame.
 #'
 #' @param duration numeric time course duration
 #' @param dt numeric
@@ -12,7 +12,7 @@
 #' @param updateModel boolean
 #' @param method character or list
 #' @param datamodel a model object
-#' @return a data frame with a time column and species concentration columns
+#' @return a data frame with a time column and value columns
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")

@@ -22,5 +22,5 @@ runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
 a list of results
 }
 \description{
-\code{runSteadyState} calculates the steady state and returns the species concentrations as a data frame.
+\code{runSteadyState} calculates the steady state and returns results in a list.
 }

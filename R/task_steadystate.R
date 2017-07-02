@@ -1,6 +1,6 @@
 #' Run to stready state
 #'
-#' \code{runSteadyState} calculates the steady state and returns the species concentrations as a data frame.
+#' \code{runSteadyState} calculates the steady state and returns results in a list.
 #'
 #' @param calculateJacobian boolean
 #' @param performStabilityAnalysis boolean
