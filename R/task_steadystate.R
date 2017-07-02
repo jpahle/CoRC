@@ -96,7 +96,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param method list
 #' @param datamodel a model object
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, executable = NULL, datamodel = pkg_env$curr_dm) {
+setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_that(is.null(executable) || is_scalar_logical(executable))
   
   # Call the worker to set most settings
@@ -108,8 +108,10 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
     datamodel = datamodel
   )
   
+  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  
   if (!is.null(executable)) {
-    datamodel$getTask("Steady-State")$setScheduled(executable)
+    task$setScheduled(executable)
   }
   
   invisible()
@@ -144,7 +146,7 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- (task$isUpdateModel() == 1L)
+    restorationCall$updateModel <- task$isUpdateModel()
     task$setUpdateModel(updateModel)
   }
   
@@ -169,6 +171,7 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
       dplyr::mutate(
         allowed = map2_lgl(control_fun, value, ~ {
           if (!is_null(.x)) .x(.y)
+          # No control function defined means just pass
           else TRUE
         })
       )

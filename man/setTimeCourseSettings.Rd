@@ -7,7 +7,7 @@
 setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, method = NULL, executable = NULL,
+  updateModel = NULL, executable = NULL, method = NULL,
   datamodel = pkg_env$curr_dm)
 }
 \arguments{
@@ -27,9 +27,9 @@ setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{updateModel}{boolean}
 
-\item{method}{character or list}
-
 \item{executable}{boolean}
+
+\item{method}{character or list}
 
 \item{datamodel}{a model object}
 }

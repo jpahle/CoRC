@@ -53,10 +53,10 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   )
   
   ret <- NULL
-  if (problem$timeSeriesRequested()) {
-    timeSeries <- task$getTimeSeries()
-
-    recordedSteps <- timeSeries$getRecordedSteps()
+  timeSeries <- task$getTimeSeries()
+  recordedSteps <- timeSeries$getRecordedSteps()
+  
+  if (recordedSteps) {
     # assemble output dataframe
     # Iterates over all species/variables and all timepoints/steps
     # Inner loops creates numeric() wrapped in a named list
@@ -98,7 +98,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param method character or list
 #' @param datamodel a model object
 #' @export
-setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, executable = NULL, datamodel = pkg_env$curr_dm) {
+setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   assert_that(is.null(executable) || is_scalar_logical(executable))
   
@@ -116,8 +116,10 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
     datamodel = datamodel
   )
   
+  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  
   if (!is.null(executable)) {
-    datamodel$getTask("Time-Course")$setScheduled(executable)
+    task$setScheduled(executable)
   }
   
   invisible()
@@ -186,7 +188,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- (task$isUpdateModel() == 1L)
+    restorationCall$updateModel <- task$isUpdateModel()
     task$setUpdateModel(updateModel)
   }
   
@@ -219,6 +221,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
         dplyr::mutate(
           allowed = map2_lgl(control_fun, value, ~ {
             if (!is_null(.x)) .x(.y)
+            # No control function defined means just pass
             else TRUE
           })
         )
