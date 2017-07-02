@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{setGlobalQuantities}
 \alias{setGlobalQuantities}
-\title{Set Global Quantities}
+\title{Set global quantities}
 \usage{
 setGlobalQuantities(quantities, datamodel = pkg_env$curr_dm)
 }

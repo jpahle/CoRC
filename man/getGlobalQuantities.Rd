@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{getGlobalQuantities}
 \alias{getGlobalQuantities}
-\title{Get Global Quantities}
+\title{Get global quantities}
 \usage{
 getGlobalQuantities(datamodel = pkg_env$curr_dm)
 }

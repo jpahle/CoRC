@@ -131,7 +131,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   invisible()
 }
 
-#'  Get Global Quantities
+#'  Get global quantities
 #'
 #' \code{getGlobalQuantities} returns all global quantities as a data frame.
 #'
@@ -155,7 +155,7 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
     })
 }
 
-#' Set Global Quantities
+#' Set global quantities
 #'
 #' \code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
 #'
@@ -217,7 +217,7 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
   invisible()
 }
 
-#'  Get Reactions
+#'  Get reactions
 #'
 #' \code{getReactions} returns all reactions as a data frame.
 #'
@@ -239,7 +239,7 @@ getReactions <- function(datamodel = pkg_env$curr_dm) {
     })
 }
 
-#' Set Reactions
+#' Set reactions
 #'
 #' \code{setReactions} accepts a data frame of reactions and attempts to apply given values to the model depending on the 'key' column.
 #'
@@ -277,7 +277,7 @@ setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
   invisible()
 }
 
-#'  Get Compartments
+#'  Get compartments
 #'
 #' \code{getCompartments} returns all compartments as a data frame.
 #'
@@ -300,7 +300,7 @@ getCompartments <- function(datamodel = pkg_env$curr_dm) {
     })
 }
 
-#' Set Compartments
+#' Set compartments
 #'
 #' \code{setCompartments} accepts a data frame of compartments and attempts to apply given values to the model depending on the 'key' column.
 #'

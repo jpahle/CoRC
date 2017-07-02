@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{getReactions}
 \alias{getReactions}
-\title{Get Reactions}
+\title{Get reactions}
 \usage{
 getReactions(datamodel = pkg_env$curr_dm)
 }

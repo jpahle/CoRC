@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{getCompartments}
 \alias{getCompartments}
-\title{Get Compartments}
+\title{Get compartments}
 \usage{
 getCompartments(datamodel = pkg_env$curr_dm)
 }

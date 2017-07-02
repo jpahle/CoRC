@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{setReactions}
 \alias{setReactions}
-\title{Set Reactions}
+\title{Set reactions}
 \usage{
 setReactions(reactions, datamodel = pkg_env$curr_dm)
 }

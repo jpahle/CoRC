@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantity_accessors.R
 \name{setCompartments}
 \alias{setCompartments}
-\title{Set Compartments}
+\title{Set compartments}
 \usage{
 setCompartments(compartments, datamodel = pkg_env$curr_dm)
 }
