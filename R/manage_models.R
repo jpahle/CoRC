@@ -34,6 +34,19 @@ getLoadedModels <- function() {
   get_cv(dm_list)
 }
 
+# helper for loading models from urls
+url_to_string <- function(x) {
+  con <- try(url(x), silent = TRUE)
+  if (is(con, "try-error")) return(NULL)
+  
+  result <- quietly(readLines)(con)
+  close(con)
+  
+  assert_that(is_empty(result$warnings), msg = "Could not interpret url contents.")
+  
+  paste0(result$result, collapse = "\n")
+}
+
 #' Load a model
 #'
 #' \code{loadModel} loads a model into copasi and returns a reference to it.
@@ -46,10 +59,9 @@ loadModel <- function(path) {
   
   datamodel <- CRootContainer_addDatamodel()
   
-  con <- try(url(path), silent = TRUE)
-  if (!is(con, "try-error")) {
-    success <- con %>% readLines() %>% paste0(collapse = "\n") %>% datamodel$loadModelFromString()
-    close(con)
+  model <- url_to_string(path)
+  if (!is_null(model)) {
+    success <- datamodel$loadModelFromString(model)
   } else {
     assert_that(assertthat::is.readable(path))
     
@@ -78,10 +90,9 @@ loadSBML <- function(path) {
   
   datamodel <- CRootContainer_addDatamodel()
   
-  con <- try(url(path), silent = TRUE)
-  if (!is(con, "try-error")) {
-    success <- con %>% readLines() %>% paste0(collapse = "\n") %>% datamodel$importSBMLFromString()
-    close(con)
+  sbml <- url_to_string(path)
+  if (!is_null(sbml)) {
+    success <- datamodel$importSBMLFromString(sbml)
   } else {
     assert_that(assertthat::is.readable(path))
     
