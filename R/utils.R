@@ -89,11 +89,11 @@ autoplot.copasi_ts <- function(object, ...) {
 # It is our responsibility to call the right function which is why this list is needed.
 cparameter_control_functions <-
   list(
-    DOUBLE = is_numeric,
+    DOUBLE = is_scalar_numeric,
     UDOUBLE = (function(x) {is_scalar_numeric(x) && x >= 0}),
     INT = rlang::is_scalar_integerish,
     UINT = (function(x) {rlang::is_scalar_integerish && x >= 0}),
-    BOOL = is_scalar_logical,
+    BOOL = (function(x) {length(x) == 1 && (x == 1 || x == 0)}),
     STRING = is_scalar_character,
     GROUP = NULL,
     CN = NULL,

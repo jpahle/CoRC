@@ -2,7 +2,7 @@
 % Please edit documentation in R/manage_models.R
 \name{openCopasi}
 \alias{openCopasi}
-\title{Open the given model in the Copasi UI}
+\title{Open the given model in the copasi UI}
 \usage{
 openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
   datamodel = pkg_env$curr_dm)
@@ -15,5 +15,5 @@ openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
 \item{datamodel}{a model object}
 }
 \description{
-Open the given model in the Copasi UI
+Open the given model in the copasi UI
 }

@@ -70,7 +70,7 @@ loadModel <- function(path) {
   
   if (!success) {
     CRootContainer_removeDatamodel(datamodel)
-    stop("Couldn't load SBML data.")
+    stop("Couldn't load model file.")
   }
   
   pkg_env$curr_dm <- datamodel
@@ -175,7 +175,7 @@ loadExamples <- function() {
   )
 }
 
-#' Open the given model in the Copasi UI
+#' Open the given model in the copasi UI
 #'
 #' @param readin if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
 #' @param copasi_loc location of CopasiUI

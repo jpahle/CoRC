@@ -1,6 +1,6 @@
 #' Run to stready state
 #'
-#' \code{runSteadyState} calculates the steady state and returns the species concentrations as a data frame.
+#' \code{runSteadyState} calculates the steady state and returns results in a list.
 #'
 #' @param calculateJacobian boolean
 #' @param performStabilityAnalysis boolean
@@ -92,11 +92,14 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param calculateJacobian boolean
 #' @param performStabilityAnalysis boolean
 #' @param updateModel boolean
+#' @param executable boolean
 #' @param method list
 #' @param datamodel a model object
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  # Call the worker to set all settings
+setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+  assert_that(is.null(executable) || is_scalar_logical(executable))
+  
+  # Call the worker to set most settings
   set_sss_worker(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
@@ -104,6 +107,12 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
     method = method,
     datamodel = datamodel
   )
+  
+  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  
+  if (!is.null(executable)) {
+    task$setScheduled(executable)
+  }
   
   invisible()
 }
@@ -137,7 +146,7 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- (task$isUpdateModel() == 1L)
+    restorationCall$updateModel <- task$isUpdateModel()
     task$setUpdateModel(updateModel)
   }
   
@@ -162,6 +171,7 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
       dplyr::mutate(
         allowed = map2_lgl(control_fun, value, ~ {
           if (!is_null(.x)) .x(.y)
+          # No control function defined means just pass
           else TRUE
         })
       )

@@ -5,8 +5,8 @@
 \title{Set steady state settings}
 \usage{
 setSteadyStateSettings(calculateJacobian = NULL,
-  performStabilityAnalysis = NULL, updateModel = NULL, method = NULL,
-  datamodel = pkg_env$curr_dm)
+  performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL,
+  method = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{calculateJacobian}{boolean}
@@ -14,6 +14,8 @@ setSteadyStateSettings(calculateJacobian = NULL,
 \item{performStabilityAnalysis}{boolean}
 
 \item{updateModel}{boolean}
+
+\item{executable}{boolean}
 
 \item{method}{list}
 

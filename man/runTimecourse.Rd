@@ -31,8 +31,8 @@ runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
 \item{datamodel}{a model object}
 }
 \value{
-a data frame with a time column and species concentration columns
+a data frame with a time column and value columns
 }
 \description{
-\code{runTimeCourse} runs a time course and returns the species data as a data frame.
+\code{runTimeCourse} runs a time course and returns the time course data as a data frame.
 }
