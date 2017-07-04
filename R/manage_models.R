@@ -37,7 +37,7 @@ getLoadedModels <- function() {
 # helper for loading models from urls
 url_to_string <- function(x) {
   con <- try(url(x), silent = TRUE)
-  if (is(con, "try-error")) return(NULL)
+  if (is(con, "try-error")) return()
   
   result <- quietly(readLines)(con)
   close(con)

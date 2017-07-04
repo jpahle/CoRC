@@ -23,13 +23,10 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   )
   
   model <- as(datamodel$getModel(), "_p_CModel")
-  
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-
   problem <- as(task$getProblem(), "_p_CFitProblem")
-  
   method <- as(task$getMethod(), "_p_COptMethod")
-
+  
   success <- grab_msg(task$process(TRUE))
   
   do.call(set_pes_worker, restorationCall)

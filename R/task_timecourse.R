@@ -33,12 +33,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   )
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
-  
-  # task$initialize(CCopasiTask.OUTPUT_UI):
-  # print ("could not initialize mca task")
-  # print(CCopasiMessage_getAllMessageText())
   
   # Tells copasi to run the task
   success <- grab_msg(task$process(TRUE))
@@ -129,7 +124,6 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   assert_that(confirmDatamodel(datamodel))
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
   
   assert_that(

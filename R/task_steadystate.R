@@ -21,13 +21,10 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   )
   
   model <- as(datamodel$getModel(), "_p_CModel")
-  
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-
   problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
-  
   method <- as(task$getMethod(), "_p_CSteadyStateMethod")
-
+  
   success <- grab_msg(task$process(TRUE))
   
   do.call(set_sss_worker, restorationCall)
@@ -121,7 +118,6 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   assert_that(confirmDatamodel(datamodel))
   
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  
   problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
   
   assert_that(

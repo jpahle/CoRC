@@ -55,6 +55,7 @@ confirmDatamodel <- function(datamodel) {
 grab_msg <- function(x, purge = NULL) {
   if (CCopasiMessage_size() > 0L) {
     warning(
+      "\n",
       "==========================================\n",
       "Uncaptured Copasi Message(s):\n",
       CCopasiMessage_getAllMessageText(), "\n",
@@ -65,15 +66,18 @@ grab_msg <- function(x, purge = NULL) {
   force(x)
   
   if (CCopasiMessage_size() > 0L) {
-    messages <- CCopasiMessage_getAllMessageText()
-    allowed <- map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))
-    if (any(allowed)) {
+    messages <- map_chr(1L:CCopasiMessage_size(), ~ CCopasiMessage_getFirstMessage()$getText())
+    
+    # filter all messages that match a purge pattern
+    if (!is_null(purge))
+      messages <- messages[map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))]
+    
+    if (!is_empty(messages)) {
       warning(
         "Process generated Copasi Message(s):\n",
-        messages[allowed], "\n"
+        paste0(messages, collapse = "\n")
       )
     }
-    
   }
   
   x
