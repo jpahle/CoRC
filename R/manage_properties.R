@@ -53,6 +53,8 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
   cunit <- CUnit(unit)
+  cunit$buildExpression()
+  unit <- cunit$getExpression
   accepted <- cunit$isUnitType("time")
   delete(cunit)
   
@@ -90,6 +92,8 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
   cunit <- CUnit(unit)
+  cunit$buildExpression()
+  unit <- cunit$getExpression
   accepted <- cunit$isUnitType("volume")
   delete(cunit)
   
@@ -127,6 +131,8 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
   cunit <- CUnit(unit)
+  cunit$buildExpression()
+  unit <- cunit$getExpression
   accepted <- cunit$isUnitType("quantity")
   delete(cunit)
   
@@ -190,7 +196,7 @@ resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
   model <- datamodel$getModel()
   
   assert_that(
-    model$isAutonomous() == 1,
+    model$isAutonomous(),
     msg = "This function is meant as a workaround for autonomous models. Consider using setInitialTime(0) to reset time to 0."
   )
   
