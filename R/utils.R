@@ -51,6 +51,34 @@ confirmDatamodel <- function(datamodel) {
   success
 }
 
+# finds copasi messages and helps purge known annoying messages
+grab_msg <- function(x, purge = NULL) {
+  if (CCopasiMessage_size() > 0L) {
+    warning(
+      "==========================================\n",
+      "Uncaptured Copasi Message(s):\n",
+      CCopasiMessage_getAllMessageText(), "\n",
+      "==========================================\n"
+    )
+  }
+  
+  force(x)
+  
+  if (CCopasiMessage_size() > 0L) {
+    messages <- CCopasiMessage_getAllMessageText()
+    allowed <- map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))
+    if (any(allowed)) {
+      warning(
+        "Process generated Copasi Message(s):\n",
+        messages[allowed], "\n"
+      )
+    }
+    
+  }
+  
+  x
+}
+
 # Better error message for assert_that
 assertthat::on_failure(confirmDatamodel) <- function(call, env) {
   paste0(deparse(call$datamodel), " is not a datamodel")

@@ -30,7 +30,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   
   method <- as(task$getMethod(), "_p_COptMethod")
 
-  success <- task$process(TRUE)
+  success <- grab_msg(task$process(TRUE))
   
   do.call(set_pes_worker, restorationCall)
   
@@ -39,7 +39,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
     msg = paste0("Processing the task failed:\n", task$getProcessError())
   )
   
-  ret = list()
+  ret <- list()
   
   ret
 }

@@ -41,7 +41,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   # print(CCopasiMessage_getAllMessageText())
   
   # Tells copasi to run the task
-  success <- task$process(TRUE)
+  success <- grab_msg(task$process(TRUE))
   # success <- task$processWithOutputFlags(TRUE, 200)
 
   # Call the worker again to restore previous settings.

@@ -28,7 +28,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   
   method <- as(task$getMethod(), "_p_CSteadyStateMethod")
 
-  success <- task$process(TRUE)
+  success <- grab_msg(task$process(TRUE))
   
   do.call(set_sss_worker, restorationCall)
   

@@ -61,11 +61,13 @@ loadModel <- function(path) {
   
   model <- url_to_string(path)
   if (!is_null(model)) {
-    success <- datamodel$loadModelFromString(model)
+    success <- grab_msg(datamodel$loadModelFromString(model),
+                        purge = "The content is created with a newer version .* of COPASI.")
   } else {
     assert_that(assertthat::is.readable(path))
     
-    success <- datamodel$loadModel(normalizePath(path))
+    success <- grab_msg(datamodel$loadModel(normalizePath(path)),
+                        purge = "The content is created with a newer version .* of COPASI.")
   }
   
   if (!success) {
@@ -92,11 +94,11 @@ loadSBML <- function(path) {
   
   sbml <- url_to_string(path)
   if (!is_null(sbml)) {
-    success <- datamodel$importSBMLFromString(sbml)
+    success <- grab_msg(datamodel$importSBMLFromString(sbml))
   } else {
     assert_that(assertthat::is.readable(path))
     
-    success <- datamodel$importSBML(normalizePath(path))
+    success <- grab_msg(datamodel$importSBML(normalizePath(path)))
   }
   
   if (!success) {
@@ -152,7 +154,7 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
     filename <- paste0(filename, ".cps")
   }
 
-  success <- datamodel$saveModel(normalizePath(filename), overwriteFile = overwrite)
+  success <- grab_msg(datamodel$saveModel(normalizePath(filename), overwriteFile = overwrite))
 
   assert_that(success, msg = paste0("Model failed to save at: ", filename))
 
@@ -168,11 +170,15 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
 loadExamples <- function() {
   pkgname <- getPackageName()
   
-  list(
-    brusselator = loadModel(system.file("extdata", "brusselator.cps", package = pkgname)),
-    chemotaxis = loadModel(system.file("extdata", "chemotaxis_4.cps", package = pkgname)),
-    multicomp = loadModel(system.file("extdata", "multicomp.cps", package = pkgname))
-  )
+  models <- 
+    c(
+      "brusselator.cps",
+      "chemotaxis_4.cps",
+      "multicomp.cps",
+      "simple.cps"
+    )
+  
+  map(models, ~ loadModel(system.file("extdata", .x, package = pkgname)))
 }
 
 #' Open the given model in the copasi UI
@@ -204,7 +210,7 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
   # Create a temp file for the model to open in the UI
   # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
   file <- tempfile(fileext = ".cps")
-  datamodel$saveModel(file, overwriteFile = TRUE)
+  grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
   
   if (readin) {
     if (.Platform$OS.type == "windows")
@@ -212,7 +218,7 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
     else
       system2(copasi_loc, file, wait = TRUE)
     
-    datamodel$loadModel(file)
+    grab_msg(datamodel$loadModel(file))
     file.remove(file)
   } else {
     if (.Platform$OS.type == "windows")

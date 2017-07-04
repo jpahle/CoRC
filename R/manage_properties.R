@@ -175,7 +175,6 @@ setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
   invisible()
 }
 
-
 #' Reset the model's initial time
 #'
 #' \code{resetInitialTime} resets the initial time of the model.
