@@ -52,7 +52,7 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
 setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
-  cunit <- CUnit(unit)
+  cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("time")
@@ -91,7 +91,7 @@ getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
 setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
-  cunit <- CUnit(unit)
+  cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("volume")
@@ -130,7 +130,7 @@ getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
 setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
   
-  cunit <- CUnit(unit)
+  cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("quantity")
