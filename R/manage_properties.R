@@ -54,7 +54,7 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   
   cunit <- CUnit(unit)
   cunit$buildExpression()
-  unit <- cunit$getExpression
+  unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("time")
   delete(cunit)
   
@@ -93,7 +93,7 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   
   cunit <- CUnit(unit)
   cunit$buildExpression()
-  unit <- cunit$getExpression
+  unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("volume")
   delete(cunit)
   
@@ -132,7 +132,7 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   
   cunit <- CUnit(unit)
   cunit$buildExpression()
-  unit <- cunit$getExpression
+  unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("quantity")
   delete(cunit)
   
@@ -140,7 +140,7 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   
   assert_that(
     datamodel$getModel()$setQuantityUnitFromString(unit),
-    msg = "Setting volume unit failed."
+    msg = "Setting quantity unit failed."
   )
   
   invisible()
