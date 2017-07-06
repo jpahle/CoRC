@@ -132,17 +132,17 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   restorationCall <- list(datamodel = datamodel)
   
   if (!is.null(calculateJacobian)) {
-    restorationCall$calculateJacobian <- problem$isJacobianRequested()
+    restorationCall$calculateJacobian <- as.logical(problem$isJacobianRequested())
     problem$setJacobianRequested(calculateJacobian)
   }
   
   if (!is.null(performStabilityAnalysis)) {
-    restorationCall$performStabilityAnalysis <- problem$isStabilityAnalysisRequested()
+    restorationCall$performStabilityAnalysis <- as.logical(problem$isStabilityAnalysisRequested())
     problem$setStabilityAnalysisRequested(performStabilityAnalysis)
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- task$isUpdateModel()
+    restorationCall$updateModel <- as.logical(task$isUpdateModel())
     task$setUpdateModel(updateModel)
   }
   

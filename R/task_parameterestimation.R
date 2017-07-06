@@ -97,22 +97,22 @@ set_pes_worker <- function(randomizeStartValues = NULL, createParameterSets = NU
   }
   
   if (!is.null(randomizeStartValues)) {
-    restorationCall$randomizeStartValues <- problem$getRandomizeStartValues()
+    restorationCall$randomizeStartValues <- as.logical(problem$getRandomizeStartValues())
     problem$setRandomizeStartValues(randomizeStartValues)
   }
   
   if (!is.null(createParameterSets)) {
-    restorationCall$createParameterSets <- problem$getCreateParameterSets()
+    restorationCall$createParameterSets <- as.logical(problem$getCreateParameterSets())
     problem$setCreateParameterSets(createParameterSets)
   }
   
   if (!is.null(calculateStatistics)) {
-    restorationCall$calculateStatistics <- problem$getCalculateStatistics()
+    restorationCall$calculateStatistics <- as.logical(problem$getCalculateStatistics())
     problem$setCalculateStatistics(calculateStatistics)
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- task$isUpdateModel()
+    restorationCall$updateModel <- as.logical(task$isUpdateModel())
     task$setUpdateModel(updateModel)
   }
   

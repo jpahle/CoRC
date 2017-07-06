@@ -167,22 +167,22 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
   }
   
   if (!is.null(outputEvents)) {
-    restorationCall$outputEvents <- problem$getOutputEvent()
+    restorationCall$outputEvents <- as.logical(problem$getOutputEvent())
     problem$setOutputEvent(outputEvents)
   }
   
   if (!is.null(saveResultInMemory)) {
-    restorationCall$saveResultInMemory <- problem$timeSeriesRequested()
+    restorationCall$saveResultInMemory <- as.logical(problem$timeSeriesRequested())
     problem$setTimeSeriesRequested(saveResultInMemory)
   }
   
   if (!is.null(startInSteadyState)) {
-    restorationCall$startInSteadyState <- problem$getStartInSteadyState()
+    restorationCall$startInSteadyState <- as.logical(problem$getStartInSteadyState())
     problem$setStartInSteadyState(startInSteadyState)
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- task$isUpdateModel()
+    restorationCall$updateModel <- as.logical(task$isUpdateModel())
     task$setUpdateModel(updateModel)
   }
   
