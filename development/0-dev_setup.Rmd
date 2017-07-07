@@ -4,11 +4,12 @@ output: html_notebook
 ---
 
 ```{r setup}
-knitr::opts_knit$set(root.dir = normalizePath("../")) 
+knitr::opts_knit$set(root.dir = normalizePath("../"))
 
 ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
 reset_copasi <- function() {
-  try(unloadAllModels())
+  if (exists("unloadAllModels")) unloadAllModels()
+  rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "ls_corc"))], envir = .GlobalEnv)
   
   devtools::load_all(reset = FALSE)
   

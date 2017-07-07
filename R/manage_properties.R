@@ -196,7 +196,7 @@ resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
   model <- datamodel$getModel()
   
   assert_that(
-    model$isAutonomous(),
+    as.logical(model$isAutonomous()),
     msg = "This function is meant as a workaround for autonomous models. Consider using setInitialTime(0) to reset time to 0."
   )
   

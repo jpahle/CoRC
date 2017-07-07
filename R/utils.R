@@ -13,7 +13,7 @@ setMethod("format",
 
     string <- "# A copasi model reference:\n"
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-    string <- paste0(string, "@ref is set to: " , capture.output(x@ref) , "\n")
+    string <- paste0(string, "@ref is set to: " , show(x@ref) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
     string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
     string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
@@ -49,6 +49,13 @@ confirmDatamodel <- function(datamodel) {
   if (success) pkg_env$curr_dm <- datamodel
 
   success
+}
+
+transform_names <- function(x) {
+  set_names(
+    x,
+    names(x) %>% make.names(unique = TRUE) %>% stringr::str_to_lower()
+  )
 }
 
 # finds copasi messages and helps purge known annoying messages
@@ -170,7 +177,7 @@ cparameter_set_functions <-
 methodstructure <- function(method) {
   struct <-
     tibble::tibble(
-      object = seq_along_cv(method) %>% map(~ method$getParameter(.x)),
+      object = seq_along_v(method) %>% map(~ method$getParameter(.x)),
       name = object %>% map_chr(~ .x$getObjectName()) %>% make.names(unique = TRUE),
       type = object %>% map_chr(~ .x$getType()),
       control_fun = cparameter_control_functions[type],

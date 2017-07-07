@@ -31,7 +31,7 @@ setCurrentModel <- function(datamodel) {
 getLoadedModels <- function() {
   dm_list <- CRootContainer_getDatamodelList()
 
-  get_cv(dm_list)
+  get_cdv(dm_list)
 }
 
 # helper for loading models from urls
@@ -133,7 +133,7 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 unloadAllModels <- function() {
   dm_list <- CRootContainer_getDatamodelList()
 
-  get_cv(dm_list) %>%
+  get_cdv(dm_list) %>%
     walk(~ CRootContainer_removeDatamodel(.x))
 
   pkg_env$curr_dm <- NULL

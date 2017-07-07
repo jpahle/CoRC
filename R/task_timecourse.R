@@ -49,6 +49,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   
   ret <- NULL
   timeSeries <- task$getTimeSeries()
+  timeSeries_ref <- timeSeries@ref
   recordedSteps <- timeSeries$getRecordedSteps()
   
   if (recordedSteps) {
@@ -61,16 +62,18 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
       map(function(i_var) {
         0L:(recordedSteps - 1L) %>%
           map_dbl(function(i_step) {
+            # Timecritical step optimization
             # timeSeries$getConcentrationData(i_step, i_var)
-            CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+            # CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+            # args: self@ref, int, int, bool
+            .Call("R_swig_CTimeSeries_getConcentrationData", timeSeries_ref, i_step, i_var, FALSE, PACKAGE = "COPASI")
           }) %>%
           list() %>%
           # set_names(timeSeries$getTitle(i_var))
           set_names(CTimeSeries_getTitle(timeSeries, i_var))
       }) %>%
-      dplyr::bind_cols()
-    
-    class(ret) <- prepend(class(ret), "copasi_ts")
+      dplyr::bind_cols() %>%
+      rlang::set_attrs(class = prepend(class(.), "copasi_ts"))
   } else if (is.null(saveResultInMemory))
     warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
   
@@ -239,18 +242,18 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
       method <- dplyr::filter(method, success)
       
       # Overwritten parameters need to be in the restorationCall
-      if (nrow(method) != 0) {
+      if (nrow(method) != 0L) {
         restorationCall$method <- 
           append(restorationCall$method, method %>% dplyr::select(name, oldval) %>% tibble::deframe())
       }
       
       # First restore everything and then give complete feedback error.
-      if (!is_empty(bad_names) || nrow(forbidden) != 0 || nrow(failures) != 0) {
+      if (!is_empty(bad_names) || nrow(forbidden) != 0L || nrow(failures) != 0L) {
         do.call(set_tcs_worker, restorationCall)
         errmsg <- ""
         if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-        if (nrow(forbidden) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-        if (nrow(failures) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
+        if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
+        if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
         stop(errmsg)
       }
     }

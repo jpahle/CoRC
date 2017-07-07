@@ -11,7 +11,7 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
   metabs <- datamodel$getModel()$getMetabolites()
 
   # assemble output dataframe
-  get_cv(metabs) %>%
+  get_cdv(metabs) %>%
     map_df(~ {
       list(
         key = list(as.copasi_key(.x$getCN()$getString())),
@@ -58,7 +58,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   # # assemble data frame with the model's species
   # metab_df <-
   #   tibble::tibble(
-  #     object = get_cv(metabs)
+  #     object = get_cdv(metabs)
   #   ) %>%
   #   dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
 
@@ -144,7 +144,7 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
   quantities <- datamodel$getModel()$getModelValues()
   
   # assemble output dataframe
-  get_cv(quantities) %>%
+  get_cdv(quantities) %>%
     map_df(~ {
       list(
         key = list(as.copasi_key(.x$getCN()$getString())),
@@ -230,7 +230,7 @@ getReactions <- function(datamodel = pkg_env$curr_dm) {
   reactions <- datamodel$getModel()$getReactions()
   
   # assemble output dataframe
-  get_cv(reactions) %>%
+  get_cdv(reactions) %>%
     map_df(~ {
       list(
         key = list(as.copasi_key(.x$getCN()$getString())),
@@ -290,7 +290,7 @@ getCompartments <- function(datamodel = pkg_env$curr_dm) {
   compartments <- datamodel$getModel()$getCompartments()
   
   # assemble output dataframe
-  get_cv(compartments) %>%
+  get_cdv(compartments) %>%
     map_df(~ {
       list(
         key = list(as.copasi_key(.x$getCN()$getString())),

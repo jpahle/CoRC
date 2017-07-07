@@ -1,5 +1,5 @@
-# Works like seq_along for CDataVectors (0 based index)
-seq_along_cv <- function(copasivector) {
+# Works like seq_along for many copasi vectors (0 based index)
+seq_along_v <- function(copasivector) {
   len <- copasivector$size()
   
   if (len == 0L) return(integer())
@@ -7,8 +7,13 @@ seq_along_cv <- function(copasivector) {
   0L:(len - 1L)
 }
 
+# get items of std_vector in list
+get_sv <- function(vector, indices = seq_along_v(vector)) {
+  vector[indices]
+}
+
 # Attempts to guess what Object a CDataVector returns when $get() is called
-get_cv_index <- function(copasivector, index) {
+get_cdv_index <- function(copasivector, index) {
   type <- is(copasivector)[1L]
   
   # exise the items class from the classname of the vector
@@ -19,7 +24,7 @@ get_cv_index <- function(copasivector, index) {
 }
 
 # Attempts to guess what Object a CDataVector returns when $get() is called
-get_cv <- function(copasivector, indices = seq_along_cv(copasivector)) {
+get_cdv <- function(copasivector, indices = seq_along_v(copasivector)) {
   type <- is(copasivector)[1L]
   
   # exise the items class from the classname of the vector
@@ -27,4 +32,10 @@ get_cv <- function(copasivector, indices = seq_along_cv(copasivector)) {
   
   # typecasting the result
   map(indices, ~ as(copasivector$get(.x), type))
+}
+
+# get items of C vectors
+get_cv <- function(vector, indices = seq_along_v(vector)) {
+  assert_that(is(vector, "_p_CVectorT_double_t"))
+  map_dbl(indices, ~ FloatVectorCore_get(vector, .x))
 }

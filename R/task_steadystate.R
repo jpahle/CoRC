@@ -49,7 +49,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   ret$result <- task$getResult()
 
   ret$species <-
-    get_cv(model$getMetabolites()) %>%
+    get_cdv(model$getMetabolites()) %>%
     map_df(~ {
       transit <- .x$getTransitionTime()
       if (!is.na(transit)) {
@@ -67,7 +67,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
     })
   
   ret$reactions <-
-    get_cv(model$getReactions()) %>%
+    get_cdv(model$getReactions()) %>%
     map_df(~ {
       list(
         key = list(structure(.x$getCN()$getString(), class = "copasi_key")),
@@ -191,17 +191,17 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
     method <- dplyr::filter(method, success)
     
     # Overwritten parameters need to be in the restorationCall
-    if (nrow(method) != 0) {
+    if (nrow(method) != 0L) {
       restorationCall$method <- method %>% dplyr::select(name, oldval) %>% tibble::deframe()
     }
     
     # First restore everything and then give complete feedback error.
-    if (!is_empty(bad_names) || nrow(forbidden) != 0 || nrow(failures) != 0) {
+    if (!is_empty(bad_names) || nrow(forbidden) != 0L || nrow(failures) != 0L) {
       do.call(set_sss_worker, restorationCall)
       errmsg <- ""
       if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-      if (nrow(forbidden) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-      if (nrow(failures) != 0) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
+      if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
+      if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
       stop(errmsg)
     }
   }
