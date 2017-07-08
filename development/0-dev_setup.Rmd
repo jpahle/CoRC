@@ -7,9 +7,10 @@ output: html_notebook
 knitr::opts_knit$set(root.dir = normalizePath("../"))
 
 ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
+
 reset_copasi <- function() {
   if (exists("unloadAllModels")) unloadAllModels()
-  rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "ls_corc"))], envir = .GlobalEnv)
+  rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "ls_corc", "inspect"))], envir = .GlobalEnv)
   
   devtools::load_all(reset = FALSE)
   
@@ -20,6 +21,33 @@ reset_copasi <- function() {
   assign("datamodel", getCurrentModel(), envir = .GlobalEnv)
   setTimeCourseSettings(duration = 100, dt = 1)
 }
+
+inspect <- function(object) {
+  classes <- is(object)
+  
+  functions <-
+    classes %>%
+    map(safely(getMethod, quiet = TRUE), f = "$") %>%
+    transpose() %>%
+    .$result
+  
+  to_keep <- !map_lgl(functions, is_null)
+  
+  classes <- classes[to_keep]
+  functions <- functions[to_keep]
+  
+  functions %>%
+    map(~ {
+      funtext <- format(.x)
+      liststart <- stringr::str_which(funtext, "accessorFuns =")
+      listend <- stringr::str_which(funtext %>% tail(-liststart + 1L), "\\)$")
+      listtext <- paste0(funtext[seq(liststart, listend[1] + liststart - 1L)], collapse = "\n")
+
+      parse(text = paste0(listtext, "\n", "names(accessorFuns)")) %>% eval()
+    }) %>%
+    set_names(classes)
+}
+
 ```
 
 # Document the Package
