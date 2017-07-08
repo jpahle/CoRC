@@ -38,6 +38,62 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   
   ret <- list()
   
+  evals <- problem$getFunctionEvaluations()
+  evaltime <- problem$getExecutionTime()
+  
+  ret$main <-
+    list(
+      "Objective Value" = problem$getSolutionValue(),
+      "Root Mean Square" = problem$getRMS(),
+      "Standard Deviation" = problem$getStdDeviation(),
+      "Validation Objective Value" = problem$getCrossValidationSolutionValue(),
+      "Validation Root Mean Square" = problem$getCrossValidationRMS(),
+      "Validation Standard Deviation" = problem$getCrossValidationSD(),
+      "Function Evaluations" = evals,
+      "CPU Time [s]" = evaltime,
+      "Evaluations/second [1/s]" = evals / evaltime
+    ) %>%
+    transform_names()
+  
+  items <- get_sv(problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")
+
+  ret$parameters <-
+    tibble::tibble(
+      "Parameter" = map_chr(items, ~ .x$getObjectDisplayName()),
+      "Lower Bound" = map_dbl(items, ~ .x$getLowerBoundValue()),
+      "Start Value" = map_dbl(items, ~ .x$getStartValue()),
+      "Value" = get_cv(problem$getSolutionVariables()),
+      "Upper Bound" = map_dbl(items, ~ .x$getUpperBoundValue()),
+      "Std. Deviation" = get_cv(problem$getVariableStdDeviations()),
+      "Coeff. of Variation [%]" = NaN, # TODO
+      "Gradient" = get_cv(problem$getVariableGradients())
+    ) %>%
+    transform_names()
+  
+  experiment_set <- problem$getExperimentSet()
+  
+  ret$experiments <-
+    tibble::tibble(
+      "Experiment" = experiment_set$getName(0),
+      "Objective Value" = problem$getSolutionValue(),
+      "Root Mean Square" = problem$getRMS(),
+      "Error Mean" = NaN, # problem$getErrorMean(),
+      "Error Mean Std. Deviation" = NaN # problem$getErrorMeanSD()
+    ) %>%
+    transform_names()
+  
+  experiments <- swigfix_resolve_vector(CExperimentSet_getDependentObjects, experiment_set, "CObjectInterface")
+  
+  ret$fitted.values <-
+    tibble::tibble(
+      "Fitted Value" = map_chr(experiments, ~ .x$getObjectDisplayName()),
+      "Objective Value" = get_cv(experiment_set$getDependentObjectiveValues()),
+      "Root Mean Square" = get_cv(experiment_set$getDependentRMS()),
+      "Error Mean" = get_cv(experiment_set$getDependentErrorMean()),
+      "Error Mean Std. Deviation" = get_cv(experiment_set$getDependentErrorMeanSD())
+    ) %>%
+    transform_names()
+  
   ret
 }
 

@@ -58,9 +58,9 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     # Inner loops creates numeric() wrapped in a named list
     # Outer loop binds all lists to a data frame
     ret <-
-      0L:(timeSeries$getNumVariables() - 1L) %>%
+      seq_len_from0(timeSeries$getNumVariables()) %>%
       map(function(i_var) {
-        0L:(recordedSteps - 1L) %>%
+        seq_len_from0(recordedSteps) %>%
           map_dbl(function(i_step) {
             # Timecritical step optimization
             # timeSeries$getConcentrationData(i_step, i_var)
