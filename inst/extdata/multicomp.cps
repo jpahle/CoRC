@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-06-28 13:04:18 UTC -->
+<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-07-08 19:11:11 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
 <COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="19" versionDevel="140" copasiSourcesModified="0">
   <ListOfFunctions>
@@ -52,7 +52,7 @@ Reaction scheme where the products are created from the reactants and the change
 
     </MiriamAnnotation>
     <ListOfCompartments>
-      <Compartment key="Compartment_1" name="outside" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_1" name="Ca" simulationType="fixed" dimensionality="3">
       </Compartment>
       <Compartment key="Compartment_3" name="inside" simulationType="fixed" dimensionality="3">
       </Compartment>
@@ -88,9 +88,7 @@ Reaction scheme where the products are created from the reactants and the change
     <ListOfModelValues>
       <ModelValue key="ModelValue_0" name="Ca" simulationType="fixed">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#ModelValue_0">
     <dcterms:created>
       <rdf:Description>
@@ -99,16 +97,13 @@ Reaction scheme where the products are created from the reactants and the change
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
       </ModelValue>
     </ListOfModelValues>
     <ListOfReactions>
       <Reaction key="Reaction_0" name="Ca{inside} -> Ca" reversible="false" fast="false">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_0">
     <dcterms:created>
       <rdf:Description>
@@ -117,7 +112,6 @@ Reaction scheme where the products are created from the reactants and the change
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <ListOfSubstrates>
           <Substrate metabolite="Metabolite_3" stoichiometry="1"/>
@@ -126,9 +120,9 @@ Reaction scheme where the products are created from the reactants and the change
           <Product metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4382" name="k1" value="1"/>
+          <Constant key="Parameter_4463" name="k1" value="1"/>
         </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[outside]">
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[Ca]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
               <SourceParameter reference="ModelValue_0"/>
@@ -155,12 +149,12 @@ Reaction scheme where the products are created from the reactants and the change
           <Product metabolite="Metabolite_3" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4381" name="v" value="0.1"/>
+          <Constant key="Parameter_4462" name="v" value="0.1"/>
         </ListOfConstants>
         <KineticLaw function="Function_6" unitType="Default" scalingCompartment="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[inside]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_49">
-              <SourceParameter reference="Parameter_4381"/>
+              <SourceParameter reference="Parameter_4462"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
@@ -181,12 +175,12 @@ Reaction scheme where the products are created from the reactants and the change
           <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfConstants>
-          <Constant key="Parameter_4380" name="k1" value="0.1"/>
+          <Constant key="Parameter_4461" name="k1" value="0.1"/>
         </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[outside]">
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[Ca]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_4380"/>
+              <SourceParameter reference="Parameter_4461"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
               <SourceParameter reference="Metabolite_1"/>
@@ -201,11 +195,11 @@ Reaction scheme where the products are created from the reactants and the change
           <ModelParameter cn="CN=Root,Model=Multi-Compartment Example" value="0" type="Model" simulationType="time"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Compartment Sizes" type="Group">
-          <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[outside]" value="1" type="Compartment" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[Ca]" value="1" type="Compartment" simulationType="fixed"/>
           <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[inside]" value="0.5" type="Compartment" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
-          <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[outside],Vector=Metabolites[Ca]" value="6.022140856999986e+20" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[Ca],Vector=Metabolites[Ca]" value="6.022140856999986e+20" type="Species" simulationType="reactions"/>
           <ModelParameter cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[inside],Vector=Metabolites[Ca]" value="0" type="Species" simulationType="reactions"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Global Quantities" type="Group">
@@ -596,7 +590,7 @@ Reaction scheme where the products are created from the reactants and the change
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
             <ChannelSpec cn="CN=Root,Model=Multi-Compartment Example,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[outside],Vector=Metabolites[Ca],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Multi-Compartment Example,Vector=Compartments[Ca],Vector=Metabolites[Ca],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Ca{inside}]" type="Curve2D">

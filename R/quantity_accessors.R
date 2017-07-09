@@ -320,7 +320,7 @@ setCompartments <- function(compartments, datamodel = pkg_env$curr_dm) {
     compartments %>%
     tibble::as_tibble() %>%
     dplyr::mutate(
-      object = cn_to_object(key, datamodel, "_p_CModelValue")
+      object = cn_to_object(key, datamodel, "_p_CCompartment")
     )
   
   assert_that(

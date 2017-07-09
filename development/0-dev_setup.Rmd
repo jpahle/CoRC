@@ -23,29 +23,43 @@ reset_copasi <- function() {
 }
 
 inspect <- function(object) {
-  classes <- is(object)
+  if (is.function(object)) {
+     funtext <- object %>% environment() %>% .$f %>% format()
+     cfun <- funtext %>% stringr::str_match("^\\s*(\\.Call\\(\"(\\w+).*\\))$") %>% na.omit()
+     cat(
+       cfun[,3] %>% stringr::str_sub(8),
+       funtext[1] %>% stringr::str_sub(11, -2),
+       "",
+       cfun[,3],
+       cfun[,2],
+       sep = "\n"
+     )
+  } else {
+    classes <- is(object)
+    
+    functions <-
+      classes %>%
+      map(safely(getMethod, quiet = TRUE), f = "$") %>%
+      transpose() %>%
+      .$result
+    
+    to_keep <- !map_lgl(functions, is_null)
+    
+    classes <- classes[to_keep]
+    functions <- functions[to_keep]
+    
+    functions %>%
+      map(~ {
+        funtext <- format(.x)
+        liststart <- stringr::str_which(funtext, "accessorFuns =")
+        listend <- stringr::str_which(funtext %>% tail(-liststart + 1L), "\\)$")
+        listtext <- paste0(funtext[seq(liststart, listend[1] + liststart - 1L)], collapse = "\n")
   
-  functions <-
-    classes %>%
-    map(safely(getMethod, quiet = TRUE), f = "$") %>%
-    transpose() %>%
-    .$result
-  
-  to_keep <- !map_lgl(functions, is_null)
-  
-  classes <- classes[to_keep]
-  functions <- functions[to_keep]
-  
-  functions %>%
-    map(~ {
-      funtext <- format(.x)
-      liststart <- stringr::str_which(funtext, "accessorFuns =")
-      listend <- stringr::str_which(funtext %>% tail(-liststart + 1L), "\\)$")
-      listtext <- paste0(funtext[seq(liststart, listend[1] + liststart - 1L)], collapse = "\n")
-
-      parse(text = paste0(listtext, "\n", "names(accessorFuns)")) %>% eval()
-    }) %>%
-    set_names(classes)
+        parse(text = paste0(listtext, "\n", "names(accessorFuns)")) %>% eval()
+      }) %>%
+      set_names(classes) %>%
+      {.[length(.):1L]}
+  }
 }
 
 ```

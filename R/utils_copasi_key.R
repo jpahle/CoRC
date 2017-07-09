@@ -45,6 +45,7 @@ copasi_object_types <-
   c(
     CN = "_p_CDataModel",
     Model = "_p_CModel",
+    Compartment = "_p_CCompartment",
     Metabolite = "_p_CMetab",
     ModelValue = "_p_CModelValue",
     Reaction = "_p_CReaction"

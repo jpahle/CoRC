@@ -13,7 +13,7 @@ setMethod("format",
 
     string <- "# A copasi model reference:\n"
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-    string <- paste0(string, "@ref is set to: " , show(x@ref) , "\n")
+    string <- paste0(string, "@ref is set to: " , capture.output(show(x@ref)) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
     string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
     string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
@@ -45,10 +45,15 @@ setMethod("show",
 # Checks whether the datamodel parameter is valid
 confirmDatamodel <- function(datamodel) {
   success <- is(datamodel, "_p_CDataModel")
-
+  
   if (success) pkg_env$curr_dm <- datamodel
-
+  
   success
+}
+
+# Better error message for assert_that
+assertthat::on_failure(confirmDatamodel) <- function(call, env) {
+  paste0(deparse(call$datamodel), " is not a datamodel")
 }
 
 transform_names <- function(x) {
@@ -88,11 +93,6 @@ grab_msg <- function(x, purge = NULL) {
   }
   
   x
-}
-
-# Better error message for assert_that
-assertthat::on_failure(confirmDatamodel) <- function(call, env) {
-  paste0(deparse(call$datamodel), " is not a datamodel")
 }
 
 #' Autoplot method for copasi timeseries objects.

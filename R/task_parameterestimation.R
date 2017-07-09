@@ -72,21 +72,25 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   
   experiment_set <- problem$getExperimentSet()
   
+  experiments <-
+    seq_len_from0(experiment_set$getExperimentCount()) %>%
+    map(~ experiment_set$getExperiment(.x))
+  
   ret$experiments <-
     tibble::tibble(
-      "Experiment" = experiment_set$getName(0),
-      "Objective Value" = problem$getSolutionValue(),
-      "Root Mean Square" = problem$getRMS(),
-      "Error Mean" = NaN, # problem$getErrorMean(),
-      "Error Mean Std. Deviation" = NaN # problem$getErrorMeanSD()
+      "Experiment" = map_chr(experiments, ~ .x$getObjectName()),
+      "Objective Value" = map_dbl(experiments, ~ .x$getObjectiveValue()),
+      "Root Mean Square" = map_dbl(experiments, ~ .x$getRMS()),
+      "Error Mean" = map_dbl(experiments, ~ .x$getErrorMean()),
+      "Error Mean Std. Deviation" = map_dbl(experiments, ~ .x$getErrorMeanSD())
     ) %>%
     transform_names()
-  
-  experiments <- swigfix_resolve_vector(CExperimentSet_getDependentObjects, experiment_set, "CObjectInterface")
+
+  dependent_obj <- swigfix_resolve_vector(CExperimentSet_getDependentObjects, experiment_set, "CObjectInterface")
   
   ret$fitted.values <-
     tibble::tibble(
-      "Fitted Value" = map_chr(experiments, ~ .x$getObjectDisplayName()),
+      "Fitted Value" = map_chr(dependent_obj, ~ .x$getObjectDisplayName()),
       "Objective Value" = get_cv(experiment_set$getDependentObjectiveValues()),
       "Root Mean Square" = get_cv(experiment_set$getDependentRMS()),
       "Error Mean" = get_cv(experiment_set$getDependentErrorMean()),

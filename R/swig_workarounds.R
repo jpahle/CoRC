@@ -1,4 +1,4 @@
-# This file contains functions that work around bugs in the R implementation of swig.
+# This file contains functions that work around bugs or help deal with quirks in the R implementation of swig.
 # There are numerous bugs and the workarounds are certainly error prone too.
 
 # Read arbitrary CVectors
@@ -11,14 +11,30 @@ swigfix_resolve_vector <- function(fun, self, class) {
   fun <- paste0("R_swig_", as.character(substitute(fun)))
   class <- paste0("_p_", as.character(substitute(class)))
   
+  # args: self@ref, bool
   vector <- .Call(fun, self@ref, FALSE, PACKAGE='COPASI')
+  # args: self@ref, bool
   vectorsize <- .Call('R_swig_FloatVectorCore_size', vector, FALSE, PACKAGE='COPASI')
   
   seq_len_from0(vectorsize) %>%
     map(~ {
       new(
         class,
+        # args: self@ref, int
         ref = .Call('R_swig_ObjectVectorCore_get', vector, .x, PACKAGE='COPASI')
       )
     })
+}
+
+# Apply a function to a list of objects
+# Function will always be the one which gets resolved from the first object
+# Thus, unexpected results might happen with inhomogenous lists
+map_swig <- function(x, fun, ...) {
+  x_q <- quote(x)
+  map(
+    .x = x,
+    # Find the actual function and strip its class attribute
+    .f = rlang::set_attrs(environment(eval(substitute(x_q[[1]]$fun)))$f, class = NULL),
+    ...
+  )
 }
