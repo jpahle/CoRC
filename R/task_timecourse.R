@@ -49,10 +49,13 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   
   ret <- NULL
   timeSeries <- task$getTimeSeries()
-  timeSeries_ref <- timeSeries@ref
   recordedSteps <- timeSeries$getRecordedSteps()
   
   if (recordedSteps) {
+    # Timecritical step optimization
+    timeSeries_ref <- timeSeries@ref
+    R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
+  
     # assemble output dataframe
     # Iterates over all species/variables and all timepoints/steps
     # Inner loops creates numeric() wrapped in a named list
@@ -66,7 +69,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
             # timeSeries$getConcentrationData(i_step, i_var)
             # CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
             # args: self@ref, int, int, bool
-            .Call("R_swig_CTimeSeries_getConcentrationData", timeSeries_ref, i_step, i_var, FALSE, PACKAGE = "COPASI")
+            .Call(R_swig_CTimeSeries_getConcentrationData, timeSeries_ref, i_step, i_var, FALSE)
           }) %>%
           list() %>%
           # set_names(timeSeries$getTitle(i_var))
