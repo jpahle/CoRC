@@ -25,15 +25,25 @@ reset_copasi <- function() {
 inspect <- function(object) {
   if (is.function(object)) {
      funtext <- object %>% environment() %>% .$f %>% format()
-     cfun <- funtext %>% stringr::str_match("^\\s*(\\.Call\\(\"(\\w+).*\\))$") %>% na.omit()
-     cat(
-       cfun[,3] %>% stringr::str_sub(8),
-       funtext[1] %>% stringr::str_sub(11, -2),
-       "",
-       cfun[,3],
-       cfun[,2],
-       sep = "\n"
-     )
+     funinfo <- funtext %>% paste0(collapse = "\n") %>% stringr::str_match(stringr::regex("\\n\\s*(\\.Call\\(\"(\\w+)\".+PACKAGE = \"COPASI\"\\))\\n", dotall = TRUE))
+     if (!all(is.na(funinfo))) {
+       cat(
+         funinfo[,3] %>% stringr::str_sub(8),
+         funtext[1] %>% stringr::str_sub(11, -2),
+         "",
+         funinfo[,3],
+         funinfo[,2] %>% stringr::str_replace("\\n\\s*", ""),
+         sep = "\n"
+       )
+     } else {
+       funinfo <- funtext %>% stringr::str_match("^\\s*f <- ((\\w+)__SWIG\\w*)$") %>% na.omit()
+       cat(
+         funinfo[1,3],
+         "",
+         paste0(funinfo[,2], collapse = "\n"),
+         sep = "\n"
+       )
+     }
   } else {
     classes <- is(object)
     
@@ -61,32 +71,29 @@ inspect <- function(object) {
       {.[length(.):1L]}
   }
 }
-
 ```
 
 # Document the Package
 
-```{r}
+```{r, include=FALSE}
 devtools::document()
 ```
 
 # Install the Package
 
-```{r}
+```{r, include=FALSE}
 devtools::install()
 ```
 
 # Load the Package
 
-```{r}
+```{r, include=FALSE}
 library(CoRC)
-
-reset_copasi()
 ```
 
 # Load Development Environment
 
-```{r}
+```{r, include=FALSE}
 library(purrr)
 library(ggplot2)
 .data <- rlang::.data
@@ -97,7 +104,7 @@ reset_copasi()
 
 # Reset Copasi
 
-```{r}
+```{r, include=FALSE}
 reset_copasi()
 ```
 
