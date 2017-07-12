@@ -153,10 +153,21 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
   if (!assertthat::has_extension(filename, "cps")) {
     filename <- paste0(filename, ".cps")
   }
+  
+  if (file.exists(filename)) {
+    assert_that(overwrite, msg = paste0('File: \"', filename, '\" already exists and overwrite is set to FALSE.'))
+    filepath <- normalizePath(filename, mustWork = TRUE)
+  } else {
+    assert_that(file.create(filename), msg = paste0('File: \"', filename, '\" could not be created.'))
+    filepath <- normalizePath(filename, mustWork = TRUE)
+    file.remove(filename)
+  }
+  
+  success <- grab_msg(datamodel$saveModel(filepath, overwriteFile = overwrite))
 
-  success <- grab_msg(datamodel$saveModel(normalizePath(filename), overwriteFile = overwrite))
-
-  assert_that(success, msg = paste0("Model failed to save at: ", filename))
+  if (!success) {
+    stop('Model failed to save at: "', filename, '".')
+  }
 
   invisible(success)
 }
