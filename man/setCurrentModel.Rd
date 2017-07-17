@@ -9,6 +9,9 @@ setCurrentModel(datamodel)
 \arguments{
 \item{datamodel}{a model object}
 }
+\value{
+invisibly returns the model object
+}
 \description{
 \code{setCurrentModel} sets the given model as the currently active model.
 }

@@ -15,11 +15,14 @@ getCurrentModel <- function() {
 #' \code{setCurrentModel} sets the given model as the currently active model.
 #'
 #' @param datamodel a model object
+#' @return invisibly returns the model object
 #' @export
 setCurrentModel <- function(datamodel) {
   assert_that(confirmDatamodel(datamodel))
 
   pkg_env$curr_dm <- datamodel
+  
+  invisible(datamodel)
 }
 
 #' Get a list of loaded models
