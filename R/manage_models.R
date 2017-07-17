@@ -37,7 +37,7 @@ getLoadedModels <- function() {
 # helper for loading models from urls
 url_to_string <- function(x) {
   con <- try(url(x), silent = TRUE)
-  if (is(con, "try-error")) return()
+  if (assertthat::is.error(con)) return()
   
   result <- quietly(readLines)(con)
   close(con)
@@ -66,7 +66,7 @@ loadModel <- function(path) {
   } else {
     assert_that(assertthat::is.readable(path))
     
-    success <- grab_msg(datamodel$loadModel(normalizePath(path)),
+    success <- grab_msg(datamodel$loadModel(normalizePathC(path)),
                         purge = "The content is created with a newer version .* of COPASI.")
   }
   
@@ -98,7 +98,7 @@ loadSBML <- function(path) {
   } else {
     assert_that(assertthat::is.readable(path))
     
-    success <- grab_msg(datamodel$importSBML(normalizePath(path)))
+    success <- grab_msg(datamodel$importSBML(normalizePathC(path)))
   }
   
   if (!success) {
@@ -150,17 +150,14 @@ unloadAllModels <- function() {
 saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = pkg_env$curr_dm) {
   assert_that(confirmDatamodel(datamodel), is_scalar_character(filename))
 
-  if (!assertthat::has_extension(filename, "cps")) {
+  if (!assertthat::has_extension(filename, "cps"))
     filename <- paste0(filename, ".cps")
-  }
   
   if (file.exists(filename)) {
     assert_that(overwrite, msg = paste0('File: \"', filename, '\" already exists and overwrite is set to FALSE.'))
-    filepath <- normalizePath(filename, mustWork = TRUE)
+    filepath <- normalizePathC(filename)
   } else {
-    assert_that(file.create(filename), msg = paste0('File: \"', filename, '\" could not be created.'))
-    filepath <- normalizePath(filename, mustWork = TRUE)
-    file.remove(filename)
+    filepath <- file.path(normalizePathC(dirname(filename)), basename(filename))
   }
   
   success <- grab_msg(datamodel$saveModel(filepath, overwriteFile = overwrite))

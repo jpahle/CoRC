@@ -14,7 +14,7 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
   get_cdv(metabs) %>%
     map_df(~ {
       list(
-        key = list(as.copasi_key(.x$getCN()$getString())),
+        key = .x$getCN()$getString(),
         name = .x$getObjectName(),
         compartment = .x$getCompartment()$getObjectName(),
         type = stringr::str_to_lower(.x$getStatus()),
@@ -35,7 +35,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   assert_that(
     confirmDatamodel(datamodel),
     is.data.frame(species),
-    has_name(species, "key"), !anyNA(species$key),
+    has_name(species, "key"), is_character(species$key), !anyNA(species$key),
     !has_name(species, "name") || is_character(species$name),
     !has_name(species, "concentration") || is_numeric(species$concentration),
     !has_name(species, "particlenum") || rlang::is_integerish(species$particlenum)
@@ -147,7 +147,7 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
   get_cdv(quantities) %>%
     map_df(~ {
       list(
-        key = list(as.copasi_key(.x$getCN()$getString())),
+        key = .x$getCN()$getString(),
         name = .x$getObjectName(),
         type = stringr::str_to_lower(.x$getStatus()),
         value = .x$getInitialValue()
@@ -166,7 +166,7 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
   assert_that(
     confirmDatamodel(datamodel),
     is.data.frame(quantities),
-    has_name(quantities, "key"), !anyNA(quantities$key),
+    has_name(quantities, "key"), is_character(quantities$key), !anyNA(quantities$key),
     !has_name(quantities, "name") || is_character(quantities$name),
     !has_name(quantities, "value") || is_numeric(quantities$value)
   )
@@ -233,7 +233,7 @@ getReactions <- function(datamodel = pkg_env$curr_dm) {
   get_cdv(reactions) %>%
     map_df(~ {
       list(
-        key = list(as.copasi_key(.x$getCN()$getString())),
+        key = .x$getCN()$getString(),
         name = .x$getObjectName()
       )
     })
@@ -250,7 +250,7 @@ setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
   assert_that(
     confirmDatamodel(datamodel),
     is.data.frame(reactions),
-    has_name(reactions, "key"), !anyNA(reactions$key),
+    has_name(reactions, "key"), is_character(reactions$key), !anyNA(reactions$key),
     !has_name(reactions, "name") || is_character(reactions$name)
   )
   
@@ -293,7 +293,7 @@ getCompartments <- function(datamodel = pkg_env$curr_dm) {
   get_cdv(compartments) %>%
     map_df(~ {
       list(
-        key = list(as.copasi_key(.x$getCN()$getString())),
+        key = .x$getCN()$getString(),
         name = .x$getObjectName(),
         volume = .x$getInitialValue()
       )
@@ -311,7 +311,7 @@ setCompartments <- function(compartments, datamodel = pkg_env$curr_dm) {
   assert_that(
     confirmDatamodel(datamodel),
     is.data.frame(compartments),
-    has_name(compartments, "key"), !anyNA(compartments$key),
+    has_name(compartments, "key"), is_character(compartments$key), !anyNA(compartments$key),
     !has_name(compartments, "name") || is_character(compartments$name),
     !has_name(compartments, "volume") || is_numeric(compartments$value)
   )

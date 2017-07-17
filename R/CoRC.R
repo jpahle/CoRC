@@ -12,6 +12,9 @@
 #' @importFrom utils capture.output head tail
 "_PACKAGE"
 
+# Output flag for tasks
+OUTPUTFLAG <- 119L
+
 #' @export
 COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/ed1bee159a3eb7b21010d9a0ae61be9d3b411959"
 
@@ -30,8 +33,8 @@ COPASI_BIN_HASHES <-
   # hack for load_all() 
   libname <- .libPaths()
   
-  iserr <- try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
-  if (is(iserr, "try-error")) warning(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
+  e <- try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
+  if (assertthat::is.error(e)) warning(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
 
 .onUnload <- function(libpath) {

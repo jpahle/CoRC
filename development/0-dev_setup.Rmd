@@ -19,7 +19,6 @@ reset_copasi <- function() {
   )
   
   assign("datamodel", getCurrentModel(), envir = .GlobalEnv)
-  setTimeCourseSettings(duration = 100, dt = 1)
 }
 
 inspect <- function(object) {

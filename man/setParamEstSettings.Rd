@@ -6,7 +6,8 @@
 \usage{
 setParamEstSettings(randomizeStartValues = NULL, createParameterSets = NULL,
   calculateStatistics = NULL, updateModel = NULL, executable = NULL,
-  method = NULL, datamodel = pkg_env$curr_dm)
+  parameters = NULL, experiments = NULL, method = NULL,
+  datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{randomizeStartValues}{boolean}

@@ -1,5 +1,5 @@
 # like seq_len but starts from 0L so it can be used for iterating through c vectors
-seq_len_from0 <- function(len) {seq_len(len) - 1L}
+seq_len_0 <- function(len) {seq_len(len) - 1L}
 
 # Works like seq_along for many copasi vectors (0 based index)
 seq_along_v <- function(copasivector) {
@@ -7,7 +7,7 @@ seq_along_v <- function(copasivector) {
   
   if (len == 0L) return(integer())
   
-  seq_len_from0(len)
+  seq_len_0(len)
 }
 
 # get items of std_vector in list

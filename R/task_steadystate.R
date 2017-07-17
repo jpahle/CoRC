@@ -25,13 +25,14 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
   method <- as(task$getMethod(), "_p_CSteadyStateMethod")
   
-  success <- grab_msg(task$process(TRUE))
+  success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
+  if (success) success <- grab_msg(task$processRaw(TRUE))
   
   do.call(set_sss_worker, restorationCall)
   
   assert_that(
     success,
-    msg = paste0("Processing the task failed:\n", task$getProcessError())
+    msg = paste0("Processing the task failed.")
   )
   
   ret <- list(
@@ -54,7 +55,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
       transit <- .x$getTransitionTime()
       if (!is.na(transit)) {
         list(
-          key = list(structure(.x$getCN()$getString(), class = "copasi_key")),
+          key = .x$getCN()$getString(),
           name = .x$getObjectName(),
           type = stringr::str_to_lower(.x$getStatus()),
           concentration = .x$getConcentration(),
@@ -70,7 +71,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
     get_cdv(model$getReactions()) %>%
     map_df(~ {
       list(
-        key = list(structure(.x$getCN()$getString(), class = "copasi_key")),
+        key = .x$getCN()$getString(),
         name = .x$getObjectName(),
         concentration.flux = .x$getFlux(),
         particlenum.flux = .x$getParticleFlux()

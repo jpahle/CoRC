@@ -87,13 +87,16 @@ grab_msg <- function(x, purge = NULL) {
     if (!is_empty(messages)) {
       warning(
         "Process generated Copasi Message(s):\n",
-        paste0(messages, collapse = "\n")
+        paste0(messages, collapse = "\n"), "\n"
       )
     }
   }
   
   x
 }
+
+# Force the winslash to be the same applied by file.path etc
+normalizePathC <- partial(normalizePath, winslash = .Platform$file.sep)
 
 #' Autoplot method for copasi timeseries objects.
 #'

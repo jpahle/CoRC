@@ -36,15 +36,16 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
   
   # Tells copasi to run the task
-  success <- grab_msg(task$process(TRUE))
+  success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
+  if (success) success <- grab_msg(task$processRaw(TRUE))
   # success <- task$processWithOutputFlags(TRUE, 200)
 
   # Call the worker again to restore previous settings.
   do.call(set_tcs_worker, restorationCall)
-
+  
   assert_that(
     success,
-    msg = paste0("Processing the task failed:\n", task$getProcessError())
+    msg = paste0("Processing the task failed.")
   )
   
   ret <- NULL
@@ -61,9 +62,9 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     # Inner loops creates numeric() wrapped in a named list
     # Outer loop binds all lists to a data frame
     ret <-
-      seq_len_from0(timeSeries$getNumVariables()) %>%
+      seq_len_0(timeSeries$getNumVariables()) %>%
       map(function(i_var) {
-        seq_len_from0(recordedSteps) %>%
+        seq_len_0(recordedSteps) %>%
           map_dbl(function(i_step) {
             # Timecritical step optimization
             # timeSeries$getConcentrationData(i_step, i_var)

@@ -5,8 +5,8 @@
 \title{Run parameter estimation}
 \usage{
 runParamEst(randomizeStartValues = NULL, createParameterSets = NULL,
-  calculateStatistics = NULL, updateModel = NULL, method = NULL,
-  datamodel = pkg_env$curr_dm)
+  calculateStatistics = NULL, updateModel = NULL, parameters = NULL,
+  experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{calculateStatistics}{boolean}

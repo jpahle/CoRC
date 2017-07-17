@@ -33,6 +33,7 @@ Collate:
     'manage_models.R'
     'manage_properties.R'
     'quantity_accessors.R'
+    'quantity_finders.R'
     'swig_workarounds.R'
     'swig_wrapper.R'
     'task_parameterestimation.R'

@@ -1,45 +1,58 @@
-#' @export
-format.copasi_key <- function(x, ...) {
-  descriptors <- stringr::str_match(x, "=([^=]+)s\\[([^\\[]+)\\]$")
-  paste0(
-    "# A copasi key object: ", descriptors[2L], ": ", descriptors[3L], "\n",
-    "Key value: ", x
-  )
-}
+#' copasi_key <- function(x) {
+#'   assert_that(is_character(x))
+#'   structure(x, class = c("copasi_key", is(x)))
+#' }
+#' 
+#' #' @export
+#' is.copasi_key <- function(x) {
+#'   inherits(x, "copasi_key")
+#' }
+#' 
+#' #' @export
+#' as.copasi_key <- function(x) {
+#'   copasi_key(as.character(x))
+#' }
 
-#' @importFrom tibble type_sum
-#' @export
-type_sum.copasi_key <- function(x) {
-  descriptors <- stringr::str_match(x, "=([^=]+)s\\[([^\\[]+)\\]$")
-  paste0(descriptors[2L], ": ", descriptors[3L])
-}
+#' #' @export
+#' format.copasi_key <- function(x, ...) {
+#'   descriptors <- stringr::str_match(x, "=([^=]+)s\\[([^\\[]+)\\]$")
+#'   paste0(
+#'     "# A copasi key object: ", descriptors[2L], ": ", descriptors[3L], "\n"
+#'     # "Key value: ", x
+#'   )
+#' }
 
-#' @export
-print.copasi_key <-
-  function(x, ...) {
-    cat(format(x, ...), "\n")
-    invisible(x)
-  }
+#' #' @export
+#' print.copasi_key <-
+#'   function(x, ...) {
+#'     cat(format(x, ...), "\n")
+#'     invisible(x)
+#'   }
+#' 
+#' #' @export
+#' show.copasi_key <-
+#'   function(x) {
+#'     print(x)
+#'     invisible(x)
+#'   }
 
-#' @export
-show.copasi_key <-
-  function(object) {
-    print(object)
-    invisible(object)
-  }
-
-#' @export
-is.copasi_key <-
-  function(object) {
-    is(object, "copasi_key")
-  }
-
-#' @export
-as.copasi_key <-
-  function(object) {
-    assert_that(is_scalar_character(object))
-    structure(object, class = "copasi_key")
-  }
+#' #' @importFrom tibble is_vector_s3
+#' #' @export
+#' is_vector_s3.copasi_key <- function(x) {
+#'   TRUE
+#' }
+#' 
+#' #' @importFrom tibble type_sum
+#' #' @export
+#' type_sum.copasi_key <- function(x) {
+#'   "ckey"
+#' }
+#' 
+#' #' @importFrom tibble obj_sum
+#' #' @export
+#' type_sum.copasi_key <- function(x) {
+#'   paste0("ckey [", length(x), "]")
+#' }
 
 copasi_object_types <-
   c(
@@ -52,7 +65,11 @@ copasi_object_types <-
   )
 
 auto_cast <- function(object) {
-  as(object, copasi_object_types[object$getObjectType()])
+  type <- copasi_object_types[object$getObjectType()]
+  if (is.na(type))
+    object
+  else
+    as(object, type)
 }
 
 # Give CNs as character vector and get objects
@@ -73,11 +90,11 @@ cn_to_object <- function(strings, datamodel, accepted_types = NULL) {
       }
     )
   
-  # if accepted_types were given, NULL all objects that do not have any of those types.
+  # if accepted_types were given, NULL all objects that do not match any of those types.
   if (!is_null(accepted_types)) {
     objects <- map_if(
       objects,
-      ~ !any(is(.x) %in% accepted_types),
+      ~ !inherits(.x, accepted_types),
       ~ NULL
     )
   }
