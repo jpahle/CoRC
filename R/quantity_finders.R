@@ -1,7 +1,7 @@
 #' @export
 species <- function(name, reference = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(
-    confirmDatamodel(datamodel),
     is_character(name), !any(is.na(name)),
     is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(name) == length(reference)
   )

@@ -6,7 +6,7 @@
 #' @return name
 #' @export
 getModelName <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   datamodel$getModel()$getObjectName()
 }
@@ -19,7 +19,8 @@ getModelName <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setModelName <- function(name, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_character(name))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_character(name))
   
   assert_that(
     datamodel$getModel()$setObjectName(name),
@@ -37,7 +38,7 @@ setModelName <- function(name, datamodel = pkg_env$curr_dm) {
 #' @return unit of time
 #' @export
 getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   datamodel$getModel()$getTimeUnitName()
 }
@@ -50,7 +51,8 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_character(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -76,7 +78,7 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #' @return unit of volume
 #' @export
 getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   datamodel$getModel()$getVolumeUnitName()
 }
@@ -89,7 +91,8 @@ getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_character(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -115,7 +118,7 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #' @return unit of quantity
 #' @export
 getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   datamodel$getModel()$getQuantityUnitName()
 }
@@ -128,7 +131,8 @@ getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_character(unit))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_character(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -154,7 +158,7 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 getInitialTime <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   datamodel$getModel()$getInitialTime()
 }
@@ -167,7 +171,8 @@ getInitialTime <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_numeric(time), time >= 0)
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_numeric(time), time >= 0)
   
   model <- datamodel$getModel()
   
@@ -191,7 +196,7 @@ resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
   # I think this issue was fixed lately:
   # https://github.com/copasi/COPASI/commit/886f13dea2f58517ec757758c14358243e59bce9
   # This function can likely be removed soon.
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   model <- datamodel$getModel()
   

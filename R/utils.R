@@ -43,17 +43,10 @@ setMethod("show",
 )
 
 # Checks whether the datamodel parameter is valid
-confirmDatamodel <- function(datamodel) {
-  success <- is(datamodel, "_p_CDataModel")
+assert_datamodel <- function(datamodel) {
+  assert_that(inherits(datamodel, "_p_CDataModel"))
   
-  if (success) pkg_env$curr_dm <- datamodel
-  
-  success
-}
-
-# Better error message for assert_that
-assertthat::on_failure(confirmDatamodel) <- function(call, env) {
-  paste0(deparse(call$datamodel), " is not a datamodel")
+  pkg_env$curr_dm <- datamodel
 }
 
 transform_names <- function(x) {
@@ -64,7 +57,12 @@ transform_names <- function(x) {
 }
 
 # finds copasi messages and helps purge known annoying messages
-grab_msg <- function(x, purge = NULL) {
+grab_msg <- function(x, purge = character(0)) {
+  purge_by_default <- c(
+    ": No output file defined for report of task "
+  )
+  purge <- c(purge, purge_by_default)
+  
   if (CCopasiMessage_size() > 0L) {
     warning(
       "\n",
@@ -81,8 +79,7 @@ grab_msg <- function(x, purge = NULL) {
     messages <- map_chr(1L:CCopasiMessage_size(), ~ CCopasiMessage_getFirstMessage()$getText())
     
     # filter all messages that match a purge pattern
-    if (!is_null(purge))
-      messages <- messages[map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))]
+    messages <- messages[map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))]
     
     if (!is_empty(messages)) {
       warning(

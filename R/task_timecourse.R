@@ -15,11 +15,12 @@
 #' @return a data frame with a time column and value columns
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
+  assert_datamodel(datamodel)
   
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
-  restorationCall <- set_tcs_worker(
+  restorationCall <- tc_settings_worker(
+    .type = "temporary",
     duration = duration,
     dt = dt,
     intervals = intervals,
@@ -33,53 +34,21 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   )
   
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
   
-  # Tells copasi to run the task
   success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
   if (success) success <- grab_msg(task$processRaw(TRUE))
-  # success <- task$processWithOutputFlags(TRUE, 200)
+  
+  if (success)
+    ret <- tc_result_worker(datamodel, saveResultInMemory)
 
   # Call the worker again to restore previous settings.
-  do.call(set_tcs_worker, restorationCall)
+  do.call(tc_settings_worker, restorationCall)
   
+  # Assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
   )
-  
-  ret <- NULL
-  timeSeries <- task$getTimeSeries()
-  recordedSteps <- timeSeries$getRecordedSteps()
-  
-  if (recordedSteps) {
-    # Timecritical step optimization
-    timeSeries_ref <- timeSeries@ref
-    R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
-  
-    # assemble output dataframe
-    # Iterates over all species/variables and all timepoints/steps
-    # Inner loops creates numeric() wrapped in a named list
-    # Outer loop binds all lists to a data frame
-    ret <-
-      seq_len_0(timeSeries$getNumVariables()) %>%
-      map(function(i_var) {
-        seq_len_0(recordedSteps) %>%
-          map_dbl(function(i_step) {
-            # Timecritical step optimization
-            # timeSeries$getConcentrationData(i_step, i_var)
-            # CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
-            # args: self@ref, int, int, bool
-            .Call(R_swig_CTimeSeries_getConcentrationData, timeSeries_ref, i_step, i_var, FALSE)
-          }) %>%
-          list() %>%
-          # set_names(timeSeries$getTitle(i_var))
-          set_names(CTimeSeries_getTitle(timeSeries, i_var))
-      }) %>%
-      dplyr::bind_cols() %>%
-      rlang::set_attrs(class = prepend(class(.), "copasi_ts"))
-  } else if (is.null(saveResultInMemory))
-    warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
   
   ret
 }
@@ -101,11 +70,12 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param datamodel a model object
 #' @export
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  assert_that(!(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
+  assert_datamodel(datamodel)
   assert_that(is.null(executable) || is_scalar_logical(executable))
   
   # Call the worker to set most settings
-  set_tcs_worker(
+  tc_settings_worker(
+    .type = "permanent",
     duration = duration,
     dt = dt,
     intervals = intervals,
@@ -127,9 +97,9 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
   invisible()
 }
 
-set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, datamodel = NULL) {
-  assert_that(confirmDatamodel(datamodel))
-  
+# .type can help in some situations to determine assertions etc
+# can be "temporary", "permanent" or "restore"
+tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, datamodel) {
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
   
@@ -144,6 +114,7 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     is.null(updateModel)          || is_scalar_logical(updateModel)               && !is.na(updateModel),
     is.null(method)               || is_scalar_character(method)                  && !is.na(method) || is_list(method) && is_scalar_character(method$method) && !is.na(method$method)
   )
+  assert_that(.type != "restore" && !(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
   if (!is.null(method)) {
     if (is_scalar_character(method)) method <- list(method = method)
@@ -151,7 +122,12 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
   }
   
-  restorationCall <- list(datamodel = datamodel)
+  errors <- FALSE
+  
+  restorationCall <- list(
+    .type = "restore",
+    datamodel = datamodel
+  )
   
   if (!is.null(duration)) {
     restorationCall$duration <- problem$getDuration()
@@ -251,14 +227,14 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
           append(restorationCall$method, method %>% dplyr::select(name, oldval) %>% tibble::deframe())
       }
       
-      # First restore everything and then give complete feedback error.
-      if (!is_empty(bad_names) || nrow(forbidden) != 0L || nrow(failures) != 0L) {
-        do.call(set_tcs_worker, restorationCall)
-        errmsg <- ""
-        if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-        if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-        if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-        stop(errmsg)
+      # Give complete feedback error.
+      errmsg <- ""
+      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
+      if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
+      if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
+      if (nchar(errmsg) != 0L) {
+        try(stop(errmsg))
+        errors <- TRUE
       }
     }
   }
@@ -268,5 +244,49 @@ set_tcs_worker <- function(duration = NULL, dt = NULL, intervals = NULL, suppres
     task$setMethodType(method_old)
   }
   
+  if (errors && .type != "restore") {
+    do.call(pe_settings_worker, restorationCall)
+    stop("Rolled back task due to errors during setup.")
+  }
+  
   restorationCall
+}
+
+tc_result_worker <- function(datamodel, saveResultInMemory) {
+  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  timeSeries <- task$getTimeSeries()
+  recordedSteps <- timeSeries$getRecordedSteps()
+  
+  ret <- NULL
+  
+  if (recordedSteps) {
+    # Timecritical step optimization
+    timeSeries_ref <- timeSeries@ref
+    R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
+    
+    # assemble output dataframe
+    # Iterates over all species/variables and all timepoints/steps
+    # Inner loops creates numeric() wrapped in a named list
+    # Outer loop binds all lists to a data frame
+    ret <-
+      seq_len_0(timeSeries$getNumVariables()) %>%
+      map(function(i_var) {
+        seq_len_0(recordedSteps) %>%
+          map_dbl(function(i_step) {
+            # Timecritical step optimization
+            # timeSeries$getConcentrationData(i_step, i_var)
+            # CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+            # args: self@ref, int, int, bool
+            .Call(R_swig_CTimeSeries_getConcentrationData, timeSeries_ref, i_step, i_var, FALSE)
+          }) %>%
+          list() %>%
+          # set_names(timeSeries$getTitle(i_var))
+          set_names(CTimeSeries_getTitle(timeSeries, i_var))
+      }) %>%
+      dplyr::bind_cols() %>%
+      rlang::set_attrs(class = prepend(class(.), "copasi_ts"))
+  } else if (is.null(saveResultInMemory))
+    warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
+  
+  ret
 }

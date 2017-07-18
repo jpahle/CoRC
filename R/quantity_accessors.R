@@ -6,8 +6,8 @@
 #' @return a data frame with species and associated information
 #' @export
 getSpecies <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
-
+  assert_datamodel(datamodel)
+  
   metabs <- datamodel$getModel()$getMetabolites()
 
   # assemble output dataframe
@@ -32,8 +32,8 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(
-    confirmDatamodel(datamodel),
     is.data.frame(species),
     has_name(species, "key"), is_character(species$key), !anyNA(species$key),
     !has_name(species, "name") || is_character(species$name),
@@ -139,7 +139,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
 #' @return a data frame with global quantities and associated information
 #' @export
 getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   quantities <- datamodel$getModel()$getModelValues()
   
@@ -163,8 +163,8 @@ getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(
-    confirmDatamodel(datamodel),
     is.data.frame(quantities),
     has_name(quantities, "key"), is_character(quantities$key), !anyNA(quantities$key),
     !has_name(quantities, "name") || is_character(quantities$name),
@@ -225,7 +225,7 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
 #' @return a data frame with reactions and associated information
 #' @export
 getReactions <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   reactions <- datamodel$getModel()$getReactions()
   
@@ -247,8 +247,8 @@ getReactions <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(
-    confirmDatamodel(datamodel),
     is.data.frame(reactions),
     has_name(reactions, "key"), is_character(reactions$key), !anyNA(reactions$key),
     !has_name(reactions, "name") || is_character(reactions$name)
@@ -285,7 +285,7 @@ setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
 #' @return a data frame with compartments and associated information
 #' @export
 getCompartments <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   compartments <- datamodel$getModel()$getCompartments()
   
@@ -308,8 +308,8 @@ getCompartments <- function(datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @export
 setCompartments <- function(compartments, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(
-    confirmDatamodel(datamodel),
     is.data.frame(compartments),
     has_name(compartments, "key"), is_character(compartments$key), !anyNA(compartments$key),
     !has_name(compartments, "name") || is_character(compartments$name),

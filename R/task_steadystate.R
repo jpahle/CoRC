@@ -10,9 +10,12 @@
 #' @return a list of results
 #' @export
 runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
-  restorationCall <- set_sss_worker(
+  restorationCall <- ss_settings_worker(
+    .type = "temporary",
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
@@ -28,57 +31,17 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
   if (success) success <- grab_msg(task$processRaw(TRUE))
   
-  do.call(set_sss_worker, restorationCall)
+  if (success)
+    ret <- tc_result_worker(datamodel)
   
+  # Call the worker again to restore previous settings.
+  do.call(ss_settings_worker, restorationCall)
+  
+  # Assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
   )
-  
-  ret <- list(
-    result = NULL,
-    species = NULL,
-    # compartments = NULL,
-    # modelquantities = NULL,
-    reactions = NULL,
-    # stability = NULL,
-    # jacobian.complete = NULL,
-    # jacobian.reduced = NULL,
-    protocol = NULL
-  )
-  
-  ret$result <- task$getResult()
-
-  ret$species <-
-    get_cdv(model$getMetabolites()) %>%
-    map_df(~ {
-      transit <- .x$getTransitionTime()
-      if (!is.na(transit)) {
-        list(
-          key = .x$getCN()$getString(),
-          name = .x$getObjectName(),
-          type = stringr::str_to_lower(.x$getStatus()),
-          concentration = .x$getConcentration(),
-          concentration.rate = .x$getConcentrationRate(),
-          particlenum = .x$getValue(),
-          particlenum.rate = .x$getRate(),
-          transitiontime = transit
-        )
-      }
-    })
-  
-  ret$reactions <-
-    get_cdv(model$getReactions()) %>%
-    map_df(~ {
-      list(
-        key = .x$getCN()$getString(),
-        name = .x$getObjectName(),
-        concentration.flux = .x$getFlux(),
-        particlenum.flux = .x$getParticleFlux()
-      )
-    })
-  
-  ret$protocol <- method$getMethodLog()
   
   ret
 }
@@ -95,10 +58,12 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param datamodel a model object
 #' @export
 setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
   assert_that(is.null(executable) || is_scalar_logical(executable))
   
   # Call the worker to set most settings
-  set_sss_worker(
+  ss_settings_worker(
+    .type = "permanent",
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
@@ -115,9 +80,7 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
   invisible()
 }
 
-set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = NULL) {
-  assert_that(confirmDatamodel(datamodel))
-  
+ss_settings_worker <- function(.type, calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel) {
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
   
@@ -130,7 +93,12 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   
   if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian)) stop("performStabilityAnalysis can only be set in combination with calculateJacobian.")
   
-  restorationCall <- list(datamodel = datamodel)
+  errors <- FALSE
+  
+  restorationCall <- list(
+    .type = "restore",
+    datamodel = datamodel
+  )
   
   if (!is.null(calculateJacobian)) {
     restorationCall$calculateJacobian <- as.logical(problem$isJacobianRequested())
@@ -196,16 +164,74 @@ set_sss_worker <- function(calculateJacobian = NULL, performStabilityAnalysis = 
       restorationCall$method <- method %>% dplyr::select(name, oldval) %>% tibble::deframe()
     }
     
-    # First restore everything and then give complete feedback error.
-    if (!is_empty(bad_names) || nrow(forbidden) != 0L || nrow(failures) != 0L) {
-      do.call(set_sss_worker, restorationCall)
-      errmsg <- ""
-      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-      if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-      if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-      stop(errmsg)
+    # Give complete feedback error.
+    errmsg <- ""
+    if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
+    if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
+    if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
+    if (nchar(errmsg) != 0L) {
+      try(stop(errmsg))
+      errors <- TRUE
     }
   }
   
+  if (errors && .type != "restore") {
+    do.call(pe_settings_worker, restorationCall)
+    stop("Rolled back task due to errors during setup.")
+  }
+  
   restorationCall
+}
+
+ss_result_worker <- function(datamodel) {
+  model <- as(datamodel$getModel(), "_p_CModel")
+  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  method <- as(task$getMethod(), "_p_CSteadyStateMethod")
+  
+  ret <- list(
+    result = NULL,
+    species = NULL,
+    # compartments = NULL,
+    # modelquantities = NULL,
+    reactions = NULL,
+    # stability = NULL,
+    # jacobian.complete = NULL,
+    # jacobian.reduced = NULL,
+    protocol = NULL
+  )
+  
+  ret$result <- task$getResult()
+  
+  ret$species <-
+    get_cdv(model$getMetabolites()) %>%
+    map_df(~ {
+      transit <- .x$getTransitionTime()
+      if (!is.na(transit)) {
+        list(
+          key = .x$getCN()$getString(),
+          name = .x$getObjectName(),
+          type = stringr::str_to_lower(.x$getStatus()),
+          concentration = .x$getConcentration(),
+          concentration.rate = .x$getConcentrationRate(),
+          particlenum = .x$getValue(),
+          particlenum.rate = .x$getRate(),
+          transitiontime = transit
+        )
+      }
+    })
+  
+  ret$reactions <-
+    get_cdv(model$getReactions()) %>%
+    map_df(~ {
+      list(
+        key = .x$getCN()$getString(),
+        name = .x$getObjectName(),
+        concentration.flux = .x$getFlux(),
+        particlenum.flux = .x$getParticleFlux()
+      )
+    })
+  
+  ret$protocol <- method$getMethodLog()
+  
+  ret
 }

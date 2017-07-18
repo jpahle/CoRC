@@ -18,7 +18,7 @@ getCurrentModel <- function() {
 #' @return invisibly returns the model object
 #' @export
 setCurrentModel <- function(datamodel) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
 
   pkg_env$curr_dm <- datamodel
   
@@ -121,8 +121,8 @@ loadSBML <- function(path) {
 #' @param datamodel a model object
 #' @export
 unloadModel <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
-
+  assert_datamodel(datamodel)
+  
   datamodel <- CRootContainer_removeDatamodel(datamodel)
 
   pkg_env$curr_dm <- NULL
@@ -151,7 +151,8 @@ unloadAllModels <- function() {
 #' @param datamodel a model object
 #' @export
 saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_character(filename))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_character(filename))
 
   if (!assertthat::has_extension(filename, "cps"))
     filename <- paste0(filename, ".cps")
@@ -176,11 +177,10 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
 #'
 #' \code{loadExamples} loads several example models and returns them in a list.
 #'
+#' @param indices optional indices of example models to load.
 #' @return a list of model objects
 #' @export
-loadExamples <- function() {
-  pkgname <- getPackageName()
-  
+loadExamples <- function(indices = NULL) {
   models <- 
     c(
       "brusselator.cps",
@@ -189,6 +189,11 @@ loadExamples <- function() {
       "simple.cps"
     )
   
+  assert_that(is.null(indices) || all(indices %in% seq_along(models)), msg = "Invalid indices.")
+  
+  if (!is.null(indices)) models <- models[indices]
+  
+  pkgname <- getPackageName()
   map(models, ~ loadModel(system.file("extdata", .x, package = pkgname)))
 }
 
@@ -199,7 +204,8 @@ loadExamples <- function() {
 #' @param datamodel a model object
 #' @export
 openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel), is_scalar_logical(readin), is_scalar_character(copasi_loc))
+  assert_datamodel(datamodel)
+  assert_that(is_scalar_logical(readin), is_scalar_character(copasi_loc))
   
   if (.Platform$OS.type == "windows") {
     found <- !suppressWarnings(system2("where", args = copasi_loc, stdout = FALSE, stderr = FALSE))

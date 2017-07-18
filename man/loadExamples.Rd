@@ -4,7 +4,10 @@
 \alias{loadExamples}
 \title{Load example models}
 \usage{
-loadExamples()
+loadExamples(indices = NULL)
+}
+\arguments{
+\item{indices}{optional indices of example models to load.}
 }
 \value{
 a list of model objects

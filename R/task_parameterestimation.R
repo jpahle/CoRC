@@ -11,7 +11,7 @@
 #' @return a list of results
 #' @export
 runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
@@ -34,9 +34,11 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   
   if (success)
     ret <- try(pe_result_worker(datamodel))
-    
+  
+  # Call the worker again to restore previous settings.
   do.call(pe_settings_worker, restorationCall)
   
+  # Assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
@@ -62,7 +64,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
 #' @param datamodel a model object
 #' @export
 setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   assert_that(is.null(executable) || is_scalar_logical(executable))
   
   # Call the worker to set most settings
@@ -104,7 +106,7 @@ defineParameter <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, s
 
 #' @export
 addParameter <- function(param_struct, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
@@ -117,7 +119,7 @@ addParameter <- function(param_struct, datamodel = pkg_env$curr_dm) {
 
 #' @export
 clearParameters <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
@@ -201,7 +203,7 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
 
 #' @export
 addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
@@ -254,7 +256,7 @@ addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
 
 #' @export
 clearExperiments <- function(datamodel = pkg_env$curr_dm) {
-  assert_that(confirmDatamodel(datamodel))
+  assert_datamodel(datamodel)
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
   experiment_set <- problem$getExperimentSet()
@@ -263,8 +265,8 @@ clearExperiments <- function(datamodel = pkg_env$curr_dm) {
 }
 
 # .type can help in some situations to determine assertions etc
-# can be temporary, permanent or restore
-pe_settings_worker <- function(.type = NULL, randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel) {
+# can be "temporary", "permanent" or "restore"
+pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel) {
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
   
@@ -446,7 +448,10 @@ pe_settings_worker <- function(.type = NULL, randomizeStartValues = NULL, create
       if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
       if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
       if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-      if (nchar(errmsg) != 0L) try(stop(errmsg))
+      if (nchar(errmsg) != 0L) {
+        try(stop(errmsg))
+        errors <- TRUE
+      }
     }
   }
   
