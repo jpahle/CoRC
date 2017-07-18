@@ -23,16 +23,13 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
     datamodel = datamodel
   )
   
-  model <- as(datamodel$getModel(), "_p_CModel")
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
-  method <- as(task$getMethod(), "_p_CSteadyStateMethod")
   
   success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
-  if (success) success <- grab_msg(task$processRaw(TRUE))
-  
   if (success)
-    ret <- tc_result_worker(datamodel)
+    success <- grab_msg(task$processRaw(TRUE))
+  if (success)
+    ret <- ss_result_worker(datamodel)
   
   # Call the worker again to restore previous settings.
   do.call(ss_settings_worker, restorationCall)

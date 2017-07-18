@@ -36,8 +36,8 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
   success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
-  if (success) success <- grab_msg(task$processRaw(TRUE))
-  
+  if (success)
+    success <- grab_msg(task$processRaw(TRUE))
   if (success)
     ret <- tc_result_worker(datamodel, saveResultInMemory)
 
@@ -114,7 +114,7 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
     is.null(updateModel)          || is_scalar_logical(updateModel)               && !is.na(updateModel),
     is.null(method)               || is_scalar_character(method)                  && !is.na(method) || is_list(method) && is_scalar_character(method$method) && !is.na(method$method)
   )
-  assert_that(.type != "restore" && !(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
+  assert_that(.type == "restore" || !(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
   if (!is.null(method)) {
     if (is_scalar_character(method)) method <- list(method = method)

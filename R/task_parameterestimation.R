@@ -30,8 +30,8 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   
   success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
-  if (success) success <- grab_msg(task$processRaw(TRUE))
-  
+  if (success)
+    success <- grab_msg(task$processRaw(TRUE))
   if (success)
     ret <- try(pe_result_worker(datamodel))
   
