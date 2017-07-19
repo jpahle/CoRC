@@ -1,4 +1,4 @@
-#'  Get species
+#' Get species
 #'
 #' \code{getSpecies} returns all species as a data frame.
 #'
@@ -8,10 +8,10 @@
 getSpecies <- function(datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   
-  metabs <- datamodel$getModel()$getMetabolites()
+  metabs <- get_cdv(datamodel$getModel()$getMetabolites())
 
   # assemble output dataframe
-  get_cdv(metabs) %>%
+  metabs %>%
     map_df(~ {
       list(
         key = .x$getCN()$getString(),
@@ -21,37 +21,39 @@ getSpecies <- function(datamodel = pkg_env$curr_dm) {
         concentration = .x$getInitialConcentration(),
         particlenum = .x$getInitialValue()
       )
-    })
+    }) %>%
+    dplyr::select(-key, key)
 }
 
 #' Set species
 #'
 #' \code{setSpecies} accepts a data frame of species and attempts to apply given values to the model depending on the 'key' column.
 #'
-#' @param species a data frame as given by getSpecies()
+#' @param key a character vector uniquely identifying species
+#' @param name a character vector of names to set
+#' @param concentration a character vector of concentrations to set
+#' @param particlenum a character vector of particle numbers to set
+#' @param data a data frame as given by getSpecies which will be applied before the other arguments
 #' @param datamodel a model object
 #' @export
-setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
+setSpecies <- function(key = NULL, name = NULL, concentration = NULL, particlenum = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.data.frame(species),
-    has_name(species, "key"), is_character(species$key), !anyNA(species$key),
-    !has_name(species, "name") || is_character(species$name),
-    !has_name(species, "concentration") || is_numeric(species$concentration),
-    !has_name(species, "particlenum") || rlang::is_integerish(species$particlenum)
+    is.null(key) || is_character(key) && !anyNA(key),
+    is.null(name) || is_character(name) && length(name) == length(key),
+    is.null(concentration) || is_numeric(concentration) && length(concentration) == length(key),
+    is.null(particlenum) || is_numeric(particlenum) && length(particlenum) == length(key),
+    is.null(data) || is.data.frame(data)
   )
-
-  species <-
-    species %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(
-      object = cn_to_object(key, datamodel, "_p_CMetab")
-    )
   
-  assert_that(
-    !any(map_lgl(species$object, is_null)),
-    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(species$object, is_null)), collapse = ", "), " are invalid.")
-  )
+  # Do this as assertion before we start changing values
+  key <- species(key = key %||% character(), datamodel = datamodel)
+  
+  if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "concentration", "particlenum")])
+  
+  if (is_empty(key)) return(invisible())
+  
+  metabs <- cn_to_object(key, datamodel, "_p_CMetab")
   
   # metabs <- model$getMetabolites()
   
@@ -61,7 +63,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   #     object = get_cdv(metabs)
   #   ) %>%
   #   dplyr::mutate(key = .data$object %>% map_chr(~ .x$getCN()$getString()))
-
+  
   # # add an id column to species, so I dont lose the sorting order
   # species <-
   #   species %>%
@@ -74,7 +76,7 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   # metab_df <-
   #   metab_df %>%
   #   dplyr::left_join(species, by = "key")
-
+  
   # # if all species were given, accept the new sorting order by reshuffeling the copasi vector
   # if (!anyNA(metab_df$id)) {
   #   metab_df %>%
@@ -83,22 +85,22 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   #       metabs$swap(id, old_id)
   #     })
   # }
-
+  
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
   
   # apply names
-  if (has_name(species, "name")) {
+  if (!is_null(name)) {
     walk2(
-      species$object, species$name,
+      metabs, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
     )
   }
   
   # apply concentrations
-  if (has_name(species, "concentration")) {
+  if (!is_null(concentration)) {
     walk2(
-      species$object, species$concentration,
+      metabs, concentration,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialConcentration(.y)
@@ -109,9 +111,9 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   }
   
   # apply particlenum
-  if (has_name(species, "particlenum")) {
+  if (!is_null(particlenum)) {
     walk2(
-      species$object, species$particlenum,
+      metabs, particlenum,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
@@ -123,11 +125,11 @@ setSpecies <- function(species, datamodel = pkg_env$curr_dm) {
   
   datamodel$getModel()$updateInitialValues(changedObjects)
   delete_ObjectStdVector(changedObjects)
-
+  
   # model$compileIfNecessary()
-
+  
   # model$initializeMetabolites()
-
+  
   invisible()
 }
 

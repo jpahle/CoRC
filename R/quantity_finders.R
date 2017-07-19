@@ -1,36 +1,96 @@
+#' Identify species by name
+#'
+#' \code{species} identifies species from the given name fragments.
+#'
+#' @param key a vector of strings to identify species
+#' @param reference a scalar character or vetor of characters naming the value references to be returned.
+#' @param datamodel a model object
+#' @return a character vector of copasi keys
 #' @export
-species <- function(name, reference = NULL, datamodel = pkg_env$curr_dm) {
+species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is_character(name), !any(is.na(name)),
-    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(name) == length(reference)
+    is_character(key), !anyNA(key),
+    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(key) == length(reference)
   )
   
-  metabs_list <- get_cdv(datamodel$getModel()$getMetabolites())
+  # If names are already CN to metabolites we accept them
+  matched_metabs <- cn_to_object(key, datamodel, accepted_types = "_p_CMetab")
   
-  v_names <- metabs_list %>% map_swig("getObjectName") %>% flatten_chr()
-  indices <- pmatch(name, v_names)
+  is_matched <- matched_metabs %>% map_lgl(negate(is_null))
   
-  not_matched <- which(is.na(indices))
-  
-  if (!is_empty(not_matched)) {
-    v_dispnames <- metabs_list %>% map_swig("getObjectDisplayName") %>% flatten_chr()
-    indices %>% na.omit() %>% walk(~ {v_dispnames[.x] <<- NA_character_})
+  if(!all(is_matched)) {
+    key_remaining <- key[!is_matched]
     
-    indices[not_matched] <- pmatch(name[not_matched], v_dispnames)
+    # Assemble vector of all metabolite displaynames
+    metabs <- get_cdv(datamodel$getModel()$getMetabolites())
+    v_dispnames <- metabs %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    
+    # Find all full matches of displaynames
+    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
+    matched_metabs[!is_matched] <-
+      key_remaining %>% map(~ {
+        match <- which(.x == v_dispnames)
+        if (length(match) == 1L)
+          metabs[[match]]
+      })
+    
+    is_matched <- matched_metabs %>% map_lgl(negate(is_null))
+    
+    if(!all(is_matched)) {
+      key_remaining <- key[!is_matched]
+      
+      # Use give names as fixed pattern for searching in v_displaynames
+      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
+      
+      multi_matches <- which(map_int(matches, length) > 1L)
+      assert_that(
+        is_empty(multi_matches),
+        msg = paste0(
+          "Could not correctly identify some species:\n",
+          paste0(
+            multi_matches %>% map_chr(~
+              paste0(
+                '"', key_remaining[.x], '" matches species "',
+                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
+                '".'
+              )
+            ),
+            collapse = "\n"
+          )
+        )
+      )
+      
+      no_matches <- which(map_int(matches, length) == 0L)
+      assert_that(
+        is_empty(no_matches),
+        msg = paste0(
+          'Could not match species "',
+          key_remaining[no_matches], '".',
+          collapse = '", "'
+        )
+      )
+      
+      matched_metabs[!is_matched] <- metabs[flatten_int(matches)]
+    }
   }
   
-  ret <- metabs_list[indices]
-  
+  # If a reference is given, we use the matched metabolites to get value references
   if (!is_null(reference)) {
-    if (length(reference) == 1L) reference <- rep(reference, length(name))
+    # If given reference string is scalar we replicate it for all matches
+    if (length(reference) == 1L) reference <- rep(reference, length(key))
     
-    ret <- map2(
-      ret,
+    matched_metabs <- map2(
+      matched_metabs,
       reference,
-      ~ {if (is_null(.x)) NULL else .x$getObject(CCommonName(paste0("Reference=", .y)))}
+      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
     )
   }
   
-  ret %>% map_chr(~ {if (is_null(.x)) NA_character_ else .x$getCN()$getString()})
+  assert_that(
+    !any(map_lgl(matched_metabs, is_null)),
+    msg = "Failed to gather some references."
+  )
+  
+  matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
 }

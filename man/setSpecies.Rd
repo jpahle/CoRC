@@ -4,10 +4,19 @@
 \alias{setSpecies}
 \title{Set species}
 \usage{
-setSpecies(species, datamodel = pkg_env$curr_dm)
+setSpecies(key = NULL, name = NULL, concentration = NULL,
+  particlenum = NULL, data = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{species}{a data frame as given by getSpecies()}
+\item{key}{a character vector uniquely identifying species}
+
+\item{name}{a character vector of names to set}
+
+\item{concentration}{a character vector of concentrations to set}
+
+\item{particlenum}{a character vector of particle numbers to set}
+
+\item{data}{a data frame as given by getSpecies which will be applied before the other arguments}
 
 \item{datamodel}{a model object}
 }

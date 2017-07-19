@@ -30,6 +30,7 @@ swigfix_resolve_vector <- function(self, fun, class) {
 # Function will always be the one which gets resolved from the first object
 # Thus, unexpected results might happen with inhomogenous lists
 map_swig <- function(x, fun, ...) {
+  if (is_empty(x)) return(list())
   x_q <- quote(x)
   map(
     .x = x,
@@ -43,6 +44,7 @@ map_swig <- function(x, fun, ...) {
 # Function will always be the one which gets resolved from the first object
 # Thus, unexpected results might happen with inhomogenous lists
 walk_swig <- function(x, fun, ...) {
+  if (is_empty(x)) return(list())
   x_q <- quote(x)
   walk(
     .x = x,
