@@ -4,13 +4,20 @@
 \alias{setCompartments}
 \title{Set compartments}
 \usage{
-setCompartments(compartments, datamodel = pkg_env$curr_dm)
+setCompartments(key = NULL, name = NULL, initial.volume = NULL,
+  data = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{compartments}{a data frame as given by getCompartments()}
+\item{key}{a character vector uniquely identifying compartments}
+
+\item{name}{a character vector of names to set}
+
+\item{initial.volume}{a numeric vector of values to set}
+
+\item{data}{a data frame as given by getCompartments which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 }
 \description{
-\code{setCompartments} accepts a data frame of compartments and attempts to apply given values to the model depending on the 'key' column.
+\code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.
 }

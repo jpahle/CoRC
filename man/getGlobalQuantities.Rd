@@ -4,14 +4,16 @@
 \alias{getGlobalQuantities}
 \title{Get global quantities}
 \usage{
-getGlobalQuantities(datamodel = pkg_env$curr_dm)
+getGlobalQuantities(key = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
+\item{key}{a character vector uniquely identifying global quantities}
+
 \item{datamodel}{a model object}
 }
 \value{
 a data frame with global quantities and associated information
 }
 \description{
-\code{getGlobalQuantities} returns all global quantities as a data frame.
+\code{getGlobalQuantities} returns global quantities as a data frame.
 }

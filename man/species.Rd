@@ -9,7 +9,7 @@ species(key, reference = NULL, datamodel = pkg_env$curr_dm)
 \arguments{
 \item{key}{a vector of strings to identify species}
 
-\item{reference}{a scalar character or vetor of characters naming the value references to be returned.}
+\item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
 \item{datamodel}{a model object}
 }

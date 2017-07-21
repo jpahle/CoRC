@@ -4,14 +4,16 @@
 \alias{getCompartments}
 \title{Get compartments}
 \usage{
-getCompartments(datamodel = pkg_env$curr_dm)
+getCompartments(key = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
+\item{key}{a character vector uniquely identifying compartments}
+
 \item{datamodel}{a model object}
 }
 \value{
 a data frame with compartments and associated information
 }
 \description{
-\code{getCompartments} returns all compartments as a data frame.
+\code{getCompartments} returns compartments as a data frame.
 }

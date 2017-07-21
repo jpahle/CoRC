@@ -1,48 +1,93 @@
 #' Get species
 #'
-#' \code{getSpecies} returns all species as a data frame.
+#' \code{getSpecies} returns species information as a data frame.
 #'
+#' @param key a character vector uniquely identifying species
 #' @param datamodel a model object
 #' @return a data frame with species and associated information
 #' @export
-getSpecies <- function(datamodel = pkg_env$curr_dm) {
+getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   
-  metabs <- get_cdv(datamodel$getModel()$getMetabolites())
-
+  key <- species(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    metabs <- get_cdv(datamodel$getModel()$getMetabolites())
+  else
+    metabs <- cn_to_object(key, datamodel)
+  
   # assemble output dataframe
   metabs %>%
     map_df(~ {
       list(
         key = .x$getCN()$getString(),
-        name = .x$getObjectName(),
-        compartment = .x$getCompartment()$getObjectName(),
-        type = stringr::str_to_lower(.x$getStatus()),
-        concentration = .x$getInitialConcentration(),
-        particlenum = .x$getInitialValue()
+        "Name" = .x$getObjectName(),
+        "Compartment" = .x$getCompartment()$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Concentration" = .x$getInitialConcentration(),
+        "Initial Number" = .x$getInitialValue(),
+        "Concentration" = .x$getInitialConcentration(),
+        "Number" = .x$getInitialValue()
       )
     }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#' Get species references
+#'
+#' \code{getSpeciesReferences} returns species attribute references as a data frame.
+#'
+#' @param key a character vector uniquely identifying species
+#' @param datamodel a model object
+#' @return a data frame with species and associated references
+#' @export
+getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- species(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    metabs <- get_cdv(datamodel$getModel()$getMetabolites())
+  else
+    metabs <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  metabs %>%
+    map_df(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Compartment" = .x$getCompartment()$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Concentration" = .x$getInitialConcentrationReference()$getCN()$getString(),
+        "Initial Number" = .x$getInitialValueReference()$getCN()$getString(),
+        "Concentration" = .x$getConcentrationReference()$getCN()$getString(),
+        "Number" = .x$getValueReference()$getCN()$getString()
+      )
+    }) %>%
+    transform_names() %>%
     dplyr::select(-key, key)
 }
 
 #' Set species
 #'
-#' \code{setSpecies} accepts a data frame of species and attempts to apply given values to the model depending on the 'key' column.
+#' \code{setSpecies} applies given values to species of the model depending on the 'key' parameter.
 #'
 #' @param key a character vector uniquely identifying species
 #' @param name a character vector of names to set
-#' @param concentration a character vector of concentrations to set
-#' @param particlenum a character vector of particle numbers to set
-#' @param data a data frame as given by getSpecies which will be applied before the other arguments
+#' @param initial.concentration a numeric vector of concentrations to set
+#' @param initial.number a numeric vector of particle numbers to set
+#' @param data a data frame as given by getSpecies which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setSpecies <- function(key = NULL, name = NULL, concentration = NULL, particlenum = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, initial.number = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is_character(key) && !anyNA(key),
     is.null(name) || is_character(name) && length(name) == length(key),
-    is.null(concentration) || is_numeric(concentration) && length(concentration) == length(key),
-    is.null(particlenum) || is_numeric(particlenum) && length(particlenum) == length(key),
+    is.null(initial.concentration) || is_numeric(initial.concentration) && length(initial.concentration) == length(key),
+    is.null(initial.number) || is_numeric(initial.number) && length(initial.number) == length(key),
     is.null(data) || is.data.frame(data)
   )
   
@@ -98,9 +143,9 @@ setSpecies <- function(key = NULL, name = NULL, concentration = NULL, particlenu
   }
   
   # apply concentrations
-  if (!is_null(concentration)) {
+  if (!is_null(initial.concentration)) {
     walk2(
-      metabs, concentration,
+      metabs, initial.concentration,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialConcentration(.y)
@@ -111,9 +156,9 @@ setSpecies <- function(key = NULL, name = NULL, concentration = NULL, particlenu
   }
   
   # apply particlenum
-  if (!is_null(particlenum)) {
+  if (!is_null(initial.number)) {
     walk2(
-      metabs, particlenum,
+      metabs, initial.number,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
@@ -135,71 +180,235 @@ setSpecies <- function(key = NULL, name = NULL, concentration = NULL, particlenu
 
 #'  Get global quantities
 #'
-#' \code{getGlobalQuantities} returns all global quantities as a data frame.
+#' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
+#' @param key a character vector uniquely identifying global quantities
 #' @param datamodel a model object
 #' @return a data frame with global quantities and associated information
 #' @export
-getGlobalQuantities <- function(datamodel = pkg_env$curr_dm) {
+getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   
-  quantities <- datamodel$getModel()$getModelValues()
+  key <- quantity(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    quantities <- get_cdv(datamodel$getModel()$getModelValues())
+  else
+    quantities <- cn_to_object(key, datamodel)
   
   # assemble output dataframe
-  get_cdv(quantities) %>%
+  quantities %>%
     map_df(~ {
       list(
         key = .x$getCN()$getString(),
-        name = .x$getObjectName(),
-        type = stringr::str_to_lower(.x$getStatus()),
-        value = .x$getInitialValue()
+        "Name" = .x$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Value" = .x$getInitialValue()
       )
-    })
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#'  Get global quantitiy references
+#'
+#' \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.
+#'
+#' @param key a character vector uniquely identifying global quantities
+#' @param datamodel a model object
+#' @return a data frame with global quantities and associated references
+#' @export
+getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- quantity(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    quantities <- get_cdv(datamodel$getModel()$getModelValues())
+  else
+    quantities <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  quantities %>%
+    map_df(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Value" = .x$getInitialValueReference()$getCN()$getString()
+      )
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
 }
 
 #' Set global quantities
 #'
-#' \code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
+#' \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.
 #'
-#' @param quantities a data frame as given by getGlobalQuantities()
+#' @param key a character vector uniquely identifying global quantities
+#' @param name a character vector of names to set
+#' @param initial.volume a numeric vector of values to set
+#' @param data a data frame as given by getGlobalQuantities which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
+setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {  assert_datamodel(datamodel)
   assert_datamodel(datamodel)
   assert_that(
-    is.data.frame(quantities),
-    has_name(quantities, "key"), is_character(quantities$key), !anyNA(quantities$key),
-    !has_name(quantities, "name") || is_character(quantities$name),
-    !has_name(quantities, "value") || is_numeric(quantities$value)
+    is.null(key) || is_character(key) && !anyNA(key),
+    is.null(name) || is_character(name) && length(name) == length(key),
+    is.null(initial.value) || is_numeric(initial.value) && length(initial.value) == length(key),
+    is.null(data) || is.data.frame(data)
   )
   
-  quantities <-
-    quantities %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(
-      object = cn_to_object(key, datamodel, "_p_CModelValue")
-    )
+  # Do this as assertion before we start changing values
+  key <- quantity(key = key %||% character(), datamodel = datamodel)
   
-  assert_that(
-    !any(map_lgl(quantities$object, is_null)),
-    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(quantities$object, is_null)), collapse = ", "), " are invalid.")
-  )
+  if (!is_null(data)) do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "initial.value")])
+  
+  if (is_empty(key)) return(invisible())
+  
+  quants <- cn_to_object(key, datamodel, "_p_CModelValue")
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
   
   # apply names
-  if (has_name(quantities, "name")) {
+  if (!is_null(name)) {
     walk2(
-      quantities$object, quantities$name,
+      quants, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
     )
   }
   
   # apply value
-  if (has_name(quantities, "value")) {
+  if (!is_null(initial.value)) {
     walk2(
-      quantities$object, quantities$value,
+      quants, initial.value,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setInitialValue(.y)
+          changedObjects$push_back(.x$getInitialValueReference())
+        }
+      }
+    )
+  }
+  
+  datamodel$getModel()$updateInitialValues(changedObjects)
+  delete_ObjectStdVector(changedObjects)
+  
+  # model$compileIfNecessary()
+  
+  # model$initializeMetabolites()
+  
+  invisible()
+}
+
+#'  Get compartments
+#'
+#' \code{getCompartments} returns compartments as a data frame.
+#'
+#' @param key a character vector uniquely identifying compartments
+#' @param datamodel a model object
+#' @return a data frame with compartments and associated information
+#' @export
+getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- compartment(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    comps <- get_cdv(datamodel$getModel()$getCompartments())
+  else
+    comps <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  comps %>%
+    map_df(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Initial Volume" = .x$getInitialValue()
+      )
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#'  Get compartment references
+#'
+#' \code{getCompartmentReferences} returns compartment attribute references as a data frame.
+#'
+#' @param key a character vector uniquely identifying compartments
+#' @param datamodel a model object
+#' @return a data frame with compartments and associated references
+#' @export
+getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- compartment(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    comps <- get_cdv(datamodel$getModel()$getCompartments())
+  else
+    comps <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  comps %>%
+    map_df(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Initial Volume" = .x$getInitialValueReference()$getCN()$getString()
+      )
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#' Set compartments
+#'
+#' \code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.
+#'
+#' @param key a character vector uniquely identifying compartments
+#' @param name a character vector of names to set
+#' @param initial.volume a numeric vector of values to set
+#' @param data a data frame as given by getCompartments which will be applied before the other arguments.
+#' @param datamodel a model object
+#' @export
+setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  assert_that(
+    is.null(key) || is_character(key) && !anyNA(key),
+    is.null(name) || is_character(name) && length(name) == length(key),
+    is.null(initial.volume) || is_numeric(initial.volume) && length(initial.volume) == length(key),
+    is.null(data) || is.data.frame(data)
+  )
+  
+  # Do this as assertion before we start changing values
+  key <- compartment(key = key %||% character(), datamodel = datamodel)
+  
+  if (!is_null(data)) do.call(setCompartments, data[names(data) %in% c("key", "name", "initial.volume")])
+  
+  if (is_empty(key)) return(invisible())
+  
+  comps <- cn_to_object(key, datamodel, "_p_CCompartment")
+  
+  # apparently I need to give changedObjects because I cant update initial values without
+  changedObjects <- ObjectStdVector()
+  
+  # apply names
+  if (!is_null(name)) {
+    walk2(
+      comps, name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  # apply volume
+  if (!is_null(initial.volume)) {
+    walk2(
+      comps, initial.volume,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
@@ -221,145 +430,67 @@ setGlobalQuantities <- function(quantities, datamodel = pkg_env$curr_dm) {
 
 #'  Get reactions
 #'
-#' \code{getReactions} returns all reactions as a data frame.
+#' \code{getReactions} returns reactions as a data frame.
 #'
+#' @param key a character vector uniquely identifying global quantities
 #' @param datamodel a model object
 #' @return a data frame with reactions and associated information
 #' @export
-getReactions <- function(datamodel = pkg_env$curr_dm) {
+getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   
-  reactions <- datamodel$getModel()$getReactions()
+  key <- reaction(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    reactions <- get_cdv(datamodel$getModel()$getReactions())
+  else
+    reactions <- cn_to_object(key, datamodel)
   
   # assemble output dataframe
-  get_cdv(reactions) %>%
+  reactions %>%
     map_df(~ {
       list(
         key = .x$getCN()$getString(),
-        name = .x$getObjectName()
+        "Name" = .x$getObjectName()
       )
-    })
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
 }
 
 #' Set reactions
 #'
-#' \code{setReactions} accepts a data frame of reactions and attempts to apply given values to the model depending on the 'key' column.
+#' \code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.
 #'
-#' @param reactions a data frame as given by getReactions()
+#' @param key a character vector uniquely identifying reactions
+#' @param name a character vector of names to set
+#' @param data a data frame as given by getReactions which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setReactions <- function(reactions, datamodel = pkg_env$curr_dm) {
+setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.data.frame(reactions),
-    has_name(reactions, "key"), is_character(reactions$key), !anyNA(reactions$key),
-    !has_name(reactions, "name") || is_character(reactions$name)
+    is.null(key) || is_character(key) && !anyNA(key),
+    is.null(name) || is_character(name) && length(name) == length(key),
+    is.null(data) || is.data.frame(data)
   )
   
-  reactions <-
-    reactions %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(
-      object = cn_to_object(key, datamodel, "_p_CReaction")
-    )
+  # Do this as assertion before we start changing values
+  key <- reaction(key = key %||% character(), datamodel = datamodel)
   
-  assert_that(
-    !any(map_lgl(reactions$object, is_null)),
-    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(reactions$object, is_null)), collapse = ", "), " are invalid.")
-  )
+  if (!is_null(data)) do.call(setReactions, data[names(data) %in% c("key", "name")])
+  
+  if (is_empty(key)) return(invisible())
+  
+  reactions <- cn_to_object(key, datamodel, "_p_CReaction")
   
   # apply names
-  if (has_name(reactions, "name")) {
+  if (!is_null(name)) {
     walk2(
-      reactions$object, reactions$name,
+      reactions, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
     )
   }
-  
-  invisible()
-}
-
-#'  Get compartments
-#'
-#' \code{getCompartments} returns all compartments as a data frame.
-#'
-#' @param datamodel a model object
-#' @return a data frame with compartments and associated information
-#' @export
-getCompartments <- function(datamodel = pkg_env$curr_dm) {
-  assert_datamodel(datamodel)
-  
-  compartments <- datamodel$getModel()$getCompartments()
-  
-  # assemble output dataframe
-  get_cdv(compartments) %>%
-    map_df(~ {
-      list(
-        key = .x$getCN()$getString(),
-        name = .x$getObjectName(),
-        volume = .x$getInitialValue()
-      )
-    })
-}
-
-#' Set compartments
-#'
-#' \code{setCompartments} accepts a data frame of compartments and attempts to apply given values to the model depending on the 'key' column.
-#'
-#' @param compartments a data frame as given by getCompartments()
-#' @param datamodel a model object
-#' @export
-setCompartments <- function(compartments, datamodel = pkg_env$curr_dm) {
-  assert_datamodel(datamodel)
-  assert_that(
-    is.data.frame(compartments),
-    has_name(compartments, "key"), is_character(compartments$key), !anyNA(compartments$key),
-    !has_name(compartments, "name") || is_character(compartments$name),
-    !has_name(compartments, "volume") || is_numeric(compartments$value)
-  )
-  
-  compartments <-
-    compartments %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(
-      object = cn_to_object(key, datamodel, "_p_CCompartment")
-    )
-  
-  assert_that(
-    !any(map_lgl(compartments$object, is_null)),
-    msg = paste0("Keys in row(s) ", paste0(which(map_lgl(compartments$object, is_null)), collapse = ", "), " are invalid.")
-  )
-  
-  # apparently I need to give changedObjects because I cant update initial values without
-  changedObjects <- ObjectStdVector()
-  
-  # apply names
-  if (has_name(compartments, "name")) {
-    walk2(
-      compartments$object, compartments$name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
-  }
-  
-  # apply volume
-  if (has_name(compartments, "volume")) {
-    walk2(
-      compartments$object, compartments$volume,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialValue(.y)
-          changedObjects$push_back(.x$getInitialValueReference())
-        }
-      }
-    )
-  }
-  
-  datamodel$getModel()$updateInitialValues(changedObjects)
-  delete_ObjectStdVector(changedObjects)
-  
-  # model$compileIfNecessary()
-  
-  # model$initializeMetabolites()
   
   invisible()
 }

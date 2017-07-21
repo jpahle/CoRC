@@ -4,13 +4,18 @@
 \alias{setReactions}
 \title{Set reactions}
 \usage{
-setReactions(reactions, datamodel = pkg_env$curr_dm)
+setReactions(key = NULL, name = NULL, data = NULL,
+  datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{reactions}{a data frame as given by getReactions()}
+\item{key}{a character vector uniquely identifying reactions}
+
+\item{name}{a character vector of names to set}
+
+\item{data}{a data frame as given by getReactions which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 }
 \description{
-\code{setReactions} accepts a data frame of reactions and attempts to apply given values to the model depending on the 'key' column.
+\code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.
 }

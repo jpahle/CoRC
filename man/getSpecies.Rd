@@ -4,14 +4,16 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(datamodel = pkg_env$curr_dm)
+getSpecies(key = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
+\item{key}{a character vector uniquely identifying species}
+
 \item{datamodel}{a model object}
 }
 \value{
 a data frame with species and associated information
 }
 \description{
-\code{getSpecies} returns all species as a data frame.
+\code{getSpecies} returns species information as a data frame.
 }

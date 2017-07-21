@@ -178,37 +178,10 @@ setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
   
   assert_that(
     !model$isAutonomous(),
-    msg = "Model is autonomous. Can't set initial time. Consider using resetInitialTime() to reset time to 0."
+    msg = "Can't set initial time for autonomous models."
   )
   
   model$setInitialTime(time)
-  
-  invisible()
-}
-
-#' Reset the model's initial time
-#'
-#' \code{resetInitialTime} resets the initial time of the model.
-#'
-#' @param datamodel a model object
-#' @export
-resetInitialTime <- function(datamodel = pkg_env$curr_dm) {
-  # I think this issue was fixed lately:
-  # https://github.com/copasi/COPASI/commit/886f13dea2f58517ec757758c14358243e59bce9
-  # This function can likely be removed soon.
-  assert_datamodel(datamodel)
-  
-  model <- datamodel$getModel()
-  
-  assert_that(
-    as.logical(model$isAutonomous()),
-    msg = "This function is meant as a workaround for autonomous models. Consider using setInitialTime(0) to reset time to 0."
-  )
-  
-  params <- model$getActiveModelParameterSet()
-  
-  params$createFromModel()
-  params$updateModel()
   
   invisible()
 }

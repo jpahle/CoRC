@@ -4,13 +4,20 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(quantities, datamodel = pkg_env$curr_dm)
+setGlobalQuantities(key = NULL, name = NULL, initial.value = NULL,
+  data = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{quantities}{a data frame as given by getGlobalQuantities()}
+\item{key}{a character vector uniquely identifying global quantities}
+
+\item{name}{a character vector of names to set}
+
+\item{data}{a data frame as given by getGlobalQuantities which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
+
+\item{initial.volume}{a numeric vector of values to set}
 }
 \description{
-\code{setGlobalQuantities} accepts a data frame of global quantities and attempts to apply given values to the model depending on the 'key' column.
+\code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.
 }
