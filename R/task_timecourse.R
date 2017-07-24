@@ -71,7 +71,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @export
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is.null(executable) || is_scalar_logical(executable))
+  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
   # Call the worker to set most settings
   tc_settings_worker(
@@ -104,15 +104,15 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
   problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
   
   assert_that(
-    is.null(duration)             || is_scalar_numeric(duration)                  && duration >= 0,
-    is.null(dt)                   || is_scalar_numeric(dt)                        && dt >= 0,
-    is.null(intervals)            || rlang::is_scalar_integerish(intervals)       && intervals > 0,
-    is.null(suppressOutputBefore) || is_scalar_numeric(suppressOutputBefore)      && !is.na(suppressOutputBefore),
-    is.null(outputEvents)         || is_scalar_logical(outputEvents)              && !is.na(outputEvents),
-    is.null(saveResultInMemory)   || is_scalar_logical(saveResultInMemory)        && !is.na(saveResultInMemory),
-    is.null(startInSteadyState)   || is_scalar_logical(startInSteadyState)        && !is.na(startInSteadyState),
-    is.null(updateModel)          || is_scalar_logical(updateModel)               && !is.na(updateModel),
-    is.null(method)               || is_scalar_character(method)                  && !is.na(method) || is_list(method) && is_scalar_character(method$method) && !is.na(method$method)
+    is.null(duration)             || is.number(duration)             && duration >= 0,
+    is.null(dt)                   || is.number(dt)                   && dt >= 0,
+    is.null(intervals)            || is.count(intervals),
+    is.null(suppressOutputBefore) || is.number(suppressOutputBefore) && !is.na(suppressOutputBefore),
+    is.null(outputEvents)         || is.flag(outputEvents)           && !is.na(outputEvents),
+    is.null(saveResultInMemory)   || is.flag(saveResultInMemory)     && !is.na(saveResultInMemory),
+    is.null(startInSteadyState)   || is.flag(startInSteadyState)     && !is.na(startInSteadyState),
+    is.null(updateModel)          || is.flag(updateModel)            && !is.na(updateModel),
+    is.null(method)               || is.string(method)               && !is.na(method) || is.list(method) && is.string(method$method) && !is.na(method$method)
   )
   assert_that(.type == "restore" || !(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
   
@@ -193,7 +193,7 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
       # merge method with relevant lines from methodstruct and check if the given values is allowed
       method <-
         method %>%
-        dplyr::filter(!is.na(rowid), !map_lgl(value, is_null)) %>%
+        dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
         dplyr::left_join(methodstruct, by = "rowid") %>%
         dplyr::mutate(
           allowed = map2_lgl(control_fun, value, ~ {

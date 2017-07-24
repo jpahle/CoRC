@@ -5,7 +5,7 @@
 #' @return a model object
 #' @export
 getCurrentModel <- function() {
-  assert_that(!is_null(pkg_env$curr_dm), msg = "No model currently in use.")
+  assert_that(!is.null(pkg_env$curr_dm), msg = "No model currently in use.")
 
   pkg_env$curr_dm
 }
@@ -40,7 +40,7 @@ getLoadedModels <- function() {
 # helper for loading models from urls
 url_to_string <- function(x) {
   con <- try(url(x), silent = TRUE)
-  if (assertthat::is.error(con)) return()
+  if (is.error(con)) return()
   
   result <- quietly(readLines)(con)
   close(con)
@@ -58,7 +58,7 @@ url_to_string <- function(x) {
 #' @return a model object
 #' @export
 loadModel <- function(path) {
-  assert_that(is_scalar_character(path))
+  assert_that(is.string(path))
   
   datamodel <- CRootContainer_addDatamodel()
   
@@ -67,7 +67,7 @@ loadModel <- function(path) {
     success <- grab_msg(datamodel$loadModelFromString(model),
                         purge = "The content is created with a newer version .* of COPASI.")
   } else {
-    assert_that(assertthat::is.readable(path))
+    assert_that(is.readable(path))
     
     success <- grab_msg(datamodel$loadModel(normalizePathC(path)),
                         purge = "The content is created with a newer version .* of COPASI.")
@@ -91,7 +91,7 @@ loadModel <- function(path) {
 #' @return a model object
 #' @export
 loadSBML <- function(path) {
-  assert_that(is_scalar_character(path))
+  assert_that(is.string(path))
   
   datamodel <- CRootContainer_addDatamodel()
   
@@ -99,7 +99,7 @@ loadSBML <- function(path) {
   if (!is_null(sbml)) {
     success <- grab_msg(datamodel$importSBMLFromString(sbml))
   } else {
-    assert_that(assertthat::is.readable(path))
+    assert_that(is.readable(path))
     
     success <- grab_msg(datamodel$importSBML(normalizePathC(path)))
   }
@@ -152,9 +152,9 @@ unloadAllModels <- function() {
 #' @export
 saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_character(filename))
+  assert_that(is.string(filename))
 
-  if (!assertthat::has_extension(filename, "cps"))
+  if (!has_extension(filename, "cps"))
     filename <- paste0(filename, ".cps")
   
   if (file.exists(filename)) {
@@ -205,13 +205,16 @@ loadExamples <- function(indices = NULL) {
 #' @export
 openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_logical(readin), is_scalar_character(copasi_loc))
+  assert_that(
+    is.flag(readin) && !is.na(readin),
+    is.string(copasi_loc) && !is.na(copasi_loc)
+  )
   
   if (.Platform$OS.type == "windows") {
     found <- !suppressWarnings(system2("where", args = copasi_loc, stdout = FALSE, stderr = FALSE))
     
     # where command can't find executables with full paths. Just test if readable for now.
-    if (!found && !missing(copasi_loc)) found <- assertthat::is.readable(copasi_loc)
+    if (!found && !missing(copasi_loc)) found <- is.readable(copasi_loc)
   } else if (.Platform$OS.type == "unix") {
     # On darwin, CopasiUI doesn't seem to be in path so try a default location if copasi_loc wasn't given.
     if (substr(version$os, 1L, 6L) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc)) copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"

@@ -56,7 +56,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @export
 setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is.null(executable) || is_scalar_logical(executable))
+  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
   # Call the worker to set most settings
   ss_settings_worker(
@@ -82,10 +82,10 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
   problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
   
   assert_that(
-    is.null(calculateJacobian)        || is_scalar_logical(calculateJacobian)        && !is.na(calculateJacobian),
-    is.null(performStabilityAnalysis) || is_scalar_logical(performStabilityAnalysis) && !is.na(performStabilityAnalysis),
-    is.null(updateModel)              || is_scalar_logical(updateModel)              && !is.na(updateModel),
-    is.null(method)                   || is_list(method)
+    is.null(calculateJacobian)        || is.flag(calculateJacobian)        && !is.na(calculateJacobian),
+    is.null(performStabilityAnalysis) || is.flag(performStabilityAnalysis) && !is.na(performStabilityAnalysis),
+    is.null(updateModel)              || is.flag(updateModel)              && !is.na(updateModel),
+    is.null(method)                   || is.list(method)
   )
   
   if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian)) stop("performStabilityAnalysis can only be set in combination with calculateJacobian.")
@@ -128,7 +128,7 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
     # merge method with relevant lines from methodstruct and check if the given values is allowed
     method <-
       method %>%
-      dplyr::filter(!is.na(rowid), !map_lgl(value, is_null)) %>%
+      dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
       dplyr::left_join(methodstruct, by = "rowid") %>%
       dplyr::mutate(
         allowed = map2_lgl(control_fun, value, ~ {
@@ -201,7 +201,7 @@ ss_result_worker <- function(datamodel) {
   
   ret$species <-
     get_cdv(model$getMetabolites()) %>%
-    map_df(~ {
+    map_dfr(~ {
       transit <- .x$getTransitionTime()
       if (!is.na(transit)) {
         list(
@@ -219,7 +219,7 @@ ss_result_worker <- function(datamodel) {
   
   ret$reactions <-
     get_cdv(model$getReactions()) %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         name = .x$getObjectName(),

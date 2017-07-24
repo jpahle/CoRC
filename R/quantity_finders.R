@@ -10,8 +10,8 @@
 species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is_character(key), !anyNA(key),
-    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(key) == length(reference)
+    is.character(key), !anyNA(key),
+    is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already CN to metabolites we accept them
@@ -88,15 +88,16 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   }
   
   assert_that(
-    !any(map_lgl(matched_metabs, is_null)),
+    !has_element(matched_metabs, NULL),
     msg = "Failed to gather some references."
   )
   
-  # Return matches as named (DisplayNames) character vector of CommonNames
-  matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
-    set_names(
-      matched_metabs %>% map_swig("getObjectDisplayName") %>% flatten_chr()
-    )
+  # # Return matches as named (DisplayNames) character vector of CommonNames
+  # matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  #   set_names(
+  #     matched_metabs %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #   )
+  matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
 }
 
 #' Identify quantity by name
@@ -111,8 +112,8 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is_character(key), !anyNA(key),
-    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(key) == length(reference)
+    is.character(key), !anyNA(key),
+    is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already CN to metabolites we accept them
@@ -189,15 +190,16 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   }
   
   assert_that(
-    !any(map_lgl(matched_quants, is_null)),
+    !has_element(matched_quants, NULL),
     msg = "Failed to gather some references."
   )
   
-  # Return matches as named (DisplayNames) character vector of CommonNames
-  matched_quants %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
-    set_names(
-      matched_quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
-    )
+  # # Return matches as named (DisplayNames) character vector of CommonNames
+  # matched_quants %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  #   set_names(
+  #     matched_quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #   )
+  matched_quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
 }
 
 #' Identify compartment by name
@@ -212,8 +214,8 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is_character(key), !anyNA(key),
-    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(key) == length(reference)
+    is.character(key), !anyNA(key),
+    is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already CN to metabolites we accept them
@@ -290,15 +292,16 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   }
   
   assert_that(
-    !any(map_lgl(matched_comps, is_null)),
+    !has_element(matched_quants, NULL),
     msg = "Failed to gather some references."
   )
   
-  # Return matches as named (DisplayNames) character vector of CommonNames
-  matched_comps %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
-    set_names(
-      matched_comps %>% map_swig("getObjectDisplayName") %>% flatten_chr()
-    )
+  # # Return matches as named (DisplayNames) character vector of CommonNames
+  # matched_comps %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  #   set_names(
+  #     matched_comps %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #   )
+  matched_comps %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
 }
 
 
@@ -314,8 +317,8 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is_character(key), !anyNA(key),
-    is_null(reference) || is_scalar_character(reference) || is_character(reference) && length(key) == length(reference)
+    is.character(key), !anyNA(key),
+    is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already CN to metabolites we accept them
@@ -392,13 +395,14 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   }
   
   assert_that(
-    !any(map_lgl(matched_reactions, is_null)),
+    !has_element(matched_quants, NULL),
     msg = "Failed to gather some references."
   )
   
-  # Return matches as named (DisplayNames) character vector of CommonNames
-  matched_reactions %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
-    set_names(
-      matched_reactions %>% map_swig("getObjectDisplayName") %>% flatten_chr()
-    )
+  # # Return matches as named (DisplayNames) character vector of CommonNames
+  # matched_reactions %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  #   set_names(
+  #     matched_reactions %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #   )
+  matched_reactions %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
 }

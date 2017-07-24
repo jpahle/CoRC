@@ -13,7 +13,7 @@ setMethod("format",
 
     string <- "# A copasi model reference:\n"
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-    string <- paste0(string, "@ref is set to: " , capture.output(show(x@ref)) , "\n")
+    string <- paste0(string, "@ref is set to: " , utils::capture.output(show(x@ref)) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
     string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
     string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
@@ -185,7 +185,7 @@ methodstructure <- function(method) {
       set_fun = cparameter_set_functions[type]
     )
   
-  if (contains(struct$control_fun, NULL)) warning("Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is_null)], collapse = "; "))
+  if (has_element(struct$control_fun, NULL)) warning("Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is_null)], collapse = "; "))
   
   struct
 }

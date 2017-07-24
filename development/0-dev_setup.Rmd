@@ -4,7 +4,7 @@ output: html_notebook
 ---
 
 ```{r setup}
-knitr::opts_knit$set(root.dir = normalizePath("../"))
+knitr::opts_knit$set(root.dir = normalizePath(".."))
 # reset_copasi(i), ls_corc(pattern), inspect(object)
 source("tools.R", echo = FALSE)
 current_example = 4L
@@ -31,10 +31,10 @@ library(CoRC)
 # Load Development Environment
 
 ```{r, include=FALSE}
+library(assertthat)
 library(purrr)
 library(ggplot2)
 .data <- rlang::.data
-library(assertthat)
 
 reset_copasi()
 ```

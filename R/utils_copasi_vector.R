@@ -39,6 +39,6 @@ get_cdv <- function(copasivector, indices = seq_along_v(copasivector)) {
 
 # get items of C vectors
 get_cv <- function(vector, indices = seq_along_v(vector)) {
-  assert_that(is(vector, "_p_CVectorT_double_t"))
+  assert_that(inherits(vector, "_p_CVectorT_double_t"))
   map_dbl(indices, ~ FloatVectorCore_get(vector, .x))
 }

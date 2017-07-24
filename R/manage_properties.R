@@ -20,7 +20,7 @@ getModelName <- function(datamodel = pkg_env$curr_dm) {
 #' @export
 setModelName <- function(name, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_character(name))
+  assert_that(is.string(name))
   
   assert_that(
     datamodel$getModel()$setObjectName(name),
@@ -52,7 +52,7 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @export
 setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_character(unit))
+  assert_that(is.string(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -92,7 +92,7 @@ getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @export
 setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_character(unit))
+  assert_that(is.string(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -132,7 +132,7 @@ getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @export
 setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_character(unit))
+  assert_that(is.string(unit))
   
   cunit <- grab_msg(CUnit(unit))
   cunit$buildExpression()
@@ -172,7 +172,7 @@ getInitialTime <- function(datamodel = pkg_env$curr_dm) {
 #' @export
 setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is_scalar_numeric(time), time >= 0)
+  assert_that(is.number(time), time >= 0)
   
   model <- datamodel$getModel()
   

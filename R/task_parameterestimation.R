@@ -44,7 +44,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
     msg = paste0("Processing the task failed.")
   )
   assert_that(
-    !assertthat::is.error(ret),
+    !is.error(ret),
     msg = paste0("Result readout failed.")
   )
   
@@ -65,7 +65,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
 #' @export
 setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
-  assert_that(is.null(executable) || is_scalar_logical(executable))
+  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
   # Call the worker to set most settings
   pe_settings_worker(
@@ -88,12 +88,12 @@ setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets
 }
 
 #' @export
-defineParameter <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = 1e3) {
+defineParameter <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
   assert_that(
-    is_scalar_character(key),
-    is_scalar_numeric(lower.bound),
-    is_scalar_numeric(upper.bound), lower.bound <= upper.bound,
-    is_scalar_numeric(start.value), start.value >= lower.bound, start.value <= upper.bound
+    is.string(key),
+    is.number(lower.bound),
+    is.number(upper.bound), lower.bound <= upper.bound,
+    is.number(start.value), start.value >= lower.bound, start.value <= upper.bound
   )
   
   list(
@@ -133,7 +133,7 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
   
   if (is.data.frame(data)) data <- list(data)
-  assert_that(all(map_lgl(data, is.data.frame)))
+  assert_that(every(data, is.data.frame))
 
   experiment_names <- names(data) %||% paste0("Experiment_", seq_along(data))
   experiment_names[is.na(experiment_names)] <- "Experiment"
@@ -144,11 +144,9 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   data_cols <- names(data)
   
   assert_that(
-    is_character(types),
-    (
-      is_null(names(types)) && length(types) == length(data_cols) ||
-      all(names(mappings) %in% data_cols)
-    )
+    is.character(types),
+    is.null(names(types)) && length(types) == length(data_cols) ||
+    all(names(mappings) %in% data_cols)
   )
   
   types <- stringr::str_to_lower(types)
@@ -158,13 +156,17 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   assert_that(
     !(experiment_type == "timeCourse" && length(which(types == "time")) != 1L),
-    msg = 'Time Course experiements need exactly one "time" mapping'
+    msg = 'Time course experiements need exactly one "time" mapping.'
+  )
+  assert_that(
+    !(experiment_type == "steadyState" && any(types == "time")),
+    msg = 'Steady state experiements cannot have a "time" mapping.'
   )
   
   mappings <- mappings %||% data_cols
   assert_that(
-    is_character(mappings),
-    is_null(names(mappings)) && length(mappings) == length(data_cols) ||
+    is.character(mappings),
+    is.null(names(mappings)) && length(mappings) == length(data_cols) ||
     all(names(mappings) %in% data_cols)
   )
   
@@ -172,9 +174,9 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
   
-  if (!is_null(filename)) {
-    assert_that(is_character(filename) && !is.na(filename))
-    if (!assertthat::has_extension(filename, ".txt")) filename <- paste0(filename, ".txt")
+  if (!is.null(filename)) {
+    assert_that(is.string(filename) && !is.na(filename))
+    if (!has_extension(filename, ".txt")) filename <- paste0(filename, ".txt")
   }
   
   ret <- list()
@@ -244,8 +246,8 @@ addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
   mappings <- rep("", col_count)
   mappings[match(names(exp_struct$mappings), col_names)] <- exp_struct$mappings
   
-  seq_len(col_count) %>% walk(~ walk_swig(object_maps, "setRole", .x - 1L, types[.x]))
-  seq_len(col_count) %>% walk(~ walk_swig(object_maps, "setObjectCN", .x - 1L, mappings[.x]))
+  types %>% iwalk(~ walk_swig(object_maps, "setRole", .y - 1L, .x))
+  mappings %>% iwalk(~ walk_swig(object_maps, "setObjectCN", .y - 1L, .x))
   
   # Add all experiments to copasi
   experiments %>% walk(~ experiment_set$addExperiment(.x))
@@ -271,13 +273,13 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
   problem <- as(task$getProblem(), "_p_CFitProblem")
   
   assert_that(
-    is.null(randomizeStartValues)   || is_scalar_logical(randomizeStartValues) && !is.na(randomizeStartValues),
-    is.null(createParameterSets)    || is_scalar_logical(createParameterSets)  && !is.na(createParameterSets),
-    is.null(calculateStatistics)    || is_scalar_logical(calculateStatistics)  && !is.na(calculateStatistics),
-    is.null(updateModel)            || is_scalar_logical(updateModel)          && !is.na(updateModel),
-    is.null(parameters)             || is_list(parameters),
-    is.null(experiments)            || is_list(experiments),
-    is.null(method)                 || is_scalar_character(method)             && !is.na(method) || is_list(method) && is_scalar_character(method$method) && !is.na(method$method)
+    is.null(randomizeStartValues)   || is.flag(randomizeStartValues) && !is.na(randomizeStartValues),
+    is.null(createParameterSets)    || is.flag(createParameterSets)  && !is.na(createParameterSets),
+    is.null(calculateStatistics)    || is.flag(calculateStatistics)  && !is.na(calculateStatistics),
+    is.null(updateModel)            || is.flag(updateModel)          && !is.na(updateModel),
+    is.null(parameters)             || is.list(parameters),
+    is.null(experiments)            || is.list(experiments),
+    is.null(method)                 || is.string(method)             && !is.na(method) || is.list(method) && is.string(method$method) && !is.na(method$method)
   )
   
   if (!is_null(parameters) && .type != "restore") {
@@ -316,7 +318,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     no_filename <- experiments %>% map("filename") %>% map_lgl(is_null)
     if (any(no_filename)) {
       assert_that(.type != "permanent", msg = "If setting experiments permanently, all experiments need a defined filename.")
-      experiments <- experiments %>% map_if(
+      experiments <- experiments %>% modify_if(
         no_filename,
         ~ {
           .x$filename <- paste0("CoRC_temp_", digest::digest(.x), ".txt")
@@ -364,7 +366,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       restorationCall$parameters <- parameters
       parameters %>% walk(~ {
         e <- try(addParameter(.x, datamodel = datamodel))
-        if (assertthat::is.error(e)) errors <<- TRUE
+        if (is.error(e)) errors <<- TRUE
       })
     } else {
       clearParameters(datamodel = datamodel)
@@ -377,11 +379,12 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
         
       experiments %>% walk(~ {
         e <- try(addExperiments(.x, datamodel = datamodel))
-        if (assertthat::is.error(e)) errors <<- TRUE
+        if (is.error(e)) errors <<- TRUE
       })
     } else {
-      e <- try(experiments %>% map_chr("filename") %>% {file.path(normalizePathC(datamodel$getReferenceDirectory()), .)} %>% file.remove())
-      if (assertthat::is.error(e)) errors <<- TRUE
+      # delete the file
+      e <- try(experiments %>% map("filename") %>% {file.path(normalizePathC(datamodel$getReferenceDirectory()), .)} %>% file.remove())
+      if (is.error(e)) errors <<- TRUE
       clearExperiments(datamodel = datamodel)
     }
   }
@@ -410,7 +413,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       # merge method with relevant lines from methodstruct and check if the given values is allowed
       method <-
         method %>%
-        dplyr::filter(!is.na(rowid), !map_lgl(value, is_null)) %>%
+        dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
         dplyr::left_join(methodstruct, by = "rowid") %>%
         dplyr::mutate(
           allowed = map2_lgl(control_fun, value, ~ {

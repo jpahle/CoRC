@@ -18,7 +18,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   metabs %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -54,7 +54,7 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   metabs %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -84,10 +84,10 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, initial.number = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.null(key) || is_character(key) && !anyNA(key),
-    is.null(name) || is_character(name) && length(name) == length(key),
-    is.null(initial.concentration) || is_numeric(initial.concentration) && length(initial.concentration) == length(key),
-    is.null(initial.number) || is_numeric(initial.number) && length(initial.number) == length(key),
+    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(name) || is.character(name) && length(name) == length(key),
+    is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
+    is.null(initial.number) || is.numeric(initial.number) && length(initial.number) == length(key),
     is.null(data) || is.data.frame(data)
   )
   
@@ -198,7 +198,7 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   quantities %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -230,7 +230,7 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
   
   # assemble output dataframe
   quantities %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -255,9 +255,9 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
 setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {  assert_datamodel(datamodel)
   assert_datamodel(datamodel)
   assert_that(
-    is.null(key) || is_character(key) && !anyNA(key),
-    is.null(name) || is_character(name) && length(name) == length(key),
-    is.null(initial.value) || is_numeric(initial.value) && length(initial.value) == length(key),
+    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(name) || is.character(name) && length(name) == length(key),
+    is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
     is.null(data) || is.data.frame(data)
   )
   
@@ -324,7 +324,7 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   comps %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -355,7 +355,7 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   comps %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName(),
@@ -379,9 +379,9 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.null(key) || is_character(key) && !anyNA(key),
-    is.null(name) || is_character(name) && length(name) == length(key),
-    is.null(initial.volume) || is_numeric(initial.volume) && length(initial.volume) == length(key),
+    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(name) || is.character(name) && length(name) == length(key),
+    is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
     is.null(data) || is.data.frame(data)
   )
   
@@ -448,7 +448,7 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   # assemble output dataframe
   reactions %>%
-    map_df(~ {
+    map_dfr(~ {
       list(
         key = .x$getCN()$getString(),
         "Name" = .x$getObjectName()
@@ -470,8 +470,8 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.null(key) || is_character(key) && !anyNA(key),
-    is.null(name) || is_character(name) && length(name) == length(key),
+    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(name) || is.character(name) && length(name) == length(key),
     is.null(data) || is.data.frame(data)
   )
   

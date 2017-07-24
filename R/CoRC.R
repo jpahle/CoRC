@@ -5,11 +5,11 @@
 #' @section quantity accessors:
 #' Use dataframes to manipulate species and quantities and stuff
 #'
-#' @importFrom assertthat assert_that
+#' @import assertthat
 #' @import methods
 #' @import purrr
 #' @importFrom rlang .data
-#' @importFrom utils capture.output head tail
+#' @importFrom utils head tail
 "_PACKAGE"
 
 # Output flag for tasks
@@ -27,14 +27,11 @@ COPASI_BIN_HASHES <-
   )
 
 .onLoad <- function(libname, pkgname) {
-  # purrr will rename contains
-  if (!exists("contains")) warning(pkgname, ": purrr::contains function is missing")
-  
   # hack for load_all() 
   libname <- .libPaths()
   
   e <- try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
-  if (assertthat::is.error(e)) warning(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
+  if (is.error(e)) warning(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
 
 .onUnload <- function(libpath) {
@@ -49,7 +46,7 @@ COPASI_BIN_HASHES <-
 #' @param path optional file path to copasi binaries
 #' @export
 getCopasi <- function(path = NULL) {
-  assert_that(is.null(path) || assertthat::is.readable(path))
+  assert_that(is.null(path) || is.readable(path))
   
   # if no path is given we download the binaries
   if (is_null(path)) {
