@@ -7,14 +7,14 @@
 # @param self slot "ref" of the object which the method is called on
 # @param fun symbol of the function that gives a bad vector
 # @param class name or symbol for the class that is forced on all list members
-swigfix_resolve_vector <- function(self, fun, class) {
+swigfix_resolve_obj_vector <- function(self, fun, class) {
   fun <- paste0("R_swig_", as.character(substitute(fun)))
   class <- paste0("_p_", as.character(substitute(class)))
   
   # args: self@ref, bool
   vector <- .Call(fun, self@ref, FALSE, PACKAGE='COPASI')
   # args: self@ref, bool
-  vectorsize <- .Call('R_swig_FloatVectorCore_size', vector, FALSE, PACKAGE='COPASI')
+  vectorsize <- .Call('R_swig_ObjectVectorCore_size', vector, FALSE, PACKAGE='COPASI')
   
   seq_len_0(vectorsize) %>%
     map(~ {

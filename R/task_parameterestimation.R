@@ -476,7 +476,7 @@ pe_result_worker <- function(datamodel) {
   experiments <-
     seq_len_0(experiment_set$getExperimentCount()) %>%
     map(~ experiment_set$getExperiment(.x))
-  dependent_obj <- swigfix_resolve_vector(experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
+  dependent_obj <- swigfix_resolve_obj_vector(experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
   
   ret <- list()
   
