@@ -61,7 +61,8 @@ copasi_object_types <-
     Compartment = "_p_CCompartment",
     Metabolite = "_p_CMetab",
     ModelValue = "_p_CModelValue",
-    Reaction = "_p_CReaction"
+    Reaction = "_p_CReaction",
+    Parameter = "_p_CCopasiParameter"
   )
 
 auto_cast <- function(object) {

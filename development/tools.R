@@ -46,7 +46,7 @@ inspect <- function(object) {
       transpose() %>%
       .$result
     
-    to_keep <- !map_lgl(functions, is_null)
+    to_keep <- map_lgl(functions, negate(is_null))
     
     classes <- classes[to_keep]
     functions <- functions[to_keep]

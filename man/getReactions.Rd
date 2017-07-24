@@ -7,7 +7,7 @@
 getReactions(key = NULL, datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{key}{a character vector uniquely identifying global quantities}
+\item{key}{a character vector uniquely identifying reactions}
 
 \item{datamodel}{a model object}
 }

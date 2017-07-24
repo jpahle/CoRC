@@ -48,8 +48,8 @@ walk_swig <- function(x, fun, ...) {
   x_q <- quote(x)
   walk(
     .x = x,
-    # Find the actual function and strip its class attribute
-    .f = rlang::set_attrs(environment(eval(substitute(x_q[[1]]$fun)))$f, class = NULL),
+    # Find the actual function and strip its attributes
+    .f = rlang::set_attrs(environment(eval(substitute(x_q[[1]]$fun)))$f, NULL),
     ...
   )
 }

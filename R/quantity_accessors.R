@@ -432,7 +432,7 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
 #'
 #' \code{getReactions} returns reactions as a data frame.
 #'
-#' @param key a character vector uniquely identifying global quantities
+#' @param key a character vector uniquely identifying reactions
 #' @param datamodel a model object
 #' @return a data frame with reactions and associated information
 #' @export
@@ -489,6 +489,134 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_e
     walk2(
       reactions, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  invisible()
+}
+
+#'  Get reaction parameters
+#'
+#' \code{getParameters} returns reaction parameters as a data frame.
+#'
+#' @param key a character vector uniquely identifying reactions parameters
+#' @param datamodel a model object
+#' @return a data frame with reaction parameters and associated information
+#' @export
+getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- parameter(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    params <-
+    get_cdv(datamodel$getModel()$getReactions()) %>%
+    map_swig("getParameters") %>%
+    map(function(paramgrp) {
+      seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
+    }) %>%
+    flatten()
+  else
+    params <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  params %>%
+    map_dfr(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getType()),
+        "Value" = .x$getDblValue()
+      )
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#'  Get reaction parameter references
+#'
+#' \code{getParameterReferences} returns reaction parameters as a data frame.
+#'
+#' @param key a character vector uniquely identifying reactions parameters
+#' @param datamodel a model object
+#' @return a data frame with reaction parameters and associated references
+#' @export
+getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  
+  key <- parameter(key = key %||% character(), datamodel = datamodel)
+  
+  if (is_empty(key))
+    params <-
+    get_cdv(datamodel$getModel()$getReactions()) %>%
+    map_swig("getParameters") %>%
+    map(function(paramgrp) {
+      seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
+    }) %>%
+    flatten()
+  else
+    params <- cn_to_object(key, datamodel)
+  
+  # assemble output dataframe
+  params %>%
+    map_dfr(~ {
+      list(
+        key = .x$getCN()$getString(),
+        "Name" = .x$getObjectName(),
+        "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
+        "Type" = stringr::str_to_lower(.x$getType()),
+        "Value" = .x$getValueReference()$getCN()$getString()
+      )
+    }) %>%
+    transform_names() %>%
+    dplyr::select(-key, key)
+}
+
+#' Set reaction parameters
+#'
+#' \code{setParameters} applies given values to reaction parameters of the model depending on the 'key' parameter.
+#'
+#' @param key a character vector uniquely identifying reaction parameters
+#' @param name a character vector of names to set
+#' @param data a data frame as given by getParameters which will be applied before the other arguments.
+#' @param datamodel a model object
+#' @export
+setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+  assert_datamodel(datamodel)
+  assert_that(
+    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(name) || is.character(name) && length(name) == length(key),
+    is.null(value) || is.number(value) && length(value) == length(key),
+    is.null(data) || is.data.frame(data)
+  )
+  
+  # Do this as assertion before we start changing values
+  key <- parameter(key = key %||% character(), datamodel = datamodel)
+  
+  if (!is_null(data)) do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
+  
+  if (is_empty(key)) return(invisible())
+  
+  params <- cn_to_object(key, datamodel, "_p_CCopasiParameter")
+  
+  # apply names
+  if (!is_null(name)) {
+    walk2(
+      params, name,
+      ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  # apply concentrations
+  if (!is_null(value)) {
+    walk2(
+      params, value,
+      ~ {
+        if (!is.na(.y)) {
+          .x$setDblValue(.y)
+        }
+      }
     )
   }
   
