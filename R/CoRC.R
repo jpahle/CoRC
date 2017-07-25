@@ -18,12 +18,12 @@ OUTPUTFLAG <- 119L
 #' @export
 COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/ed1bee159a3eb7b21010d9a0ae61be9d3b411959"
 
-COPASI_BIN_VERSION <- 1L
+COPASI_BIN_VERSION <- 2L
 COPASI_BIN_HASHES <-
   c(
-    win = "36066727e4e184daa3f9d97331b976c0e8350db219a6ddc6babee18a11ad03c0",
-    darwin = "bbea29ab57c4616e808ca4e5230b0d18f2316253c8e041167015975a994600cd",
-    ubuntu_16_10 = "22392cd755921b94d611cb25e1d8ae2d5acc295f5af7e2d89636103c37f0370a"
+    darwin = "ac390a6aa89197f53d640148225384a8396690954f09b7325b26930bbe2206e7"
+    # win = "36066727e4e184daa3f9d97331b976c0e8350db219a6ddc6babee18a11ad03c0",
+    # ubuntu_16_10 = "22392cd755921b94d611cb25e1d8ae2d5acc295f5af7e2d89636103c37f0370a"
   )
 
 .onLoad <- function(libname, pkgname) {
