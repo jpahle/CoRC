@@ -51,7 +51,7 @@ map_swig <- function(x, fun, ...) {
   map(
     .x = x,
     # Find the actual function and strip its class attribute
-    .f = rlang::set_attrs(environment(eval(substitute(x_q[[1]]$fun)))$f, class = NULL),
+    .f = unclass(environment(eval(substitute(x_q[[1]]$fun)))$f),
     ...
   )
 }
@@ -65,7 +65,7 @@ walk_swig <- function(x, fun, ...) {
   walk(
     .x = x,
     # Find the actual function and strip its attributes
-    .f = rlang::set_attrs(environment(eval(substitute(x_q[[1]]$fun)))$f, NULL),
+    .f = unclass(environment(eval(substitute(x_q[[1]]$fun)))$f),
     ...
   )
 }
