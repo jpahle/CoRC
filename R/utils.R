@@ -225,7 +225,5 @@ get_annotated_matrix <- function(matrix) {
         })
     }) %>%
     set_names(col_headers) %>%
-    dplyr::bind_cols() %>%
-    tibble::add_column(rowname = row_headers) %>%
-    dplyr::select(rowname, dplyr::everything())
+    dplyr::bind_cols(list(rowname = row_headers), .)
 }

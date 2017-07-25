@@ -383,7 +383,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       })
     } else {
       # delete the file
-      e <- try(experiments %>% map("filename") %>% {file.path(normalizePathC(datamodel$getReferenceDirectory()), .)} %>% file.remove())
+      e <- try(experiments %>% map_chr("filename") %>% file.path(normalizePathC(datamodel$getReferenceDirectory()), .) %>% file.remove())
       if (is.error(e)) errors <<- TRUE
       clearExperiments(datamodel = datamodel)
     }
