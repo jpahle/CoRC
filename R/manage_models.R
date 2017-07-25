@@ -185,8 +185,8 @@ loadExamples <- function(indices = NULL) {
     c(
       "brusselator.cps",
       "chemotaxis_4.cps",
-      "multicomp.cps",
-      "simple.cps"
+      "test_names.cps",
+      "test_paramest.cps"
     )
   
   assert_that(is.null(indices) || all(indices %in% seq_along(models)), msg = "Invalid indices.")

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-05-11 13:58:30 UTC -->
+<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-07-25 11:00:05 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
 <COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="19" versionDevel="140" copasiSourcesModified="0">
   <ListOfFunctions>
@@ -122,7 +122,7 @@ Reaction scheme where the products are created from the reactants and the change
       </ListOfParameterDescriptions>
     </Function>
   </ListOfFunctions>
-  <Model key="Model_3" name="New Model" simulationType="time" timeUnit="s" volumeUnit="l" areaUnit="m²" lengthUnit="m" quantityUnit="µmol" type="deterministic" avogadroConstant="6.02214179e+23">
+  <Model key="Model_3" name="Bacterial chemotaxis model" simulationType="time" timeUnit="s" volumeUnit="l" areaUnit="m²" lengthUnit="m" quantityUnit="µmol" type="deterministic" avogadroConstant="6.02214179e+23">
     <MiriamAnnotation>
 <rdf:RDF
    xmlns:dcterms="http://purl.org/dc/terms/"
@@ -276,7 +276,7 @@ These are further changes in an effort to fix the problem found by Aaron:
 </rdf:RDF>
         </MiriamAnnotation>
         <Expression>
-          &lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration>
+          &lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_17" name="CheZ" simulationType="reactions" compartment="Compartment_1">
@@ -333,9 +333,7 @@ These are further changes in an effort to fix the problem found by Aaron:
       </Metabolite>
       <Metabolite key="Metabolite_25" name="T3" simulationType="reactions" compartment="Compartment_1">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_25">
     <dcterms:created>
       <rdf:Description>
@@ -344,14 +342,11 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
       </Metabolite>
       <Metabolite key="Metabolite_27" name="T4" simulationType="reactions" compartment="Compartment_1">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_27">
     <dcterms:created>
       <rdf:Description>
@@ -360,7 +355,6 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
       </Metabolite>
       <Metabolite key="Metabolite_29" name="L" simulationType="reactions" compartment="Compartment_1">
@@ -389,7 +383,7 @@ These are further changes in an effort to fix the problem found by Aaron:
 </rdf:RDF>
         </MiriamAnnotation>
         <Expression>
-          0.0*(1-&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+2.7^1.2))*&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration>
+          0.0*(1-&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+2.7^1.2))*&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_33" name="Tactive1" simulationType="assignment" compartment="Compartment_1">
@@ -405,7 +399,7 @@ These are further changes in an effort to fix the problem found by Aaron:
 </rdf:RDF>
         </MiriamAnnotation>
         <Expression>
-          0.25*(1-&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+20^1.2))*&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration>
+          0.25*(1-&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+20^1.2))*&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_35" name="Tactive2" simulationType="assignment" compartment="Compartment_1">
@@ -421,14 +415,12 @@ These are further changes in an effort to fix the problem found by Aaron:
 </rdf:RDF>
         </MiriamAnnotation>
         <Expression>
-          0.5*(1-&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+150^1.2))*&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration>
+          0.5*(1-&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+150^1.2))*&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_37" name="Tactive3" simulationType="assignment" compartment="Compartment_1">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_37">
     <dcterms:created>
       <rdf:Description>
@@ -437,17 +429,14 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <Expression>
-          0.75*(1-&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+1500^1.2))*&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration>
+          0.75*(1-&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+1500^1.2))*&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_39" name="Tactive4" simulationType="assignment" compartment="Compartment_1">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_39">
     <dcterms:created>
       <rdf:Description>
@@ -456,10 +445,9 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <Expression>
-          1*(1-&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+60000^1.2))*&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration>
+          1*(1-&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2/(&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration>^1.2+60000^1.2))*&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration>
         </Expression>
       </Metabolite>
       <Metabolite key="Metabolite_41" name="Ttotal" simulationType="assignment" compartment="Compartment_1">
@@ -475,7 +463,7 @@ These are further changes in an effort to fix the problem found by Aaron:
 </rdf:RDF>
         </MiriamAnnotation>
         <Expression>
-          &lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration>+&lt;CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration>
+          &lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration>+&lt;CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration>
         </Expression>
       </Metabolite>
     </ListOfMetabolites>
@@ -502,12 +490,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_15" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4379" name="k1" value="50"/>
+          <Constant key="Parameter_4463" name="k1" value="50"/>
         </ListOfConstants>
-        <KineticLaw function="Function_40" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_40" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_264">
-              <SourceParameter reference="Parameter_4379"/>
+              <SourceParameter reference="Parameter_4463"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_254">
               <SourceParameter reference="Metabolite_1"/>
@@ -539,12 +527,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Product metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4378" name="k" value="3"/>
+          <Constant key="Parameter_4462" name="k" value="3"/>
         </ListOfConstants>
-        <KineticLaw function="Function_42" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_42" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_272">
-              <SourceParameter reference="Parameter_4378"/>
+              <SourceParameter reference="Parameter_4462"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_268">
               <SourceParameter reference="Metabolite_5"/>
@@ -576,12 +564,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Product metabolite="Metabolite_11" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4377" name="k1" value="100"/>
+          <Constant key="Parameter_4461" name="k1" value="100"/>
         </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_4377"/>
+              <SourceParameter reference="Parameter_4461"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
               <SourceParameter reference="Metabolite_3"/>
@@ -609,12 +597,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Product metabolite="Metabolite_9" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4376" name="k1" value="0.1"/>
+          <Constant key="Parameter_4460" name="k1" value="0.1"/>
         </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_4376"/>
+              <SourceParameter reference="Parameter_4460"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
               <SourceParameter reference="Metabolite_11"/>
@@ -645,13 +633,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_41" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4375" name="kR" value="0.39"/>
-          <Constant key="Parameter_4374" name="KR" value="0.099"/>
+          <Constant key="Parameter_4459" name="kR" value="0.39"/>
+          <Constant key="Parameter_4458" name="KR" value="0.099"/>
         </ListOfConstants>
-        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_265">
-              <SourceParameter reference="Parameter_4375"/>
+              <SourceParameter reference="Parameter_4459"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_262">
               <SourceParameter reference="Metabolite_13"/>
@@ -660,7 +648,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_19"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_269">
-              <SourceParameter reference="Parameter_4374"/>
+              <SourceParameter reference="Parameter_4458"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_271">
               <SourceParameter reference="Metabolite_41"/>
@@ -691,13 +679,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_41" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4373" name="kR" value="0.39"/>
-          <Constant key="Parameter_4372" name="KR" value="0.099"/>
+          <Constant key="Parameter_4457" name="kR" value="0.39"/>
+          <Constant key="Parameter_4456" name="KR" value="0.099"/>
         </ListOfConstants>
-        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_265">
-              <SourceParameter reference="Parameter_4373"/>
+              <SourceParameter reference="Parameter_4457"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_262">
               <SourceParameter reference="Metabolite_13"/>
@@ -706,7 +694,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_21"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_269">
-              <SourceParameter reference="Parameter_4372"/>
+              <SourceParameter reference="Parameter_4456"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_271">
               <SourceParameter reference="Metabolite_41"/>
@@ -737,13 +725,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_41" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4371" name="kR" value="0.39"/>
-          <Constant key="Parameter_4370" name="KR" value="0.099"/>
+          <Constant key="Parameter_4455" name="kR" value="0.39"/>
+          <Constant key="Parameter_4454" name="KR" value="0.099"/>
         </ListOfConstants>
-        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_265">
-              <SourceParameter reference="Parameter_4371"/>
+              <SourceParameter reference="Parameter_4455"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_262">
               <SourceParameter reference="Metabolite_13"/>
@@ -752,7 +740,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_23"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_269">
-              <SourceParameter reference="Parameter_4370"/>
+              <SourceParameter reference="Parameter_4454"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_271">
               <SourceParameter reference="Metabolite_41"/>
@@ -783,13 +771,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_41" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4369" name="kR" value="0.39"/>
-          <Constant key="Parameter_4368" name="KR" value="0.099"/>
+          <Constant key="Parameter_4453" name="kR" value="0.39"/>
+          <Constant key="Parameter_4452" name="KR" value="0.099"/>
         </ListOfConstants>
-        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_41" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_265">
-              <SourceParameter reference="Parameter_4369"/>
+              <SourceParameter reference="Parameter_4453"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_262">
               <SourceParameter reference="Metabolite_13"/>
@@ -798,7 +786,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_25"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_269">
-              <SourceParameter reference="Parameter_4368"/>
+              <SourceParameter reference="Parameter_4452"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_271">
               <SourceParameter reference="Metabolite_41"/>
@@ -808,9 +796,7 @@ These are further changes in an effort to fix the problem found by Aaron:
       </Reaction>
       <Reaction key="Reaction_8" name="Rdm1" reversible="false" fast="false">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_8">
     <dcterms:created>
       <rdf:Description>
@@ -819,7 +805,6 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <ListOfSubstrates>
           <Substrate metabolite="Metabolite_21" stoichiometry="1"/>
@@ -833,13 +818,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_15" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4367" name="kB" value="6.3"/>
-          <Constant key="Parameter_4366" name="KB" value="2.5"/>
+          <Constant key="Parameter_4451" name="kB" value="6.3"/>
+          <Constant key="Parameter_4450" name="KB" value="2.5"/>
         </ListOfConstants>
-        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_273">
-              <SourceParameter reference="Parameter_4367"/>
+              <SourceParameter reference="Parameter_4451"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_270">
               <SourceParameter reference="Metabolite_7"/>
@@ -848,7 +833,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_33"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_277">
-              <SourceParameter reference="Parameter_4366"/>
+              <SourceParameter reference="Parameter_4450"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_279">
               <SourceParameter reference="Metabolite_15"/>
@@ -861,9 +846,7 @@ These are further changes in an effort to fix the problem found by Aaron:
       </Reaction>
       <Reaction key="Reaction_9" name="Rdm2" reversible="false" fast="false">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_9">
     <dcterms:created>
       <rdf:Description>
@@ -872,7 +855,6 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <ListOfSubstrates>
           <Substrate metabolite="Metabolite_23" stoichiometry="1"/>
@@ -886,13 +868,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_15" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4365" name="kB" value="6.3"/>
-          <Constant key="Parameter_4364" name="KB" value="2.5"/>
+          <Constant key="Parameter_4449" name="kB" value="6.3"/>
+          <Constant key="Parameter_4448" name="KB" value="2.5"/>
         </ListOfConstants>
-        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_273">
-              <SourceParameter reference="Parameter_4365"/>
+              <SourceParameter reference="Parameter_4449"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_270">
               <SourceParameter reference="Metabolite_7"/>
@@ -901,7 +883,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_35"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_277">
-              <SourceParameter reference="Parameter_4364"/>
+              <SourceParameter reference="Parameter_4448"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_279">
               <SourceParameter reference="Metabolite_15"/>
@@ -914,9 +896,7 @@ These are further changes in an effort to fix the problem found by Aaron:
       </Reaction>
       <Reaction key="Reaction_10" name="Rdm3" reversible="false" fast="false">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_10">
     <dcterms:created>
       <rdf:Description>
@@ -925,7 +905,6 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <ListOfSubstrates>
           <Substrate metabolite="Metabolite_25" stoichiometry="1"/>
@@ -939,13 +918,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_15" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4363" name="kB" value="6.3"/>
-          <Constant key="Parameter_4362" name="KB" value="2.5"/>
+          <Constant key="Parameter_4447" name="kB" value="6.3"/>
+          <Constant key="Parameter_4446" name="KB" value="2.5"/>
         </ListOfConstants>
-        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_273">
-              <SourceParameter reference="Parameter_4363"/>
+              <SourceParameter reference="Parameter_4447"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_270">
               <SourceParameter reference="Metabolite_7"/>
@@ -954,7 +933,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_37"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_277">
-              <SourceParameter reference="Parameter_4362"/>
+              <SourceParameter reference="Parameter_4446"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_279">
               <SourceParameter reference="Metabolite_15"/>
@@ -967,9 +946,7 @@ These are further changes in an effort to fix the problem found by Aaron:
       </Reaction>
       <Reaction key="Reaction_11" name="Rdm4" reversible="false" fast="false">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_11">
     <dcterms:created>
       <rdf:Description>
@@ -978,7 +955,6 @@ These are further changes in an effort to fix the problem found by Aaron:
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <ListOfSubstrates>
           <Substrate metabolite="Metabolite_27" stoichiometry="1"/>
@@ -992,13 +968,13 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_15" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4361" name="kB" value="6.3"/>
-          <Constant key="Parameter_4360" name="KB" value="2.5"/>
+          <Constant key="Parameter_4445" name="kB" value="6.3"/>
+          <Constant key="Parameter_4444" name="KB" value="2.5"/>
         </ListOfConstants>
-        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_43" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_273">
-              <SourceParameter reference="Parameter_4361"/>
+              <SourceParameter reference="Parameter_4445"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_270">
               <SourceParameter reference="Metabolite_7"/>
@@ -1007,7 +983,7 @@ These are further changes in an effort to fix the problem found by Aaron:
               <SourceParameter reference="Metabolite_39"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_277">
-              <SourceParameter reference="Parameter_4360"/>
+              <SourceParameter reference="Parameter_4444"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_279">
               <SourceParameter reference="Metabolite_15"/>
@@ -1037,12 +1013,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Product metabolite="Metabolite_5" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4359" name="k1" value="1"/>
+          <Constant key="Parameter_4443" name="k1" value="1"/>
         </ListOfConstants>
-        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_4359"/>
+              <SourceParameter reference="Parameter_4443"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
               <SourceParameter reference="Metabolite_7"/>
@@ -1072,12 +1048,12 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Modifier metabolite="Metabolite_17" stoichiometry="1"/>
         </ListOfModifiers>
         <ListOfConstants>
-          <Constant key="Parameter_4358" name="k1" value="30"/>
+          <Constant key="Parameter_4442" name="k1" value="30"/>
         </ListOfConstants>
-        <KineticLaw function="Function_40" unitType="Default" scalingCompartment="CN=Root,Model=New Model,Vector=Compartments[compartment]">
+        <KineticLaw function="Function_40" unitType="Default" scalingCompartment="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_264">
-              <SourceParameter reference="Parameter_4358"/>
+              <SourceParameter reference="Parameter_4442"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_254">
               <SourceParameter reference="Metabolite_11"/>
@@ -1092,86 +1068,86 @@ These are further changes in an effort to fix the problem found by Aaron:
     <ListOfModelParameterSets activeSet="ModelParameterSet_1">
       <ModelParameterSet key="ModelParameterSet_1" name="Initial State">
         <ModelParameterGroup cn="String=Initial Time" type="Group">
-          <ModelParameter cn="CN=Root,Model=New Model" value="0" type="Model" simulationType="time"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model" value="0" type="Model" simulationType="time"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Compartment Sizes" type="Group">
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment]" value="1.4e-15" type="Compartment" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]" value="1.4e-15" type="Compartment" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheA]" value="4468.42920818" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheAp]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheB]" value="236.0679581680006" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheBp]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheY]" value="8178.06855082" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheYp]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheR]" value="134.8959760960001" type="Species" simulationType="fixed"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheZ]" value="3203.779432279999" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T0]" value="4468.42920818" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T1]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T2]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T3]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T4]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L]" value="21077.49626500002" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4]" value="0" type="Species" simulationType="assignment"/>
-          <ModelParameter cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal]" value="4468.42920818" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheA]" value="4468.42920818" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheAp]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheB]" value="236.0679581680006" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheBp]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]" value="8178.06855082" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheYp]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheR]" value="134.8959760960001" type="Species" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheZ]" value="3203.779432279999" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T0]" value="4468.42920818" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T1]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T2]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T3]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T4]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L]" value="21077.49626500002" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4]" value="0" type="Species" simulationType="assignment"/>
+          <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal]" value="4468.42920818" type="Species" simulationType="assignment"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Global Quantities" type="Group">
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Kinetic Parameters" type="Group">
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Che A phosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Che A phosph],ParameterGroup=Parameters,Parameter=k1" value="50" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che A phosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che A phosph],ParameterGroup=Parameters,Parameter=k1" value="50" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Che B phosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Che B phosph],ParameterGroup=Parameters,Parameter=k" value="3" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B phosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B phosph],ParameterGroup=Parameters,Parameter=k" value="3" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Che Y phosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Che Y phosph],ParameterGroup=Parameters,Parameter=k1" value="100" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che Y phosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che Y phosph],ParameterGroup=Parameters,Parameter=k1" value="100" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Che Y autodephosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Che Y autodephosph],ParameterGroup=Parameters,Parameter=k1" value="0.1" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che Y autodephosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che Y autodephosph],ParameterGroup=Parameters,Parameter=k1" value="0.1" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rm1]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm1],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm1],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm1]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm1],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm1],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rm2]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm2],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm2],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm2]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm2],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm2],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rm3]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm3],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm3],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm3]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm3],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm3],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rm4]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm4]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=kR" value="0.39" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=KR" value="0.099" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rdm1]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm1],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm1],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm1]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm1],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm1],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rdm2]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm2],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm2],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm2]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm2],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm2],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rdm3]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm3],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm3],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm3]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm3],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm3],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Rdm4]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm4],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Rdm4],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm4]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm4],ParameterGroup=Parameters,Parameter=kB" value="6.3" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rdm4],ParameterGroup=Parameters,Parameter=KB" value="2.5" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[Che B autodephosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[Che B autodephosph],ParameterGroup=Parameters,Parameter=k1" value="1" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B autodephosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B autodephosph],ParameterGroup=Parameters,Parameter=k1" value="1" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
-          <ModelParameterGroup cn="CN=Root,Model=New Model,Vector=Reactions[CheY dephosph]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=New Model,Vector=Reactions[CheY dephosph],ParameterGroup=Parameters,Parameter=k1" value="30" type="ReactionParameter" simulationType="fixed"/>
+          <ModelParameterGroup cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[CheY dephosph]" type="Reaction">
+            <ModelParameter cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[CheY dephosph],ParameterGroup=Parameters,Parameter=k1" value="30" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
         </ModelParameterGroup>
       </ModelParameterSet>
@@ -1554,28 +1530,28 @@ These are further changes in an effort to fix the problem found by Aaron:
         Manually Remade
       </Comment>
       <Table printTitle="1">
-        <Object cn="CN=Root,Model=New Model,Reference=Time"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheA],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheAp],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheB],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheBp],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheR],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheYp],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheZ],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive],Reference=Concentration"/>
-        <Object cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheA],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheAp],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheB],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheBp],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheR],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheYp],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheZ],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive],Reference=Concentration"/>
+        <Object cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal],Reference=Concentration"/>
       </Table>
     </Report>
   </ListOfReports>
@@ -1592,8 +1568,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheA],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheA],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheAp]" type="Curve2D">
@@ -1604,8 +1580,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheAp],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheAp],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheB]" type="Curve2D">
@@ -1616,8 +1592,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheB],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheB],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheBp]" type="Curve2D">
@@ -1628,8 +1604,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheBp],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheBp],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheY]" type="Curve2D">
@@ -1640,8 +1616,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheYp]" type="Curve2D">
@@ -1652,8 +1628,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheYp],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheYp],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive]" type="Curve2D">
@@ -1664,8 +1640,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[CheZ]" type="Curve2D">
@@ -1676,8 +1652,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[CheZ],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheZ],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[T0]" type="Curve2D">
@@ -1688,8 +1664,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T0],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[T1]" type="Curve2D">
@@ -1700,8 +1676,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T1],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[T2]" type="Curve2D">
@@ -1712,8 +1688,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T2],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[T3]" type="Curve2D">
@@ -1724,8 +1700,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T3],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[T4]" type="Curve2D">
@@ -1736,8 +1712,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[T4],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[L]" type="Curve2D">
@@ -1748,8 +1724,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[L],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive0]" type="Curve2D">
@@ -1760,8 +1736,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive0],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive1]" type="Curve2D">
@@ -1772,8 +1748,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive1],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive2]" type="Curve2D">
@@ -1784,8 +1760,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive2],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive3]" type="Curve2D">
@@ -1796,8 +1772,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive3],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Tactive4]" type="Curve2D">
@@ -1808,8 +1784,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Tactive4],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Ttotal]" type="Curve2D">
@@ -1820,8 +1796,8 @@ These are further changes in an effort to fix the problem found by Aaron:
           <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
           <ListOfChannels>
-            <ChannelSpec cn="CN=Root,Model=New Model,Reference=Time"/>
-            <ChannelSpec cn="CN=Root,Model=New Model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal],Reference=Concentration"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Reference=Time"/>
+            <ChannelSpec cn="CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[Ttotal],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
       </ListOfPlotItems>
