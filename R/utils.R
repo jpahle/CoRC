@@ -189,3 +189,43 @@ methodstructure <- function(method) {
   
   struct
 }
+
+# Convert annotated matrices to data frames
+# Is not sufficiently tested for col/row; colnames; rownames consistency
+get_annotated_matrix <- function(matrix) {
+  dims <- matrix$dimensionality()
+  
+  assert_that(dims == 2, msg = "Only two dimensional annotated matrices can be read for now.")
+  
+  col_headers <- rev(get_sv(matrix$getAnnotationsString(1L)))
+  row_headers <- rev(get_sv(matrix$getAnnotationsString(0L)))
+  
+  cols <- length(col_headers)
+  rows <- length(row_headers)
+  
+  array <- matrix$getArray()
+  
+  # Timecritical step optimization
+  array_ref <- array@ref
+  R_swig_CArrayInterface_get__SWIG_1 <- getNativeSymbolInfo("R_swig_CArrayInterface_get__SWIG_1", "COPASI")[["address"]]
+  
+  # assemble output dataframe
+  # Iterates over all cols and rows
+  # Inner loops creates numeric()
+  # Outer loop binds all vectors to a data frame
+  seq_len_0(cols) %>%
+    map(function(i_col) {
+      seq_len_0(rows) %>%
+        map_dbl(function(i_row) {
+          # Timecritical step optimization
+          # array$get(i_row, i_col)
+          # CArrayInterface_get(array, i_row, i_col)
+          # args: self@ref, int, int, bool
+          .Call(R_swig_CArrayInterface_get__SWIG_1, array_ref, i_row, i_col, FALSE)
+        })
+    }) %>%
+    set_names(col_headers) %>%
+    dplyr::bind_cols() %>%
+    tibble::add_column(rowname = row_headers) %>%
+    dplyr::select(rowname, dplyr::everything())
+}

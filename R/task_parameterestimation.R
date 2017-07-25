@@ -476,7 +476,7 @@ pe_result_worker <- function(datamodel) {
   experiments <-
     seq_len_0(experiment_set$getExperimentCount()) %>%
     map(~ experiment_set$getExperiment(.x))
-  dependent_obj <- swigfix_resolve_obj_vector(experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
+  dependent_obj <- swigfix_resolve_obj_cvector(experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
   
   ret <- list()
   
@@ -520,7 +520,6 @@ pe_result_worker <- function(datamodel) {
     ) %>%
     transform_names()
   
-  
   ret$fitted.values <-
     tibble::tibble(
       "Fitted Value" = map_chr(dependent_obj, ~ .x$getObjectDisplayName()),
@@ -530,6 +529,16 @@ pe_result_worker <- function(datamodel) {
       "Error Mean Std. Deviation" = get_cv(experiment_set$getDependentErrorMeanSD())
     ) %>%
     transform_names()
+  
+  ret$correlation <- get_annotated_matrix(problem$getCorrelations())
+  
+  ret$fim <- get_annotated_matrix(problem$getFisherInformation())
+  ret$fim.eigenvalues <- get_annotated_matrix(problem$getFisherInformationEigenvalues())
+  ret$fim.eigenvectors <- get_annotated_matrix(problem$getFisherInformationEigenvectors())
+  
+  ret$fim.scaled <- get_annotated_matrix(problem$getScaledFisherInformation())
+  ret$fim.scaled.eigenvalues <- get_annotated_matrix(problem$getScaledFisherInformationEigenvalues())
+  ret$fim.scaled.eigenvectors <- get_annotated_matrix(problem$getScaledFisherInformationEigenvectors())
   
   ret
 }

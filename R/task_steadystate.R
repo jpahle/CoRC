@@ -185,17 +185,7 @@ ss_result_worker <- function(datamodel) {
   task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   method <- as(task$getMethod(), "_p_CSteadyStateMethod")
   
-  ret <- list(
-    result = NULL,
-    species = NULL,
-    # compartments = NULL,
-    # modelquantities = NULL,
-    reactions = NULL,
-    # stability = NULL,
-    # jacobian.complete = NULL,
-    # jacobian.reduced = NULL,
-    protocol = NULL
-  )
+  ret <- list()
   
   ret$result <- task$getResult()
   
@@ -227,6 +217,10 @@ ss_result_worker <- function(datamodel) {
         particlenum.flux = .x$getParticleFlux()
       )
     })
+  
+  ret$jacobian.complete <- get_annotated_matrix(task$getJacobianAnnotated())
+    
+  ret$jacobian.reduced <- get_annotated_matrix(task$getJacobianXAnnotated())
   
   ret$protocol <- method$getMethodLog()
   
