@@ -1,15 +1,15 @@
 # Use this if you recompile Copasi.
 # It takes the swig files from the build dir and deletes the copasi cache file.
 
-buildpath <- file.path("development", "copasi-source", "build_copasi_r_bindings", "copasi", "bindings", "R")
+buildpath <- file.path("copasi-source", "build_copasi_r_bindings", "copasi", "bindings", "R")
 
 if (!dir.exists(buildpath)) stop("Missing swig builds. Did you compile copasi?")
 
 stopifnot(
-    file.copy(file.path(buildpath, "COPASI.R"), file.path("R", "swig_wrapper.R"), overwrite = TRUE)
+    file.copy(file.path(buildpath, "COPASI.R"), file.path("..", "R", "swig_wrapper.R"), overwrite = TRUE)
 )
 
-libpath <- file.path("inst", "libs")
+libpath <- file.path("..", "inst", "libs")
 
 if (!dir.exists(libpath)) dir.create(libpath, recursive = TRUE)
 
