@@ -20,59 +20,17 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   is_matched <- matched_metabs %>% map_lgl(negate(is_null))
   
   if(!all(is_matched)) {
-    key_remaining <- key[!is_matched]
-    
-    # Assemble vector of all displaynames
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
-    v_dispnames <- metabs %>% map_swig_chr("getObjectDisplayName")
     
-    # Find all full matches of displaynames
-    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-    matched_metabs[!is_matched] <-
-      key_remaining %>% map(~ {
-        match <- which(.x == v_dispnames)
-        if (length(match) == 1L)
-          metabs[[match]]
-      })
-    
-    is_matched <- matched_metabs %>% map_lgl(negate(is_null))
-    
-    if(!all(is_matched)) {
-      key_remaining <- key[!is_matched]
-      
-      # Use give names as fixed pattern for searching in v_displaynames
-      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
-      
-      multi_matches <- which(map_int(matches, length) > 1L)
-      assert_that(
-        is_empty(multi_matches),
-        msg = paste0(
-          "Could not correctly identify some species:\n",
-          paste0(
-            multi_matches %>% map_chr(~
-              paste0(
-                '"', key_remaining[.x], '" matches species "',
-                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
-                '".'
-              )
-            ),
-            collapse = "\n"
-          )
-        )
+    matches_by_dispnames <-
+      match_worker(
+        keysvec = key[!is_matched],
+        namesvec = metabs %>% map_swig_chr("getObjectDisplayName"),
+        info = "compartment(s)"
       )
-      
-      no_matches <- which(map_int(matches, length) == 0L)
-      assert_that(
-        is_empty(no_matches),
-        msg = paste0(
-          'Could not match species "',
-          key_remaining[no_matches], '".',
-          collapse = '", "'
-        )
-      )
-      
-      matched_metabs[!is_matched] <- metabs[flatten_int(matches)]
-    }
+    
+    # fill matched_comps list
+    matched_metabs[!is_matched] <- metabs[matches_by_dispnames]
   }
   
   # If a reference is given, we use the matched metabolites to get value references
@@ -122,59 +80,17 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   is_matched <- matched_quants %>% map_lgl(negate(is_null))
   
   if(!all(is_matched)) {
-    key_remaining <- key[!is_matched]
-    
-    # Assemble vector of all displaynames
     quants <- get_cdv(datamodel$getModel()$getModelValues())
-    v_dispnames <- quants %>% map_swig_chr("getObjectDisplayName")
     
-    # Find all full matches of displaynames
-    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-    matched_quants[!is_matched] <-
-      key_remaining %>% map(~ {
-        match <- which(.x == v_dispnames)
-        if (length(match) == 1L)
-          quants[[match]]
-      })
-    
-    is_matched <- matched_quants %>% map_lgl(negate(is_null))
-    
-    if(!all(is_matched)) {
-      key_remaining <- key[!is_matched]
-      
-      # Use give names as fixed pattern for searching in v_displaynames
-      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
-      
-      multi_matches <- which(map_int(matches, length) > 1L)
-      assert_that(
-        is_empty(multi_matches),
-        msg = paste0(
-          "Could not correctly identify some global quantites:\n",
-          paste0(
-            multi_matches %>% map_chr(~
-              paste0(
-                '"', key_remaining[.x], '" matches quantites "',
-                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
-                '".'
-              )
-            ),
-            collapse = "\n"
-          )
-        )
+    matches_by_dispnames <-
+      match_worker(
+        keysvec = key[!is_matched],
+        namesvec = quants %>% map_swig_chr("getObjectDisplayName"),
+        info = "compartment(s)"
       )
-      
-      no_matches <- which(map_int(matches, length) == 0L)
-      assert_that(
-        is_empty(no_matches),
-        msg = paste0(
-          'Could not match global quantity "',
-          key_remaining[no_matches], '".',
-          collapse = '", "'
-        )
-      )
-      
-      matched_quants[!is_matched] <- quants[flatten_int(matches)]
-    }
+    
+    # fill matched_comps list
+    matched_quants[!is_matched] <- quants[matches_by_dispnames]
   }
   
   # If a reference is given, we use the matched metabolites to get value references
@@ -224,59 +140,17 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   is_matched <- matched_comps %>% map_lgl(negate(is_null))
   
   if(!all(is_matched)) {
-    key_remaining <- key[!is_matched]
-    
-    # Assemble vector of all displaynames
     comps <- get_cdv(datamodel$getModel()$getCompartments())
-    v_dispnames <- comps %>% map_swig_chr("getObjectDisplayName")
     
-    # Find all full matches of displaynames
-    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-    matched_comps[!is_matched] <-
-      key_remaining %>% map(~ {
-        match <- which(.x == v_dispnames)
-        if (length(match) == 1L)
-          comps[[match]]
-      })
-    
-    is_matched <- matched_comps %>% map_lgl(negate(is_null))
-    
-    if(!all(is_matched)) {
-      key_remaining <- key[!is_matched]
-      
-      # Use give names as fixed pattern for searching in v_displaynames
-      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
-      
-      multi_matches <- which(map_int(matches, length) > 1L)
-      assert_that(
-        is_empty(multi_matches),
-        msg = paste0(
-          "Could not correctly identify some compartments:\n",
-          paste0(
-            multi_matches %>% map_chr(~
-              paste0(
-                '"', key_remaining[.x], '" matches compartments "',
-                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
-                '".'
-              )
-            ),
-            collapse = "\n"
-          )
-        )
+    matches_by_dispnames <-
+      match_worker(
+        keysvec = key[!is_matched],
+        namesvec = comps %>% map_swig_chr("getObjectDisplayName"),
+        info = "compartment(s)"
       )
-      
-      no_matches <- which(map_int(matches, length) == 0L)
-      assert_that(
-        is_empty(no_matches),
-        msg = paste0(
-          'Could not match compartment "',
-          key_remaining[no_matches], '".',
-          collapse = '", "'
-        )
-      )
-      
-      matched_comps[!is_matched] <- comps[flatten_int(matches)]
-    }
+    
+    # fill matched_comps list
+    matched_comps[!is_matched] <- comps[matches_by_dispnames]
   }
   
   # If a reference is given, we use the matched metabolites to get value references
@@ -327,59 +201,17 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   is_matched <- matched_reactions %>% map_lgl(negate(is_null))
   
   if(!all(is_matched)) {
-    key_remaining <- key[!is_matched]
-    
-    # Assemble vector of all displaynames
     reactions <- get_cdv(datamodel$getModel()$getReactions())
-    v_dispnames <- reactions %>% map_swig_chr("getObjectDisplayName")
     
-    # Find all full matches of displaynames
-    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-    matched_reactions[!is_matched] <-
-      key_remaining %>% map(~ {
-        match <- which(.x == v_dispnames)
-        if (length(match) == 1L)
-          reactions[[match]]
-      })
-    
-    is_matched <- matched_reactions %>% map_lgl(negate(is_null))
-    
-    if(!all(is_matched)) {
-      key_remaining <- key[!is_matched]
-      
-      # Use give names as fixed pattern for searching in v_displaynames
-      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
-      
-      multi_matches <- which(map_int(matches, length) > 1L)
-      assert_that(
-        is_empty(multi_matches),
-        msg = paste0(
-          "Could not correctly identify some reactions:\n",
-          paste0(
-            multi_matches %>% map_chr(~
-              paste0(
-                '"', key_remaining[.x], '" matches reactions "',
-                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
-                '".'
-              )
-            ),
-            collapse = "\n"
-          )
-        )
+    matches_by_dispnames <-
+      match_worker(
+        keysvec = key[!is_matched],
+        namesvec = reactions %>% map_swig_chr("getObjectDisplayName"),
+        info = "reaction(s)"
       )
-      
-      no_matches <- which(map_int(matches, length) == 0L)
-      assert_that(
-        is_empty(no_matches),
-        msg = paste0(
-          'Could not match reaction "',
-          key_remaining[no_matches], '".',
-          collapse = '", "'
-        )
-      )
-      
-      matched_reactions[!is_matched] <- reactions[flatten_int(matches)]
-    }
+    
+    # fill matched_reactions list
+    matched_reactions[!is_matched] <- reactions[matches_by_dispnames]
   }
   
   # If a reference is given, we use the matched metabolites to get value references
@@ -429,9 +261,6 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   is_matched <- matched_params %>% map_lgl(negate(is_null))
   
   if(!all(is_matched)) {
-    key_remaining <- key[!is_matched]
-    
-    # Assemble vector of all displaynames
     params <-
       get_cdv(datamodel$getModel()$getReactions()) %>%
       map_swig("getParameters") %>%
@@ -439,55 +268,16 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
         seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
       }) %>%
       flatten()
-    v_dispnames <- params %>% map_swig_chr("getObjectDisplayName")
     
-    # Find all full matches of displaynames
-    # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-    matched_params[!is_matched] <-
-      key_remaining %>% map(~ {
-        match <- which(.x == v_dispnames)
-        if (length(match) == 1L)
-          params[[match]]
-      })
-    
-    is_matched <- matched_params %>% map_lgl(negate(is_null))
-    
-    if(!all(is_matched)) {
-      key_remaining <- key[!is_matched]
-      
-      # Use give names as fixed pattern for searching in v_displaynames
-      matches <- key_remaining %>% map(~ stringr::str_which(v_dispnames, stringr::fixed(.x)))
-      
-      multi_matches <- which(map_int(matches, length) > 1L)
-      assert_that(
-        is_empty(multi_matches),
-        msg = paste0(
-          "Could not correctly identify some parameters:\n",
-          paste0(
-            multi_matches %>% map_chr(~
-              paste0(
-                '"', key_remaining[.x], '" matches parameters "',
-                paste0(v_dispnames[matches[[.x]]], collapse = '", "'),
-                '".'
-              )
-            ),
-            collapse = "\n"
-          )
-        )
+    matches_by_dispnames <-
+      match_worker(
+        keysvec = key[!is_matched],
+        namesvec = params %>% map_swig_chr("getObjectDisplayName"),
+        info = "parameter(s)"
       )
       
-      no_matches <- which(map_int(matches, length) == 0L)
-      assert_that(
-        is_empty(no_matches),
-        msg = paste0(
-          'Could not match parameter "',
-          key_remaining[no_matches], '".',
-          collapse = '", "'
-        )
-      )
-      
-      matched_params[!is_matched] <- params[flatten_int(matches)]
-    }
+    # fill matched_params list
+    matched_params[!is_matched] <- params[matches_by_dispnames]
   }
   
   # If a reference is given, we use the matched metabolites to get value references
@@ -513,4 +303,52 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   #     matched_params %>% map_swig_chr("getObjectDisplayName")
   #   )
   matched_params %>% map_swig("getCN") %>% map_swig_chr("getString")
+}
+
+# Find a uniquely matching string in namesvec for every string in keysvec
+match_worker <- function(keysvec, namesvec, info) {
+  # Find all full matches of displaynames
+  # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
+  matches <- match(keysvec, namesvec)
+  
+  not_matched <- is.na(matches)
+  
+  if(any(not_matched)) {
+    keysvec_remaining <- keysvec[not_matched]
+    
+    # Use give names as fixed pattern for searching in v_displaynames
+    matches_partial <- keysvec_remaining %>% map(~ stringr::str_which(namesvec, stringr::fixed(.x)))
+    
+    multi_matches <- which(map_int(matches_partial, length) > 1L)
+    assert_that(
+      is_empty(multi_matches),
+      msg = paste0(
+        "Could not correctly identify some ", info, ":\n",
+        paste0(
+          multi_matches %>% map_chr(~
+            paste0(
+              '"', keysvec_remaining[.x], '" matches ', info, ' "',
+              paste0(namesvec[matches_partial[[.x]]], collapse = '", "'),
+              '".'
+            )
+          ),
+          collapse = "\n"
+        )
+      )
+    )
+    
+    no_matches <- which(map_lgl(matches_partial, is_empty))
+    assert_that(
+      is_empty(no_matches),
+      msg = paste0(
+        'Could not match ', info, ' "',
+        keysvec_remaining[no_matches], '".',
+        collapse = '", "'
+      )
+    )
+    
+    matches[not_matched] <- flatten_int(matches_partial)
+  }
+  
+  matches
 }
