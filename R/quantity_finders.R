@@ -24,7 +24,7 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     
     # Assemble vector of all displaynames
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
-    v_dispnames <- metabs %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    v_dispnames <- metabs %>% map_swig_chr("getObjectDisplayName")
     
     # Find all full matches of displaynames
     # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
@@ -93,11 +93,11 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   )
   
   # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  # matched_metabs %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
   #   set_names(
-  #     matched_metabs %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #     matched_metabs %>% map_swig_chr("getObjectDisplayName")
   #   )
-  matched_metabs %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
+  matched_metabs %>% map_swig("getCN") %>% map_swig_chr("getString")
 }
 
 #' Identify quantity by name
@@ -126,7 +126,7 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     
     # Assemble vector of all displaynames
     quants <- get_cdv(datamodel$getModel()$getModelValues())
-    v_dispnames <- quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    v_dispnames <- quants %>% map_swig_chr("getObjectDisplayName")
     
     # Find all full matches of displaynames
     # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
@@ -195,11 +195,11 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   )
   
   # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_quants %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  # matched_quants %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
   #   set_names(
-  #     matched_quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #     matched_quants %>% map_swig_chr("getObjectDisplayName")
   #   )
-  matched_quants %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  matched_quants %>% map_swig_chr("getObjectDisplayName")
 }
 
 #' Identify compartment by name
@@ -228,7 +228,7 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     
     # Assemble vector of all displaynames
     comps <- get_cdv(datamodel$getModel()$getCompartments())
-    v_dispnames <- comps %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    v_dispnames <- comps %>% map_swig_chr("getObjectDisplayName")
     
     # Find all full matches of displaynames
     # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
@@ -297,11 +297,11 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   )
   
   # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_comps %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  # matched_comps %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
   #   set_names(
-  #     matched_comps %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #     matched_comps %>% map_swig_chr("getObjectDisplayName")
   #   )
-  matched_comps %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
+  matched_comps %>% map_swig("getCN") %>% map_swig_chr("getString")
 }
 
 
@@ -331,7 +331,7 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     
     # Assemble vector of all displaynames
     reactions <- get_cdv(datamodel$getModel()$getReactions())
-    v_dispnames <- reactions %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    v_dispnames <- reactions %>% map_swig_chr("getObjectDisplayName")
     
     # Find all full matches of displaynames
     # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
@@ -400,11 +400,11 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   )
   
   # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_reactions %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  # matched_reactions %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
   #   set_names(
-  #     matched_reactions %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #     matched_reactions %>% map_swig_chr("getObjectDisplayName")
   #   )
-  matched_reactions %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
+  matched_reactions %>% map_swig("getCN") %>% map_swig_chr("getString")
 }
 
 #' Identify reaction parameter by name
@@ -439,7 +439,7 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
         seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
       }) %>%
       flatten()
-    v_dispnames <- params %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+    v_dispnames <- params %>% map_swig_chr("getObjectDisplayName")
     
     # Find all full matches of displaynames
     # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
@@ -508,9 +508,9 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   )
   
   # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_params %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr() %>%
+  # matched_params %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
   #   set_names(
-  #     matched_params %>% map_swig("getObjectDisplayName") %>% flatten_chr()
+  #     matched_params %>% map_swig_chr("getObjectDisplayName")
   #   )
-  matched_params %>% map_swig("getCN") %>% map_swig("getString") %>% flatten_chr()
+  matched_params %>% map_swig("getCN") %>% map_swig_chr("getString")
 }

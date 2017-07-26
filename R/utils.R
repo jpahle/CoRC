@@ -13,7 +13,7 @@ setMethod("format",
 
     string <- "# A copasi model reference:\n"
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-    string <- paste0(string, "@ref is set to: " , utils::capture.output(show(x@ref)) , "\n")
+    string <- paste0(string, "@ref is set to: " , utils::capture.output(x@ref) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
     string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
     string <- paste0(string, "Number of reactions: " , model$getReactions()$size(), "\n")
@@ -197,8 +197,8 @@ get_annotated_matrix <- function(matrix) {
   
   assert_that(dims == 2, msg = "Only two dimensional annotated matrices can be read for now.")
   
-  col_headers <- rev(get_sv(matrix$getAnnotationsString(1L)))
-  row_headers <- rev(get_sv(matrix$getAnnotationsString(0L)))
+  col_headers <- get_sv(matrix$getAnnotationsString(1L))
+  row_headers <- get_sv(matrix$getAnnotationsString(0L))
   
   cols <- length(col_headers)
   rows <- length(row_headers)

@@ -470,8 +470,7 @@ pe_result_worker <- function(datamodel) {
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
   
-  # items <- get_sv(problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")
-  items <- seq_len_0(problem$getOptItemSize()) %>% map(~ as(problem$getOptItem(.x), Class = "_p_CFitItem"))
+  items <- get_sv(problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")
   experiment_set <- problem$getExperimentSet()
   experiments <-
     seq_len_0(experiment_set$getExperimentCount()) %>%

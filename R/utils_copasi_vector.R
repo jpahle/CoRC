@@ -11,7 +11,7 @@ seq_along_v <- function(copasivector) {
 }
 
 # get items of std_vector in list
-get_sv <- function(vector, indices = seq_along_v(vector)) {
+get_sv <- function(vector, indices = seq_along_v(vector) + 1L) {
   vector[indices]
 }
 

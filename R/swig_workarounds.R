@@ -42,19 +42,30 @@ swigfix_resolve_int_stdvector <- function(self, fun) {
     map_int(~ .Call('R_swig_IntStdVector___getitem__', vector, .x, FALSE, ,PACKAGE='COPASI'))
 }
 
-# Apply a function to a list of objects
+# Apply a $function of a swig object to a list of objects
+# e.g.:
+# metab_list %>% map_swig("getObjectDisplayName")
+# equals (in most cases)
+# metab_list %>% map(~ .x$getObjectDisplayName())
 # Function will always be the one which gets resolved from the first object
 # Thus, unexpected results might happen with inhomogenous lists
-map_swig <- function(x, fun, ...) {
+map_swig <- function(x, fun, ..., .mapfun = map) {
   if (is_empty(x)) return(list())
   x_q <- quote(x)
-  map(
+  .mapfun(
     .x = x,
     # Find the actual function and strip its class attribute
     .f = unclass(environment(eval(substitute(x_q[[1]]$fun)))$f),
     ...
   )
 }
+
+map_swig_lgl <- partial(map_swig, .mapfun = map_lgl)
+map_swig_chr <- partial(map_swig, .mapfun = map_chr)
+map_swig_int <- partial(map_swig, .mapfun = map_int)
+map_swig_dbl <- partial(map_swig, .mapfun = map_dbl)
+map_swig_dfr <- partial(map_swig, .mapfun = map_dfr)
+map_swig_dfc <- partial(map_swig, .mapfun = map_dfc)
 
 # Apply a function to a list of objects
 # Function will always be the one which gets resolved from the first object
