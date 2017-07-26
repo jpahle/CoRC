@@ -64,7 +64,7 @@ loadModel <- function(path) {
   
   model <- url_to_string(path)
   if (!is_null(model)) {
-    success <- grab_msg(datamodel$loadModelFromString(model),
+    success <- grab_msg(datamodel$loadModelFromString(model, normalizePathC(getwd())),
                         purge = "The content is created with a newer version .* of COPASI.")
   } else {
     assert_that(is.readable(path))
