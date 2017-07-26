@@ -55,7 +55,7 @@ mapInParallel <- function(data, fun, ..., .prep = {}) {
 
 ```{r, fig.height=6, fig.width=8}
 # Load Ca Model
-loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+suppressWarnings(loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329"))
 
 # Run 24 sec (2 Periods)
 runTimeCourse(24, intervals = 10000) %>%
@@ -76,7 +76,7 @@ runTimeCourse(24, intervals = 10000) %>%
 # Run 500 stochastic time series possibly in parallel
 # loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
 # tcs <- 1:500 %>% map(~ runTimeCourse())
-tcs <- 1:10 %>% mapInParallel(
+tcs <- 1:500 %>% mapInParallel(
   .prep = quote({
     library(CoRC)
     loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")

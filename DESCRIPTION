@@ -27,7 +27,8 @@ Imports:
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    pkgdown
 Collate: 
     'CoRC.R'
     'manage_models.R'
