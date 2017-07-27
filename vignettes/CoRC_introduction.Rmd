@@ -90,10 +90,10 @@ plots$stochastic
 ## Statistics of reapeated stochastic simulations
 
 ```{r, fig.height=6, fig.width=8}
-# Run 500 stochastic time series possibly in parallel
+# Run 1000 stochastic time series possibly in parallel
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-# timeseries <- 1:500 %>% map(~ runTimeCourse())
-timeseries <- 1:500 %>% mapInParallel(
+# timeseries <- 1:1000 %>% map(~ runTimeCourse())
+timeseries <- 1:1000 %>% mapInParallel(
   .prep = quote({
     library(CoRC)
     loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
@@ -116,6 +116,99 @@ plot <- timeseries %>%
 
 unloadModel()
 
-plot
+plot %>% plotly::ggplotly()
+```
+
+## Parameter scan
+
+```{r}
+loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
+setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
+
+cysteine_ref <- species("Cysteine")
+adomed_ref <- species("adenosyl")
+
+scan <- cross_df(
+  list(
+    cysteine = 0.3 * 10 ^ seq(0, 3, length.out = 6),
+    adomed = seq(0, 100, length.out = 51)
+  )
+)
+
+scan <- 
+  scan %>%
+  mutate(
+    ss_fluxes = pmap(., function(cysteine, adomed) {
+      setSpecies(key = cysteine_ref, initial.concentration = cysteine)
+      setSpecies(key = adomed_ref, initial.concentration = adomed)
+      ss <- runSteadyState()
+      stopifnot(ss$result == "found")
+      ss$reactions$concentration.flux
+    }),
+    CGS = ss_fluxes %>% map_dbl(2),
+    TS = ss_fluxes %>% map_dbl(3)
+  )
+
+plot <- scan %>%
+  gather(reaction, flux, CGS, TS) %>%
+  ggplot(aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
+  geom_point(aes(color = reaction)) +
+  labs(
+    x = paste0("Abomed (", getQuantityUnit(), ")"),
+    y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
+    color = "Species"
+  )
+
+unloadModel()
+
+plot %>% plotly::ggplotly(tooltip = c("tt_cys", "x", "y"))
+```
+
+```{r}
+loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
+
+scan <-
+  1:10000 %>%
+  mapInParallel(
+    .prep = quote({
+      library(CoRC)
+      loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
+      setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
+      cysteine_ref <- species("Cysteine")
+      adomed_ref <- species("adenosyl")
+    }),
+    ~ {
+      cysteine <- 0.3 * 10 ^ runif(1L, min = 0, max = 3)
+      # cysteine <- runif(1L, min = 0.3, max = 300)
+      adomed <- runif(1L, min = 0, max = 100)
+      setSpecies(
+        key = c(cysteine_ref, adomed_ref),
+        initial.concentration = c(cysteine, adomed)
+      )
+      ss <- runSteadyState()
+      stopifnot(ss$result == "found")
+      list(
+        cysteine = cysteine,
+        adomed = adomed,
+        CGS = ss$reactions$concentration.flux[2],
+        TS = ss$reactions$concentration.flux[3]
+      )
+    }
+  ) %>%
+  bind_rows()
+
+plot <- scan %>%
+  gather(reaction, flux, CGS, TS) %>%
+  ggplot(aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
+  geom_point(aes(color = reaction)) +
+  labs(
+    x = paste0("Abomed (", getQuantityUnit(), ")"),
+    y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
+    color = "Species"
+  )
+
+unloadModel()
+
+plot %>% plotly::ggplotly(tooltip = c("tt_cys", "x", "y"))
 ```
 
