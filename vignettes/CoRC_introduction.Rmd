@@ -9,8 +9,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  warning = FALSE,
+  message = FALSE
+)
 ```
 
 # <img src="logo/CoRC.svg" alt="CoRC logo" width="200"> --- the <b>Co</b>pasi <b>R</b> <b>C</b>onnector
@@ -29,7 +36,7 @@ You can get more information or download CoRC from <https://github.com/jpahle/Co
 
 You can install CoRC from [github](http://github.com) with:
 
-```{r gh-installation, eval = FALSE}
+```{r gh-installation, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("jpahle/CoRC")
 CoRC::getCopasi()
@@ -40,7 +47,7 @@ CoRC comes with the Artistic License 2.0. By using CoRC you agree to this licens
 
 # Examples, case-studies and workflows
 
-```{r, message=FALSE}
+```{r setup}
 library(tidyverse)
 library(parallel)
 library(CoRC)
@@ -57,8 +64,7 @@ mapInParallel <- function(data, fun, ..., .prep = {}) {
 
 ## 3D trajectory plot of calcium model
 
-```{r, fig.height=6, fig.width=8, warning=FALSE}
-# Load Ca Model
+```{r}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
 # Run 24 sec (2 Periods)
 setTimeCourseSettings(24, intervals = 10000)
@@ -68,17 +74,19 @@ timeseries <- list(
   stochastic = runTimeCourse(method = "directMethod")
 )
 
-plots <- timeseries %>% map(~
-  .x %>%
-    set_tidy_names(T, T) %>%
-    plotly::plot_ly(
-      type = "scatter3d",
-      mode = "lines",
-      x = ~ G.alpha,
-      y = ~ activePLC,
-      z = ~ Calcium,
-      color = ~ Time
-    )
+# simplify species names so they are valid R syntax
+timeseries <- map(timeseries, set_tidy_names, TRUE)
+
+# Create the same plot for both timeseries
+plots <- map(
+  timeseries,
+  plotly::plot_ly,
+  type = "scatter3d",
+  mode = "lines",
+  x = ~ G.alpha,
+  y = ~ activePLC,
+  z = ~ Calcium,
+  color = ~ Time
 )
 
 unloadModel()
@@ -89,24 +97,39 @@ plots$stochastic
 
 ## Statistics of reapeated stochastic simulations
 
-```{r, fig.height=6, fig.width=8}
+```{r}
 # Run 1000 stochastic time series possibly in parallel
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
 # timeseries <- 1:1000 %>% map(~ runTimeCourse())
-timeseries <- 1:1000 %>% mapInParallel(
-  .prep = quote({
-    library(CoRC)
-    loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-  }),
-  ~ runTimeCourse()
-)
+timeseries <-
+  1:1000 %>%
+  # Read parallel evaluation as: first do .prep and then run the formula ~
+  mapInParallel(
+    .prep = quote({
+      library(CoRC)
+      loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
+    }),
+    ~ runTimeCourse()
+  )
 
-plot <- timeseries %>%
+# Combine all results and reshape the data
+plotdata <-
+  timeseries %>%
   bind_rows() %>%
-  gather(species, concentration, a, b, c) %>%
-  ggplot(aes(x = Time, y = concentration, group = species)) +
-  stat_summary(aes(fill = species), geom = "ribbon", fun.data = mean_sdl, fun.args = 1, alpha = 0.25) +
-  stat_summary(aes(color = species), geom = "line", fun.y = mean) +
+  group_by(Time) %>%
+  summarise_all(
+    funs(mean, sd)
+  ) %>%
+  # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
+  gather(name, value, -Time) %>%
+  # split up information on species (a,b,c) and type of value (mean, sd)
+  separate(name, c("species", "type"), "_") %>%
+  spread(type, value)
+
+plot <-
+  ggplot(data = plotdata, aes(x = Time, y = mean, group = species, tt_sd = sd)) +
+  geom_ribbon(aes(ymin = mean - sd, ymax = mean + sd, fill = species), alpha = 1 / 4) +
+  geom_line(aes(color = species)) +
   guides(fill = "none") +
   labs(
     x = paste0("Time (", getTimeUnit(), ")"),
@@ -116,10 +139,12 @@ plot <- timeseries %>%
 
 unloadModel()
 
-plot %>% plotly::ggplotly()
+plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 ```
 
 ## Parameter scan
+
+A 2D scan over the cartesian product of two species concentration vectors.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
@@ -128,6 +153,7 @@ setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FAL
 cysteine_ref <- species("Cysteine")
 adomed_ref <- species("adenosyl")
 
+# Cartesian product of the input values
 scan <- cross_df(
   list(
     cysteine = 0.3 * 10 ^ seq(0, 3, length.out = 6),
@@ -135,9 +161,10 @@ scan <- cross_df(
   )
 )
 
-scan <- 
+scan <-
   scan %>%
   mutate(
+    # Calculate steady state fluxes for every row
     ss_fluxes = pmap(., function(cysteine, adomed) {
       setSpecies(key = cysteine_ref, initial.concentration = cysteine)
       setSpecies(key = adomed_ref, initial.concentration = adomed)
@@ -145,14 +172,18 @@ scan <-
       stopifnot(ss$result == "found")
       ss$reactions$concentration.flux
     }),
-    CGS = ss_fluxes %>% map_dbl(2),
-    TS = ss_fluxes %>% map_dbl(3)
+    # The second flux is CGS
+    CGS = map_dbl(ss_fluxes, 2),
+    # The third flux is TS
+    TS = map_dbl(ss_fluxes, 3)
   )
 
-plot <- scan %>%
-  gather(reaction, flux, CGS, TS) %>%
-  ggplot(aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
-  geom_point(aes(color = reaction)) +
+plot <-
+  ggplot(data = scan, aes(x = adomed, group = cysteine)) +
+  geom_point(aes(y = CGS, color = "CGS")) +
+  geom_point(aes(y = TS, color = "TS")) +
+  geom_line(aes(y = CGS, color = "CGS")) +
+  geom_line(aes(y = TS, color = "TS")) +
   labs(
     x = paste0("Abomed (", getQuantityUnit(), ")"),
     y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
@@ -161,14 +192,18 @@ plot <- scan %>%
 
 unloadModel()
 
-plot %>% plotly::ggplotly(tooltip = c("tt_cys", "x", "y"))
+plotly::ggplotly(plot)
 ```
+
+A scan over random values of two species.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
 
+# 10000 repeats of steady state task with random cysteine and adomed
 scan <-
   1:10000 %>%
+  # Read parallel evaluation as: first do .prep and then run the formula ~
   mapInParallel(
     .prep = quote({
       library(CoRC)
@@ -194,13 +229,17 @@ scan <-
         TS = ss$reactions$concentration.flux[3]
       )
     }
-  ) %>%
-  bind_rows()
+  )
 
-plot <- scan %>%
-  gather(reaction, flux, CGS, TS) %>%
-  ggplot(aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
-  geom_point(aes(color = reaction)) +
+# Combine all results and reshape the data
+plotdata <-
+  scan %>%
+  bind_rows() %>%
+  gather(reaction, flux, CGS, TS)
+
+plot <-
+  ggplot(data = plotdata, aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
+  geom_point(aes(color = reaction), alpha = 1 / 10, size = 3 / 4) +
   labs(
     x = paste0("Abomed (", getQuantityUnit(), ")"),
     y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
@@ -209,6 +248,85 @@ plot <- scan %>%
 
 unloadModel()
 
-plot %>% plotly::ggplotly(tooltip = c("tt_cys", "x", "y"))
+plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 ```
 
+## Parameter Estimation
+
+```{r}
+loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+
+# get timeseries for the record
+data_before <-
+  runTimeCourse(1000, 1) %>%
+  set_tidy_names(TRUE)
+
+# read experimental data
+data_experimental <-
+  read_tsv("data/MAPKdata.txt") %>%
+  rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
+  set_tidy_names(TRUE)
+
+# define the experiments for copasi
+fit_experiments <- defineExperiments(
+  data = data_experimental,
+  type = c("time", "dependent", "dependent"),
+  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration"))
+)
+
+# define the parameters for copasi
+fit_parameters <-
+  map(
+    parameter(c("n).V1", "V2", "V5", "V6", "V9", "V10")),
+    ~ {
+      val <- getParameters(.x)$value
+      defineParameter(parameter(.x, "Value"), lower.bound = val * 0.1, upper.bound = val * 1.9, start.value = val)
+    }
+  )
+
+result <-
+  runParamEst(
+    parameters = fit_parameters,
+    experiments = fit_experiments,
+    method = "LevenbergMarquardt",
+    updateModel = TRUE
+  )
+
+# get timeseries for the record
+data_after <-
+  runTimeCourse(1000, 1) %>%
+  set_tidy_names(TRUE)
+
+plots <- list(
+  Erk2.P =
+    ggplot(mapping = aes(x = Time, y = Erk2.P)) +
+    geom_point(data = data_experimental, aes(color = "experimental")) +
+    geom_line(data = data_before, aes(color = "before")) +
+    geom_line(data = data_after, aes(color = "after")) +
+    scale_color_manual(values = c(before = "red", after = "green", experimental = "black")) +
+    labs(
+      x = paste0("Erk2-P (", getQuantityUnit(), ")"),
+      y = paste0("Time (", getTimeUnit(), ")"),
+      color = "Series"
+    ),
+  Mos.P =
+    ggplot(mapping = aes(x = Time, y = Mos.P)) +
+    geom_point(data = data_experimental, aes(color = "experimental")) +
+    geom_line(data = data_before, aes(color = "before")) +
+    geom_line(data = data_after, aes(color = "after")) +
+    scale_color_manual(values = c(before = "red", after = "green", experimental = "black")) +
+    labs(
+      x = paste0("Mos-P (", getQuantityUnit(), ")"),
+      y = paste0("Time (", getTimeUnit(), ")"),
+      color = "Series"
+    )
+)
+
+unloadModel()
+
+result$fitted.values
+result$parameters
+
+plotly::ggplotly(plots$Erk2.P)
+plotly::ggplotly(plots$Mos.P)
+```
