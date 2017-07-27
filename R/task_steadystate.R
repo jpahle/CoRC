@@ -113,7 +113,7 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
   }
   
   if (!is.null(method) && !is_empty(method)) {
-    method_cop = as(task$getMethod(), "_p_CTrajectoryMethod")
+    method_cop = as(task$getMethod(), "_p_CSteadyStateMethod")
   
     # get some info on what parameters the method has
     methodstruct <- methodstructure(method_cop) %>% tibble::rowid_to_column()

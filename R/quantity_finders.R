@@ -26,7 +26,7 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
       match_worker(
         keysvec = key[!is_matched],
         namesvec = metabs %>% map_swig_chr("getObjectDisplayName"),
-        info = "compartment(s)"
+        info = "species"
       )
     
     # fill matched_comps list
@@ -86,7 +86,7 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
       match_worker(
         keysvec = key[!is_matched],
         namesvec = quants %>% map_swig_chr("getObjectDisplayName"),
-        info = "compartment(s)"
+        info = "global quantity(s)"
       )
     
     # fill matched_comps list

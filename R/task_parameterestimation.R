@@ -212,7 +212,9 @@ addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
   experiment_set <- problem$getExperimentSet()
   
   # Create experiment file
-  model_dir <- normalizePathC(datamodel$getReferenceDirectory())
+  model_dir <- datamodel$getReferenceDirectory()
+  if (model_dir == "") model_dir <- getwd()
+  model_dir <- normalizePathC(model_dir)
   filepath <- file.path(model_dir, exp_struct$filename)
   readr::write_tsv(exp_struct$data, filepath)
   
@@ -268,7 +270,7 @@ clearExperiments <- function(datamodel = pkg_env$curr_dm) {
 
 # .type can help in some situations to determine assertions etc
 # can be "temporary", "permanent" or "restore"
-pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel) {
+pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, method_old = NULL, datamodel) {
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
   
@@ -328,18 +330,18 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     }
   }
   
+  if (!is.null(method)) {
+    if (is_scalar_character(method)) method <- list(method = method)
+    # hack to get nice error message if method string is not accepted.
+    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
+  }
+  
   errors <- FALSE
   
   restorationCall <- list(
     .type = "restore",
     datamodel = datamodel
   )
-  
-  if (!is.null(method)) {
-    if (is_scalar_character(method)) method <- list(method = method)
-    # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
-  }
   
   if (!is.null(randomizeStartValues)) {
     restorationCall$randomizeStartValues <- as.logical(problem$getRandomizeStartValues())
@@ -382,20 +384,23 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
         if (is.error(e)) errors <<- TRUE
       })
     } else {
-      # delete the file
-      e <- try(experiments %>% map_chr("filename") %>% file.path(normalizePathC(datamodel$getReferenceDirectory()), .) %>% file.remove())
-      if (is.error(e)) errors <<- TRUE
       clearExperiments(datamodel = datamodel)
+      # delete the file
+      model_dir <- datamodel$getReferenceDirectory()
+      if (model_dir == "") model_dir <- getwd()
+      model_dir <- normalizePathC(model_dir)
+      e <- try(experiments %>% map_chr("filename") %>% file.path(model_dir, .) %>% file.remove())
+      if (is.error(e)) errors <- TRUE
     }
   }
   
-  if (!is.null(method) && !is_empty(method)) {
+  if (!is.null(method)) {
     # We need to keep track of the previously set method
     restorationCall$method_old = task$getMethod()$getSubType()
     
     task$setMethodType(method$method)
     restorationCall$method <- list(method = method$method)
-    method_cop = as(task$getMethod(), "_p_CFitMethod")
+    method_cop = as(task$getMethod(), "_p_COptMethod")
     
     method <- method[names(method) != "method"]
     
@@ -456,6 +461,11 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
         errors <- TRUE
       }
     }
+  }
+  
+  # method_old is only set if the purpose of calling the function was a restorationCall
+  if (!is.null(method_old)) {
+    task$setMethodType(method_old)
   }
   
   if (errors && .type != "restore") {
