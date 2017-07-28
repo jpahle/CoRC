@@ -16,14 +16,23 @@
 OUTPUTFLAG <- 119L
 
 #' @export
-COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/ed1bee159a3eb7b21010d9a0ae61be9d3b411959"
+COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/61123de94942748e873f2b3eb2cec327c88cd55c"
 
 COPASI_BIN_VERSION <- 2L
 COPASI_BIN_HASHES <-
-  c(
-    darwin = "ac390a6aa89197f53d640148225384a8396690954f09b7325b26930bbe2206e7"
-    # win = "36066727e4e184daa3f9d97331b976c0e8350db219a6ddc6babee18a11ad03c0",
-    # ubuntu_16_10 = "22392cd755921b94d611cb25e1d8ae2d5acc295f5af7e2d89636103c37f0370a"
+  list(
+    "3.3" =
+      c(
+        darwin = "521ebcf2441f86cf2c4d977dcca1e80a5d1c92571ba9c7e66210f9c2a25f6225"
+        # win = "",
+        # ubuntu_16_10 = ""
+      ),
+    "3.4" =
+      c(
+        darwin = "ac390a6aa89197f53d640148225384a8396690954f09b7325b26930bbe2206e7"
+        # win = "",
+        # ubuntu_16_10 = ""
+      )
   )
 
 .onLoad <- function(libname, pkgname) {
@@ -52,7 +61,12 @@ getCopasi <- function(path = NULL) {
   # if no path is given we download the binaries
   if (is_null(path)) {
     dlurl <- "http://juergen.pahle.de/CoRC_libs/"
-    dlurl <- paste0(dlurl, "v", floor(COPASI_BIN_VERSION / 10), COPASI_BIN_VERSION %% 10L, "/")
+    dlurl <- paste0(dlurl, "v", COPASI_BIN_VERSION, "/")
+    
+    r_version <- paste0(version$major, ".", strsplit(version$minor, ".", fixed = TRUE)[[1]][1])
+    assert_that(rversion %in% names(COPASI_BIN_HASHES), msg = paste0("Versions ", r_version, "(.x) of R are not supported."))
+    
+    dlurl <- paste0(dlurl, r_version, "/")
     
     x64folder <- FALSE
     if (.Platform$OS.type == "windows") {
@@ -95,7 +109,7 @@ getCopasi <- function(path = NULL) {
     
     # Check if the hash matches
     assert_that(
-      digest::digest(path, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[platform]],
+      digest::digest(path, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[r_version]][[platform]],
       msg = "Downloaded copasi binaries are corrupted."
     )
   }
