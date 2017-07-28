@@ -228,12 +228,24 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
     msg = "Could not find CopasiUI."
   )
   
-  # Create a temp file for the model to open in the UI
-  # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
-  file <- tempfile(fileext = ".cps")
-  grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
+  fittask <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  fitproblem <- as(fittask$getProblem(), "_p_CFitProblem")
+  if (
+    readin == FALSE &&
+    (
+      !is_empty(fitproblem$getExperimentSet()$getFileNames()) ||
+      !is_empty(fitproblem$getCrossValidationSet()$getFileNames())
+    )
+  ) {
+    warning("Using readin = TRUE because the model references experimental data which breaks when using the systems temp folder.")
+    readin <- TRUE
+  }
   
   if (readin) {
+    # Create a temp file for the model
+    file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(datamodel$getReferenceDirectory()), fileext = ".cps")
+    grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
+    
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = TRUE, invisible = FALSE)
     else
@@ -242,6 +254,11 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
     grab_msg(datamodel$loadModel(file))
     file.remove(file)
   } else {
+    # Create a temp file for the model to open in the UI
+    # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
+    file <- tempfile(pattern = "CoRC", fileext = ".cps")
+    grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
+    
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
     else
