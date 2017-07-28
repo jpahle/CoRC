@@ -58,6 +58,7 @@ url_to_string <- function(x) {
 #' @return a model object
 #' @export
 loadModel <- function(path) {
+  assert_binaries()
   assert_that(is.string(path))
   
   datamodel <- CRootContainer_addDatamodel()
@@ -91,6 +92,7 @@ loadModel <- function(path) {
 #' @return a model object
 #' @export
 loadSBML <- function(path) {
+  assert_binaries()
   assert_that(is.string(path))
   
   datamodel <- CRootContainer_addDatamodel()
@@ -181,6 +183,8 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
 #' @return a list of model objects
 #' @export
 loadExamples <- function(indices = NULL) {
+  assert_binaries()
+  
   models <- 
     c(
       "brusselator.cps",

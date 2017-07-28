@@ -30,8 +30,9 @@ COPASI_BIN_HASHES <-
   # hack for load_all() 
   libname <- .libPaths()
   
-  e <- try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
-  if (is.error(e)) warning(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
+  try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
+  # In this single case only warn instead of stop
+  assert_binaries(warning, pkgname)
 }
 
 .onUnload <- function(libpath) {
@@ -118,6 +119,11 @@ getCopasi <- function(path = NULL) {
   # Reload libary
   library.dynam("COPASI", getPackageName(), .libPaths())
   message(getPackageName(), ": Successfully loaded copasi binaries.")
+}
+
+assert_binaries <- function(method = stop, pkgname = getPackageName()) {
+  if (!("COPASI" %in% map(.dynLibs(), "name")))
+    method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
 
 # FIXES FOR OLD VERSION OF PURRR
