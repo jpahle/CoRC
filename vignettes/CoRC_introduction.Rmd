@@ -166,8 +166,8 @@ scan <-
   mutate(
     # Calculate steady state fluxes for every row
     ss_fluxes = pmap(., function(cysteine, adomed) {
-      setSpecies(key = cysteine_ref, initial.concentration = cysteine)
-      setSpecies(key = adomed_ref, initial.concentration = adomed)
+      setSpecies("Cysteine", initial.concentration = cysteine)
+      setSpecies("adenosyl", initial.concentration = adomed)
       ss <- runSteadyState()
       stopifnot(ss$result == "found")
       ss$reactions$concentration.flux
@@ -209,15 +209,13 @@ scan <-
       library(CoRC)
       loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
       setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
-      cysteine_ref <- species("Cysteine")
-      adomed_ref <- species("adenosyl")
     }),
     ~ {
       cysteine <- 0.3 * 10 ^ runif(1L, min = 0, max = 3)
       # cysteine <- runif(1L, min = 0.3, max = 300)
       adomed <- runif(1L, min = 0, max = 100)
       setSpecies(
-        key = c(cysteine_ref, adomed_ref),
+        key = c("Cysteine", "adenosyl"),
         initial.concentration = c(cysteine, adomed)
       )
       ss <- runSteadyState()
@@ -271,7 +269,8 @@ data_experimental <-
 fit_experiments <- defineExperiments(
   data = data_experimental,
   type = c("time", "dependent", "dependent"),
-  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration"))
+  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration")),
+  weight_method = "mean_square"
 )
 
 # define the parameters for copasi

@@ -128,8 +128,8 @@ clearParameters <- function(datamodel = pkg_env$curr_dm) {
 }
 
 #' @export
-defineExperiments <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weights = NULL, filename = NULL) {
-  experiment_type <- rlang::arg_match(experiment_type, c("Steady State", "Time Course"))
+defineExperiments <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+  experiment_type <- rlang::arg_match(experiment_type)
   experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
   
   if (is.data.frame(data)) data <- list(data)
@@ -174,6 +174,15 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
   
+  weight_methods <- names(.__E___CExperiment__WeightMethod)
+  weight_methods_lower <- stringr::str_to_lower(weight_methods)
+  if (is_null(weight_method)) {
+    weight_method <- weight_methods[1]
+  } else {
+    weight_method <- rlang::arg_match(weight_method, weight_methods_lower)
+    weight_method <- weight_methods[weight_method == weight_methods_lower]
+  }
+  
   if (!is.null(filename)) {
     assert_that(is.string(filename) && !is.na(filename))
     if (!has_extension(filename, ".txt")) filename <- paste0(filename, ".txt")
@@ -196,7 +205,7 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   ret$mappings <- mappings
   
-  ret$weights <- weights
+  ret$weight_method <- weight_method
   
   ret$filename <- filename
   
@@ -236,6 +245,7 @@ addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
   walk_swig(experiments, "setFileName", exp_struct$filename)
   walk_swig(experiments, "setExperimentType", exp_struct$experiment_type)
   walk_swig(experiments, "setNumColumns", col_count)
+  walk_swig(experiments, "setWeightMethod", exp_struct$weight_method)
   # walk_swig(experiments, "readColumnNames")
   
   # Get the object maps and assign roles and mappings
@@ -312,7 +322,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     
     experiments %>% walk(~
       assert_that(
-        all(names(.x) %in% c("experiment_type", "data", "experiments", "types", "mappings", "weights", "filename")),
+        all(names(.x) %in% c("experiment_type", "data", "experiments", "types", "mappings", "weight_method", "filename")),
         msg = "Invalid experiments submitted."
       )
     )

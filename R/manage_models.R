@@ -217,7 +217,8 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
     if (!found && !missing(copasi_loc)) found <- is.readable(copasi_loc)
   } else if (.Platform$OS.type == "unix") {
     # On darwin, CopasiUI doesn't seem to be in path so try a default location if copasi_loc wasn't given.
-    if (substr(version$os, 1L, 6L) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc)) copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+    if (substr(version$os, 1L, 6L) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc))
+      copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
     
     found <- !system2("which", args = c("-s", copasi_loc))
   }
