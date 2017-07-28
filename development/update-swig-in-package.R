@@ -16,8 +16,9 @@ if (!dir.exists(libpath)) dir.create(libpath, recursive = TRUE)
 stopifnot(
     file.copy(file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext)), file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 )
-stopifnot(
-    file.copy(file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext)), system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = "CoRC"), overwrite = TRUE)
-)
+if (system.file(package = "CoRC") != "")
+  stopifnot(
+      file.copy(file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext)), system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = "CoRC"), overwrite = TRUE)
+  )
 
 rm(buildpath, libpath)

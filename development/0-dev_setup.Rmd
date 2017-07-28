@@ -12,7 +12,7 @@ current_example = 4L
 
 # Copy swig wrapper from copasi build dir
 
-```{r}
+```{r, include=FALSE}
 source("development/update-swig-in-package.R", chdir = TRUE)
 ```
 
