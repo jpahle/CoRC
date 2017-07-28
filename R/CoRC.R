@@ -119,3 +119,14 @@ getCopasi <- function(path = NULL) {
   library.dynam("COPASI", getPackageName(), .libPaths())
   message(getPackageName(), ": Successfully loaded copasi binaries.")
 }
+
+# FIXES FOR OLD VERSION OF PURRR
+has_element <- contains
+map_dfr <- map_df
+modify_if <- map_if
+
+iwalk <- function (.x, .f, ...) 
+{
+  .f <- as_function(.f, ...)
+  walk2(.x, seq_along(.x), .f, ...)
+}
