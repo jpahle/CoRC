@@ -141,12 +141,12 @@ assert_binaries <- function(method = stop, pkgname = getPackageName()) {
 }
 
 # FIXES FOR OLD VERSION OF PURRR
-has_element <- contains
 map_dfr <- map_df
 modify_if <- map_if
-
-iwalk <- function (.x, .f, ...) 
-{
-  .f <- as_function(.f, ...)
+iwalk <- function (.x, .f, ...) {
+  .f <- suppressWarnings(as_function(.f, ...))
   walk2(.x, seq_along(.x), .f, ...)
+}
+has_element <- function (.x, .y) {
+  some(.x, identical, .y)
 }
