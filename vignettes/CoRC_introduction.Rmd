@@ -102,13 +102,16 @@ plots$stochastic
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
 # timeseries <- 1:1000 %>% map(~ runTimeCourse())
 timeseries <-
-  1:1000 %>%
-  # Read parallel evaluation as: first do .prep and then run the formula ~
+  # Defines parallel evaluation:
   mapInParallel(
+    # perpare worker (.prep),
     .prep = quote({
       library(CoRC)
       loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
     }),
+    # iteration data,
+    1:1000,
+    # iteration code (formula ~)
     ~ runTimeCourse()
   )
 
@@ -121,7 +124,7 @@ plotdata <-
     funs(mean, sd)
   ) %>%
   # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
-  gather(name, value, -Time) %>%
+  gather("name", "value", -Time) %>%
   # split up information on species (a,b,c) and type of value (mean, sd)
   separate(name, c("species", "type"), "_") %>%
   spread(type, value)
@@ -149,9 +152,6 @@ A 2D scan over the cartesian product of two species concentration vectors.
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
 setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
-
-cysteine_ref <- species("Cysteine")
-adomed_ref <- species("adenosyl")
 
 # Cartesian product of the input values
 scan <- cross_df(
@@ -202,14 +202,17 @@ loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
 
 # 10000 repeats of steady state task with random cysteine and adomed
 scan <-
-  1:10000 %>%
-  # Read parallel evaluation as: first do .prep and then run the formula ~
+  # Defines parallel evaluation:
   mapInParallel(
+    # perpare worker (.prep),
     .prep = quote({
       library(CoRC)
       loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
       setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
     }),
+    # iteration data,
+    1:10000,
+    # iteration code (formula ~)
     ~ {
       cysteine <- 0.3 * 10 ^ runif(1L, min = 0, max = 3)
       # cysteine <- runif(1L, min = 0.3, max = 300)
@@ -233,7 +236,7 @@ scan <-
 plotdata <-
   scan %>%
   bind_rows() %>%
-  gather(reaction, flux, CGS, TS)
+  gather("reaction", "flux", CGS, TS)
 
 plot <-
   ggplot(data = plotdata, aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
