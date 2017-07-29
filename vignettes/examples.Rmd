@@ -19,9 +19,11 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+set.seed(1)
 ```
+<img src="figures/logo.svg" alt="CoRC logo" width="200" align="right"/>
 
-# Case-studies and workflows <img src="figures/logo.svg" alt="CoRC logo" width="200" align="right"/>
+# Case-studies and workflows
 
 ## Initial Setup
 
@@ -302,7 +304,7 @@ plots <- list(
     )
 )
 
-unloadModel()
+# unloadModel()
 
 result$fitted.values
 result$parameters

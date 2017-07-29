@@ -8,6 +8,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+set.seed(1)
 ```
 
 # <img src="man/figures/logo.svg" alt="CoRC logo" width="200"> --- the <b>Co</b>pasi <b>R</b> <b>C</b>onnector

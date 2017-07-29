@@ -23,12 +23,7 @@ devtools::document()
 ```
 ```{r, include=FALSE}
 pkgdown::clean_site()
-pkgdown::init_site()
-pkgdown::build_home()
-pkgdown::build_reference()
-# Workaround because it likes to fail
-devtools::eval_clean({wd <- getwd(); pryr::subs({setwd(wd);pkgdown::build_articles(quiet = FALSE)})}, quiet = FALSE)
-pkgdown::build_news()
+pkgdown::build_site()
 ```
 
 # Install the Package

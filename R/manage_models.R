@@ -241,7 +241,10 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_
       !is_empty(fitproblem$getCrossValidationSet()$getFileNames())
     )
   ) {
-    warning("Using readin = TRUE because the model references experimental data which breaks when using the systems temp folder.")
+    warning(
+      "Using readin = TRUE because the model references experimental data which breaks when using the systems temp folder.",
+      immediate. = TRUE
+    )
     readin <- TRUE
   }
   

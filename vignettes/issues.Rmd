@@ -1,0 +1,211 @@
+---
+title: "Issues"
+author: "Jonas Förster & Jürgen Pahle"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Issues}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "100%",
+  warning = FALSE,
+  message = FALSE
+)
+set.seed(1)
+```
+
+## Initial Setup
+
+```{r setup}
+library(tidyverse)
+library(CoRC)
+```
+
+## Checking validity of quantity unit doesn't work
+
+```{r}
+CUnit <- CoRC:::CUnit
+```
+
+The CUnit class can be used for testing if user specified input is valid
+
+```{r}
+ms <- CUnit("ms")
+s <- CUnit("ms * 1e3")
+mmol <- CUnit("mmol")
+mol <- CUnit("mmol * 1e3")
+
+ms$buildExpression()
+s$buildExpression()
+mmol$buildExpression()
+mol$buildExpression()
+```
+
+CUnit$getExpression("<type>") shows what Copasi makes of the input
+
+```{r}
+  ms$getExpression()
+  s$getExpression()
+  mmol$getExpression()
+  mol$getExpression()
+```
+
+CUnit$isUnitType("<type>") will return useful information on validity for all but "quantity"
+
+```{r}
+s$isUnitType("time")
+s$isUnitType("quantity")
+
+mol$isUnitType("time")
+mol$isUnitType("quantity")
+mol$isUnitType("volume")
+mol$isUnitType("area")
+mol$isUnitType("length")
+```
+
+## ObjectDisplayName seems more apropriate than CN
+
+```{r}
+loadExamples(1)
+species("X")
+species("X", "InitialConcentration")
+```
+
+When a species is identified I have to return the CommonName as reference.
+In this use case, returning the ObjectDisplayNames seems more friendly to the user.
+Especially because this is the way it is presented in the GUI too.
+
+```{r}
+CoRC:::cn_to_object(species("X"), datamodel = getCurrentModel())[[1]]$getObjectDisplayName()
+CoRC:::cn_to_object(species("X", "InitialConcentration"), datamodel = getCurrentModel())[[1]]$getObjectDisplayName()
+```
+
+They should be able to accomplish the same job in uniquely identifying a reference but there are no methods to resolve from DisplayName back to an Object.
+
+## Reliably setting values
+
+I don't understand how to consistently keep the math up to date with the values set in the model.
+
+For reaction parameter, my methods are currently broken.
+I can set the value, but after running a task the value will be restored.
+
+
+```{r}
+loadExamples(1)
+ts1 <- runTimeCourse()
+getParameters("(R1).k1")$value
+setParameters("(R1).k1", value = 99)
+getParameters("(R1).k1")$value
+ts2 <- runTimeCourse()
+getParameters("(R1).k1")$value
+identical(ts1, ts2)
+unloadModel()
+```
+
+In this example, the following is not the right approach?:
+```{r, eval=FALSE}
+model()$updateInitialValues(changedObjects)
+```
+
+## Saving .cps loses experimental data
+
+I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.
+
+```{r}
+datamodel <- loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+
+# define the experiments for copasi
+experiment <- defineExperiments(
+  filename = "issue_expdata",
+  data = suppressMessages(read_tsv("data/MAPKdata.txt")),
+  type = c("time", "dependent", "dependent"),
+  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration"))
+)
+
+addExperiments(experiment)
+
+fitproblem <- as(datamodel$getTask("Parameter Estimation")$getProblem(), "_p_CFitProblem")
+filenames <- fitproblem$getExperimentSet()$getFileNames()
+```
+
+The filenames are relative to the model and in the correct folder.
+
+```{r}
+filenames
+file.exists(filenames)
+```
+
+Now I will save the model into a tmp folder.
+
+```{r}
+file <- tempfile(fileext = ".cps")
+saveCPS(file)
+# unloadModel()
+
+datamodel <- loadModel(file)
+fitproblem <- as(datamodel$getTask("Parameter Estimation")$getProblem(), "_p_CFitProblem")
+filenames <- fitproblem$getExperimentSet()$getFileNames()
+```
+
+The filenames are now supposedly in the folder where the .cps was saved but there they don't exist.
+
+```{r}
+filenames
+file.exists(filenames)
+```
+
+```{r}
+# unloadModel()
+invisible(file.remove(file, "issue_expdata.txt"))
+```
+
+## Crashes with experimental data
+
+Running this code multiple times crashes the R session.
+
+```{r, message=TRUE, warning=TRUE}
+loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+
+# define the experiments for copasi
+experiment <- defineExperiments(
+  filename = "issue_expdata",
+  data = suppressMessages(read_tsv("data/MAPKdata.txt")),
+  type = c("time", "dependent", "dependent"),
+  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration"))
+)
+
+addExperiments(experiment)
+
+unloadModel()
+```
+```{error}
+Call("R_swig_delete_CExperiment", self, PACKAGE = "COPASI")
+ *** caught segfault ***
+address 0x0, cause 'memory not mapped'
+```
+
+My approach for adding Experiments is:
+
+```{r, eval=FALSE}
+exp <- CExperiment()
+experiment_set$addExperiment(exp)
+```
+
+some time later the experiment might get removed by calling either of:
+
+```{r, eval=FALSE}
+CRootContainer_removeDatamodel(datamodel)
+```
+```{r, eval=FALSE}
+experiment_set$removeExperiment(0)
+```
+
+Maybe R crashes some time later because SWIG does try to delete exp too?
