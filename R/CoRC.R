@@ -61,12 +61,13 @@ getCopasi <- function(path = NULL) {
   # if no path is given we download the binaries
   if (is_null(path)) {
     dlurl <- "http://juergen.pahle.de/CoRC_libs/"
-    dlurl <- paste0(dlurl, "v", COPASI_BIN_VERSION, "/")
     
     r_version <- paste0(version$major, ".", strsplit(version$minor, ".", fixed = TRUE)[[1]][1])
-    assert_that(rversion %in% names(COPASI_BIN_HASHES), msg = paste0("Versions ", r_version, "(.x) of R are not supported."))
+    assert_that(r_version %in% names(COPASI_BIN_HASHES), msg = paste0("Versions ", r_version, "(.x) of R are not supported."))
     
     dlurl <- paste0(dlurl, r_version, "/")
+    
+    dlurl <- paste0(dlurl, "v", COPASI_BIN_VERSION, "/")
     
     x64folder <- FALSE
     if (.Platform$OS.type == "windows") {
