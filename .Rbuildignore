@@ -2,4 +2,6 @@
 ^\.Rproj\.user$
 ^development$
 ^documentation$
+^README\.Rmd$
 ^docs$
+^vignettes/examples\.Rmd$

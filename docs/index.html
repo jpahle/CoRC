@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -45,7 +45,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/CoRC_introduction.html">CoRC - the Copasi R Connector</a>
+      <a href="articles/examples.html">Examples</a>
     </li>
   </ul>
 </li>
@@ -67,12 +67,71 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    This package loads Copasi R bindings and wraps a simplyfied API around it.
+  <div class="col-md-9">
+    
+
+    
+    
+<div class="contents">
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<div id="the-copasi-r-connector" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#the-copasi-r-connector" class="anchor"></a><img src="reference/figures/logo.svg" alt="CoRC logo" width="200"> — the <b>Co</b>pasi <b>R</b> <b>C</b>onnector</h1></div>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+
+<p>CoRC features:</p>
+<ul>
+<li>high-level API for Copasi in the R language</li>
+<li>…</li>
+</ul>
+<p>You can get more information or download CoRC from <a href="https://github.com/jpahle/CoRC/" class="uri">https://github.com/jpahle/CoRC/</a>.</p>
+<p>CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>Install the development version from GitHub.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
+devtools::<span class="kw">install_github</span>(<span class="st">"jpahle/CoRC"</span>)</code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
+<span class="kw"><a href="reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; Model name: "The Brusselator"</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fd4fbeb6980&gt;</span>
+<span class="co">#&gt; Number of compartments: 1</span>
+<span class="co">#&gt; Number of species: 6</span>
+<span class="co">#&gt; Number of reactions: 4</span>
+<span class="co">#&gt; </span>
+<span class="kw"><a href="reference/runTimeCourse.html">runTimeCourse</a></span>()
+<span class="co">#&gt; # A tibble: 201 x 3</span>
+<span class="co">#&gt;     Time         X         Y</span>
+<span class="co">#&gt;  * &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt;  1   0.0 3.0000000 3.0000000</span>
+<span class="co">#&gt;  2   0.5 3.4081600 0.8174841</span>
+<span class="co">#&gt;  3   1.0 1.8964569 1.2767901</span>
+<span class="co">#&gt;  4   1.5 0.8762539 1.8729300</span>
+<span class="co">#&gt;  5   2.0 0.3459334 2.3681908</span>
+<span class="co">#&gt;  6   2.5 0.1827622 2.6585981</span>
+<span class="co">#&gt;  7   3.0 0.1474333 2.8636840</span>
+<span class="co">#&gt;  8   3.5 0.1411289 3.0483214</span>
+<span class="co">#&gt;  9   4.0 0.1407334 3.2283474</span>
+<span class="co">#&gt; 10   4.5 0.1415567 3.4069724</span>
+<span class="co">#&gt; # ... with 191 more rows</span></code></pre></div>
+</div>
+</div>
+</div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
-    <h2>Links</h2>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/jpahle/CoRC">https://​github.com/​jpahle/​CoRC</a>
 </li>
@@ -80,17 +139,24 @@
 </li>
 </ul>
 <h2>License</h2>
-<p>What license is it under?</p>
+<p><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a> | file <a href="LICENSE.html">LICENSE</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Jonas Förster <br><small class="roles"> Author, maintainer </small> </li>
+<li>Jürgen Pahle <br><small class="roles"> Author, funder </small> </li>
+</ul>
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://copasi.org">copasi.org</a></li>
+<li><a href="http://r-project.org">r-project.org</a></li>
 </ul>
 </div>
+
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonas Förster.</p>
+  <p>Developed by Jonas Förster, Jürgen Pahle.</p>
 </div>
 
 <div class="pkgdown">
