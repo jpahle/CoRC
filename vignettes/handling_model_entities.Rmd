@@ -1,0 +1,94 @@
+---
+title: "Handling Model Entities"
+author: "Jonas Förster & Jürgen Pahle"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Handling Model Entities}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "100%",
+  error = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+set.seed(1)
+```
+
+## Initial Setup
+
+```{r setup}
+library(tidyverse)
+library(CoRC)
+loadExamples(2)
+getSpecies()
+```
+
+## Identifying entities
+
+There are at the moment 5 different types of model entities supported.
+
+```{r}
+species("CheA")
+compartment("comp")
+quantity("a")
+reaction("Che B phosph")
+parameter("4).kR")
+```
+
+These functions return CommonNames when a species is identified.
+They are vectorized and will always return a vector of identified entities of the same length or throw an error.
+This mean behavior for NA or non-uniquely matching strings is throw an error.
+REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.
+
+```{r}
+species("CheY")
+species("CheYp")
+species(c("CheY", "CheYp"))
+species("Che")
+species(c(NA, "CheY"))
+species("failure")
+```
+
+CommonNames are generally what is used by CoRC to identify entities.
+In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself.
+
+```{r}
+getSpecies(key = "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]")
+getSpecies(key = species("CheY"))
+getSpecies(key = "CheY")
+getSpecies("CheY")
+getSpecies("Che")
+```
+
+## Using References
+
+The identifying functions can also return value references if specified.
+Such references are needed as input for example to define Parameter Estimations.
+
+```{r}
+species("CheY", reference = "InitialConcentration")
+```
+
+These function however can not give any clues about what references are available.
+
+```{r}
+species("CheY", reference = "failure")
+```
+
+To help with this, functions implemented to get model values have similar functions that return references instead of values.
+
+```{r}
+str(getSpecies("CheY"))
+str(getSpeciesReferences("CheY"))
+```
+
+Being able to use [CheYp]_0 instead of a full CN would probably lead to more intuitive results (see Article: Issues).

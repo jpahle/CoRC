@@ -4,4 +4,4 @@
 ^documentation$
 ^README\.Rmd$
 ^docs$
-^vignettes/examples\.Rmd$
+^vignettes/CoRC\.Rmd$

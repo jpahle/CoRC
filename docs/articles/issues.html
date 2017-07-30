@@ -35,6 +35,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/CoRC.html">Get Started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -45,7 +48,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/examples.html">Examples</a>
+      <a href="../articles/handling_model_entities.html">Handling Model Entities</a>
     </li>
     <li>
       <a href="../articles/issues.html">Issues</a>
@@ -75,7 +78,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-07-30</h4>
+            <h4 class="date">2017-07-31</h4>
           </div>
 
     
@@ -160,11 +163,10 @@ cmetab_ref_x_0$<span class="kw">getObjectDisplayName</span>()
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fb3748bc070&gt;</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fa73920c030&gt;</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
 <span class="co">#&gt; Number of reactions: 4</span>
-<span class="co">#&gt; </span>
 ts1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>(<span class="st">"(R1).k1"</span>)$value
 <span class="co">#&gt; [1] 1</span>
@@ -204,7 +206,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<s
 filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpL2lzbS/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpCdL5TZ/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
@@ -236,7 +238,9 @@ experiment_set$<span class="kw">addExperiment</span>(exp)</code></pre></div>
 <p>some time later the experiment might get removed by calling either of:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">CRootContainer_removeDatamodel</span>(datamodel)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">experiment_set$<span class="kw">removeExperiment</span>(<span class="dv">0</span>)</code></pre></div>
-<p>Maybe R crashes some time later because SWIG does try to delete exp too?</p>
+<p>SWIG creates a finalizer with every object created by a constructor from within R. The finalizer gets checked with every run of the garbage collector.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">reg.finalizer</span>(object, delete_CExperiment)</code></pre></div>
+<p>Seems like this is something I might have have to disable entirely because I will usually create objects to hand back over to Copasi. When that is done I will lose track of the object and it will be up for GC. This functionality of SWIG doesn’t seem suited at all for our purposes.</p>
 </div>
 </div>
   </div>
