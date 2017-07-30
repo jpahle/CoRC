@@ -10,7 +10,7 @@
 species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.character(key), !anyNA(key),
+    is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
@@ -70,7 +70,7 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.character(key), !anyNA(key),
+    is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
@@ -130,7 +130,7 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.character(key), !anyNA(key),
+    is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
@@ -191,7 +191,7 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.character(key), !anyNA(key),
+    is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
@@ -251,7 +251,7 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   assert_that(
-    is.character(key), !anyNA(key),
+    is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   

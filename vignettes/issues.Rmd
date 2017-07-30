@@ -212,7 +212,7 @@ experiment_set$removeExperiment(0)
 SWIG creates a finalizer with every object created by a constructor from within R.
 The finalizer gets checked with every run of the garbage collector.
 
-```{r}
+```{r, eval=FALSE}
 reg.finalizer(object, delete_CExperiment)
 ```
 

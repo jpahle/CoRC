@@ -44,11 +44,10 @@ loadExamples(1)
 #> [[1]]
 #> # A copasi model reference:
 #> Model name: "The Brusselator"
-#> @ref is set to: <pointer: 0x7ff30b7e3b10>
+#> @ref is set to: <pointer: 0x7f86f9f54540>
 #> Number of compartments: 1
 #> Number of species: 6
 #> Number of reactions: 4
-#> 
 runTimeCourse()
 #> # A tibble: 201 x 3
 #>     Time         X         Y

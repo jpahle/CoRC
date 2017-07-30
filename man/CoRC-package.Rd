@@ -22,6 +22,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jonas Förster \email{jonasfoe@gmail.com}
+\strong{Maintainer}: Jonas Förster \email{jonasfoerster@gmail.com}
+
+Authors:
+\itemize{
+  \item Jürgen Pahle \email{juergen.pahle@bioquant.uni-heidelberg.de} [funder]
+}
 
 }

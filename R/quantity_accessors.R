@@ -16,6 +16,9 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     metabs <- cn_to_object(key, datamodel)
   
+  # should be fixed to return valid tibble
+  if (is_empty(metabs)) return(tibble::tibble())
+  
   # assemble output dataframe
   metabs %>%
     map_dfr(~ {
@@ -51,6 +54,9 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
   else
     metabs <- cn_to_object(key, datamodel)
+  
+  # should be fixed to return valid tibble
+  if (is_empty(metabs)) return(tibble::tibble())
   
   # assemble output dataframe
   metabs %>%
@@ -196,6 +202,9 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     quantities <- cn_to_object(key, datamodel)
   
+  # should be fixed to return valid tibble
+  if (is_empty(quantities)) return(tibble::tibble())
+  
   # assemble output dataframe
   quantities %>%
     map_dfr(~ {
@@ -227,6 +236,9 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
     quantities <- get_cdv(datamodel$getModel()$getModelValues())
   else
     quantities <- cn_to_object(key, datamodel)
+  
+  # should be fixed to return valid tibble
+  if (is_empty(quantities)) return(tibble::tibble())
   
   # assemble output dataframe
   quantities %>%
@@ -322,6 +334,9 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     comps <- cn_to_object(key, datamodel)
   
+  # should be fixed to return valid tibble
+  if (is_empty(comps)) return(tibble::tibble())
+  
   # assemble output dataframe
   comps %>%
     map_dfr(~ {
@@ -352,6 +367,9 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     comps <- get_cdv(datamodel$getModel()$getCompartments())
   else
     comps <- cn_to_object(key, datamodel)
+  
+  # should be fixed to return valid tibble
+  if (is_empty(comps)) return(tibble::tibble())
   
   # assemble output dataframe
   comps %>%
@@ -446,6 +464,9 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     reactions <- cn_to_object(key, datamodel)
   
+  # should be fixed to return valid tibble
+  if (is_empty(reactions)) return(tibble::tibble())
+  
   # assemble output dataframe
   reactions %>%
     map_dfr(~ {
@@ -519,6 +540,9 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     params <- cn_to_object(key, datamodel)
   
+  # should be fixed to return valid tibble
+  if (is_empty(params)) return(tibble::tibble())
+  
   # assemble output dataframe
   params %>%
     map_dfr(~ {
@@ -557,6 +581,9 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     flatten()
   else
     params <- cn_to_object(key, datamodel)
+  
+  # should be fixed to return valid tibble
+  if (is_empty(params)) return(tibble::tibble())
   
   # assemble output dataframe
   params %>%
