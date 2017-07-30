@@ -75,7 +75,7 @@ plots$deterministic
 plots$stochastic
 ```
 
-## Statistics of reapeated stochastic simulations
+## Statistics of repeated stochastic simulations
 
 ```{r}
 # Run 1000 stochastic time series possibly in parallel
@@ -166,7 +166,7 @@ plot <-
   geom_line(aes(y = CGS, color = "CGS")) +
   geom_line(aes(y = TS, color = "TS")) +
   labs(
-    x = paste0("Abomed (", getQuantityUnit(), ")"),
+    x = paste0("Adomed (", getQuantityUnit(), ")"),
     y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
     color = "Species"
   )
@@ -223,7 +223,7 @@ plot <-
   ggplot(data = plotdata, aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +
   geom_point(aes(color = reaction), alpha = 1 / 10, size = 3 / 4) +
   labs(
-    x = paste0("Abomed (", getQuantityUnit(), ")"),
+    x = paste0("Adomed (", getQuantityUnit(), ")"),
     y = paste0("Flux (", getQuantityUnit(), " / ", getTimeUnit(), ")"),
     color = "Species"
   )
