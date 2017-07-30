@@ -173,7 +173,7 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
   }
   
   if (errors && .type != "restore") {
-    do.call(pe_settings_worker, restorationCall)
+    do.call(ss_settings_worker, restorationCall)
     stop("Rolled back task due to errors during setup.")
   }
   

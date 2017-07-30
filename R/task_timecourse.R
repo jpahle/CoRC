@@ -245,7 +245,7 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
   }
   
   if (errors && .type != "restore") {
-    do.call(pe_settings_worker, restorationCall)
+    do.call(tc_settings_worker, restorationCall)
     stop("Rolled back task due to errors during setup.")
   }
   

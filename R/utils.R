@@ -131,7 +131,7 @@ cparameter_control_functions <-
     DOUBLE = is_scalar_numeric,
     UDOUBLE = (function(x) {is_scalar_numeric(x) && x >= 0}),
     INT = rlang::is_scalar_integerish,
-    UINT = (function(x) {rlang::is_scalar_integerish && x >= 0}),
+    UINT = (function(x) {rlang::is_scalar_integerish(x) && x >= 0}),
     BOOL = (function(x) {length(x) != 0L && (x == 1L || x == 0L)}),
     STRING = is_scalar_character,
     GROUP = NULL,
