@@ -75,7 +75,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-07-29</h4>
+            <h4 class="date">2017-07-30</h4>
           </div>
 
     
@@ -98,31 +98,33 @@ mmol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st
 mol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol * 1e3"</span>)
 
 ms$<span class="kw">buildExpression</span>()
-<span class="co">#&gt; NULL</span>
 s$<span class="kw">buildExpression</span>()
-<span class="co">#&gt; NULL</span>
 mmol$<span class="kw">buildExpression</span>()
-<span class="co">#&gt; NULL</span>
-mol$<span class="kw">buildExpression</span>()
-<span class="co">#&gt; NULL</span></code></pre></div>
-<p>CUnit$getExpression(“<type>”) shows what Copasi makes of the input</type></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  ms$<span class="kw">getExpression</span>()
+mol$<span class="kw">buildExpression</span>()</code></pre></div>
+<p>CUnit$getExpression() shows what Copasi makes of the input.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "ms"</span>
-  s$<span class="kw">getExpression</span>()
+s$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "kms"</span>
-  mmol$<span class="kw">getExpression</span>()
+mmol$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "mmol"</span>
-  mol$<span class="kw">getExpression</span>()
+mol$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "kmmol"</span></code></pre></div>
-<p>CUnit$isUnitType(“<type>”) will return useful information on validity for all but “quantity”</type></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<span class="co">#&gt; [1] TRUE</span>
+
+s$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
 <span class="co">#&gt; [1] TRUE</span>
 s$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 
-mol$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+mmol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span>
+
 mol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+mol$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 mol$<span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
 <span class="co">#&gt; [1] FALSE</span>
@@ -134,23 +136,18 @@ mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
 <div id="objectdisplayname-seems-more-apropriate-than-cn" class="section level2">
 <h2 class="hasAnchor">
 <a href="#objectdisplayname-seems-more-apropriate-than-cn" class="anchor"></a>ObjectDisplayName seems more apropriate than CN</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A copasi model reference:</span>
-<span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fb39f843740&gt;</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 6</span>
-<span class="co">#&gt; Number of reactions: 4</span>
-<span class="co">#&gt; </span>
-<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>)
 <span class="co">#&gt; [1] "CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X]"</span>
 <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>, <span class="st">"InitialConcentration"</span>)
 <span class="co">#&gt; [1] "CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X],Reference=InitialConcentration"</span></code></pre></div>
 <p>When a species is identified I have to return the CommonName as reference. In this use case, returning the ObjectDisplayNames seems more friendly to the user. Especially because this is the way it is presented in the GUI too.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]$<span class="kw">getObjectDisplayName</span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmetab_x &lt;-<span class="st"> </span>CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]
+cmetab_ref_x_0 &lt;-<span class="st"> </span>CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>, <span class="st">"InitialConcentration"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]
+
+cmetab_x$<span class="kw">getObjectDisplayName</span>()
 <span class="co">#&gt; [1] "X"</span>
-CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>, <span class="st">"InitialConcentration"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]$<span class="kw">getObjectDisplayName</span>()
+cmetab_ref_x_0$<span class="kw">getObjectDisplayName</span>()
 <span class="co">#&gt; [1] "[X]_0"</span></code></pre></div>
 <p>They should be able to accomplish the same job in uniquely identifying a reference but there are no methods to resolve from DisplayName back to an Object.</p>
 </div>
@@ -163,7 +160,7 @@ CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../referen
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fb39f95ab60&gt;</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fb3748bc070&gt;</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
 <span class="co">#&gt; Number of reactions: 4</span>
@@ -187,40 +184,31 @@ ts2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTime
 <h2 class="hasAnchor">
 <a href="#saving--cps-loses-experimental-data" class="anchor"></a>Saving .cps loses experimental data</h2>
 <p>I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadSBML.html">loadSBML</a></span>(<span class="st">"http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010"</span>)
-
-<span class="co"># define the experiments for copasi</span>
-experiment &lt;-<span class="st"> </span><span class="kw">defineExperiments</span>(
-  <span class="dt">filename =</span> <span class="st">"issue_expdata"</span>,
-  <span class="dt">data =</span> <span class="kw">suppressMessages</span>(<span class="kw">read_tsv</span>(<span class="st">"data/MAPKdata.txt"</span>)),
-  <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"time"</span>, <span class="st">"dependent"</span>, <span class="st">"dependent"</span>),
-  <span class="dt">mapping =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw">c</span>(<span class="st">"Mos-P"</span>, <span class="st">"Erk2-P"</span>), <span class="st">"Concentration"</span>))
-)
-
-<span class="kw">addExperiments</span>(experiment)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load example which has experimental data.</span>
+datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">4</span>)[[<span class="dv">1</span>]]
 
 fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)$<span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
 filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
-<p>The filenames are relative to the model and in the correct folder.</p>
+<p>The filenames are in the correct folder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "issue_expdata.txt"</span>
+<span class="co">#&gt; [1] "/usr/local/lib/R/3.4/site-library/CoRC/extdata/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>Now I will save the model into a tmp folder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".cps"</span>)
 <span class="kw"><a href="../reference/saveCPS.html">saveCPS</a></span>(file)
-<span class="co"># unloadModel()</span>
+<span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
 
 datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadModel.html">loadModel</a></span>(file)
 fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)$<span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
 filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/Rtmp9pABaD/issue_expdata.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpL2lzbS/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># unloadModel()</span>
-<span class="kw">invisible</span>(<span class="kw">file.remove</span>(file, <span class="st">"issue_expdata.txt"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
+<span class="kw">invisible</span>(<span class="kw">file.remove</span>(file))</code></pre></div>
 </div>
 <div id="crashes-with-experimental-data" class="section level2">
 <h2 class="hasAnchor">

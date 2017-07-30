@@ -37,7 +37,7 @@ CUnit <- CoRC:::CUnit
 
 The CUnit class can be used for testing if user specified input is valid
 
-```{r}
+```{r, results="hide"}
 ms <- CUnit("ms")
 s <- CUnit("ms * 1e3")
 mmol <- CUnit("mmol")
@@ -49,23 +49,27 @@ mmol$buildExpression()
 mol$buildExpression()
 ```
 
-CUnit$getExpression("<type>") shows what Copasi makes of the input
+CUnit$getExpression() shows what Copasi makes of the input.
 
 ```{r}
-  ms$getExpression()
-  s$getExpression()
-  mmol$getExpression()
-  mol$getExpression()
+ms$getExpression()
+s$getExpression()
+mmol$getExpression()
+mol$getExpression()
 ```
 
-CUnit$isUnitType("<type>") will return useful information on validity for all but "quantity"
+CUnit$isUnitType("\<type\>") will return useful information on validity for all but "quantity".
 
 ```{r}
+ms$isUnitType("time")
+
 s$isUnitType("time")
 s$isUnitType("quantity")
 
-mol$isUnitType("time")
+mmol$isUnitType("quantity")
+
 mol$isUnitType("quantity")
+mol$isUnitType("time")
 mol$isUnitType("volume")
 mol$isUnitType("area")
 mol$isUnitType("length")
@@ -73,8 +77,11 @@ mol$isUnitType("length")
 
 ## ObjectDisplayName seems more apropriate than CN
 
-```{r}
+```{r, results="hide"}
 loadExamples(1)
+```
+
+```{r}
 species("X")
 species("X", "InitialConcentration")
 ```
@@ -84,8 +91,11 @@ In this use case, returning the ObjectDisplayNames seems more friendly to the us
 Especially because this is the way it is presented in the GUI too.
 
 ```{r}
-CoRC:::cn_to_object(species("X"), datamodel = getCurrentModel())[[1]]$getObjectDisplayName()
-CoRC:::cn_to_object(species("X", "InitialConcentration"), datamodel = getCurrentModel())[[1]]$getObjectDisplayName()
+cmetab_x <- CoRC:::cn_to_object(species("X"), datamodel = getCurrentModel())[[1]]
+cmetab_ref_x_0 <- CoRC:::cn_to_object(species("X", "InitialConcentration"), datamodel = getCurrentModel())[[1]]
+
+cmetab_x$getObjectDisplayName()
+cmetab_ref_x_0$getObjectDisplayName()
 ```
 
 They should be able to accomplish the same job in uniquely identifying a reference but there are no methods to resolve from DisplayName back to an Object.
@@ -120,23 +130,14 @@ model()$updateInitialValues(changedObjects)
 I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.
 
 ```{r}
-datamodel <- loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
-
-# define the experiments for copasi
-experiment <- defineExperiments(
-  filename = "issue_expdata",
-  data = suppressMessages(read_tsv("data/MAPKdata.txt")),
-  type = c("time", "dependent", "dependent"),
-  mapping = c(NA, species(c("Mos-P", "Erk2-P"), "Concentration"))
-)
-
-addExperiments(experiment)
+# Load example which has experimental data.
+datamodel <- loadExamples(4)[[1]]
 
 fitproblem <- as(datamodel$getTask("Parameter Estimation")$getProblem(), "_p_CFitProblem")
 filenames <- fitproblem$getExperimentSet()$getFileNames()
 ```
 
-The filenames are relative to the model and in the correct folder.
+The filenames are in the correct folder.
 
 ```{r}
 filenames
@@ -148,7 +149,7 @@ Now I will save the model into a tmp folder.
 ```{r}
 file <- tempfile(fileext = ".cps")
 saveCPS(file)
-# unloadModel()
+unloadModel()
 
 datamodel <- loadModel(file)
 fitproblem <- as(datamodel$getTask("Parameter Estimation")$getProblem(), "_p_CFitProblem")
@@ -163,15 +164,15 @@ file.exists(filenames)
 ```
 
 ```{r}
-# unloadModel()
-invisible(file.remove(file, "issue_expdata.txt"))
+unloadModel()
+invisible(file.remove(file))
 ```
 
 ## Crashes with experimental data
 
 Running this code multiple times crashes the R session.
 
-```{r, message=TRUE, warning=TRUE}
+```{r, eval=FALSE}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
 
 # define the experiments for copasi
