@@ -209,4 +209,13 @@ CRootContainer_removeDatamodel(datamodel)
 experiment_set$removeExperiment(0)
 ```
 
-Maybe R crashes some time later because SWIG does try to delete exp too?
+SWIG creates a finalizer with every object created by a constructor from within R.
+The finalizer gets checked with every run of the garbage collector.
+
+```{r}
+reg.finalizer(object, delete_CExperiment)
+```
+
+Seems like this is something I might have have to disable entirely because I will usually create objects to hand back over to Copasi.
+When that is done I will lose track of the object and it will be up for GC.
+This functionality of SWIG doesn't seem suited at all for our purposes.
