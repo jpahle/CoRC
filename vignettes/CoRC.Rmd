@@ -117,7 +117,7 @@ plotdata <-
   separate(name, c("species", "type"), "_") %>%
   spread(type, value)
 
-sample_n(plotdata, 5)
+print(plotdata, n = 6)
 
 plot <-
   ggplot(data = plotdata, aes(x = Time, y = mean, group = species, tt_sd = sd)) +
