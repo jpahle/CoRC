@@ -44,6 +44,11 @@ mapInParallel <- function(data, fun, ..., .prep = {}) {
 
 ## 3D trajectory plot of calcium model
 
+This example loads the ([Kummer2000 - Oscillations in Calcium Signalling](https://www.ebi.ac.uk/biomodels-main/Biomd0000000329)) model.
+The model has 3 species which oscillate.
+These oscialltions can be visualized as a trajectory through a 3D space.
+The example does this once in a deterministic and once in a stochatic fashion.
+
 ```{r}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
 # Run 24 sec (2 Periods)
@@ -77,6 +82,9 @@ plots$stochastic
 
 ## Statistics of repeated stochastic simulations
 
+This implements an example from the ([Condor-COPASI paper](https://doi.org/10.1186/1752-0509-6-91)).
+The example illustrates advantages of parallel processing.
+
 ```{r}
 # Run 1000 stochastic time series possibly in parallel
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
@@ -101,14 +109,15 @@ plotdata <-
   timeseries %>%
   bind_rows() %>%
   group_by(Time) %>%
-  summarise_all(
-    funs(mean, sd)
-  ) %>%
+  # calculate mean and sd for all time points
+  summarise_all(funs(mean, sd)) %>%
   # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
   gather("name", "value", -Time) %>%
   # split up information on species (a,b,c) and type of value (mean, sd)
   separate(name, c("species", "type"), "_") %>%
   spread(type, value)
+
+sample_n(plotdata, 5)
 
 plot <-
   ggplot(data = plotdata, aes(x = Time, y = mean, group = species, tt_sd = sd)) +
@@ -128,7 +137,9 @@ plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 
 ## Parameter scan
 
-A 2D scan over the cartesian product of two species concentration vectors.
+### 2D scan over the cartesian product of two species concentration vectors
+
+This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
@@ -176,7 +187,10 @@ unloadModel()
 plotly::ggplotly(plot)
 ```
 
-A scan over random values of two species.
+### 2D scan over random concentrations of two species
+
+This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
+It is in many ways similar to the previous example but is written to run parallelized.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
@@ -234,6 +248,8 @@ plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 ```
 
 ## Parameter Estimation
+
+This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
 
 ```{r}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")

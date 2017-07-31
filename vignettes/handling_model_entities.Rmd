@@ -34,7 +34,8 @@ getSpecies()
 
 ## Identifying entities
 
-There are at the moment 5 different types of model entities supported.
+There are at the moment 5 different types of model entities supported for identification by string.
+The strings are matched against the available ObjectDisplayNames.
 
 ```{r}
 species("CheA")
@@ -46,7 +47,7 @@ parameter("4).kR")
 
 These functions return CommonNames when a species is identified.
 They are vectorized and will always return a vector of identified entities of the same length or throw an error.
-This mean behavior for NA or non-uniquely matching strings is throw an error.
+This means the behavior for 'NA' or non-uniquely matching strings is to throw an error.
 REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.
 
 ```{r}
