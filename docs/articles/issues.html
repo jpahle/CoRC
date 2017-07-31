@@ -90,52 +90,6 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(CoRC)</code></pre></div>
 </div>
-<div id="checking-validity-of-quantity-unit-doesnt-work" class="section level2">
-<h2 class="hasAnchor">
-<a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC:::CUnit</code></pre></div>
-<p>The CUnit class can be used for testing if user specified input is valid</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms"</span>)
-s &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms * 1e3"</span>)
-mmol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol"</span>)
-mol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol * 1e3"</span>)
-
-ms$<span class="kw">buildExpression</span>()
-s$<span class="kw">buildExpression</span>()
-mmol$<span class="kw">buildExpression</span>()
-mol$<span class="kw">buildExpression</span>()</code></pre></div>
-<p>CUnit$getExpression() shows what Copasi makes of the input.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "ms"</span>
-s$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "kms"</span>
-mmol$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "mmol"</span>
-mol$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "kmmol"</span></code></pre></div>
-<p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] TRUE</span>
-
-s$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] TRUE</span>
-s$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-
-mmol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-
-mol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"area"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
-<span class="co">#&gt; [1] FALSE</span></code></pre></div>
-</div>
 <div id="objectdisplayname-seems-more-apropriate-than-cn" class="section level2">
 <h2 class="hasAnchor">
 <a href="#objectdisplayname-seems-more-apropriate-than-cn" class="anchor"></a>ObjectDisplayName seems more apropriate than CN</h2>
@@ -163,7 +117,7 @@ cmetab_ref_x_0$<span class="kw">getObjectDisplayName</span>()
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fa73920c030&gt;</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fd49286ad10&gt;</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
 <span class="co">#&gt; Number of reactions: 4</span>
@@ -179,8 +133,83 @@ ts2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTime
 <span class="kw">identical</span>(ts1, ts2)
 <span class="co">#&gt; [1] TRUE</span>
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
-<p>In this example, the following is not the right approach?:</p>
+<p>In this example, the approach used for setting species values is probably not the right one:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">model</span>()$<span class="kw">updateInitialValues</span>(changedObjects)</code></pre></div>
+</div>
+<div id="checking-validity-of-quantity-unit-doesnt-work" class="section level2">
+<h2 class="hasAnchor">
+<a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC:::CUnit</code></pre></div>
+<p>The CUnit class can be used for testing if user specified input is valid</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms"</span>)
+s &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms * 1e3"</span>)
+mmol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol"</span>)
+mol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol * 1e3"</span>)
+mMol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mMol"</span>)
+
+ms$<span class="kw">buildExpression</span>()
+s$<span class="kw">buildExpression</span>()
+mmol$<span class="kw">buildExpression</span>()
+mol$<span class="kw">buildExpression</span>()
+mMol$<span class="kw">buildExpression</span>()</code></pre></div>
+<p>CUnit$getExpression() shows what Copasi makes of the input.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">getExpression</span>()
+<span class="co">#&gt; [1] "ms"</span>
+s$<span class="kw">getExpression</span>()
+<span class="co">#&gt; [1] "kms"</span>
+mmol$<span class="kw">getExpression</span>()
+<span class="co">#&gt; [1] "mmol"</span>
+mol$<span class="kw">getExpression</span>()
+<span class="co">#&gt; [1] "kmmol"</span>
+mMol$<span class="kw">getExpression</span>()
+<span class="co">#&gt; [1] "?"</span></code></pre></div>
+<p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<span class="co">#&gt; [1] TRUE</span>
+
+s$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<span class="co">#&gt; [1] TRUE</span>
+s$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+
+mmol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+
+mol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+mol$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+mol$<span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+mol$<span class="kw">isUnitType</span>(<span class="st">"area"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
+<span class="co">#&gt; [1] FALSE</span>
+
+mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+<span class="co">#&gt; [1] FALSE</span></code></pre></div>
+</div>
+<div id="function-naming-is-lacking-a-cohesive-concept" class="section level2">
+<h2 class="hasAnchor">
+<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h2>
+<p>Quantity accessors are named:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
+<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>()
+<span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
+<span class="kw"><a href="../reference/setGlobalQuantities.html">setGlobalQuantities</a></span>()
+<span class="kw"><a href="../reference/setParameters.html">setParameters</a></span>()</code></pre></div>
+<p>Task related functions are named:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
+<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>()
+<span class="kw"><a href="../reference/runParamEst.html">runParamEst</a></span>()
+<span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>()
+<span class="kw"><a href="../reference/setSteadyStateSettings.html">setSteadyStateSettings</a></span>()
+<span class="kw"><a href="../reference/setParamEstSettings.html">setParamEstSettings</a></span>()</code></pre></div>
+<p>There are further functions which with awkward names:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Adds FitItem to parameter estimation task</span>
+<span class="co"># No relation to setParameters(), which handles reaction parameters</span>
+<span class="kw">addParameter</span>()</code></pre></div>
+<p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probalby time to define a cohesive concept.</p>
 </div>
 <div id="saving--cps-loses-experimental-data" class="section level2">
 <h2 class="hasAnchor">
@@ -251,9 +280,10 @@ experiment_set$<span class="kw">addExperiment</span>(exp)</code></pre></div>
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
-      <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#objectdisplayname-seems-more-apropriate-than-cn">ObjectDisplayName seems more apropriate than CN</a></li>
       <li><a href="#reliably-setting-values">Reliably setting values</a></li>
+      <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
+      <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
       <li><a href="#crashes-with-experimental-data">Crashes with experimental data</a></li>
       </ul>

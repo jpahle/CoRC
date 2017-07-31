@@ -29,52 +29,6 @@ library(tidyverse)
 library(CoRC)
 ```
 
-## Checking validity of quantity unit doesn't work
-
-```{r}
-CUnit <- CoRC:::CUnit
-```
-
-The CUnit class can be used for testing if user specified input is valid
-
-```{r, results="hide"}
-ms <- CUnit("ms")
-s <- CUnit("ms * 1e3")
-mmol <- CUnit("mmol")
-mol <- CUnit("mmol * 1e3")
-
-ms$buildExpression()
-s$buildExpression()
-mmol$buildExpression()
-mol$buildExpression()
-```
-
-CUnit$getExpression() shows what Copasi makes of the input.
-
-```{r}
-ms$getExpression()
-s$getExpression()
-mmol$getExpression()
-mol$getExpression()
-```
-
-CUnit$isUnitType("\<type\>") will return useful information on validity for all but "quantity".
-
-```{r}
-ms$isUnitType("time")
-
-s$isUnitType("time")
-s$isUnitType("quantity")
-
-mmol$isUnitType("quantity")
-
-mol$isUnitType("quantity")
-mol$isUnitType("time")
-mol$isUnitType("volume")
-mol$isUnitType("area")
-mol$isUnitType("length")
-```
-
 ## ObjectDisplayName seems more apropriate than CN
 
 ```{r, results="hide"}
@@ -107,7 +61,6 @@ I don't understand how to consistently keep the math up to date with the values 
 For reaction parameter, my methods are currently broken.
 I can set the value, but after running a task the value will be restored.
 
-
 ```{r}
 loadExamples(1)
 ts1 <- runTimeCourse()
@@ -120,10 +73,96 @@ identical(ts1, ts2)
 unloadModel()
 ```
 
-In this example, the following is not the right approach?:
+In this example, the approach used for setting species values is probably not the right one:
+
 ```{r, eval=FALSE}
 model()$updateInitialValues(changedObjects)
 ```
+
+## Checking validity of quantity unit doesn't work
+
+```{r}
+CUnit <- CoRC:::CUnit
+```
+
+The CUnit class can be used for testing if user specified input is valid
+
+```{r, results="hide"}
+ms <- CUnit("ms")
+s <- CUnit("ms * 1e3")
+mmol <- CUnit("mmol")
+mol <- CUnit("mmol * 1e3")
+mMol <- CUnit("mMol")
+
+ms$buildExpression()
+s$buildExpression()
+mmol$buildExpression()
+mol$buildExpression()
+mMol$buildExpression()
+```
+
+CUnit$getExpression() shows what Copasi makes of the input.
+
+```{r}
+ms$getExpression()
+s$getExpression()
+mmol$getExpression()
+mol$getExpression()
+mMol$getExpression()
+```
+
+CUnit$isUnitType("\<type\>") will return useful information on validity for all but "quantity".
+
+```{r}
+ms$isUnitType("time")
+
+s$isUnitType("time")
+s$isUnitType("quantity")
+
+mmol$isUnitType("quantity")
+
+mol$isUnitType("quantity")
+mol$isUnitType("time")
+mol$isUnitType("volume")
+mol$isUnitType("area")
+mol$isUnitType("length")
+
+mMol$isUnitType("quantity")
+```
+
+## Function naming is lacking a cohesive concept 
+
+Quantity accessors are named:
+
+```{r, eval=FALSE}
+getSpecies()
+setSpecies()
+getGlobalQuantities()
+setGlobalQuantities()
+setParameters()
+```
+
+Task related functions are named:
+
+```{r, eval=FALSE}
+runTimeCourse()
+runSteadyState()
+runParamEst()
+setTimeCourseSettings()
+setSteadyStateSettings()
+setParamEstSettings()
+```
+
+There are further functions which with awkward names:
+
+```{r, eval=FALSE}
+# Adds FitItem to parameter estimation task
+# No relation to setParameters(), which handles reaction parameters
+addParameter()
+```
+
+Naming so far has been based on the desire to stay as close to the GUI as possible.
+It's probalby time to define a cohesive concept.
 
 ## Saving .cps loses experimental data
 

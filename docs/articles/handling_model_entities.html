@@ -117,7 +117,7 @@
 <div id="identifying-entities" class="section level2">
 <h2 class="hasAnchor">
 <a href="#identifying-entities" class="anchor"></a>Identifying entities</h2>
-<p>There are at the moment 5 different types of model entities supported.</p>
+<p>There are at the moment 5 different types of model entities supported for identification by string. The strings are matched against the available ObjectDisplayNames.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheA"</span>)
 <span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheA]"</span>
 <span class="kw"><a href="../reference/compartment.html">compartment</a></span>(<span class="st">"comp"</span>)
@@ -128,7 +128,7 @@
 <span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B phosph]"</span>
 <span class="kw"><a href="../reference/parameter.html">parameter</a></span>(<span class="st">"4).kR"</span>)
 <span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=kR"</span></code></pre></div>
-<p>These functions return CommonNames when a species is identified. They are vectorized and will always return a vector of identified entities of the same length or throw an error. This mean behavior for NA or non-uniquely matching strings is throw an error. REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.</p>
+<p>These functions return CommonNames when a species is identified. They are vectorized and will always return a vector of identified entities of the same length or throw an error. This means the behavior for ‘NA’ or non-uniquely matching strings is to throw an error. REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>)
 <span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]"</span>
 <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheYp"</span>)
