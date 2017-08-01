@@ -84,7 +84,7 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param name a character vector of names to set
 #' @param initial.concentration a numeric vector of concentrations to set
 #' @param initial.number a numeric vector of particle numbers to set
-#' @param data a data frame as given by getSpecies which will be applied before the other arguments.
+#' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
 setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, initial.number = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
@@ -261,7 +261,7 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
 #' @param key a character vector uniquely identifying global quantities
 #' @param name a character vector of names to set
 #' @param initial.volume a numeric vector of values to set
-#' @param data a data frame as given by getGlobalQuantities which will be applied before the other arguments.
+#' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
 setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {  assert_datamodel(datamodel)
@@ -391,7 +391,7 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param key a character vector uniquely identifying compartments
 #' @param name a character vector of names to set
 #' @param initial.volume a numeric vector of values to set
-#' @param data a data frame as given by getCompartments which will be applied before the other arguments.
+#' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
 setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
@@ -485,7 +485,7 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #'
 #' @param key a character vector uniquely identifying reactions
 #' @param name a character vector of names to set
-#' @param data a data frame as given by getReactions which will be applied before the other arguments.
+#' @param data a data frame as given by \code{getReactions} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
 setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
@@ -606,7 +606,7 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #'
 #' @param key a character vector uniquely identifying reaction parameters
 #' @param name a character vector of names to set
-#' @param data a data frame as given by getParameters which will be applied before the other arguments.
+#' @param data a data frame as given by \code{getParameters} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
 setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {

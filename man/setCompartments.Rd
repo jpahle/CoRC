@@ -14,7 +14,7 @@ setCompartments(key = NULL, name = NULL, initial.volume = NULL,
 
 \item{initial.volume}{a numeric vector of values to set}
 
-\item{data}{a data frame as given by getCompartments which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{getCompartments} which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 }

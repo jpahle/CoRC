@@ -203,7 +203,7 @@ loadExamples <- function(indices = NULL) {
 
 #' Open the given model in the copasi UI
 #'
-#' @param readin if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
+#' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
 #' @param copasi_loc location of CopasiUI
 #' @param datamodel a model object
 #' @export

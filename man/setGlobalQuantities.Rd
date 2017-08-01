@@ -12,7 +12,7 @@ setGlobalQuantities(key = NULL, name = NULL, initial.value = NULL,
 
 \item{name}{a character vector of names to set}
 
-\item{data}{a data frame as given by getGlobalQuantities which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 

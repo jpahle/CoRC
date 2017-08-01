@@ -16,7 +16,7 @@ setSpecies(key = NULL, name = NULL, initial.concentration = NULL,
 
 \item{initial.number}{a numeric vector of particle numbers to set}
 
-\item{data}{a data frame as given by getSpecies which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{getSpecies} which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 }

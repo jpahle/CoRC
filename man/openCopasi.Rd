@@ -8,7 +8,7 @@ openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
   datamodel = pkg_env$curr_dm)
 }
 \arguments{
-\item{readin}{if TRUE, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel}
+\item{readin}{if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel}
 
 \item{copasi_loc}{location of CopasiUI}
 

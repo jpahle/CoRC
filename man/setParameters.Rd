@@ -12,7 +12,7 @@ setParameters(key = NULL, name = NULL, value = NULL, data = NULL,
 
 \item{name}{a character vector of names to set}
 
-\item{data}{a data frame as given by getParameters which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{getParameters} which will be applied before the other arguments.}
 
 \item{datamodel}{a model object}
 }
