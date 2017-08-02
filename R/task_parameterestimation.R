@@ -231,7 +231,7 @@ addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
   experiments <-
     exp_struct$experiments %>%
     pmap(function(name, first_row, last_row, ...) {
-      exp <- CExperiment(experiment_set, name)
+      exp <- avert_gc(CExperiment(experiment_set, name))
       exp$setFirstRow(first_row)
       exp$setLastRow(last_row)
       exp

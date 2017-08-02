@@ -241,36 +241,6 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
 <span class="kw">invisible</span>(<span class="kw">file.remove</span>(file))</code></pre></div>
 </div>
-<div id="crashes-with-experimental-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#crashes-with-experimental-data" class="anchor"></a>Crashes with experimental data</h2>
-<p>Running this code multiple times crashes the R session.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/loadSBML.html">loadSBML</a></span>(<span class="st">"http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010"</span>)
-
-<span class="co"># define the experiments for copasi</span>
-experiment &lt;-<span class="st"> </span><span class="kw">defineExperiments</span>(
-  <span class="dt">filename =</span> <span class="st">"issue_expdata"</span>,
-  <span class="dt">data =</span> <span class="kw">suppressMessages</span>(<span class="kw">read_tsv</span>(<span class="st">"data/MAPKdata.txt"</span>)),
-  <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">"time"</span>, <span class="st">"dependent"</span>, <span class="st">"dependent"</span>),
-  <span class="dt">mapping =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw">c</span>(<span class="st">"Mos-P"</span>, <span class="st">"Erk2-P"</span>), <span class="st">"Concentration"</span>))
-)
-
-<span class="kw">addExperiments</span>(experiment)
-
-<span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
-<pre class="error"><code>Call("R_swig_delete_CExperiment", self, PACKAGE = "COPASI")
- *** caught segfault ***
-address 0x0, cause 'memory not mapped'</code></pre>
-<p>My approach for adding Experiments is:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exp &lt;-<span class="st"> </span><span class="kw">CExperiment</span>()
-experiment_set$<span class="kw">addExperiment</span>(exp)</code></pre></div>
-<p>some time later the experiment might get removed by calling either of:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">CRootContainer_removeDatamodel</span>(datamodel)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">experiment_set$<span class="kw">removeExperiment</span>(<span class="dv">0</span>)</code></pre></div>
-<p>SWIG creates a finalizer with every object created by a constructor from within R. The finalizer gets checked with every run of the garbage collector.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">reg.finalizer</span>(object, delete_CExperiment)</code></pre></div>
-<p>Seems like this is something I might have have to disable entirely because I will usually create objects to hand back over to Copasi. When that is done I will lose track of the object and it will be up for GC. This functionality of SWIG doesn’t seem suited at all for our purposes.</p>
-</div>
 </div>
   </div>
 
@@ -285,7 +255,6 @@ experiment_set$<span class="kw">addExperiment</span>(exp)</code></pre></div>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
-      <li><a href="#crashes-with-experimental-data">Crashes with experimental data</a></li>
       </ul>
 </div>
       </div>

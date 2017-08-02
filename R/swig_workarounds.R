@@ -67,16 +67,4 @@ map_swig_dbl <- partial(map_swig, .mapfun = map_dbl)
 map_swig_dfr <- partial(map_swig, .mapfun = map_dfr)
 map_swig_dfc <- partial(map_swig, .mapfun = map_dfc)
 
-# Apply a function to a list of objects
-# Function will always be the one which gets resolved from the first object
-# Thus, unexpected results might happen with inhomogenous lists
-walk_swig <- function(x, fun, ...) {
-  if (is_empty(x)) return(list())
-  x_q <- quote(x)
-  walk(
-    .x = x,
-    # Find the actual function and strip its attributes
-    .f = unclass(environment(eval(substitute(x_q[[1]]$fun)))$f),
-    ...
-  )
-}
+walk_swig <- partial(map_swig, .mapfun = walk)

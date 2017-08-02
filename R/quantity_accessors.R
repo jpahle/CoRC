@@ -175,7 +175,6 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
   }
   
   datamodel$getModel()$updateInitialValues(changedObjects)
-  delete_ObjectStdVector(changedObjects)
   
   # model$compileIfNecessary()
   
@@ -307,7 +306,6 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   }
   
   datamodel$getModel()$updateInitialValues(changedObjects)
-  delete_ObjectStdVector(changedObjects)
   
   # model$compileIfNecessary()
   
@@ -437,7 +435,6 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
   }
   
   datamodel$getModel()$updateInitialValues(changedObjects)
-  delete_ObjectStdVector(changedObjects)
   
   # model$compileIfNecessary()
   

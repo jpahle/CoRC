@@ -79,9 +79,7 @@ cn_to_object <- function(strings, datamodel, accepted_types = NULL) {
     map(
       strings,
       ~ {
-        cn <- CCommonName(.x)
-        object <- datamodel$getObjectFromCN(cn)
-        delete(cn)
+        object <- datamodel$getObjectFromCN(CCommonName(.x))
         
         if (!is_null(object)) {
           auto_cast(object$getDataObject())

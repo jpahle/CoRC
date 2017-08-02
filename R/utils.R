@@ -1,8 +1,3 @@
-pkg_env <- new.env(parent = emptyenv())
-
-# Using any function with the datamodel parameter set will redefine the currently active datamodel
-pkg_env$curr_dm <- NULL
-
 # Format function for the CDataModel class which is used as a basis for the print method
 #' @include swig_wrapper.R
 #' @export
@@ -90,6 +85,19 @@ grab_msg <- function(x, purge = character(0)) {
   }
   
   x
+}
+
+# Hack to allow me to use swig constructors and hand the objects to C
+# Usually swig makes sure all constructed objects will be up for garbage collection upon dereference in R
+pkg_env$avert_gc <- FALSE
+reg.finalizer <- function(...) {
+  if (!pkg_env$avert_gc) base::reg.finalizer(...)
+}
+avert_gc <- function(expr) {
+  pkg_env$avert_gc <- TRUE
+  force(expr)
+  pkg_env$avert_gc <- FALSE
+  expr
 }
 
 # Force the winslash to be the same applied by file.path etc

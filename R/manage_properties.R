@@ -58,7 +58,6 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("time")
-  delete(cunit)
   
   assert_that(accepted, msg = paste0(unit, " is not a valid time unit."))
   
@@ -98,7 +97,6 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("volume")
-  delete(cunit)
   
   assert_that(accepted, msg = paste0(unit, " is not a valid volume unit."))
   
@@ -138,7 +136,6 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   cunit$buildExpression()
   unit <- cunit$getExpression()
   accepted <- cunit$isUnitType("quantity")
-  delete(cunit)
   
   assert_that(accepted, msg = paste0(unit, " is not a valid quantity unit."))
   

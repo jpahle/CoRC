@@ -9,7 +9,7 @@
 #' @import methods
 #' @import purrr
 #' @importFrom rlang .data
-#' @importFrom utils head tail
+#' @importFrom utils head tail capture.output
 "_PACKAGE"
 
 # Output flag for tasks
@@ -34,6 +34,11 @@ COPASI_BIN_HASHES <-
         # ubuntu_16_10 = ""
       )
   )
+
+# Package environment for persistent options etc
+pkg_env <- new.env(parent = emptyenv())
+# Variable to keep track of the default datamodel
+pkg_env$curr_dm <- NULL
 
 .onLoad <- function(libname, pkgname) {
   # hack for load_all() 
