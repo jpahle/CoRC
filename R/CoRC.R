@@ -145,14 +145,3 @@ assert_binaries <- function(method = stop, pkgname = getPackageName()) {
   if (!("COPASI" %in% map(.dynLibs(), "name")))
     method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
-
-# FIXES FOR OLD VERSION OF PURRR
-map_dfr <- map_df
-modify_if <- map_if
-iwalk <- function (.x, .f, ...) {
-  .f <- suppressWarnings(as_function(.f, ...))
-  walk2(.x, seq_along(.x), .f, ...)
-}
-has_element <- function (.x, .y) {
-  some(.x, identical, .y)
-}
