@@ -125,11 +125,17 @@ autoplot.copasi_ts <- function(object, ...) {
   # only add species selected in ...
   if (!is_empty(selected)) object <- object %>% dplyr::select(Time, !!!selected)
   
+  units <- object %@% "units"
+  
   # reshape data frame for ggplot and define the plot
   object %>%
     tidyr::gather(Species, Concentration, -Time) %>%
     ggplot2::ggplot(ggplot2::aes(x = Time, y = Concentration, group = Species, color = Species)) +
-    ggplot2::geom_line()
+    ggplot2::geom_line() +
+    ggplot2::labs(
+      x = paste0("Time (", units[["Time"]], ")"),
+      y = paste0("Concentration (", units[["Concentration"]], ")")
+    )
 }
 
 # CParameter gives us only feedback on what kind of value it needs.

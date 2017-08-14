@@ -252,6 +252,43 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
   restorationCall
 }
 
+new_copasi_ts <- function(x, unit_time, unit_conc) {
+  assert_that(
+    is.string(unit_time),
+    is.string(unit_conc)
+  )
+  
+  x <- tibble::as_tibble(x)
+  
+  structure(
+    x,
+    class = c("copasi_ts", class(x)),
+    units = c(Time = unit_time, Concentration = unit_conc)
+  )
+}
+
+#' @export
+validate_copasi_ts <- function(x) {
+  units <- x %@% "units"
+  
+  assert_that(
+    is.data.frame(x),
+    is.string(units$Time),
+    is.string(units$Concentration)
+  )
+}
+
+#' @export
+is.copasi_ts <- function(x) {
+  inherits(x, "copasi_ts")
+}
+
+# Define this when the package hadley/sloop is released
+# Allows maniuplation with dplyr without losing class and attributes
+# reconstruct.copasi_ts <- function(x) {
+# 
+# }
+
 tc_result_worker <- function(datamodel, saveResultInMemory) {
   task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   timeSeries <- task$getTimeSeries()
@@ -284,7 +321,10 @@ tc_result_worker <- function(datamodel, saveResultInMemory) {
           set_names(CTimeSeries_getTitle(timeSeries, i_var))
       }) %>%
       dplyr::bind_cols() %>%
-      rlang::set_attrs(class = prepend(class(.), "copasi_ts"))
+      new_copasi_ts(
+        unit_time = getTimeUnit(datamodel),
+        unit_conc = paste0(getQuantityUnit(datamodel), " / ", getVolumeUnit(datamodel))
+      )
   } else if (is.null(saveResultInMemory))
     warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
   

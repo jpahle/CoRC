@@ -80,24 +80,55 @@ setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets
     datamodel = datamodel
   )
   
-  if (!is.null(executable)) {
+  if (!is_null(executable)) {
     datamodel$getTask("Parameter Estimation")$setScheduled(executable)
   }
   
   invisible()
 }
 
-#' @export
-defineParameter <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
+new_copasi_parm <- function(x, lower, upper, start) {
   assert_that(
-    is.string(key),
-    is.number(lower.bound),
-    is.number(upper.bound), lower.bound <= upper.bound,
-    is.number(start.value), start.value >= lower.bound, start.value <= upper.bound
+    is.string(x),
+    is.number(lower),
+    is.number(upper),
+    is.number(start),
+    lower <= start,
+    start <= upper
   )
   
-  list(
-    key = key,
+  structure(
+    list(
+      key = x,
+      lower = lower,
+      upper = upper,
+      start = start
+    ),
+    class = "copasi_parm"
+  )
+}
+
+#' @export
+validate_copasi_parm <- function(x) {
+  assert_that(
+    is.string(x$key),
+    is.number(x$lower),
+    is.number(x$upper),
+    is.number(x$start),
+    x$lower <= x$start,
+    x$start <= x$upper
+  )
+}
+
+#' @export
+is.copasi_parm <- function(x) {
+  inherits(x, "copasi_parm")
+}
+
+#' @export
+copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
+  new_copasi_parm(
+    key,
     lower = lower.bound,
     upper = upper.bound,
     start = start.value
@@ -105,16 +136,30 @@ defineParameter <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, s
 }
 
 #' @export
-addParameter <- function(param_struct, datamodel = pkg_env$curr_dm) {
+defineParameter <- copasi_parm
+
+#' @export
+addParameter <- function(copasi_parm, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  assert_that(
+    is.copasi_parm(copasi_parm)
+  )
+  validate_copasi_parm(copasi_parm)
+  
+  # Test if the key is valid
+  # This can probably be a more elaborate and safe test (by using cn_to_object(accepted_types))
+  assert_that(
+    !is.null(cn_to_object(copasi_parm$key, datamodel)[[1]]),
+    msg = "The given parameter is invalid for this datamodel"
+  )
   
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
   
-  fititem <- problem$addFitItem(CCommonName(param_struct$key))
-  fititem$setLowerBound(CCommonName(as.character(param_struct$lower)))
-  fititem$setUpperBound(CCommonName(as.character(param_struct$upper)))
-  fititem$setStartValue(param_struct$start)
+  fititem <- problem$addFitItem(CCommonName(copasi_parm$key))
+  fititem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
+  fititem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
+  fititem$setStartValue(copasi_parm$start)
 }
 
 #' @export
@@ -127,22 +172,78 @@ clearParameters <- function(datamodel = pkg_env$curr_dm) {
   seq_len_0(problem$getOptItemSize()) %>% walk(~ problem$removeOptItem(0))
 }
 
+new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, weight_method, filename) {
+  assert_that(
+    is.string(experiment_type),
+    is.character(types), length(types) == ncol(x),
+    is.character(mappings), length(mappings) == ncol(x),
+    is.string(weight_method),
+    is.null(filename) || is.string(filename)
+  )
+  
+  x <- tibble::as_tibble(x)
+  experiments <- tibble::as_tibble(experiments)
+  
+  structure(
+    x,
+    class = c("copasi_exp", class(x)),
+    experiment_type = experiment_type,
+    experiments = experiments,
+    types = types,
+    mappings = mappings,
+    weight_method = weight_method,
+    filename = filename %||% NA_character_
+  )
+}
+
 #' @export
-defineExperiments <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+is.copasi_exp <- function(x) {
+  inherits(x, "copasi_exp")
+}
+
+#' @export
+format.copasi_exp <- function (x, ...) {
+  c(
+    NextMethod(),
+    "# Experiment Type:",
+    format(x %@% "experiment_type"),
+    "# Experiments:",
+    format(x %@% "experiments"),
+    "# Types:",
+    format(x %@% "types") %>% paste0(names(.), ": ", .),
+    "# Mappings:",
+    format(x %@% "mappings") %>% paste0(names(.), ": ", .),
+    "# Weight Method:",
+    format(x %@% "weight_method"),
+    "# Filename:",
+    format(x %@% "filename")
+  )
+}
+
+#' @export
+copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+  # experiment_type
   experiment_type <- rlang::arg_match(experiment_type)
   experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
   
+  # data
   if (is.data.frame(data)) data <- list(data)
   assert_that(every(data, is.data.frame))
+  data <- map(data, tibble::as_tibble)
 
-  experiment_names <- names(data) %||% paste0("Experiment_", seq_along(data))
-  experiment_names[is.na(experiment_names)] <- "Experiment"
+  # get experiment names from names of data or use list position ("Experiment_x")
+  experiment_names <- names(data) %||% rep(NA_character_, length(data))
+  missing_names <- which(is.na(experiment_names))
+  experiment_names[missing_names] <- paste0("Experiment_", missing_names)
+  
+  # gather info on where the individual experiments start because the all get merged
   experiment_lengths <- map_int(data, nrow)
   experiment_lastrows <- cumsum(experiment_lengths)
   
   data <- dplyr::bind_rows(data)
   data_cols <- names(data)
   
+  # types
   assert_that(
     is.character(types),
     is.null(names(types)) && length(types) == length(data_cols) ||
@@ -151,11 +252,11 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   types <- stringr::str_to_lower(types)
   names(types) <- names(types) %||% data_cols
-  types %>% map_chr(function(types) {rlang::arg_match(types, c("time", "independent", "dependent", "ignore"))})
+  types <- map_chr(types, function(types) {rlang::arg_match(types, c("time", "independent", "dependent", "ignore"))})
   types <- types[types != "ignore"]
   
   assert_that(
-    !(experiment_type == "timeCourse" && length(which(types == "time")) != 1L),
+    !(experiment_type == "timeCourse" && sum(types == "time") != 1L),
     msg = 'Time course experiements need exactly one "time" mapping.'
   )
   assert_that(
@@ -163,6 +264,7 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
     msg = 'Steady state experiements cannot have a "time" mapping.'
   )
   
+  # mappings
   mappings <- mappings %||% data_cols
   assert_that(
     is.character(mappings),
@@ -172,8 +274,10 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
   
   names(mappings) <- names(mappings) %||% data_cols
   
+  # all mappings to time and ignore are forced to be blank
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
   
+  # allowed weight methods are taken from the copasi enumeration
   weight_methods <- names(.__E___CExperiment__WeightMethod)
   weight_methods_lower <- stringr::str_to_lower(weight_methods)
   if (is_null(weight_method)) {
@@ -183,89 +287,93 @@ defineExperiments <- function(experiment_type = c("Time Course", "Steady State")
     weight_method <- weight_methods[weight_method == weight_methods_lower]
   }
   
-  if (!is.null(filename)) {
+  # filename
+  if (!is_null(filename)) {
     assert_that(is.string(filename) && !is.na(filename))
     if (!has_extension(filename, ".txt")) filename <- paste0(filename, ".txt")
   }
   
-  ret <- list()
-  
-  ret$experiment_type <- experiment_type
-  
-  ret$data <- data
-  
-  ret$experiments <-
-    tibble::tibble(
+  new_copasi_exp(
+    data,
+    experiment_type = experiment_type,
+    experiments = tibble::tibble(
       name = experiment_names,
       first_row = c(1L, head(experiment_lastrows + 1L, -1L)),
       last_row = experiment_lastrows
-    )
-  
-  ret$types <- types
-  
-  ret$mappings <- mappings
-  
-  ret$weight_method <- weight_method
-  
-  ret$filename <- filename
-  
-  ret
+    ),
+    types = types,
+    mappings = mappings,
+    weight_method = weight_method,
+    filename = filename
+  )
 }
 
 #' @export
-addExperiments <- function(exp_struct, datamodel = pkg_env$curr_dm) {
+defineExperiments <- copasi_exp
+
+#' @export
+addExperiments <- function(copasi_exp, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  assert_that(is.copasi_exp(copasi_exp))
   
-  task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-  problem <- as(task$getProblem(), "_p_CFitProblem")
-  experiment_set <- problem$getExperimentSet()
+  experiment_type <- copasi_exp %@% "experiment_type"
+  experiments <- copasi_exp %@% "experiments"
+  types <- copasi_exp %@% "types"
+  mappings <- copasi_exp %@% "mappings"
+  weight_method <- copasi_exp %@% "weight_method"
+  filename <- copasi_exp %@% "filename"
+  
+  c_task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_experiment_set <- c_problem$getExperimentSet()
   
   # Create experiment file
   model_dir <- datamodel$getReferenceDirectory()
   if (model_dir == "") model_dir <- getwd()
   model_dir <- normalizePathC(model_dir)
-  filepath <- file.path(model_dir, exp_struct$filename)
-  readr::write_tsv(exp_struct$data, filepath)
+  filepath <- file.path(model_dir, filename)
+  readr::write_tsv(copasi_exp, filepath)
   
   # Construct individual experiments
-  experiments <-
-    exp_struct$experiments %>%
+  c_experiments <-
+    experiments %>%
     pmap(function(name, first_row, last_row, ...) {
-      exp <- avert_gc(CExperiment(experiment_set, name))
+      exp <- avert_gc(CExperiment(c_experiment_set, name))
       exp$setFirstRow(first_row)
       exp$setLastRow(last_row)
       exp
     })
   
-  col_count <- ncol(exp_struct$data)
-  col_names <- names(exp_struct$data)
+  col_count <- ncol(copasi_exp)
+  col_names <- colnames(copasi_exp)
 
   # Set all experiment's settings
-  walk_swig(experiments, "setHeaderRow", 1)
-  walk_swig(experiments, "setFileName", exp_struct$filename)
-  walk_swig(experiments, "setExperimentType", exp_struct$experiment_type)
-  walk_swig(experiments, "setNumColumns", col_count)
-  walk_swig(experiments, "setWeightMethod", exp_struct$weight_method)
+  walk_swig(c_experiments, "setHeaderRow", 1)
+  walk_swig(c_experiments, "setFileName", filename)
+  walk_swig(c_experiments, "setExperimentType", experiment_type)
+  walk_swig(c_experiments, "setNumColumns", col_count)
+  walk_swig(c_experiments, "setWeightMethod", weight_method)
   # walk_swig(experiments, "readColumnNames")
   
   # Get the object maps and assign roles and mappings
-  object_maps <- map_swig(experiments, "getObjectMap")
-  walk_swig(object_maps, "setNumCols", col_count)
+  c_object_maps <- map_swig(c_experiments, "getObjectMap")
+  walk_swig(c_object_maps, "setNumCols", col_count)
   
   # Transfer values from named vectors to a full representation of all data columns
-  types <- rep("ignore", col_count)
-  types[match(names(exp_struct$types), col_names)] <- exp_struct$types
-  mappings <- rep("", col_count)
-  mappings[match(names(exp_struct$mappings), col_names)] <- exp_struct$mappings
+  types_ordered <- rep("ignore", col_count)
+  types_ordered[match(names(types), col_names)] <- types
+  mappings_ordered <- rep("", col_count)
+  mappings_ordered[match(names(mappings), col_names)] <- mappings
   
-  types %>% iwalk(~ walk_swig(object_maps, "setRole", .y - 1L, .x))
-  mappings %>% iwalk(~ walk_swig(object_maps, "setObjectCN", .y - 1L, .x))
+  # We have a list of object_maps and all need the same types and mappings
+  types_ordered %>% iwalk(~ walk_swig(c_object_maps, "setRole", .y - 1L, .x))
+  mappings_ordered %>% iwalk(~ walk_swig(c_object_maps, "setObjectCN", .y - 1L, .x))
   
   # Add all experiments to copasi
-  experiments %>% walk(~ experiment_set$addExperiment(.x))
+  c_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
   
   # possibly compile
-  # experiment_set$compile(problem$getMathContainer())
+  # c_experiment_set$compile(problem$getMathContainer())
 }
 
 #' @export
@@ -289,8 +397,8 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     is.null(createParameterSets)    || is.flag(createParameterSets)  && !is.na(createParameterSets),
     is.null(calculateStatistics)    || is.flag(calculateStatistics)  && !is.na(calculateStatistics),
     is.null(updateModel)            || is.flag(updateModel)          && !is.na(updateModel),
-    is.null(parameters)             || is.list(parameters),
-    is.null(experiments)            || is.list(experiments),
+    is.null(parameters)             || is.list(parameters)           && every(parameters, is.copasi_parm) || is.copasi_parm(parameters),
+    is.null(experiments)            || is.list(experiments)          && every(experiments, is.copasi_exp) || is.copasi_exp(experiments),
     is.null(method)                 || is.string(method)             && !is.na(method) || is.list(method) && is.string(method$method) && !is.na(method$method)
   )
   
@@ -300,15 +408,10 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       msg = "This function can not set parameters if there are already parameters set in copasi."
     )
     
-    if (has_name(parameters, "key"))
+    if (is.copasi_parm(parameters))
       parameters <- list(parameters)
     
-    parameters %>% walk(~
-      assert_that(
-        all(names(.x) %in% c("key", "lower", "upper", "start")),
-        msg = "Invalid parameters submitted."
-      )
-    )
+    parameters %>% walk(validate_copasi_parm)
   }
     
   if (!is_null(experiments) && .type != "restore") {
@@ -317,30 +420,23 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       msg = "This function can not set experiments if there are already experiments set in copasi."
     )
     
-    if (has_name(experiments, "experiment_type"))
+    if (is.copasi_exp(experiments))
       experiments <- list(experiments)
     
-    experiments %>% walk(~
-      assert_that(
-        all(names(.x) %in% c("experiment_type", "data", "experiments", "types", "mappings", "weight_method", "filename")),
-        msg = "Invalid experiments submitted."
-      )
-    )
-    
-    no_filename <- experiments %>% map("filename") %>% map_lgl(is_null)
+    no_filename <- experiments %>% map(attr_getter("filename")) %>% map_lgl(is.na)
     if (any(no_filename)) {
       assert_that(.type != "permanent", msg = "If setting experiments permanently, all experiments need a defined filename.")
       experiments <- experiments %>% modify_if(
         no_filename,
         ~ {
-          .x$filename <- paste0("CoRC_temp_", digest::digest(.x), ".txt")
+          attr(.x, "filename") <- paste0("CoRC_temp_", digest::digest(.x), ".txt")
           .x
         }
       )
     }
   }
   
-  if (!is.null(method)) {
+  if (!is_null(method)) {
     if (is_scalar_character(method)) method <- list(method = method)
     # hack to get nice error message if method string is not accepted.
     with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
@@ -353,27 +449,27 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     datamodel = datamodel
   )
   
-  if (!is.null(randomizeStartValues)) {
+  if (!is_null(randomizeStartValues)) {
     restorationCall$randomizeStartValues <- as.logical(problem$getRandomizeStartValues())
     problem$setRandomizeStartValues(randomizeStartValues)
   }
   
-  if (!is.null(createParameterSets)) {
+  if (!is_null(createParameterSets)) {
     restorationCall$createParameterSets <- as.logical(problem$getCreateParameterSets())
     problem$setCreateParameterSets(createParameterSets)
   }
   
-  if (!is.null(calculateStatistics)) {
+  if (!is_null(calculateStatistics)) {
     restorationCall$calculateStatistics <- as.logical(problem$getCalculateStatistics())
     problem$setCalculateStatistics(calculateStatistics)
   }
   
-  if (!is.null(updateModel)) {
+  if (!is_null(updateModel)) {
     restorationCall$updateModel <- as.logical(task$isUpdateModel())
     task$setUpdateModel(updateModel)
   }
   
-  if (!is.null(parameters)) {
+  if (!is_null(parameters)) {
     if (.type != "restore") {
       restorationCall$parameters <- parameters
       parameters %>% walk(~ {
@@ -385,7 +481,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
     }
   }
   
-  if (!is.null(experiments)) {
+  if (!is_null(experiments)) {
     if (.type != "restore") {
       restorationCall$experiments <- experiments
         
@@ -399,12 +495,12 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
       model_dir <- datamodel$getReferenceDirectory()
       if (model_dir == "") model_dir <- getwd()
       model_dir <- normalizePathC(model_dir)
-      e <- try(experiments %>% map_chr("filename") %>% file.path(model_dir, .) %>% file.remove())
+      e <- try(experiments %>% map_chr(attr_getter("filename")) %>% file.path(model_dir, .) %>% file.remove())
       if (is.error(e)) errors <- TRUE
     }
   }
   
-  if (!is.null(method)) {
+  if (!is_null(method)) {
     # We need to keep track of the previously set method
     restorationCall$method_old = task$getMethod()$getSubType()
     
@@ -474,7 +570,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
   }
   
   # method_old is only set if the purpose of calling the function was a restorationCall
-  if (!is.null(method_old)) {
+  if (!is_null(method_old)) {
     task$setMethodType(method_old)
   }
   
