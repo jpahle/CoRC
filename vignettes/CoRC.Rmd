@@ -325,6 +325,7 @@ plots <- list(
 
 result$fitted.values
 result$parameters
+result$protocol
 
 plotly::ggplotly(plots$Erk2.P)
 plotly::ggplotly(plots$Mos.P)

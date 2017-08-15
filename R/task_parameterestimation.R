@@ -585,6 +585,7 @@ pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParamet
 pe_result_worker <- function(datamodel) {
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")
+  method <- as(task$getMethod(), "_p_COptMethod")
   
   items <- get_sv(problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")
   experiment_set <- problem$getExperimentSet()
@@ -654,6 +655,8 @@ pe_result_worker <- function(datamodel) {
   ret$fim.scaled <- get_annotated_matrix(problem$getScaledFisherInformation())
   ret$fim.scaled.eigenvalues <- get_annotated_matrix(problem$getScaledFisherInformationEigenvalues())
   ret$fim.scaled.eigenvectors <- get_annotated_matrix(problem$getScaledFisherInformationEigenvectors())
+  
+  ret$protocol <- method$getMethodLog()$getPlainLog()
   
   ret
 }
