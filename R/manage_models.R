@@ -5,9 +5,16 @@
 #' @return a model object
 #' @export
 getCurrentModel <- function() {
-  assert_that(!is.null(pkg_env$curr_dm), msg = "No model currently in use.")
+  curr_dm <- pkg_env$curr_dm 
+  
+  assert_that(
+    !is.null(curr_dm),
+    # There might be a case where a NULL pointer is here because of saving and loading workspaces?
+    !has_null_pointer(curr_dm),
+    msg = "No model currently in use."
+  )
 
-  pkg_env$curr_dm
+  curr_dm
 }
 
 #' Set the currently active model
@@ -32,9 +39,15 @@ setCurrentModel <- function(datamodel) {
 #' @return a list of model objects
 #' @export
 getLoadedModels <- function() {
-  dm_list <- CRootContainer_getDatamodelList()
-
-  get_cdv(dm_list)
+  pkg_env$loaded_dms <-
+    discard(
+      pkg_env$loaded_dms,
+      # All with @ref to NULL get discarded
+      map_lgl(pkg_env$loaded_dms, has_null_pointer)
+    )
+  
+  # get_cdv(CRootContainer_getDatamodelList())
+  pkg_env$loaded_dms
 }
 
 # helper for loading models from urls
@@ -80,6 +93,7 @@ loadModel <- function(path) {
   }
   
   pkg_env$curr_dm <- datamodel
+  pkg_env$loaded_dms <- append(pkg_env$loaded_dms, datamodel)
   
   invisible(datamodel)
 }
@@ -112,6 +126,7 @@ loadSBML <- function(path) {
   }
   
   pkg_env$curr_dm <- datamodel
+  pkg_env$loaded_dms <- append(pkg_env$loaded_dms, datamodel)
   
   invisible(datamodel)
 }
@@ -125,7 +140,8 @@ loadSBML <- function(path) {
 unloadModel <- function(datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
   
-  datamodel <- CRootContainer_removeDatamodel(datamodel)
+  # datamodel <- CRootContainer_removeDatamodel(datamodel)
+  delete(datamodel)
 
   pkg_env$curr_dm <- NULL
 }
@@ -136,10 +152,9 @@ unloadModel <- function(datamodel = pkg_env$curr_dm) {
 #'
 #' @export
 unloadAllModels <- function() {
-  dm_list <- CRootContainer_getDatamodelList()
-
-  get_cdv(dm_list) %>%
-    walk(~ CRootContainer_removeDatamodel(.x))
+  pkg_env$loaded_dms %>%
+    # walk(~ CRootContainer_removeDatamodel(.x))
+    walk(delete)
 
   pkg_env$curr_dm <- NULL
 }

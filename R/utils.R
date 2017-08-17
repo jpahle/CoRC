@@ -4,9 +4,12 @@
 setMethod("format",
   "_p_CDataModel",
   function(x, ...) {
-    model <- x$getModel()
-
     string <- "# A copasi model reference:\n"
+    
+    if (has_null_pointer(x))
+      return(paste0(string, "Model has been unloaded."))
+    
+    model <- x$getModel()
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
     string <- paste0(string, "@ref is set to: " , utils::capture.output(x@ref) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
@@ -41,9 +44,15 @@ setMethod("show",
 assert_datamodel <- function(datamodel) {
   assert_that(inherits(datamodel, "_p_CDataModel"))
   
+  assert_that(
+    !has_null_pointer(datamodel),
+    msg = "datamodel is not loaded in CoRC. Did you unload the model?"
+  )
+  
   pkg_env$curr_dm <- datamodel
 }
 
+# transforms names from how they appear in the GUI to the preferred format in CoRC
 transform_names <- function(x) {
   set_names(
     x,
@@ -85,6 +94,11 @@ grab_msg <- function(x, purge = character(0)) {
   }
   
   x
+}
+
+# Check if object@ref pointer is NULL
+has_null_pointer <- function(object) {
+  capture.output(object@ref) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
 }
 
 # Hack to allow me to use swig constructors and hand the objects to C

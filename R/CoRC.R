@@ -39,6 +39,10 @@ COPASI_BIN_HASHES <-
 pkg_env <- new.env(parent = emptyenv())
 # Variable to keep track of the default datamodel
 pkg_env$curr_dm <- NULL
+# List to keep track of loaded models.
+# If I keep getting new references from C instead of using this list,
+# the user can crash the R session by using unloaded model references
+pkg_env$loaded_dms <- list()
 
 .onLoad <- function(libname, pkgname) {
   # hack for load_all() 
