@@ -142,6 +142,6 @@ getCopasi <- function(path = NULL) {
 }
 
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {
-  if (!("COPASI" %in% map(.dynLibs(), "name")))
+  if (!("COPASI" %in% map_chr(.dynLibs(), "name")))
     method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
