@@ -6,68 +6,14 @@ output:
   html_notebook: default
 ---
 
-# Initial Setup for MacOS
-
-## Initial checkout
-
-Initial setup of the Copasi R API requires checking out the copasi-r-api repositiory at an appropriate location.
-
-Use this command to clone the repository:
-
-```{bash, eval=FALSE}
-git clone https://github.com/jpahle/CoRC
-```
-
-Once the repository is cloned, use:
-
-```{bash, eval=FALSE}
-git submodule update --init --recursive
-```
-
-This step makes sure the Copasi sources are cloned.
-
-## Dependencies for compilation of the Copasi sources
-
-The following dependencies exist for compiling the sources:
-
-xcode command line tools
-
-```{bash, eval=FALSE}
-xcode-select --install
-```
-
-Cosider using homebrew for MacOS to install other dependencies:
-
-cmake, swig
-
-```{bash, eval=FALSE}
-brew install cmake swig
-```
-
 ## Fixing Copasi source
 
 I am using my own Copasi fork repository to implement some changes to allow for successful compilation on modern macOS and to fix some problems with SWIG.
+
 The repository is located at:
 https://github.com/jonasfoe/COPASI
 
-## Compiling Copasi dependencies
-
-```{bash, eval=FALSE}
-cd ../development/copasi-source/copasi-dependencies/
-./createOSX.sh
-cd ../../../documentation/
-```
-
-## Compiling Copasi from source
-
-```{bash, eval=FALSE}
-cd ../development/copasi-source/
-mkdir build_copasi_r_bindings
-cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
-make
-cd ../../../documentation/
-```
+The changes have since been pulled into the COPASI develop branch.
 
 # Loading the COPASI-R-API
 
@@ -103,14 +49,14 @@ enumFromInteger <- function(i,type) {
 }
 ```
 
-These functions have since been implemented in the Copasi source repository.
+These functions have since been implemented in the COPASI develop branch
 
 https://github.com/copasi/COPASI/commit/0766eb58fde43546edfd0f9e920f86ab8d905e0c
 
 ## Understanding the OO system
 
 The examples as used in the Copasi sources make use of R's S4 system which is a generic-function OO.
-With this paradigm, methods are not part of opjects and as a result typical code as extracted from example 1 looks like this:
+With this paradigm, methods are not part of objects and as a result typical code as extracted from example 1 looks like this:
 
 ```{r}
 dataModel <- CRootContainer_addDatamodel()
@@ -161,7 +107,7 @@ is(glucose)
 
 I have implemented a patch to replace the partially matching function pmatch with match in the $ operator.
 
-https://github.com/jonasfoe/COPASI/commit/0e6f95bf84b8d4af0f6c68b7fd4965191ce28956
+https://github.com/copasi/COPASI/commit/5b17de1f3b6284c409d9a60aace84bf5637856aa
 
 ```{cmake, eval=FALSE}
 string(REPLACE "idx = pmatch(name, names(accessorFuns));" "idx = match(name, names(accessorFuns));" SOURCECODE "${SOURCECODE}" )
@@ -253,12 +199,11 @@ datamodel <- as(datamodel, "_p_CDataModel")
 datamodel
 ```
 
-# The CoRC package
+# Helpers to deal with R lists
 
-## Building the package
+I have implemented several helpers to convert C Vectors to R lists or vectors in utils_copasi_vector.R
 
-```{r}
-source("../development/update-swig-in-package.R", chdir = TRUE)
+# SWIG workarounds
 
-devtools::install("..")
-```
+I have implemented several helpers to deal with SWIG issues in swig_workarounds.R
+This is a collection of functions that could be considered dirty hacks.

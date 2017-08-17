@@ -6,7 +6,7 @@ output: html_notebook
 ```{r setup}
 knitr::opts_knit$set(root.dir = normalizePath(".."))
 # reset_copasi(i), ls_corc(pattern), inspect(object)
-source("tools.R", echo = FALSE)
+source("dev_tools.R", echo = FALSE)
 current_example = 4L
 ```
 

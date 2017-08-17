@@ -1,0 +1,88 @@
+---
+title: "Compile Copasi R Bindings From Source"
+output:
+  html_document:
+    toc: yes
+  html_notebook: default
+---
+
+# Initial checkout
+
+Use this command to clone the repository:
+
+```{bash, eval=FALSE}
+git clone https://github.com/jpahle/CoRC
+```
+
+Alternatively via ssh:
+```{bash, eval=FALSE}
+git clone git@github.com:jpahle/CoRC.git
+```
+
+Once the repository is cloned, use:
+
+```{bash, eval=FALSE}
+git submodule update --init --recursive
+```
+
+This step makes sure the Copasi sources are cloned.
+
+# Dependencies for compilation of the copasi sources
+
+## macOS
+
+The following dependencies exist for compiling the sources:
+
+xcode command line tools
+
+```{bash, eval=FALSE}
+xcode-select --install
+```
+
+Cosider using homebrew for MacOS to install other dependencies:
+
+cmake, swig
+
+```{bash, eval=FALSE}
+brew install cmake swig
+```
+
+# Compiling copasi dependencies
+
+## macOS
+
+```{bash, eval=FALSE}
+cd ../development/copasi-source/copasi-dependencies/
+./createOSX.sh
+cd ../../../documentation/
+```
+
+# Compiling copasi from source
+
+```{bash, eval=FALSE}
+cd ../development/copasi-source/
+mkdir build_copasi_r_bindings
+cd build_copasi_r_bindings/
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+make
+cd ../../../documentation/
+```
+
+# Copying the relevant file into the package repository
+
+```{r}
+source("../development/update-swig-in-package.R", chdir = TRUE)
+```
+
+# Installing the package
+
+```{r}
+devtools::install("..")
+```
+
+# Getting the current hash for the binary (update it in CoRC.R)
+
+```{r}
+digest::digest("copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI.so", algo = "sha256", file = TRUE)
+```
+

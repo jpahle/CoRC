@@ -1,4 +1,18 @@
-if (!exists("CRootContainer_getRoot")) devtools::load_all()
+#options(echo = FALSE) # disable echoing of input
+
+#  
+#  This is an example on how to calculate and output the Jacobian matrix
+#  in COPASI
+#  
+
+
+# First we load the COPASI package
+dyn.load(paste("COPASI", .Platform$dynlib.ext, sep=""))
+source("COPASI.R")
+# I Don't know exactly what the next line does, but this is what the SWIG
+# documentation has to say about it:
+# The cacheMetaData(1) will cause R to refresh its object tables. Without it, inheritance of wrapped objects may fail.
+cacheMetaData(1)
 
 MODEL_STRING <- '<?xml version="1.0" encoding="UTF-8"?><!-- Created by COPASI version4.5.31 (Debug) on 2010-05-11 13:40 with libSBML version 4.1.0-b3. --><sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4"><model metaid="COPASI1" id="Model_1" name="New Model"><listOfUnitDefinitions><unitDefinition id="volume" name="volume"><listOfUnits><unit kind="litre" scale="-3"/></listOfUnits></unitDefinition><unitDefinition id="substance" name="substance"><listOfUnits><unit kind="mole" scale="-3"/></listOfUnits></unitDefinition><unitDefinition id="unit_0"><listOfUnits><unit kind="second" exponent="-1"/></listOfUnits></unitDefinition></listOfUnitDefinitions><listOfCompartments><compartment id="compartment_1" name="compartment" size="1"/></listOfCompartments><listOfSpecies><species metaid="COPASI2" id="species_1" name="A" compartment="compartment_1" initialConcentration="1"/><species metaid="COPASI3" id="species_2" name="B" compartment="compartment_1" initialConcentration="0"/><species metaid="COPASI4" id="species_3" name="C" compartment="compartment_1" initialConcentration="0"/></listOfSpecies><listOfReactions><reaction metaid="COPASI5" id="reaction_1" name="reaction_1" reversible="false"><listOfReactants><speciesReference species="species_1"/></listOfReactants><listOfProducts><speciesReference species="species_2"/></listOfProducts><kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><times/><ci> compartment_1 </ci><ci> k1 </ci><ci> species_1 </ci></apply></math><listOfParameters><parameter id="k1" name="k1" value="0.2" units="unit_0"/></listOfParameters></kineticLaw></reaction><reaction metaid="COPASI6" id="reaction_2" name="reaction_2" reversible="false"><listOfReactants><speciesReference species="species_2"/></listOfReactants><listOfProducts><speciesReference species="species_3"/></listOfProducts><kineticLaw><math xmlns="http://www.w3.org/1998/Math/MathML"><apply><times/><ci> compartment_1 </ci><ci> k1 </ci><ci> species_2 </ci></apply></math><listOfParameters><parameter id="k1" name="k1" value="0.1" units="unit_0"/></listOfParameters></kineticLaw></reaction></listOfReactions></model></sbml>'
 
@@ -7,13 +21,13 @@ stopifnot(!is.null(CRootContainer_getRoot()))
 # create a new datamodel
 dataModel <- CRootContainer_addDatamodel()
 stopifnot(!is.null(dataModel))
-stopifnot(DataModelVector_size(CRootContainer_getDatamodelList()) == 1)
+stopifnot(CRootContainer_getDatamodelList()$size() == 1)
 # next we import a simple SBML model from a string
 
 # clear the message queue so that we only have error messages from the import in the queue
 invisible(CCopasiMessage_clearDeque())
 result <- TRUE
-tryCatch(result <- CDataModel_importSBMLFromString(dataModel,MODEL_STRING), error = function(e) {
+tryCatch(result <- dataModel$importSBMLFromString(MODEL_STRING), error = function(e) {
   write("Import of model failed miserably.", stderr())
   if(CCopasiMessage_size() > 0) {
     write(CCopasiMessage_getAllMessageText(TRUE), stderr())
@@ -41,7 +55,7 @@ if (result != TRUE && any(errorList,mostSevere)) {
 #
 # now we tell the model object to calculate the jacobian
 #
-model <- CDataModel_getModel(dataModel)
+model <- dataModel$getModel()
 stopifnot(!is.null(model))
 
 if (!is.null(model)) {
@@ -49,7 +63,7 @@ if (!is.null(model)) {
     # the initial values are transferred to the current state before the calculation begins.
     # If we use low level calculation methods like the one to calculate the jacobian, we
     # have to make sure the the initial values are applied to the state
-    invisible(CModel_applyInitialValues(model))
+    invisible(model$applyInitialValues())
     # we need an array that stores the result
     # the size of the matrix does not really matter because
     # the calculateJacobian autoamtically resizes it to the correct
@@ -69,9 +83,9 @@ if (!is.null(model)) {
     # the jacobian stores the values in the order they are
     # given in the user order in the state template so it is not really straight
     # forward to find out which column/row corresponds to which species
-    stateTemplate <- CModel_getStateTemplate(model)
+    stateTemplate <- model$getStateTemplate()
     # and we need the user order
-    userOrder <- CStateTemplate_getUserOrder(stateTemplate)
+    userOrder <- stateTemplate$getUserOrder()
     # from those two, we can construct an new vector that contains
     # the names of the entities in the jacobian in the order in which they appear in
     # the jacobian
@@ -80,21 +94,21 @@ if (!is.null(model)) {
     status <- -1
     
     i <- 0
-    while (i < SizeTVectorCore_size(userOrder)) {
-        entity <- CStateTemplate_getEntity(stateTemplate,SizeTVectorCore_get(userOrder,i))
+    while (i < userOrder$size()) {
+        entity <- stateTemplate$getEntity(userOrder$get(i))
         stopifnot(!is.null(entity))
         # now we need to check if the entity is actually
         # determined by an ODE or a reaction
-        status <- CModelEntity_getStatus(entity)
+        status <- entity$getStatus()
 
-        if (status == "ODE" || (status == "REACTIONS" && CModelEntity_isUsed(entity))) {
-            nameVector[[length(nameVector)+1]] <- CDataObject_getObjectName(entity)
+        if (status == "ODE" || (status == "REACTIONS" && entity$isUsed())) {
+            nameVector[[length(nameVector)+1]] <- entity$getObjectName()
         }
         i <- i + 1
     }
 
 
-    stopifnot(length(nameVector) == FloatMatrix_numRows(jacobian))
+    stopifnot(length(nameVector) == jacobian$numRows())
     # now we print the matrix, for this we assume that no
     # entity name is longer then 5 character which is a save bet since
     # we know the model
@@ -115,7 +129,7 @@ if (!is.null(model)) {
         cat(format(nameVector[i+1], width = 7))
         j <- 0
         while (j < length(nameVector)) {
-            cat(format(FloatMatrix_get(jacobian,i,j), width = 7 , digits = 3))
+            cat(format(jacobian$get(i,j), width = 7 , digits = 3))
             j <- j + 1
         }
 
@@ -125,7 +139,7 @@ if (!is.null(model)) {
 
     # we can also calculate the jacobian of the reduced system
     # in a similar way
-    invisible(CMathContainer_calculateJacobian(container,jacobian, 1e-12, TRUE))
+    invisible(container$calculateJacobian(jacobian, 1e-12, TRUE))
     # this time generating the output is actually simpler because the rows
     # and columns are ordered in the same way as the independent variables of the state temple
     cat("\n")
@@ -134,11 +148,11 @@ if (!is.null(model)) {
     cat("\n")
     cat(format(" ", width = 7))
     
-    iMax <- CStateTemplate_getNumIndependent(stateTemplate)
+    iMax <- stateTemplate$getNumIndependent()
    
     i <- 0
     while (i < iMax) {
-       cat(format(CDataObject_getObjectName(CStateTemplate_getIndependent(stateTemplate,i)), width = 7))
+       cat(format(stateTemplate$getIndependent(i)$getObjectName(), width = 7))
        i <- i + 1
     }
 
@@ -146,11 +160,11 @@ if (!is.null(model)) {
 
     i <- 0
     while (i < iMax) {
-        cat(format(CDataObject_getObjectName(CStateTemplate_getIndependent(stateTemplate,i)), width = 7))
+        cat(format(stateTemplate$getIndependent(i)$getObjectName(), width = 7))
 
         j <- 0
         while (j < iMax) {
-            cat(format(FloatMatrix_get(jacobian,i,j), width = 7 , digits = 3))
+            cat(format(jacobian$get(i,j), width = 7 , digits = 3))
             j <- j + 1
         }
 
