@@ -14,8 +14,8 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already CN to metabolites we accept them
-  matched_metabs <- cn_to_object(key, datamodel, accepted_types = "_p_CMetab")
+  # If names are already DN to metabolites we accept them
+  matched_metabs <- dn_to_object(key, datamodel, accepted_types = "_p_CMetab")
   
   is_matched <- matched_metabs %>% map_lgl(negate(is_null))
   
@@ -50,12 +50,7 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_metabs %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
-  #   set_names(
-  #     matched_metabs %>% map_swig_chr("getObjectDisplayName")
-  #   )
-  matched_metabs %>% map_swig("getCN") %>% map_swig_chr("getString")
+  matched_metabs %>% map_swig_chr("getObjectDisplayName")
 }
 
 #' Identify quantity by name
@@ -74,8 +69,8 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already CN to metabolites we accept them
-  matched_quants <- cn_to_object(key, datamodel, accepted_types = "_p_CModelValue")
+  # If names are already DN to quantities we accept them
+  matched_quants <- dn_to_object(key, datamodel, accepted_types = "_p_CModelValue")
   
   is_matched <- matched_quants %>% map_lgl(negate(is_null))
   
@@ -110,11 +105,6 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_quants %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
-  #   set_names(
-  #     matched_quants %>% map_swig_chr("getObjectDisplayName")
-  #   )
   matched_quants %>% map_swig_chr("getObjectDisplayName")
 }
 
@@ -134,8 +124,8 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already CN to metabolites we accept them
-  matched_comps <- cn_to_object(key, datamodel, accepted_types = "_p_CCompartment")
+  # If names are already DN to compartment we accept them
+  matched_comps <- dn_to_object(key, datamodel, accepted_types = "_p_CCompartment")
   
   is_matched <- matched_comps %>% map_lgl(negate(is_null))
   
@@ -170,12 +160,7 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_comps %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
-  #   set_names(
-  #     matched_comps %>% map_swig_chr("getObjectDisplayName")
-  #   )
-  matched_comps %>% map_swig("getCN") %>% map_swig_chr("getString")
+  matched_comps %>% map_swig_chr("getObjectDisplayName")
 }
 
 
@@ -195,8 +180,8 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already CN to metabolites we accept them
-  matched_reactions <- cn_to_object(key, datamodel, accepted_types = "_p_CReaction")
+  # If names are already DN to reactions we accept them
+  matched_reactions <- dn_to_object(key, datamodel, accepted_types = "_p_CReaction")
   
   is_matched <- matched_reactions %>% map_lgl(negate(is_null))
   
@@ -231,12 +216,7 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_reactions %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
-  #   set_names(
-  #     matched_reactions %>% map_swig_chr("getObjectDisplayName")
-  #   )
-  matched_reactions %>% map_swig("getCN") %>% map_swig_chr("getString")
+  matched_reactions %>% map_swig_chr("getObjectDisplayName")
 }
 
 #' Identify reaction parameter by name
@@ -255,8 +235,8 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already CN to metabolites we accept them
-  matched_params <- cn_to_object(key, datamodel, accepted_types = "_p_CCopasiParameter")
+  # If names are already DN to parameters we accept them
+  matched_params <- dn_to_object(key, datamodel, accepted_types = "_p_CCopasiParameter")
   
   is_matched <- matched_params %>% map_lgl(negate(is_null))
   
@@ -297,12 +277,7 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  # # Return matches as named (DisplayNames) character vector of CommonNames
-  # matched_params %>% map_swig("getCN") %>% map_swig_chr("getString") %>%
-  #   set_names(
-  #     matched_params %>% map_swig_chr("getObjectDisplayName")
-  #   )
-  matched_params %>% map_swig("getCN") %>% map_swig_chr("getString")
+  matched_params %>% map_swig_chr("getObjectDisplayName")
 }
 
 # Find a uniquely matching string in namesvec for every string in keysvec

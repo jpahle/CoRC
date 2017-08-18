@@ -100,3 +100,31 @@ cn_to_object <- function(strings, datamodel, accepted_types = NULL) {
   
   objects
 }
+
+# Give DisplayNames as character vector and get objects
+dn_to_object <- function(strings, datamodel, accepted_types = NULL) {
+  objects <-
+    map(
+      strings,
+      ~ {
+        object <- datamodel$findObjectByDisplayName(.x)
+        
+        if (!is_null(object)) {
+          auto_cast(object$getDataObject())
+        } else {
+          NULL
+        }
+      }
+    )
+  
+  # if accepted_types were given, NULL all objects that do not match any of those types.
+  if (!is_null(accepted_types)) {
+    objects <- modify_if(
+      objects,
+      ~ !inherits(.x, accepted_types),
+      ~ NULL
+    )
+  }
+  
+  objects
+}

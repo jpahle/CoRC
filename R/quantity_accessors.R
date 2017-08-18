@@ -14,7 +14,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
   else
-    metabs <- cn_to_object(key, datamodel)
+    metabs <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(metabs)) return(tibble::tibble())
@@ -23,7 +23,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   metabs %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Compartment" = .x$getCompartment()$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
@@ -33,8 +33,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
         "Number" = .x$getInitialValue()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Get species references
@@ -53,7 +52,7 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
   else
-    metabs <- cn_to_object(key, datamodel)
+    metabs <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(metabs)) return(tibble::tibble())
@@ -62,18 +61,17 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   metabs %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Compartment" = .x$getCompartment()$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Concentration" = .x$getInitialConcentrationReference()$getCN()$getString(),
-        "Initial Number" = .x$getInitialValueReference()$getCN()$getString(),
-        "Concentration" = .x$getConcentrationReference()$getCN()$getString(),
-        "Number" = .x$getValueReference()$getCN()$getString()
+        "Initial Concentration" = .x$getInitialConcentrationReference()$getObjectDisplayName(),
+        "Initial Number" = .x$getInitialValueReference()$getObjectDisplayName(),
+        "Concentration" = .x$getConcentrationReference()$getObjectDisplayName(),
+        "Number" = .x$getValueReference()$getObjectDisplayName()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Set species
@@ -104,7 +102,7 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
   
   if (is_empty(key)) return(invisible())
   
-  metabs <- cn_to_object(key, datamodel, "_p_CMetab")
+  metabs <- dn_to_object(key, datamodel, "_p_CMetab")
   
   # metabs <- model$getMetabolites()
   
@@ -199,7 +197,7 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     quantities <- get_cdv(datamodel$getModel()$getModelValues())
   else
-    quantities <- cn_to_object(key, datamodel)
+    quantities <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(quantities)) return(tibble::tibble())
@@ -208,14 +206,13 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   quantities %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
         "Initial Value" = .x$getInitialValue()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #'  Get global quantitiy references
@@ -234,7 +231,7 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
   if (is_empty(key))
     quantities <- get_cdv(datamodel$getModel()$getModelValues())
   else
-    quantities <- cn_to_object(key, datamodel)
+    quantities <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(quantities)) return(tibble::tibble())
@@ -243,14 +240,13 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
   quantities %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Value" = .x$getInitialValueReference()$getCN()$getString()
+        "Initial Value" = .x$getInitialValueReference()$getObjectDisplayName()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Set global quantities
@@ -279,7 +275,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   
   if (is_empty(key)) return(invisible())
   
-  quants <- cn_to_object(key, datamodel, "_p_CModelValue")
+  quantities <- dn_to_object(key, datamodel, "_p_CModelValue")
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
@@ -287,7 +283,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   # apply names
   if (!is_null(name)) {
     walk2(
-      quants, name,
+      quantities, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
     )
   }
@@ -295,7 +291,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   # apply value
   if (!is_null(initial.value)) {
     walk2(
-      quants, initial.value,
+      quantities, initial.value,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
@@ -330,7 +326,7 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     comps <- get_cdv(datamodel$getModel()$getCompartments())
   else
-    comps <- cn_to_object(key, datamodel)
+    comps <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(comps)) return(tibble::tibble())
@@ -339,13 +335,12 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   comps %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Initial Volume" = .x$getInitialValue()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #'  Get compartment references
@@ -364,7 +359,7 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     comps <- get_cdv(datamodel$getModel()$getCompartments())
   else
-    comps <- cn_to_object(key, datamodel)
+    comps <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(comps)) return(tibble::tibble())
@@ -373,13 +368,12 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   comps %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
-        "Initial Volume" = .x$getInitialValueReference()$getCN()$getString()
+        "Initial Volume" = .x$getInitialValueReference()$getObjectDisplayName()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Set compartments
@@ -408,7 +402,7 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
   
   if (is_empty(key)) return(invisible())
   
-  comps <- cn_to_object(key, datamodel, "_p_CCompartment")
+  comps <- dn_to_object(key, datamodel, "_p_CCompartment")
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
@@ -459,7 +453,7 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     reactions <- get_cdv(datamodel$getModel()$getReactions())
   else
-    reactions <- cn_to_object(key, datamodel)
+    reactions <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(reactions)) return(tibble::tibble())
@@ -468,12 +462,11 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   reactions %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Set reactions
@@ -500,7 +493,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_e
   
   if (is_empty(key)) return(invisible())
   
-  reactions <- cn_to_object(key, datamodel, "_p_CReaction")
+  reactions <- dn_to_object(key, datamodel, "_p_CReaction")
   
   # apply names
   if (!is_null(name)) {
@@ -535,7 +528,7 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     }) %>%
     flatten()
   else
-    params <- cn_to_object(key, datamodel)
+    params <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(params)) return(tibble::tibble())
@@ -544,15 +537,14 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   params %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getType()),
         "Value" = .x$getDblValue()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #'  Get reaction parameter references
@@ -577,7 +569,7 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     }) %>%
     flatten()
   else
-    params <- cn_to_object(key, datamodel)
+    params <- dn_to_object(key, datamodel)
   
   # should be fixed to return valid tibble
   if (is_empty(params)) return(tibble::tibble())
@@ -586,15 +578,14 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   params %>%
     map_dfr(~ {
       list(
-        key = .x$getCN()$getString(),
+        key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getType()),
-        "Value" = .x$getValueReference()$getCN()$getString()
+        "Value" = .x$getValueReference()$getObjectDisplayName()
       )
     }) %>%
-    transform_names() %>%
-    dplyr::select(-key, key)
+    transform_names()
 }
 
 #' Set reaction parameters
@@ -622,7 +613,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, da
   
   if (is_empty(key)) return(invisible())
   
-  params <- cn_to_object(key, datamodel, "_p_CCopasiParameter")
+  params <- dn_to_object(key, datamodel, "_p_CCopasiParameter")
   
   # apply names
   if (!is_null(name)) {

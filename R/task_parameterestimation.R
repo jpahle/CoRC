@@ -149,7 +149,7 @@ addParameter <- function(copasi_parm, datamodel = pkg_env$curr_dm) {
   # Test if the key is valid
   # This can probably be a more elaborate and safe test (by using cn_to_object(accepted_types))
   assert_that(
-    !is.null(cn_to_object(copasi_parm$key, datamodel)[[1]]),
+    !is.null(dn_to_object(copasi_parm$key, datamodel)[[1]]),
     msg = "The given parameter is invalid for this datamodel"
   )
   
