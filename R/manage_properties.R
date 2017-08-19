@@ -62,7 +62,7 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(accepted, msg = paste0(unit, " is not a valid time unit."))
   
   assert_that(
-    datamodel$getModel()$setTimeUnitFromString(unit),
+    grab_msg(datamodel$getModel()$setTimeUnitFromString(unit)),
     msg = "Setting time unit failed."
   )
   
@@ -101,7 +101,7 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(accepted, msg = paste0(unit, " is not a valid volume unit."))
   
   assert_that(
-    datamodel$getModel()$setVolumeUnitFromString(unit),
+    grab_msg(datamodel$getModel()$setVolumeUnitFromString(unit)),
     msg = "Setting volume unit failed."
   )
   
@@ -140,7 +140,7 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
   assert_that(accepted, msg = paste0(unit, " is not a valid quantity unit."))
   
   assert_that(
-    datamodel$getModel()$setQuantityUnitFromString(unit),
+    grab_msg(datamodel$getModel()$setQuantityUnitFromString(unit)),
     msg = "Setting quantity unit failed."
   )
   
