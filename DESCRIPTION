@@ -36,6 +36,7 @@ Collate:
     'CoRC.R'
     'manage_models.R'
     'manage_properties.R'
+    'model_building.R'
     'quantity_accessors.R'
     'quantity_finders.R'
     'swig_workarounds.R'
