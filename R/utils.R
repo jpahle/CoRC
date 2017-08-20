@@ -114,6 +114,10 @@ avert_gc <- function(expr) {
   expr
 }
 
+# Cleaner error messages
+warning <- partial(base::warning, call. = FALSE)
+stop <- partial(base::stop, call. = FALSE)
+
 # Force the winslash to be the same applied by file.path etc
 normalizePathC <- partial(normalizePath, winslash = .Platform$file.sep)
 

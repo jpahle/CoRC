@@ -9,6 +9,11 @@
 #' @export
 species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  
+  species_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
+}
+
+species_obj <- function(key, reference = NULL, datamodel) {
   assert_that(
     is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
@@ -50,7 +55,7 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  matched_metabs %>% map_swig_chr("getObjectDisplayName")
+  matched_metabs
 }
 
 #' Identify quantity by name
@@ -64,6 +69,11 @@ species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 #' @export
 quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  
+  quantity_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
+}
+
+quantity_obj <- function(key, reference = NULL, datamodel) {
   assert_that(
     is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
@@ -105,7 +115,7 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  matched_quants %>% map_swig_chr("getObjectDisplayName")
+  matched_quants
 }
 
 #' Identify compartment by name
@@ -119,6 +129,11 @@ quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 #' @export
 compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  
+  compartment_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
+}
+
+compartment_obj <- function(key, reference = NULL, datamodel) {
   assert_that(
     is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
@@ -160,9 +175,8 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  matched_comps %>% map_swig_chr("getObjectDisplayName")
+  matched_comps
 }
-
 
 #' Identify reaction by name
 #'
@@ -175,6 +189,11 @@ compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 #' @export
 reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  
+  reaction_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
+}
+
+reaction_obj <- function(key, reference = NULL, datamodel) {
   assert_that(
     is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
@@ -216,7 +235,7 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  matched_reactions %>% map_swig_chr("getObjectDisplayName")
+  matched_reactions
 }
 
 #' Identify reaction parameter by name
@@ -230,6 +249,11 @@ reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
 #' @export
 parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  
+  parameter_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
+}
+
+parameter_obj <- function(key, reference = NULL, datamodel) {
   assert_that(
     is.character(key), !anyNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
@@ -255,7 +279,7 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
         namesvec = params %>% map_swig_chr("getObjectDisplayName"),
         info = "parameter(s)"
       )
-      
+    
     # fill matched_params list
     matched_params[!is_matched] <- params[matches_by_dispnames]
   }
@@ -277,18 +301,18 @@ parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
     msg = "Failed to gather some references."
   )
   
-  matched_params %>% map_swig_chr("getObjectDisplayName")
+  matched_params
 }
 
 # Find a uniquely matching string in namesvec for every string in keysvec
-match_worker <- function(keysvec, namesvec, info) {
+match_worker <- function(keysvec, namesvec, info, partial = TRUE) {
   # Find all full matches of displaynames
   # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
   matches <- match(keysvec, namesvec)
   
   not_matched <- is.na(matches)
   
-  if(any(not_matched)) {
+  if (partial && any(not_matched)) {
     keysvec_remaining <- keysvec[not_matched]
     
     # Use give names as fixed pattern for searching in v_displaynames
@@ -312,18 +336,21 @@ match_worker <- function(keysvec, namesvec, info) {
       )
     )
     
-    no_matches <- which(map_lgl(matches_partial, is_empty))
-    assert_that(
-      is_empty(no_matches),
-      msg = paste0(
-        'Could not match ', info, ' "',
-        keysvec_remaining[no_matches], '".',
-        collapse = '", "'
-      )
-    )
+    # Empty entries get NAed
+    matches_partial[map_lgl(matches_partial, is_empty)] <- NA_integer_
     
     matches[not_matched] <- flatten_int(matches_partial)
   }
+  
+  no_matches <- is.na(matches)
+  assert_that(
+    !any(no_matches),
+    msg = paste0(
+      'Could not match ', info, ' "',
+      keysvec[no_matches], '".',
+      collapse = '", "'
+    )
+  )
   
   matches
 }

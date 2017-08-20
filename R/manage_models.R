@@ -53,6 +53,7 @@ getLoadedModels <- function() {
 }
 
 # helper for loading models from urls
+# If x is url, the contents are returned as string, else NULL
 url_to_string <- function(x) {
   con <- try(url(x), silent = TRUE)
   if (is.error(con)) return()

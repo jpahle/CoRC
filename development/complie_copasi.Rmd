@@ -52,20 +52,39 @@ brew install cmake swig
 ## macOS
 
 ```{bash, eval=FALSE}
-cd ../development/copasi-source/copasi-dependencies/
-./createOSX.sh
-cd ../../../documentation/
+cd development/copasi-source/copasi-dependencies/
+./createOSX-qt5.sh
+cd ../../../
 ```
 
 # Compiling copasi from source
 
 ```{bash, eval=FALSE}
-cd ../development/copasi-source/
+cd development/copasi-source/
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
 cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
-cd ../../../documentation/
+cd ../../../
+```
+
+# (Optionally) Update and recompile all
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+rm -r build_copasi_r_bindings/
+cd copasi-dependencies/
+rm -r tmp/ bin/
+git pull
+./createOSX-qt5.sh
+cd ../COPASI/
+git pull upstream develop
+cd ../
+mkdir build_copasi_r_bindings
+cd build_copasi_r_bindings/
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+make
+cd ../../../
 ```
 
 # Copying the relevant file into the package repository
