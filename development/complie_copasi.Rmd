@@ -39,12 +39,12 @@ xcode command line tools
 xcode-select --install
 ```
 
-Cosider using homebrew for MacOS to install other dependencies:
+Cosider using homebrew for macOS to install other dependencies:
 
-cmake, swig
+cmake, swig, gawk, wget, astyle
 
 ```{bash, eval=FALSE}
-brew install cmake swig
+brew install cmake swig gawk wget astyle
 ```
 
 # Compiling copasi dependencies
@@ -60,7 +60,9 @@ cd ../../../
 # Compiling copasi from source
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd development/copasi-source/COPASI/
+./gitTools/UpdateCopasiVersion
+cd ../
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
 cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
@@ -68,7 +70,7 @@ make
 cd ../../../
 ```
 
-# (Optionally) Update and recompile all
+# (Optionally) Update and rebuild all for release
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
@@ -79,10 +81,38 @@ git pull
 ./createOSX-qt5.sh
 cd ../COPASI/
 git pull upstream develop
+./gitTools/UpdateCopasiVersion
 cd ../
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
 cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+make
+cd ../../../
+```
+
+# (Optionally) Build GUI
+
+Cosider using homebrew for macOS intall qt5:
+
+```{bash, eval=FALSE}
+brew install qt5
+```
+
+Build dependencies:
+
+```{bash, eval=FALSE}
+cd development/copasi-source/copasi-dependencies/
+export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
+./createOSX-qt5.sh
+cd ../../../
+```
+
+Build GUI:
+
+```{bash, eval=FALSE}
+cd development/copasi-source/build_copasi_r_bindings/
+export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
+cmake -DBUILD_GUI=ON
 make
 cd ../../../
 ```
