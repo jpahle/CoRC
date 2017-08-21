@@ -16,24 +16,18 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     metabs <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(metabs)) return(tibble::tibble())
-  
   # assemble output dataframe
-  metabs %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Compartment" = .x$getCompartment()$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Concentration" = .x$getInitialConcentration(),
-        "Initial Number" = .x$getInitialValue(),
-        "Concentration" = .x$getInitialConcentration(),
-        "Number" = .x$getInitialValue(),
-        "Expression" = expr_to_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(metabs, "getObjectDisplayName"),
+    "Name" = map_swig_chr(metabs, "getObjectName"),
+    "Compartment" = metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Type" = metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Concentration" = map_swig_dbl(metabs, "getInitialConcentration"),
+    "Initial Number" = map_swig_dbl(metabs, "getInitialValue"),
+    "Concentration" = map_swig_dbl(metabs, "getInitialConcentration"),
+    "Number" = map_swig_dbl(metabs, "getInitialValue"),
+    "Expression" = map_chr(metabs, expr_to_str)
+  ) %>%
     transform_names()
 }
 
@@ -55,24 +49,18 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     metabs <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(metabs)) return(tibble::tibble())
-  
   # assemble output dataframe
-  metabs %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Compartment" = .x$getCompartment()$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Concentration" = .x$getInitialConcentrationReference()$getObjectDisplayName(),
-        "Initial Number" = .x$getInitialValueReference()$getObjectDisplayName(),
-        "Concentration" = .x$getConcentrationReference()$getObjectDisplayName(),
-        "Number" = .x$getValueReference()$getObjectDisplayName(),
-        "Expression" = expr_to_ref_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(metabs, "getObjectDisplayName"),
+    "Name" = map_swig_chr(metabs, "getObjectName"),
+    "Compartment" = metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Type" = metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Concentration" = metabs %>% map_swig("getInitialConcentrationReference") %>% map_swig_chr("getObjectDisplayName"),
+    "Initial Number" = metabs %>% map_swig("getInitialValueReference") %>% map_swig_chr("getObjectDisplayName"),
+    "Concentration" = metabs %>% map_swig("getConcentrationReference") %>% map_swig_chr("getObjectDisplayName"),
+    "Number" = metabs %>% map_swig("getValueReference") %>% map_swig("getObjectDisplayName"),
+    "Expression" = map_chr(metabs, expr_to_ref_str)
+  ) %>%
     transform_names()
 }
 
@@ -201,20 +189,14 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     quantities <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(quantities)) return(tibble::tibble())
-  
   # assemble output dataframe
-  quantities %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Value" = .x$getInitialValue(),
-        "Expression" = expr_to_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(quantities, "getObjectDisplayName"),
+    "Name" = map_swig_chr(quantities, "getObjectName"),
+    "Type" = quantities %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Value" = map_swig_dbl(quantities, "getInitialValue"),
+    "Expression" = map_chr(quantities, expr_to_str)
+  ) %>%
     transform_names()
 }
 
@@ -236,20 +218,14 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
   else
     quantities <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(quantities)) return(tibble::tibble())
-  
   # assemble output dataframe
-  quantities %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Value" = .x$getInitialValueReference()$getObjectDisplayName(),
-        "Expression" = expr_to_ref_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(quantities, "getObjectDisplayName"),
+    "Name" = map_swig_chr(quantities, "getObjectName"),
+    "Type" = quantities %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Value" = quantities %>% map_swig("getInitialValueReference") %>% map_swig_chr("getObjectDisplayName"),
+    "Expression" = map_chr(quantities, expr_to_ref_str)
+  ) %>%
     transform_names()
 }
 
@@ -332,20 +308,14 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     comps <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(comps)) return(tibble::tibble())
-  
   # assemble output dataframe
-  comps %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Volume" = .x$getInitialValue(),
-        "Expression" = expr_to_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(comps, "getObjectDisplayName"),
+    "Name" = map_swig_chr(comps, "getObjectName"),
+    "Type" = comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Volume" = map_swig_dbl(comps, "getInitialValue"),
+    "Expression" = map_chr(comps, expr_to_str)
+  ) %>%
     transform_names()
 }
 
@@ -367,20 +337,14 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     comps <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(comps)) return(tibble::tibble())
-  
   # assemble output dataframe
-  comps %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Volume" = .x$getInitialValueReference()$getObjectDisplayName(),
-        "Expression" = expr_to_ref_str(.x)
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(comps, "getObjectDisplayName"),
+    "Name" = map_swig_chr(comps, "getObjectName"),
+    "Type" = comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Initial Volume" = comps %>% map_swig("getInitialValueReference") %>% map_swig_chr("getObjectDisplayName"),
+    "Expression" = map_chr(comps, expr_to_ref_str)
+  ) %>%
     transform_names()
 }
 
@@ -463,17 +427,11 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     reactions <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(reactions)) return(tibble::tibble())
-  
   # assemble output dataframe
-  reactions %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName()
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(reactions, "getObjectDisplayName"),
+    "Name" = map_swig_chr(reactions, "getObjectName")
+  ) %>%
     transform_names()
 }
 
@@ -538,20 +496,14 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     params <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(params)) return(tibble::tibble())
-  
   # assemble output dataframe
-  params %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getType()),
-        "Value" = .x$getDblValue()
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(params, "getObjectDisplayName"),
+    "Name" = map_swig_chr(params, "getObjectName"),
+    "Reaction" = params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
+    "Type" = params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
+    "Value" = map_swig_dbl(params, "getDblValue")
+  ) %>%
     transform_names()
 }
 
@@ -579,20 +531,14 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   else
     params <- dn_to_object(key, datamodel)
   
-  # should be fixed to return valid tibble
-  if (is_empty(params)) return(tibble::tibble())
-  
   # assemble output dataframe
-  params %>%
-    map_dfr(~ {
-      list(
-        key = .x$getObjectDisplayName(),
-        "Name" = .x$getObjectName(),
-        "Reaction" = .x$getObjectParent()$getObjectParent()$getObjectName(),
-        "Type" = stringr::str_to_lower(.x$getType()),
-        "Value" = .x$getValueReference()$getObjectDisplayName()
-      )
-    }) %>%
+  tibble::tibble(
+    key = map_swig_chr(params, "getObjectDisplayName"),
+    "Name" = map_swig_chr(params, "getObjectName"),
+    "Reaction" = params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
+    "Type" = params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
+    "Value" = params %>% map_swig("getValueReference") %>% map_swig_chr("getObjectDisplayName")
+  ) %>%
     transform_names()
 }
 
