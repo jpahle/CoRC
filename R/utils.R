@@ -60,6 +60,28 @@ transform_names <- function(x) {
   )
 }
 
+# check if an entity has an expression set
+# return NA_character_ or the expression string
+expr_to_str <- function(c_entity) {
+  c_expression <- c_entity$getExpressionPtr()
+  
+  if (is_null(c_expression))
+    NA_character_
+  else
+    c_expression$getDisplayString()
+}
+
+# check if an entity has an expression set
+# return NA_character_ or the expression DisplayName
+expr_to_ref_str <- function(c_entity) {
+  c_expression <- c_entity$getExpressionPtr()
+  
+  if (is_null(c_expression))
+    NA_character_
+  else
+    c_expression$getObjectDisplayName()
+}
+
 # finds copasi messages and helps purge known annoying messages
 grab_msg <- function(x, purge = character(0)) {
   purge_by_default <- c(

@@ -30,7 +30,8 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
         "Initial Concentration" = .x$getInitialConcentration(),
         "Initial Number" = .x$getInitialValue(),
         "Concentration" = .x$getInitialConcentration(),
-        "Number" = .x$getInitialValue()
+        "Number" = .x$getInitialValue(),
+        "Expression" = expr_to_str(.x)
       )
     }) %>%
     transform_names()
@@ -68,7 +69,8 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
         "Initial Concentration" = .x$getInitialConcentrationReference()$getObjectDisplayName(),
         "Initial Number" = .x$getInitialValueReference()$getObjectDisplayName(),
         "Concentration" = .x$getConcentrationReference()$getObjectDisplayName(),
-        "Number" = .x$getValueReference()$getObjectDisplayName()
+        "Number" = .x$getValueReference()$getObjectDisplayName(),
+        "Expression" = expr_to_ref_str(.x)
       )
     }) %>%
     transform_names()
@@ -209,7 +211,8 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
         key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Value" = .x$getInitialValue()
+        "Initial Value" = .x$getInitialValue(),
+        "Expression" = expr_to_str(.x)
       )
     }) %>%
     transform_names()
@@ -243,7 +246,8 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
         key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
         "Type" = stringr::str_to_lower(.x$getStatus()),
-        "Initial Value" = .x$getInitialValueReference()$getObjectDisplayName()
+        "Initial Value" = .x$getInitialValueReference()$getObjectDisplayName(),
+        "Expression" = expr_to_ref_str(.x)
       )
     }) %>%
     transform_names()
@@ -337,7 +341,9 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
       list(
         key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
-        "Initial Volume" = .x$getInitialValue()
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Volume" = .x$getInitialValue(),
+        "Expression" = expr_to_str(.x)
       )
     }) %>%
     transform_names()
@@ -370,7 +376,9 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
       list(
         key = .x$getObjectDisplayName(),
         "Name" = .x$getObjectName(),
-        "Initial Volume" = .x$getInitialValueReference()$getObjectDisplayName()
+        "Type" = stringr::str_to_lower(.x$getStatus()),
+        "Initial Volume" = .x$getInitialValueReference()$getObjectDisplayName(),
+        "Expression" = expr_to_ref_str(.x)
       )
     }) %>%
     transform_names()
@@ -521,12 +529,12 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   if (is_empty(key))
     params <-
-    get_cdv(datamodel$getModel()$getReactions()) %>%
-    map_swig("getParameters") %>%
-    map(function(paramgrp) {
-      seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
-    }) %>%
-    flatten()
+      get_cdv(datamodel$getModel()$getReactions()) %>%
+      map_swig("getParameters") %>%
+      map(function(paramgrp) {
+        seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
+      }) %>%
+      flatten()
   else
     params <- dn_to_object(key, datamodel)
   
@@ -562,12 +570,12 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   
   if (is_empty(key))
     params <-
-    get_cdv(datamodel$getModel()$getReactions()) %>%
-    map_swig("getParameters") %>%
-    map(function(paramgrp) {
-      seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
-    }) %>%
-    flatten()
+      get_cdv(datamodel$getModel()$getReactions()) %>%
+      map_swig("getParameters") %>%
+      map(function(paramgrp) {
+        seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
+      }) %>%
+      flatten()
   else
     params <- dn_to_object(key, datamodel)
   
