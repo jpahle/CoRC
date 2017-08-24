@@ -47,6 +47,17 @@ cmake, swig, gawk, wget, astyle
 brew install cmake swig gawk wget astyle
 ```
 
+## Windows:
+
+Use chocolatey to install:
+```
+choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable
+```
+
+Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
+Manually get the Rlib (Rlib.lib) files for your current R Version and put it in: development\copasi-source\r-3.4.1-import-lib\x64\
+Use the cmd prompt.
+
 # Compiling copasi dependencies
 
 ## macOS
@@ -55,6 +66,15 @@ brew install cmake swig gawk wget astyle
 cd development/copasi-source/copasi-dependencies/
 ./createOSX-qt5.sh
 cd ../../../
+```
+
+## Windows:
+
+run:
+```
+cd development\copasi-source\copasi-dependencies\
+.\createX86_vs15_x64_release.bat
+cd ..\..\..\
 ```
 
 # Compiling copasi from source
@@ -70,6 +90,18 @@ cd build_copasi_r_bindings/
 cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
 cd ../../../
+```
+
+## Windows
+
+run:
+```
+cd development\copasi-source\
+mkdir build_copasi_r_bindings
+cd build_copasi_r_bindings\
+call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" -DSWIG_EXECUTABLE="../swigwin/swig.exe" -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ../COPASI
+ninja
 ```
 
 # (Optionally) Update and rebuild all for release
@@ -125,19 +157,19 @@ cd ../../../
 
 # Copying the relevant file into the package repository
 
-```{r}
+```{r, eval=FALSE}
 source("../development/update-swig-in-package.R", chdir = TRUE)
 ```
 
 # Installing the package
 
-```{r}
+```{r, eval=FALSE}
 devtools::install("..")
 ```
 
 # Getting the current hash for the binary (update it in CoRC.R)
 
-```{r}
-digest::digest("copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI.so", algo = "sha256", file = TRUE)
+```{r, eval=FALSE}
+digest::digest(paste0("copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext), algo = "sha256", file = TRUE)
 ```
 
