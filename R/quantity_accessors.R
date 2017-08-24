@@ -14,7 +14,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
   else
-    metabs <- dn_to_object(key, datamodel)
+    metabs <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -47,7 +47,7 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     metabs <- get_cdv(datamodel$getModel()$getMetabolites())
   else
-    metabs <- dn_to_object(key, datamodel)
+    metabs <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -92,7 +92,7 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
   
   if (is_empty(key)) return(invisible())
   
-  metabs <- dn_to_object(key, datamodel, "_p_CMetab")
+  metabs <- map(key, dn_to_object, datamodel, "_p_CMetab")
   
   # metabs <- model$getMetabolites()
   
@@ -187,7 +187,7 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     quantities <- get_cdv(datamodel$getModel()$getModelValues())
   else
-    quantities <- dn_to_object(key, datamodel)
+    quantities <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -216,7 +216,7 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
   if (is_empty(key))
     quantities <- get_cdv(datamodel$getModel()$getModelValues())
   else
-    quantities <- dn_to_object(key, datamodel)
+    quantities <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -255,7 +255,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   
   if (is_empty(key)) return(invisible())
   
-  quantities <- dn_to_object(key, datamodel, "_p_CModelValue")
+  quantities <- map(key, dn_to_object, datamodel, "_p_CModelValue")
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
@@ -306,7 +306,7 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     comps <- get_cdv(datamodel$getModel()$getCompartments())
   else
-    comps <- dn_to_object(key, datamodel)
+    comps <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -335,7 +335,7 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     comps <- get_cdv(datamodel$getModel()$getCompartments())
   else
-    comps <- dn_to_object(key, datamodel)
+    comps <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -374,7 +374,7 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
   
   if (is_empty(key)) return(invisible())
   
-  comps <- dn_to_object(key, datamodel, "_p_CCompartment")
+  comps <- map(key, dn_to_object, datamodel, "_p_CCompartment")
   
   # apparently I need to give changedObjects because I cant update initial values without
   changedObjects <- ObjectStdVector()
@@ -425,7 +425,7 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   if (is_empty(key))
     reactions <- get_cdv(datamodel$getModel()$getReactions())
   else
-    reactions <- dn_to_object(key, datamodel)
+    reactions <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -459,7 +459,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_e
   
   if (is_empty(key)) return(invisible())
   
-  reactions <- dn_to_object(key, datamodel, "_p_CReaction")
+  reactions <- map(key, dn_to_object, datamodel, "_p_CReaction")
   
   # apply names
   if (!is_null(name)) {
@@ -494,7 +494,7 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
       }) %>%
       flatten()
   else
-    params <- dn_to_object(key, datamodel)
+    params <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -529,7 +529,7 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
       }) %>%
       flatten()
   else
-    params <- dn_to_object(key, datamodel)
+    params <- map(key, dn_to_object, datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -567,7 +567,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, da
   
   if (is_empty(key)) return(invisible())
   
-  params <- dn_to_object(key, datamodel, "_p_CCopasiParameter")
+  params <- map(key, dn_to_object, datamodel, "_p_CCopasiParameter")
   
   # apply names
   if (!is_null(name)) {

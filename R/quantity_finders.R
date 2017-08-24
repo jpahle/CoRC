@@ -20,7 +20,7 @@ species_obj <- function(key, reference = NULL, datamodel) {
   )
   
   # If names are already DN to metabolites we accept them
-  matched_metabs <- dn_to_object(key, datamodel, accepted_types = "_p_CMetab")
+  matched_metabs <- map(key, dn_to_object, datamodel, "_p_CMetab")
   
   is_matched <- matched_metabs %>% map_lgl(negate(is_null))
   
@@ -80,7 +80,7 @@ quantity_obj <- function(key, reference = NULL, datamodel) {
   )
   
   # If names are already DN to quantities we accept them
-  matched_quants <- dn_to_object(key, datamodel, accepted_types = "_p_CModelValue")
+  matched_quants <- map(key, dn_to_object, datamodel, "_p_CModelValue")
   
   is_matched <- matched_quants %>% map_lgl(negate(is_null))
   
@@ -140,7 +140,7 @@ compartment_obj <- function(key, reference = NULL, datamodel) {
   )
   
   # If names are already DN to compartment we accept them
-  matched_comps <- dn_to_object(key, datamodel, accepted_types = "_p_CCompartment")
+  matched_comps <- map(key, dn_to_object, datamodel, "_p_CCompartment")
   
   is_matched <- matched_comps %>% map_lgl(negate(is_null))
   
@@ -200,7 +200,7 @@ reaction_obj <- function(key, reference = NULL, datamodel) {
   )
   
   # If names are already DN to reactions we accept them
-  matched_reactions <- dn_to_object(key, datamodel, accepted_types = "_p_CReaction")
+  matched_reactions <- map(key, dn_to_object, datamodel, "_p_CReaction")
   
   is_matched <- matched_reactions %>% map_lgl(negate(is_null))
   
@@ -260,7 +260,7 @@ parameter_obj <- function(key, reference = NULL, datamodel) {
   )
   
   # If names are already DN to parameters we accept them
-  matched_params <- dn_to_object(key, datamodel, accepted_types = "_p_CCopasiParameter")
+  matched_params <- map(key, dn_to_object, datamodel, "_p_CCopasiParameter")
   
   is_matched <- matched_params %>% map_lgl(negate(is_null))
   
