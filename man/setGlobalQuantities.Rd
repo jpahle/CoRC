@@ -5,7 +5,7 @@
 \title{Set global quantities}
 \usage{
 setGlobalQuantities(key = NULL, name = NULL, initial.value = NULL,
-  data = NULL, datamodel = pkg_env$curr_dm)
+  data = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}

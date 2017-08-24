@@ -4,7 +4,7 @@
 \alias{getVolumeUnit}
 \title{Get the unit of volume}
 \usage{
-getVolumeUnit(datamodel = pkg_env$curr_dm)
+getVolumeUnit(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

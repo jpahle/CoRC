@@ -7,7 +7,7 @@
 runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm)
+  updateModel = NULL, method = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{duration}{numeric time course duration}

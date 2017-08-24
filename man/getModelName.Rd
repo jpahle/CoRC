@@ -4,7 +4,7 @@
 \alias{getModelName}
 \title{Get a model's name}
 \usage{
-getModelName(datamodel = pkg_env$curr_dm)
+getModelName(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

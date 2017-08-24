@@ -6,7 +6,7 @@
 \usage{
 setSteadyStateSettings(calculateJacobian = NULL,
   performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL,
-  method = NULL, datamodel = pkg_env$curr_dm)
+  method = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{calculateJacobian}{boolean}

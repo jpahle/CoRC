@@ -4,7 +4,7 @@
 \alias{getCompartmentReferences}
 \title{Get compartment references}
 \usage{
-getCompartmentReferences(key = NULL, datamodel = pkg_env$curr_dm)
+getCompartmentReferences(key = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}

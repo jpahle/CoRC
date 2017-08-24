@@ -5,7 +5,7 @@
 #' @param datamodel a model object
 #' @return name
 #' @export
-getModelName <- function(datamodel = pkg_env$curr_dm) {
+getModelName <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   datamodel$getModel()$getObjectName()
@@ -18,7 +18,7 @@ getModelName <- function(datamodel = pkg_env$curr_dm) {
 #' @param name the new model name
 #' @param datamodel a model object
 #' @export
-setModelName <- function(name, datamodel = pkg_env$curr_dm) {
+setModelName <- function(name, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.string(name))
   
@@ -37,7 +37,7 @@ setModelName <- function(name, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @return unit of time
 #' @export
-getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
+getTimeUnit <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   datamodel$getModel()$getTimeUnitName()
@@ -50,7 +50,7 @@ getTimeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param unit string
 #' @param datamodel a model object
 #' @export
-setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
+setTimeUnit <- function(unit, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.string(unit))
   
@@ -76,7 +76,7 @@ setTimeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @return unit of volume
 #' @export
-getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
+getVolumeUnit <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   datamodel$getModel()$getVolumeUnitName()
@@ -89,7 +89,7 @@ getVolumeUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param unit string
 #' @param datamodel a model object
 #' @export
-setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
+setVolumeUnit <- function(unit, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.string(unit))
   
@@ -115,7 +115,7 @@ setVolumeUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @return unit of quantity
 #' @export
-getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
+getQuantityUnit <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   datamodel$getModel()$getQuantityUnitName()
@@ -128,7 +128,7 @@ getQuantityUnit <- function(datamodel = pkg_env$curr_dm) {
 #' @param unit string
 #' @param datamodel a model object
 #' @export
-setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
+setQuantityUnit <- function(unit, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.string(unit))
   
@@ -154,7 +154,7 @@ setQuantityUnit <- function(unit, datamodel = pkg_env$curr_dm) {
 #'
 #' @param datamodel a model object
 #' @export
-getInitialTime <- function(datamodel = pkg_env$curr_dm) {
+getInitialTime <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   datamodel$getModel()$getInitialTime()
@@ -167,7 +167,7 @@ getInitialTime <- function(datamodel = pkg_env$curr_dm) {
 #' @param time numeric
 #' @param datamodel a model object
 #' @export
-setInitialTime <- function(time, datamodel = pkg_env$curr_dm) {
+setInitialTime <- function(time, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.number(time), time >= 0)
   

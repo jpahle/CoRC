@@ -4,7 +4,7 @@
 \alias{getInitialTime}
 \title{Get the model's inital time}
 \usage{
-getInitialTime(datamodel = pkg_env$curr_dm)
+getInitialTime(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

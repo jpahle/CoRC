@@ -4,7 +4,7 @@
 \alias{getReactions}
 \title{Get reactions}
 \usage{
-getReactions(key = NULL, datamodel = pkg_env$curr_dm)
+getReactions(key = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions}

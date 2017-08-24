@@ -5,7 +5,7 @@
 \title{Open the given model in the copasi UI}
 \usage{
 openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
-  datamodel = pkg_env$curr_dm)
+  datamodel = getCurrentModel())
 }
 \arguments{
 \item{readin}{if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel}

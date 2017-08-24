@@ -4,7 +4,7 @@
 #'
 #' @param datamodel a model object
 #' @export
-createSpecies <- function(name = NULL, compartment = NULL, type = c("fixed", "assignment", "reactions", "ode"), initial.concentration = 1, expression = NULL, datamodel = pkg_env$curr_dm) {
+createSpecies <- function(name = NULL, compartment = NULL, type = c("fixed", "assignment", "reactions", "ode"), initial.concentration = 1, expression = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.string(name),
@@ -35,7 +35,7 @@ createSpecies <- function(name = NULL, compartment = NULL, type = c("fixed", "as
 }
 
 #' @export
-removeSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+removeSpecies <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   c_species <- species_obj(key, datamodel = datamodel)
@@ -50,7 +50,7 @@ removeSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 }
 
 #' @export
-createGlobalQuantity <- function(name = NULL, type = c("fixed", "assignment", "ode"), initial.value = 1, datamodel = pkg_env$curr_dm) {
+createGlobalQuantity <- function(name = NULL, type = c("fixed", "assignment", "ode"), initial.value = 1, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.string(name),
@@ -71,7 +71,7 @@ createGlobalQuantity <- function(name = NULL, type = c("fixed", "assignment", "o
 }
 
 #' @export
-removeGlobalQuantity <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+removeGlobalQuantity <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   c_quantity <- quantity_obj(key, datamodel = datamodel)
@@ -86,7 +86,7 @@ removeGlobalQuantity <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 }
 
 #' @export
-createCompartment <- function(name = NULL, type = c("fixed", "assignment", "ode"), initial.volume = 1, datamodel = pkg_env$curr_dm) {
+createCompartment <- function(name = NULL, type = c("fixed", "assignment", "ode"), initial.volume = 1, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.string(name),
@@ -107,7 +107,7 @@ createCompartment <- function(name = NULL, type = c("fixed", "assignment", "ode"
 }
 
 #' @export
-removeCompartment <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+removeCompartment <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   c_compartments <- compartment_obj(key, datamodel = datamodel)
@@ -121,7 +121,7 @@ removeCompartment <- function(key = NULL, datamodel = pkg_env$curr_dm) {
   invisible()
 }
 
-createReaction <- function(name = NULL, scheme = NULL, datamodel = pkg_env$curr_dm) {
+createReaction <- function(name = NULL, scheme = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.string(name),
@@ -139,7 +139,7 @@ createReaction <- function(name = NULL, scheme = NULL, datamodel = pkg_env$curr_
   c_reaction$getObjectDisplayName()
 }
 
-createReaction <- function(name, kinetic = NULL, ..., datamodel = pkg_env$curr_dm) {
+createReaction <- function(name, kinetic = NULL, ..., datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.string(name),

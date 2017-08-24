@@ -4,7 +4,7 @@
 \alias{setVolumeUnit}
 \title{Set the unit of volume}
 \usage{
-setVolumeUnit(unit, datamodel = pkg_env$curr_dm)
+setVolumeUnit(unit, datamodel = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}

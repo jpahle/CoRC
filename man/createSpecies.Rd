@@ -6,7 +6,7 @@
 \usage{
 createSpecies(name = NULL, compartment = NULL, type = c("fixed",
   "assignment", "reactions", "ode"), initial.concentration = 1,
-  expression = NULL, datamodel = pkg_env$curr_dm)
+  expression = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

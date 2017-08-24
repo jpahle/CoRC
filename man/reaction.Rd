@@ -4,7 +4,7 @@
 \alias{reaction}
 \title{Identify reaction by name}
 \usage{
-reaction(key, reference = NULL, datamodel = pkg_env$curr_dm)
+reaction(key, reference = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify reactions}

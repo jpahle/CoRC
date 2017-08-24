@@ -6,7 +6,7 @@
 #' @param datamodel a model object
 #' @return a data frame with species and associated information
 #' @export
-getSpecies <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
+getSpecies <- function(key = NULL, prettyExpression = TRUE, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.flag(prettyExpression))
   
@@ -40,7 +40,7 @@ getSpecies <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$
 #' @param datamodel a model object
 #' @return a data frame with species and associated references
 #' @export
-getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getSpeciesReferences <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- species(key = key %||% character(), datamodel = datamodel)
@@ -76,7 +76,7 @@ getSpeciesReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, initial.number = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, initial.number = NULL, data = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is.character(key) && !anyNA(key),
@@ -180,7 +180,7 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
 #' @param datamodel a model object
 #' @return a data frame with global quantities and associated information
 #' @export
-getGlobalQuantities <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
+getGlobalQuantities <- function(key = NULL, prettyExpression = TRUE, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.flag(prettyExpression))
   
@@ -210,7 +210,7 @@ getGlobalQuantities <- function(key = NULL, prettyExpression = TRUE, datamodel =
 #' @param datamodel a model object
 #' @return a data frame with global quantities and associated references
 #' @export
-getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getGlobalQuantityReferences <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- quantity(key = key %||% character(), datamodel = datamodel)
@@ -241,7 +241,8 @@ getGlobalQuantityReferences <- function(key = NULL, datamodel = pkg_env$curr_dm)
 #' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {  assert_datamodel(datamodel)
+setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, data = NULL, datamodel = getCurrentModel()) {
+  assert_datamodel(datamodel)
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is.character(key) && !anyNA(key),
@@ -300,7 +301,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
 #' @param datamodel a model object
 #' @return a data frame with compartments and associated information
 #' @export
-getCompartments <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
+getCompartments <- function(key = NULL, prettyExpression = TRUE, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.flag(prettyExpression))
   
@@ -330,7 +331,7 @@ getCompartments <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg
 #' @param datamodel a model object
 #' @return a data frame with compartments and associated references
 #' @export
-getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getCompartmentReferences <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- compartment(key = key %||% character(), datamodel = datamodel)
@@ -361,7 +362,7 @@ getCompartmentReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is.character(key) && !anyNA(key),
@@ -420,7 +421,7 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
 #' @param datamodel a model object
 #' @return a data frame with reactions and associated information
 #' @export
-getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getReactions <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- reaction(key = key %||% character(), datamodel = datamodel)
@@ -447,7 +448,7 @@ getReactions <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param data a data frame as given by \code{getReactions} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is.character(key) && !anyNA(key),
@@ -483,7 +484,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = pkg_e
 #' @param datamodel a model object
 #' @return a data frame with reaction parameters and associated information
 #' @export
-getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getParameters <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- parameter(key = key %||% character(), datamodel = datamodel)
@@ -518,7 +519,7 @@ getParameters <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param datamodel a model object
 #' @return a data frame with reaction parameters and associated references
 #' @export
-getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getParameterReferences <- function(key = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   key <- parameter(key = key %||% character(), datamodel = datamodel)
@@ -554,7 +555,7 @@ getParameterReferences <- function(key = NULL, datamodel = pkg_env$curr_dm) {
 #' @param data a data frame as given by \code{getParameters} which will be applied before the other arguments.
 #' @param datamodel a model object
 #' @export
-setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, datamodel = pkg_env$curr_dm) {
+setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.null(key) || is.character(key) && !anyNA(key),

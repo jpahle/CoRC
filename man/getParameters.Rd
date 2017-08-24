@@ -4,7 +4,7 @@
 \alias{getParameters}
 \title{Get reaction parameters}
 \usage{
-getParameters(key = NULL, datamodel = pkg_env$curr_dm)
+getParameters(key = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions parameters}

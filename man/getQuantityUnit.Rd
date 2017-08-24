@@ -4,7 +4,7 @@
 \alias{getQuantityUnit}
 \title{Get the unit of quantity}
 \usage{
-getQuantityUnit(datamodel = pkg_env$curr_dm)
+getQuantityUnit(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

@@ -4,7 +4,7 @@
 \alias{getGlobalQuantityReferences}
 \title{Get global quantitiy references}
 \usage{
-getGlobalQuantityReferences(key = NULL, datamodel = pkg_env$curr_dm)
+getGlobalQuantityReferences(key = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}

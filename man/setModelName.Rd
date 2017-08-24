@@ -4,7 +4,7 @@
 \alias{setModelName}
 \title{Set a model's name}
 \usage{
-setModelName(name, datamodel = pkg_env$curr_dm)
+setModelName(name, datamodel = getCurrentModel())
 }
 \arguments{
 \item{name}{the new model name}

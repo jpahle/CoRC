@@ -5,7 +5,7 @@
 \title{Set compartments}
 \usage{
 setCompartments(key = NULL, name = NULL, initial.volume = NULL,
-  data = NULL, datamodel = pkg_env$curr_dm)
+  data = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}

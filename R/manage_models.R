@@ -140,7 +140,7 @@ loadSBML <- function(path) {
 #'
 #' @param datamodel a model object
 #' @export
-unloadModel <- function(datamodel = pkg_env$curr_dm) {
+unloadModel <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   # datamodel <- CRootContainer_removeDatamodel(datamodel)
@@ -174,7 +174,7 @@ unloadAllModels <- function() {
 #' @param overwrite is overwriting existing files allowed?
 #' @param datamodel a model object
 #' @export
-saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = pkg_env$curr_dm) {
+saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.string(filename))
 
@@ -229,7 +229,7 @@ loadExamples <- function(indices = NULL) {
 #' @param copasi_loc location of CopasiUI
 #' @param datamodel a model object
 #' @export
-openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = pkg_env$curr_dm) {
+openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.flag(readin) && !is.na(readin),

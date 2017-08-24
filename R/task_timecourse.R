@@ -14,7 +14,7 @@
 #' @param datamodel a model object
 #' @return a data frame with a time column and value columns
 #' @export
-runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   # use the worker function to apply all given arguments
@@ -69,7 +69,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param method character or list
 #' @param datamodel a model object
 #' @export
-setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   

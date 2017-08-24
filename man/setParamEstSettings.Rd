@@ -7,7 +7,7 @@
 setParamEstSettings(randomizeStartValues = NULL, createParameterSets = NULL,
   calculateStatistics = NULL, updateModel = NULL, executable = NULL,
   parameters = NULL, experiments = NULL, method = NULL,
-  datamodel = pkg_env$curr_dm)
+  datamodel = getCurrentModel())
 }
 \arguments{
 \item{randomizeStartValues}{boolean}

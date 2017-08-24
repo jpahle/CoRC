@@ -10,7 +10,7 @@
 #' @param datamodel a model object
 #' @return a list of results
 #' @export
-runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   # use the worker function to apply all given arguments
@@ -63,7 +63,7 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
 #' @param method character or list
 #' @param datamodel a model object
 #' @export
-setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
@@ -139,7 +139,7 @@ copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start
 defineParameter <- copasi_parm
 
 #' @export
-addParameter <- function(copasi_parm, datamodel = pkg_env$curr_dm) {
+addParameter <- function(copasi_parm, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(
     is.copasi_parm(copasi_parm)
@@ -163,7 +163,7 @@ addParameter <- function(copasi_parm, datamodel = pkg_env$curr_dm) {
 }
 
 #' @export
-clearParameters <- function(datamodel = pkg_env$curr_dm) {
+clearParameters <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
@@ -312,7 +312,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
 defineExperiments <- copasi_exp
 
 #' @export
-addExperiments <- function(copasi_exp, datamodel = pkg_env$curr_dm) {
+addExperiments <- function(copasi_exp, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.copasi_exp(copasi_exp))
   
@@ -377,7 +377,7 @@ addExperiments <- function(copasi_exp, datamodel = pkg_env$curr_dm) {
 }
 
 #' @export
-clearExperiments <- function(datamodel = pkg_env$curr_dm) {
+clearExperiments <- function(datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   task <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   problem <- as(task$getProblem(), "_p_CFitProblem")

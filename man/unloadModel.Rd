@@ -4,7 +4,7 @@
 \alias{unloadModel}
 \title{Unload a model}
 \usage{
-unloadModel(datamodel = pkg_env$curr_dm)
+unloadModel(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

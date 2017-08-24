@@ -24,7 +24,7 @@ expr_to_ref_str <- function(c_entity) {
 }
 
 #' @export
-prettify <- function(expression, datamodel = pkg_env$curr_dm) {
+prettify <- function(expression, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   map_chr(
     expression,

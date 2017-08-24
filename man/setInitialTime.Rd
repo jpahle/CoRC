@@ -4,7 +4,7 @@
 \alias{setInitialTime}
 \title{Set the model's initial time}
 \usage{
-setInitialTime(time, datamodel = pkg_env$curr_dm)
+setInitialTime(time, datamodel = getCurrentModel())
 }
 \arguments{
 \item{time}{numeric}

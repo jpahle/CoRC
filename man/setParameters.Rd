@@ -5,7 +5,7 @@
 \title{Set reaction parameters}
 \usage{
 setParameters(key = NULL, name = NULL, value = NULL, data = NULL,
-  datamodel = pkg_env$curr_dm)
+  datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reaction parameters}

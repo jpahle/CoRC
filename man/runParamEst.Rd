@@ -6,7 +6,7 @@
 \usage{
 runParamEst(randomizeStartValues = NULL, createParameterSets = NULL,
   calculateStatistics = NULL, updateModel = NULL, parameters = NULL,
-  experiments = NULL, method = NULL, datamodel = pkg_env$curr_dm)
+  experiments = NULL, method = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{calculateStatistics}{boolean}

@@ -4,7 +4,7 @@
 \alias{parameter}
 \title{Identify reaction parameter by name}
 \usage{
-parameter(key, reference = NULL, datamodel = pkg_env$curr_dm)
+parameter(key, reference = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify reaction parameters}

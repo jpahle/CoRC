@@ -7,7 +7,7 @@
 #' @param datamodel a model object
 #' @return a character vector of copasi keys
 #' @export
-species <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
+species <- function(key, reference = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   species_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
@@ -67,7 +67,7 @@ species_obj <- function(key, reference = NULL, datamodel) {
 #' @param datamodel a model object
 #' @return a character vector of copasi keys
 #' @export
-quantity <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
+quantity <- function(key, reference = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   quantity_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
@@ -127,7 +127,7 @@ quantity_obj <- function(key, reference = NULL, datamodel) {
 #' @param datamodel a model object
 #' @return a character vector of copasi keys
 #' @export
-compartment <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
+compartment <- function(key, reference = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   compartment_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
@@ -187,7 +187,7 @@ compartment_obj <- function(key, reference = NULL, datamodel) {
 #' @param datamodel a model object
 #' @return a character vector of copasi keys
 #' @export
-reaction <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
+reaction <- function(key, reference = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   reaction_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")
@@ -247,7 +247,7 @@ reaction_obj <- function(key, reference = NULL, datamodel) {
 #' @param datamodel a model object
 #' @return a character vector of copasi keys
 #' @export
-parameter <- function(key, reference = NULL, datamodel = pkg_env$curr_dm) {
+parameter <- function(key, reference = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   parameter_obj(key, reference, datamodel) %>% map_swig_chr("getObjectDisplayName")

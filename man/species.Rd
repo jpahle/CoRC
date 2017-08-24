@@ -4,7 +4,7 @@
 \alias{species}
 \title{Identify species by name}
 \usage{
-species(key, reference = NULL, datamodel = pkg_env$curr_dm)
+species(key, reference = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify species}

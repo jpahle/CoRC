@@ -4,7 +4,7 @@
 \alias{setTimeUnit}
 \title{Set the unit of time}
 \usage{
-setTimeUnit(unit, datamodel = pkg_env$curr_dm)
+setTimeUnit(unit, datamodel = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}

@@ -5,7 +5,7 @@
 \title{Set reactions}
 \usage{
 setReactions(key = NULL, name = NULL, data = NULL,
-  datamodel = pkg_env$curr_dm)
+  datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions}

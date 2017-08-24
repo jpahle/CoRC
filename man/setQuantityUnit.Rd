@@ -4,7 +4,7 @@
 \alias{setQuantityUnit}
 \title{Set the unit of quantity}
 \usage{
-setQuantityUnit(unit, datamodel = pkg_env$curr_dm)
+setQuantityUnit(unit, datamodel = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}

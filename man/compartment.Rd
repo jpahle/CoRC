@@ -4,7 +4,7 @@
 \alias{compartment}
 \title{Identify compartment by name}
 \usage{
-compartment(key, reference = NULL, datamodel = pkg_env$curr_dm)
+compartment(key, reference = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify compartments}

@@ -4,7 +4,7 @@
 \alias{getTimeUnit}
 \title{Get the unit of time}
 \usage{
-getTimeUnit(datamodel = pkg_env$curr_dm)
+getTimeUnit(datamodel = getCurrentModel())
 }
 \arguments{
 \item{datamodel}{a model object}

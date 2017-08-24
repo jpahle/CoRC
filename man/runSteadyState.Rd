@@ -5,7 +5,7 @@
 \title{Run to stready state}
 \usage{
 runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm)
+  updateModel = NULL, method = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{calculateJacobian}{boolean}

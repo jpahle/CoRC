@@ -5,7 +5,7 @@
 \title{Set species}
 \usage{
 setSpecies(key = NULL, name = NULL, initial.concentration = NULL,
-  initial.number = NULL, data = NULL, datamodel = pkg_env$curr_dm)
+  initial.number = NULL, data = NULL, datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}

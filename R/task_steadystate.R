@@ -9,7 +9,7 @@
 #' @param datamodel a model object
 #' @return a list of results
 #' @export
-runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   
   # use the worker function to apply all given arguments
@@ -54,7 +54,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param method list
 #' @param datamodel a model object
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = pkg_env$curr_dm) {
+setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = getCurrentModel()) {
   assert_datamodel(datamodel)
   assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
