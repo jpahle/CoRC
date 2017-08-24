@@ -59,6 +59,8 @@ cd ../../../
 
 # Compiling copasi from source
 
+## macOS
+
 ```{bash, eval=FALSE}
 cd development/copasi-source/COPASI/
 ./gitTools/UpdateCopasiVersion
@@ -71,6 +73,8 @@ cd ../../../
 ```
 
 # (Optionally) Update and rebuild all for release
+
+## macOS
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
@@ -91,6 +95,8 @@ cd ../../../
 ```
 
 # (Optionally) Build GUI
+
+## macOS
 
 Cosider using homebrew for macOS intall qt5:
 

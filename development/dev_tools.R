@@ -1,6 +1,8 @@
 reset_copasi <- function() {
-  if (exists("unloadAllModels")) unloadAllModels()
   rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "current_example", "ls_corc", "inspect"))], envir = .GlobalEnv)
+  gc()
+  
+  if (exists("unloadAllModels")) unloadAllModels()
   
   devtools::load_all(reset = FALSE)
   
