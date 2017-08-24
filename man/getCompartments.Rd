@@ -4,7 +4,8 @@
 \alias{getCompartments}
 \title{Get compartments}
 \usage{
-getCompartments(key = NULL, datamodel = pkg_env$curr_dm)
+getCompartments(key = NULL, prettyExpression = TRUE,
+  datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}

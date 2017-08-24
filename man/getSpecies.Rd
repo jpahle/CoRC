@@ -4,7 +4,8 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(key = NULL, datamodel = pkg_env$curr_dm)
+getSpecies(key = NULL, prettyExpression = TRUE,
+  datamodel = pkg_env$curr_dm)
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}

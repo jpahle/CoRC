@@ -6,8 +6,9 @@
 #' @param datamodel a model object
 #' @return a data frame with species and associated information
 #' @export
-getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getSpecies <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  assert_that(is.flag(prettyExpression))
   
   key <- species(key = key %||% character(), datamodel = datamodel)
   
@@ -26,7 +27,7 @@ getSpecies <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     "Initial Number" = map_swig_dbl(metabs, "getInitialValue"),
     "Concentration" = map_swig_dbl(metabs, "getInitialConcentration"),
     "Number" = map_swig_dbl(metabs, "getInitialValue"),
-    "Expression" = map_chr(metabs, expr_to_str)
+    "Expression" = map_chr(metabs, expr_to_str, pretty = prettyExpression)
   ) %>%
     transform_names()
 }
@@ -179,8 +180,9 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
 #' @param datamodel a model object
 #' @return a data frame with global quantities and associated information
 #' @export
-getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getGlobalQuantities <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  assert_that(is.flag(prettyExpression))
   
   key <- quantity(key = key %||% character(), datamodel = datamodel)
   
@@ -195,7 +197,7 @@ getGlobalQuantities <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     "Name" = map_swig_chr(quantities, "getObjectName"),
     "Type" = quantities %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Value" = map_swig_dbl(quantities, "getInitialValue"),
-    "Expression" = map_chr(quantities, expr_to_str)
+    "Expression" = map_chr(quantities, expr_to_str, pretty = prettyExpression)
   ) %>%
     transform_names()
 }
@@ -298,8 +300,9 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
 #' @param datamodel a model object
 #' @return a data frame with compartments and associated information
 #' @export
-getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
+getCompartments <- function(key = NULL, prettyExpression = TRUE, datamodel = pkg_env$curr_dm) {
   assert_datamodel(datamodel)
+  assert_that(is.flag(prettyExpression))
   
   key <- compartment(key = key %||% character(), datamodel = datamodel)
   
@@ -314,7 +317,7 @@ getCompartments <- function(key = NULL, datamodel = pkg_env$curr_dm) {
     "Name" = map_swig_chr(comps, "getObjectName"),
     "Type" = comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Volume" = map_swig_dbl(comps, "getInitialValue"),
-    "Expression" = map_chr(comps, expr_to_str)
+    "Expression" = map_chr(comps, expr_to_str, pretty = prettyExpression)
   ) %>%
     transform_names()
 }
