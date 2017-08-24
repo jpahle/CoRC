@@ -23,14 +23,14 @@ COPASI_BIN_HASHES <-
   list(
     "3.3" =
       c(
-        # darwin = "521ebcf2441f86cf2c4d977dcca1e80a5d1c92571ba9c7e66210f9c2a25f6225"
+        # darwin = ""
         # win = "",
         # ubuntu_16_10 = ""
       ),
     "3.4" =
       c(
-        darwin = "7e0500aa8e31a029f0402c122b96ed1d5bb67d2ef7009a56fe11806c3939daaf"
-        # win = "",
+        darwin = "7e0500aa8e31a029f0402c122b96ed1d5bb67d2ef7009a56fe11806c3939daaf",
+        win = "379a805ee37a77aca6506fdff1bfbbf4c8774b162702d82a12d61709a49e21b1"
         # ubuntu_16_10 = ""
       )
   )
