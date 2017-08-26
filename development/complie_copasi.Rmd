@@ -150,7 +150,7 @@ Build GUI:
 ```{bash, eval=FALSE}
 cd development/copasi-source/build_copasi_r_bindings/
 export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
-cmake -DBUILD_GUI=ON
+cmake -DBUILD_GUI=ON -DSELECT_QT=Qt5 -DQT5_USE_WEBENGINE=ON .
 make
 cd ../../../
 ```
