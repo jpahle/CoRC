@@ -89,7 +89,7 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
   # Do this as assertion before we start changing values
   key <- species(key = key %||% character(), datamodel = datamodel)
   
-  if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "concentration", "particlenum")])
+  if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "initial.concentration", "initial.number")])
   
   if (is_empty(key)) return(invisible())
   
