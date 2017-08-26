@@ -89,6 +89,8 @@ setSpecies <- function(key = NULL, name = NULL, initial.concentration = NULL, in
   # Do this as assertion before we start changing values
   key <- species(key = key %||% character(), datamodel = datamodel)
   
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "initial.concentration", "initial.number")])
   
   if (is_empty(key)) return(invisible())
@@ -254,6 +256,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, initial.value = NULL, d
   # Do this as assertion before we start changing values
   key <- quantity(key = key %||% character(), datamodel = datamodel)
   
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "initial.value")])
   
   if (is_empty(key)) return(invisible())
@@ -374,6 +378,8 @@ setCompartments <- function(key = NULL, name = NULL, initial.volume = NULL, data
   # Do this as assertion before we start changing values
   key <- compartment(key = key %||% character(), datamodel = datamodel)
   
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setCompartments, data[names(data) %in% c("key", "name", "initial.volume")])
   
   if (is_empty(key)) return(invisible())
@@ -459,6 +465,8 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, datamodel = getCu
   # Do this as assertion before we start changing values
   key <- reaction(key = key %||% character(), datamodel = datamodel)
   
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setReactions, data[names(data) %in% c("key", "name")])
   
   if (is_empty(key)) return(invisible())
@@ -567,6 +575,8 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, da
   # Do this as assertion before we start changing values
   key <- parameter(key = key %||% character(), datamodel = datamodel)
   
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
   
   if (is_empty(key)) return(invisible())
