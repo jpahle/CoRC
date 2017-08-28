@@ -316,7 +316,7 @@ match_worker <- function(keysvec, namesvec, info, partial = TRUE) {
     keysvec_remaining <- keysvec[not_matched]
     
     # Use give names as fixed pattern for searching in v_displaynames
-    matches_partial <- keysvec_remaining %>% map(~ stringr::str_which(namesvec, stringr::fixed(.x)))
+    matches_partial <- keysvec_remaining %>% map(~ stringr::str_which(namesvec, stringr::coll(.x)))
     
     multi_matches <- which(map_int(matches_partial, length) > 1L)
     assert_that(
