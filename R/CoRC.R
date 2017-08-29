@@ -9,6 +9,7 @@
 #' @import methods
 #' @import purrr
 #' @importFrom rlang .data
+#' @importFrom stringr fixed coll regex
 #' @importFrom utils head tail capture.output
 "_PACKAGE"
 

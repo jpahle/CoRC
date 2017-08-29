@@ -24,43 +24,55 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already DN to metabolites we accept them
-  cl_matched_metabs <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+  else
+    matches <- vector("list", length(key))
   
-  is_matched <- cl_matched_metabs %>% map_lgl(negate(is_null))
+  matched <- map_int(matches, length) == 1L
   
-  if(!all(is_matched)) {
+  if (!all(matched)) {
+    info <- "species"
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
+    ns <- cl_metabs %>% map_swig_chr("getObjectName")
+    dns <- cl_metabs %>% map_swig_chr("getObjectDisplayName")
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    matches_by_dispnames <-
-      match_worker(
-        keysvec = key[!is_matched],
-        namesvec = cl_metabs %>% map_swig_chr("getObjectName"),
-        info = "species"
+    # find matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
+    assert_matches(matches, key, dns, info)
+    
+    matched <- map_int(matches, length) == 1L
+    
+    if (!all(matched)) {
+      # find matches to ObjectDisplayName
+      matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+      assert_matches(matches, key, dns, info)
+      
+      matched <- map_int(matches, length) == 1L
+      
+      assert_that(all(matched), msg = paste0(
+        "Couldn't match ", info, ' "',
+        key[!matched], '".',
+        collapse = '", "'
+      ))
+    }
+    
+    # apply all missing matches
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_metabs[[.x]]
       )
-    
-    # fill matched_comps list
-    cl_matched_metabs[!is_matched] <- cl_metabs[matches_by_dispnames]
   }
   
-  # If a reference is given, we use the matched metabolites to get value references
-  if (!is_null(reference)) {
-    # If given reference string is scalar we replicate it for all matches
-    if (length(reference) == 1L) reference <- rep(reference, length(key))
-    
-    cl_matched_metabs <- map2(
-      cl_matched_metabs,
-      reference,
-      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
-    )
-  }
-  
-  assert_that(
-    !has_element(cl_matched_metabs, NULL),
-    msg = "Failed to gather some references."
-  )
-  
-  cl_matched_metabs
+  if (is_null(reference))
+    matches
+  else
+    apply_ref(matches, reference)
 }
 
 #' Identify quantity by name
@@ -89,43 +101,46 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already DN to quantities we accept them
-  cl_matched_quants <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
+  else
+    matches <- vector("list", length(key))
   
-  is_matched <- cl_matched_quants %>% map_lgl(negate(is_null))
+  matched <- map_int(matches, length) == 1L
   
-  if(!all(is_matched)) {
-    cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
+  if (!all(matched)) {
+    info <- "global quantity(s)"
+    cl_quants <- get_cdv(c_datamodel$getModel()$get$getModelValues())
+    ns <- cl_quants %>% map_swig_chr("getObjectName")
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    matches_by_dispnames <-
-      match_worker(
-        keysvec = key[!is_matched],
-        namesvec = cl_quants %>% map_swig_chr("getObjectName"),
-        info = "global quantity(s)"
+    # find matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
+    assert_matches(matches, key, ns, info)
+    
+    matched <- map_int(matches, length) == 1L
+      
+    assert_that(all(matched), msg = paste0(
+      "Couldn't match ", info, ' "',
+      key[!matched], '".',
+      collapse = '", "'
+    ))
+    
+    # apply all missing matches
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_quants[[.x]]
       )
-    
-    # fill matched_comps list
-    cl_matched_quants[!is_matched] <- cl_quants[matches_by_dispnames]
   }
   
-  # If a reference is given, we use the matched metabolites to get value references
-  if (!is_null(reference)) {
-    # If given reference string is scalar we replicate it for all matches
-    if (length(reference) == 1L) reference <- rep(reference, length(key))
-    
-    cl_matched_quants <- map2(
-      cl_matched_quants,
-      reference,
-      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
-    )
-  }
-  
-  assert_that(
-    !has_element(cl_matched_quants, NULL),
-    msg = "Failed to gather some references."
-  )
-  
-  cl_matched_quants
+  if (is_null(reference))
+    matches
+  else
+    apply_ref(matches, reference)
 }
 
 #' Identify compartment by name
@@ -154,43 +169,46 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already DN to compartment we accept them
-  cl_matched_comps <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+  else
+    matches <- vector("list", length(key))
   
-  is_matched <- cl_matched_comps %>% map_lgl(negate(is_null))
+  matched <- map_int(matches, length) == 1L
   
-  if(!all(is_matched)) {
+  if (!all(matched)) {
+    info <- "compartment(s)"
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
+    ns <- cl_comps %>% map_swig_chr("getObjectName")
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    matches_by_dispnames <-
-      match_worker(
-        keysvec = key[!is_matched],
-        namesvec = cl_comps %>% map_swig_chr("getObjectName"),
-        info = "compartment(s)"
+    # find matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
+    assert_matches(matches, key, ns, info)
+    
+    matched <- map_int(matches, length) == 1L
+    
+    assert_that(all(matched), msg = paste0(
+      "Couldn't match ", info, ' "',
+      key[!matched], '".',
+      collapse = '", "'
+    ))
+    
+    # apply all missing matches
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_comps[[.x]]
       )
-    
-    # fill matched_comps list
-    cl_matched_comps[!is_matched] <- cl_comps[matches_by_dispnames]
   }
   
-  # If a reference is given, we use the matched metabolites to get value references
-  if (!is_null(reference)) {
-    # If given reference string is scalar we replicate it for all matches
-    if (length(reference) == 1L) reference <- rep(reference, length(key))
-    
-    cl_matched_comps <- map2(
-      cl_matched_comps,
-      reference,
-      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
-    )
-  }
-  
-  assert_that(
-    !has_element(cl_matched_comps, NULL),
-    msg = "Failed to gather some references."
-  )
-  
-  cl_matched_comps
+  if (is_null(reference))
+    matches
+  else
+    apply_ref(matches, reference)
 }
 
 #' Identify reaction by name
@@ -219,43 +237,46 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already DN to reactions we accept them
-  cl_matched_reacts <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
+  else
+    matches <- vector("list", length(key))
   
-  is_matched <- cl_matched_reacts %>% map_lgl(negate(is_null))
+  matched <- map_int(matches, length) == 1L
   
-  if(!all(is_matched)) {
+  if (!all(matched)) {
+    info <- "reaction(s)"
     cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
+    ns <- cl_reacts %>% map_swig_chr("getObjectName")
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    matches_by_dispnames <-
-      match_worker(
-        keysvec = key[!is_matched],
-        namesvec = cl_reacts %>% map_swig_chr("getObjectName"),
-        info = "reaction(s)"
+    # find matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
+    assert_matches(matches, key, ns, info)
+    
+    matched <- map_int(matches, length) == 1L
+    
+    assert_that(all(matched), msg = paste0(
+      "Couldn't match ", info, ' "',
+      key[!matched], '".',
+      collapse = '", "'
+    ))
+    
+    # apply all missing matches
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_reacts[[.x]]
       )
-    
-    # fill matched_reactions list
-    cl_matched_reacts[!is_matched] <- cl_reacts[matches_by_dispnames]
   }
   
-  # If a reference is given, we use the matched metabolites to get value references
-  if (!is_null(reference)) {
-    # If given reference string is scalar we replicate it for all matches
-    if (length(reference) == 1L) reference <- rep(reference, length(key))
-    
-    cl_matched_reacts <- map2(
-      cl_matched_reacts,
-      reference,
-      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
-    )
-  }
-  
-  assert_that(
-    !has_element(cl_matched_reacts, NULL),
-    msg = "Failed to gather some references."
-  )
-  
-  cl_matched_reacts
+  if (is_null(reference))
+    matches
+  else
+    apply_ref(matches, reference)
 }
 
 #' Identify reaction parameter by name
@@ -284,12 +305,16 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
-  # If names are already DN to parameters we accept them
-  cl_matched_params <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (!inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
+  else
+    matches <- vector("list", length(key))
   
-  is_matched <- cl_matched_params %>% map_lgl(negate(is_null))
+  matched <- map_int(matches, length) == 1L
   
-  if(!all(is_matched)) {
+  if (!all(matched)) {
+    info <- "parameter(s)"
     cl_params <-
       get_cdv(c_datamodel$getModel()$getReactions()) %>%
       map_swig("getParameters") %>%
@@ -297,85 +322,61 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
         seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
       }) %>%
       flatten()
+    ns <- cl_params %>% map_swig_chr("getObjectDisplayName")
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    matches_by_dispnames <-
-      match_worker(
-        keysvec = key[!is_matched],
-        namesvec = cl_params %>% map_swig_chr("getObjectDisplayName"),
-        info = "parameter(s)"
+    # find matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
+    assert_matches(matches, key, ns, info)
+    
+    matched <- map_int(matches, length) == 1L
+    
+    assert_that(all(matched), msg = paste0(
+      "Couldn't match ", info, ' "',
+      key[!matched], '".',
+      collapse = '", "'
+    ))
+    
+    # apply all missing matches
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_params[[.x]]
       )
-    
-    # fill matched_params list
-    cl_matched_params[!is_matched] <- cl_params[matches_by_dispnames]
   }
   
-  # If a reference is given, we use the matched metabolites to get value references
-  if (!is_null(reference)) {
-    # If given reference string is scalar we replicate it for all matches
-    if (length(reference) == 1L) reference <- rep(reference, length(key))
-    
-    cl_matched_params <- map2(
-      cl_matched_params,
-      reference,
-      ~ .x$getObject(CCommonName(paste0("Reference=", .y)))
-    )
-  }
-  
-  assert_that(
-    !has_element(cl_matched_params, NULL),
-    msg = "Failed to gather some references."
-  )
-  
-  cl_matched_params
+  if (is_null(reference))
+    matches
+  else
+    apply_ref(matches, reference)
 }
 
-# Find a uniquely matching string in namesvec for every string in keysvec
-match_worker <- function(keysvec, namesvec, info, partial = TRUE) {
-  # Find all full matches of displaynames
-  # This is needed because in later steps "C" would not resolve if "C" and "C1" are matching.
-  matches <- match(keysvec, namesvec)
-  
-  not_matched <- is.na(matches)
-  
-  if (partial && any(not_matched)) {
-    keysvec_remaining <- keysvec[not_matched]
-    
-    # Give names as fixed pattern for searching in v_displaynames
-    matches_partial <- keysvec_remaining %>% map(~ stringr::str_which(namesvec, stringr::coll(.x)))
-    
-    multi_matches <- which(map_int(matches_partial, length) > 1L)
+assert_matches <- function(matches, keys, names, info) {
+  iwalk(matches, ~ {
     assert_that(
-      is_empty(multi_matches),
+      length(.x) <= 1L,
       msg = paste0(
-        "Could not correctly identify some ", info, ":\n",
-        paste0(
-          multi_matches %>% map_chr(~
-            paste0(
-              '"', keysvec_remaining[.x], '" matches ', info, ' "',
-              paste0(namesvec[matches_partial[[.x]]], collapse = '", "'),
-              '".'
-            )
-          ),
-          collapse = "\n"
-        )
+        '"', keys[.y], '" matches ', info, ' "',
+        paste0(names[.x], collapse = '", "'),
+        '".'
       )
     )
-    
-    # Empty entries get NAed
-    matches_partial[map_lgl(matches_partial, is_empty)] <- NA_integer_
-    
-    matches[not_matched] <- flatten_int(matches_partial)
-  }
+  })
+}
+
+apply_ref <- function(cl_objs, refs) {
+  # If given reference string is scalar we replicate it for all matches
+  if (length(reference) == 1L) reference <- rep(reference, length(cl_objs))
   
-  no_matches <- is.na(matches)
-  assert_that(
-    !any(no_matches),
-    msg = paste0(
-      'Could not match ', info, ' "',
-      keysvec[no_matches], '".',
-      collapse = '", "'
-    )
+  map2(
+    cl_objs,
+    reference,
+    ~ {
+      c_obj <- .x$getObject(CCommonName(paste0("Reference=", .y)))
+      assert_that(!is_null(c_obj), msg = paste0('Failed to gather reference "', .y, '".'))
+      c_obj
+    }
   )
-  
-  matches
 }

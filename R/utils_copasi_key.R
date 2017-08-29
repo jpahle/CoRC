@@ -74,7 +74,7 @@ get_cn <- function(c_object) {
 escape_ref <- function(x) {
   paste0(
     "{",
-    stringr::str_replace_all(x, stringr::coll("}"), "\\}"),
+    stringr::str_replace_all(x, coll("}"), "\\}"),
     "}"
   )
 }
@@ -83,7 +83,7 @@ escape_ref <- function(x) {
 unescape_ref <- function(x) {
   x %>%
     stringr::str_sub(2L, -2L) %>%
-    stringr::str_replace_all(stringr::coll("\\}"), "}")
+    stringr::str_replace_all(coll("\\}"), "}")
 }
 
 # Takes an object and returns either the reference "{DN}"
