@@ -11,7 +11,7 @@ setMethod("format",
     
     model <- x$getModel()
     string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
-    string <- paste0(string, "@ref is set to: " , utils::capture.output(x@ref) , "\n")
+    # string <- paste0(string, "@ref is set to: " , utils::capture.output(x@ref) , "\n")
     string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
     string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
     string <- paste0(string, "Number of reactions: " , model$getReactions()$size())
