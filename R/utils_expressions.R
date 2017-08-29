@@ -1,28 +1,35 @@
-escape_ref <- function(x) {
-  paste0(
-    "{",
-    stringr::str_replace_all(x, stringr::coll("}"), "\\}"),
-    "}"
-  )
+#' Calculate the value of an expression or reference
+#'
+#' \code{getValue} calculates the value of a given expression or reference.
+#'
+#' @param expression an character vector of expressions
+#' @param model a model object
+#' @return a numeric vector of values
+#' @export
+getValue <- function(expression, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.character(expression))
+  
+  expression %>%
+    map_chr(write_expr, c_datamodel) %>%
+    map_dbl(get_expr_val, c_datamodel)
 }
 
-unescape_ref <- function(x) {
-  x %>%
-    stringr::str_sub(2L, -2L) %>%
-    stringr::str_replace_all(stringr::coll("\\}"), "}")
-}
-
-as_ref <- function(cl_objects, c_datamodel) {
-  refs <- cl_objects %>% map_swig_chr("getObjectDisplayName")
+#' Calculate the initial value of an expression or reference
+#'
+#' \code{getValue} calculates the initial value of a given expression or reference.
+#'
+#' @param expression an character vector of expressions
+#' @param model a model object
+#' @return a numeric vector of initial values
+#' @export
+getInitialValue <- function(expression, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.character(expression))
   
-  dn_unresolvable <- map(refs, dn_to_object, c_datamodel) %>% map_lgl(is_null)
-  
-  refs[dn_unresolvable] <- map_chr(cl_objects[dn_unresolvable], get_cn)
-  
-  refs[!dn_unresolvable] <- escape_ref(refs[!dn_unresolvable])
-  refs[dn_unresolvable] <- paste0("<", refs[dn_unresolvable], ">")
-  
-  refs
+  expression %>%
+    map_chr(write_expr, c_datamodel) %>%
+    map_dbl(get_expr_init_val, c_datamodel)
 }
 
 # check if an entity has an expression set
@@ -50,6 +57,7 @@ expr_to_ref_str <- function(c_entity) {
 }
 
 # Copasi -> R
+# In copasi, expressions consist of <CN>, in R they should be mostly {DN}
 read_expr <- function(x, c_datamodel) {
   stringr::str_replace_all(
     x,
@@ -65,6 +73,7 @@ read_expr <- function(x, c_datamodel) {
 }
 
 # R -> Copasi
+# In copasi, expressions consist of <CN>, in R they should be mostly {DN}
 write_expr <- function(x, c_datamodel) {
   # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Avogadro Constant>
   # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Quantity Conversion Factor>
@@ -88,27 +97,11 @@ write_expr <- function(x, c_datamodel) {
   )
 }
 
-#' @export
-getValue <- function(expression, model = getCurrentModel()) {
-  c_datamodel <- assert_datamodel(model)
-  assert_that(is.character(expression))
-  
-  expression %>%
-    map_chr(write_expr, c_datamodel) %>%
-    map_dbl(get_expr_val, c_datamodel)
-}
-
-#' @export
-getInitialValue <- function(expression, model = getCurrentModel()) {
-  c_datamodel <- assert_datamodel(model)
-  assert_that(is.character(expression))
-  
-  expression %>%
-    map_chr(write_expr, c_datamodel) %>%
-    map_dbl(get_expr_init_val, c_datamodel)
-}
-
+# calculate the value of an expression
 get_expr_val <- function(x, c_datamodel) {
+  # avert_gc so i can delete it right away
+  # CExpressions get destructed on model unloading and
+  # are therefore unsafe to keep around until next gc
   c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
   
   grab_msg(c_expression$setInfix(x))
@@ -120,7 +113,11 @@ get_expr_val <- function(x, c_datamodel) {
   val
 }
 
+# calculate the initial value of an expression
 get_expr_init_val <- function(x, c_datamodel) {
+  # avert_gc so i can delete it right away
+  # CExpressions get destructed on model unloading and
+  # are therefore unsafe to keep around until next gc
   c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
   c_init_expression <- grab_msg(CExpression_createInitialExpression(c_expression, c_datamodel))
   delete(c_expression)

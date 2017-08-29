@@ -40,7 +40,7 @@ setMethod("show",
   }
 )
 
-# Checks whether the given c_datamodel is valid
+# Checks whether the given c_datamodel is valid / loaded
 assert_datamodel <- function(c_datamodel) {
   assert_that(inherits(c_datamodel, "_p_CDataModel"))
   
@@ -55,6 +55,7 @@ assert_datamodel <- function(c_datamodel) {
 }
 
 # transforms names from how they appear in the GUI to the preferred format in CoRC
+# e.g. "Initial Concentration" -> "initial.concentration" 
 transform_names <- function(x) {
   set_names(
     x,
@@ -63,6 +64,7 @@ transform_names <- function(x) {
 }
 
 # finds copasi messages and helps purge known annoying messages
+# because of lazy evaluation, x will evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character(0)) {
   purge_by_default <- c(
     ": No output file defined for report of task "
@@ -99,6 +101,8 @@ grab_msg <- function(x, purge = character(0)) {
 }
 
 # Check if object@ref pointer is NULL
+# This happens whenever an object is destructed from R (e.g. garbage collection)
+# or when the object has been saved and loaded from file (not supported)
 has_null_pointer <- function(c_object) {
   capture.output(c_object@ref) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
 }

@@ -2,7 +2,7 @@
 #'
 #' \code{species} identifies species from the given name fragments.
 #'
-#' @param key a vector of strings to identify species
+#' @param key a vector of strings to identify species.
 #' @param reference a scalar character or vector of characters naming the value references to be returned.
 #' @param model a model object
 #' @return a character vector of copasi keys
@@ -340,7 +340,7 @@ match_worker <- function(keysvec, namesvec, info, partial = TRUE) {
   if (partial && any(not_matched)) {
     keysvec_remaining <- keysvec[not_matched]
     
-    # Use give names as fixed pattern for searching in v_displaynames
+    # Give names as fixed pattern for searching in v_displaynames
     matches_partial <- keysvec_remaining %>% map(~ stringr::str_which(namesvec, stringr::coll(.x)))
     
     multi_matches <- which(map_int(matches_partial, length) > 1L)

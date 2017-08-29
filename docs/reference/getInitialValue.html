@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set compartments — setCompartments • CoRC</title>
+<title>Calculate the initial value of an expression or reference — getInitialValue • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,43 +98,21 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set compartments</h1>
+    <h1>Calculate the initial value of an expression or reference</h1>
     </div>
 
     
-    <p><code>setCompartments</code> applies given values to compartments of the model depending on the 'key' parameter.</p>
+    <p><code>getValue</code> calculates the initial value of a given expression or reference.</p>
     
 
-    <pre class="usage"><span class='fu'>setCompartments</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>initial.volume</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>getInitialValue</span>(<span class='no'>expression</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>key</th>
-      <td><p>a character vector uniquely identifying compartments</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>a character vector of names to set</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>a character vector of species types ("fixed", "assignment", "ode").</p></td>
-    </tr>
-    <tr>
-      <th>initial.volume</th>
-      <td><p>a numeric vector of values to set</p></td>
-    </tr>
-    <tr>
       <th>expression</th>
-      <td><p>a character vector of expressions to set</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>a data frame as given by <code>getCompartments</code> which will be applied before the other arguments.</p></td>
+      <td><p>an character vector of expressions</p></td>
     </tr>
     <tr>
       <th>model</th>
@@ -142,13 +120,19 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a numeric vector of initial values</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>
