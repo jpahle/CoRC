@@ -5,14 +5,14 @@
 \title{Open the given model in the copasi UI}
 \usage{
 openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
-  datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
-\item{readin}{if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel}
+\item{readin}{if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model}
 
 \item{copasi_loc}{location of CopasiUI}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 Open the given model in the copasi UI

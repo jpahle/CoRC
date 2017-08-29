@@ -4,13 +4,13 @@
 \alias{getGlobalQuantities}
 \title{Get global quantities}
 \usage{
-getGlobalQuantities(key = NULL, prettyExpression = TRUE,
-  datamodel = getCurrentModel())
+getGlobalQuantities(key = NULL, rawExpressions = FALSE,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with global quantities and associated information

@@ -4,14 +4,14 @@
 \alias{quantity}
 \title{Identify quantity by name}
 \usage{
-quantity(key, reference = NULL, datamodel = getCurrentModel())
+quantity(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify quantities}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a character vector of copasi keys

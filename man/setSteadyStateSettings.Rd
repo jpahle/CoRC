@@ -6,7 +6,7 @@
 \usage{
 setSteadyStateSettings(calculateJacobian = NULL,
   performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL,
-  method = NULL, datamodel = getCurrentModel())
+  method = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{calculateJacobian}{boolean}
@@ -19,7 +19,7 @@ setSteadyStateSettings(calculateJacobian = NULL,
 
 \item{method}{list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setSteadyStateSettings} sets steady state settings including method options.

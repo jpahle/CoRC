@@ -29,31 +29,6 @@ library(tidyverse)
 library(CoRC)
 ```
 
-## ObjectDisplayName seems more apropriate than CN
-
-```{r, results="hide"}
-loadExamples(1)
-```
-
-```{r}
-species("X")
-species("X", "InitialConcentration")
-```
-
-When a species is identified I have to return the CommonName as reference.
-In this use case, returning the ObjectDisplayNames seems more friendly to the user.
-Especially because this is the way it is presented in the GUI too.
-
-```{r}
-cmetab_x <- CoRC:::cn_to_object(species("X"), datamodel = getCurrentModel())[[1]]
-cmetab_ref_x_0 <- CoRC:::cn_to_object(species("X", "InitialConcentration"), datamodel = getCurrentModel())[[1]]
-
-cmetab_x$getObjectDisplayName()
-cmetab_ref_x_0$getObjectDisplayName()
-```
-
-They should be able to accomplish the same job in uniquely identifying a reference but there are no methods to resolve from DisplayName back to an Object.
-
 ## Reliably setting values
 
 I don't understand how to consistently keep the math up to date with the values set in the model.

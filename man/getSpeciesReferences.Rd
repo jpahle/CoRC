@@ -4,12 +4,12 @@
 \alias{getSpeciesReferences}
 \title{Get species references}
 \usage{
-getSpeciesReferences(key = NULL, datamodel = getCurrentModel())
+getSpeciesReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with species and associated references

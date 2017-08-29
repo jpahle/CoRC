@@ -78,7 +78,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-07-31</h4>
+            <h4 class="date">2017-08-29</h4>
           </div>
 
     
@@ -90,24 +90,6 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(CoRC)</code></pre></div>
 </div>
-<div id="objectdisplayname-seems-more-apropriate-than-cn" class="section level2">
-<h2 class="hasAnchor">
-<a href="#objectdisplayname-seems-more-apropriate-than-cn" class="anchor"></a>ObjectDisplayName seems more apropriate than CN</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X]"</span>
-<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>, <span class="st">"InitialConcentration"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=The Brusselator,Vector=Compartments[compartment],Vector=Metabolites[X],Reference=InitialConcentration"</span></code></pre></div>
-<p>When a species is identified I have to return the CommonName as reference. In this use case, returning the ObjectDisplayNames seems more friendly to the user. Especially because this is the way it is presented in the GUI too.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cmetab_x &lt;-<span class="st"> </span>CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]
-cmetab_ref_x_0 &lt;-<span class="st"> </span>CoRC:::<span class="kw">cn_to_object</span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"X"</span>, <span class="st">"InitialConcentration"</span>), <span class="dt">datamodel =</span> <span class="kw"><a href="../reference/getCurrentModel.html">getCurrentModel</a></span>())[[<span class="dv">1</span>]]
-
-cmetab_x$<span class="kw">getObjectDisplayName</span>()
-<span class="co">#&gt; [1] "X"</span>
-cmetab_ref_x_0$<span class="kw">getObjectDisplayName</span>()
-<span class="co">#&gt; [1] "[X]_0"</span></code></pre></div>
-<p>They should be able to accomplish the same job in uniquely identifying a reference but there are no methods to resolve from DisplayName back to an Object.</p>
-</div>
 <div id="reliably-setting-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reliably-setting-values" class="anchor"></a>Reliably setting values</h2>
@@ -117,7 +99,7 @@ cmetab_ref_x_0$<span class="kw">getObjectDisplayName</span>()
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fd49286ad10&gt;</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7f82c9f1d000&gt;</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
 <span class="co">#&gt; Number of reactions: 4</span>
@@ -156,11 +138,11 @@ mMol$<span class="kw">buildExpression</span>()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "ms"</span>
 s$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "kms"</span>
+<span class="co">#&gt; [1] "1000*ms"</span>
 mmol$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "mmol"</span>
 mol$<span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "kmmol"</span>
+<span class="co">#&gt; [1] "1000*mmol"</span>
 mMol$<span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "?"</span></code></pre></div>
 <p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
@@ -250,7 +232,6 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
-      <li><a href="#objectdisplayname-seems-more-apropriate-than-cn">ObjectDisplayName seems more apropriate than CN</a></li>
       <li><a href="#reliably-setting-values">Reliably setting values</a></li>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>

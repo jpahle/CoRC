@@ -4,8 +4,9 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(key = NULL, name = NULL, initial.value = NULL,
-  data = NULL, datamodel = getCurrentModel())
+setGlobalQuantities(key = NULL, name = NULL, type = NULL,
+  initial.value = NULL, expression = NULL, data = NULL,
+  c_datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
@@ -14,9 +15,9 @@ setGlobalQuantities(key = NULL, name = NULL, initial.value = NULL,
 
 \item{data}{a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.}
 
-\item{datamodel}{a model object}
-
 \item{initial.volume}{a numeric vector of values to set}
+
+\item{model}{a model object}
 }
 \description{
 \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.

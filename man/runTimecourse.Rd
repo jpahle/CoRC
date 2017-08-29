@@ -7,7 +7,7 @@
 runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, method = NULL, datamodel = getCurrentModel())
+  updateModel = NULL, method = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{duration}{numeric time course duration}
@@ -28,7 +28,7 @@ runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{method}{character or list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with a time column and value columns

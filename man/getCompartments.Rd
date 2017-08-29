@@ -4,13 +4,13 @@
 \alias{getCompartments}
 \title{Get compartments}
 \usage{
-getCompartments(key = NULL, prettyExpression = TRUE,
-  datamodel = getCurrentModel())
+getCompartments(key = NULL, rawExpressions = FALSE,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with compartments and associated information

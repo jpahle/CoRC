@@ -6,11 +6,11 @@
 #' @param performStabilityAnalysis boolean
 #' @param updateModel boolean
 #' @param method list
-#' @param datamodel a model object
+#' @param model a model object
 #' @return a list of results
 #' @export
-runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
@@ -20,16 +20,16 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
     method = method,
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
-  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   
-  success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
+  success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
   if (success)
-    success <- grab_msg(task$processRaw(TRUE))
+    success <- grab_msg(c_task$processRaw(TRUE))
   if (success)
-    ret <- ss_result_worker(datamodel)
+    ret <- ss_result_worker(c_datamodel)
   
   # Call the worker again to restore previous settings.
   do.call(ss_settings_worker, restorationCall)
@@ -52,10 +52,10 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param updateModel boolean
 #' @param executable boolean
 #' @param method list
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
   # Call the worker to set most settings
@@ -65,21 +65,21 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
     method = method,
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
-  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   
   if (!is.null(executable)) {
-    task$setScheduled(executable)
+    c_task$setScheduled(executable)
   }
   
   invisible()
 }
 
-ss_settings_worker <- function(.type, calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, datamodel) {
-  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  problem <- as(task$getProblem(), "_p_CSteadyStateProblem")
+ss_settings_worker <- function(.type, calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, c_datamodel) {
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
   assert_that(
     is.null(calculateJacobian)        || is.flag(calculateJacobian)        && !is.na(calculateJacobian),
@@ -94,26 +94,26 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
   
   restorationCall <- list(
     .type = "restore",
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
   if (!is.null(calculateJacobian)) {
-    restorationCall$calculateJacobian <- as.logical(problem$isJacobianRequested())
-    problem$setJacobianRequested(calculateJacobian)
+    restorationCall$calculateJacobian <- as.logical(c_problem$isJacobianRequested())
+    c_problem$setJacobianRequested(calculateJacobian)
   }
   
   if (!is.null(performStabilityAnalysis)) {
-    restorationCall$performStabilityAnalysis <- as.logical(problem$isStabilityAnalysisRequested())
-    problem$setStabilityAnalysisRequested(performStabilityAnalysis)
+    restorationCall$performStabilityAnalysis <- as.logical(c_problem$isStabilityAnalysisRequested())
+    c_problem$setStabilityAnalysisRequested(performStabilityAnalysis)
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- as.logical(task$isUpdateModel())
-    task$setUpdateModel(updateModel)
+    restorationCall$updateModel <- as.logical(c_task$isUpdateModel())
+    c_task$setUpdateModel(updateModel)
   }
   
   if (!is.null(method) && !is_empty(method)) {
-    method_cop = as(task$getMethod(), "_p_CSteadyStateMethod")
+    method_cop = as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
     # get some info on what parameters the method has
     methodstruct <- methodstructure(method_cop) %>% tibble::rowid_to_column()
@@ -180,49 +180,45 @@ ss_settings_worker <- function(.type, calculateJacobian = NULL, performStability
   restorationCall
 }
 
-ss_result_worker <- function(datamodel) {
-  model <- as(datamodel$getModel(), "_p_CModel")
-  task <- as(datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  method <- as(task$getMethod(), "_p_CSteadyStateMethod")
+ss_result_worker <- function(c_datamodel) {
+  c_model <- as(c_datamodel$getModel(), "_p_CModel")
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+  c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
   ret <- list()
   
-  ret$result <- task$getResult()
+  ret$result <- c_task$getResult()
+  
+  cl_metabs <- get_cdv(c_model$getMetabolites())
+  cl_metabs_ss <- discard(cl_metabs, is.na(map_swig_dbl(cl_metabs, "getTransitionTime")))
   
   ret$species <-
-    get_cdv(model$getMetabolites()) %>%
-    map_dfr(~ {
-      transit <- .x$getTransitionTime()
-      if (!is.na(transit)) {
-        list(
-          key = .x$getCN()$getString(),
-          name = .x$getObjectName(),
-          type = stringr::str_to_lower(.x$getStatus()),
-          concentration = .x$getConcentration(),
-          concentration.rate = .x$getConcentrationRate(),
-          particlenum = .x$getValue(),
-          particlenum.rate = .x$getRate(),
-          transitiontime = transit
-        )
-      }
-    })
+    tibble::tibble(
+      key = map_chr(cl_metabs_ss, get_cn),
+      name = map_swig_chr(cl_metabs_ss, "getObjectName"),
+      type = cl_metabs_ss %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+      concentration = map_swig_dbl(cl_metabs_ss, "getConcentration"),
+      concentration.rate = map_swig_dbl(cl_metabs_ss, "getConcentrationRate"),
+      number = map_swig_dbl(cl_metabs_ss, "getValue"),
+      number.rate = map_swig_dbl(cl_metabs_ss, "getRate"),
+      transitiontime = map_swig_dbl(cl_metabs_ss, "getTransitionTime")
+    )
+  
+  cl_reacts <- get_cdv(c_model$getReactions())
   
   ret$reactions <-
-    get_cdv(model$getReactions()) %>%
-    map_dfr(~ {
-      list(
-        key = .x$getCN()$getString(),
-        name = .x$getObjectName(),
-        concentration.flux = .x$getFlux(),
-        particlenum.flux = .x$getParticleFlux()
-      )
-    })
+    tibble::tibble(
+      key = map_chr(cl_reacts, get_cn),
+      name = map_swig_chr(cl_reacts, "getObjectName"),
+      concentration.flux = map_swig_dbl(cl_reacts, "getFlux"),
+      particlenum.flux = map_swig_dbl(cl_reacts, "getParticleFlux")
+    )
   
-  ret$jacobian.complete <- get_annotated_matrix(task$getJacobianAnnotated())
+  ret$jacobian.complete <- get_annotated_matrix(c_task$getJacobianAnnotated())
     
-  ret$jacobian.reduced <- get_annotated_matrix(task$getJacobianXAnnotated())
+  ret$jacobian.reduced <- get_annotated_matrix(c_task$getJacobianXAnnotated())
   
-  ret$protocol <- method$getMethodLog()
+  ret$protocol <- c_method$getMethodLog()
   
   ret
 }

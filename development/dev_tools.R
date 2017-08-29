@@ -12,7 +12,7 @@ reset_copasi <- function() {
   if (exists("current_example"))
     setCurrentModel(examples[[current_example]])
   
-  assign("datamodel", getCurrentModel(), envir = .GlobalEnv)
+  assign("c_datamodel", getCurrentModel(), envir = .GlobalEnv)
 }
 
 ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}

@@ -4,12 +4,12 @@
 \alias{getGlobalQuantityReferences}
 \title{Get global quantitiy references}
 \usage{
-getGlobalQuantityReferences(key = NULL, datamodel = getCurrentModel())
+getGlobalQuantityReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with global quantities and associated references

@@ -4,12 +4,12 @@
 \alias{setTimeUnit}
 \title{Set the unit of time}
 \usage{
-setTimeUnit(unit, datamodel = getCurrentModel())
+setTimeUnit(unit, model = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setTimeUnit} sets the unit used for time.

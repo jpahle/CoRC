@@ -1,7 +1,7 @@
 # helper to remove models that have NULL pointers
 discardUnloadedModels <- function() {
-  pkg_env$loaded_dms <-
-    pkg_env$loaded_dms %>%
+  pkg_env$cl_loaded_dms <-
+    pkg_env$cl_loaded_dms %>%
     discard(map_lgl(., has_null_pointer))
 }
 
@@ -12,31 +12,31 @@ discardUnloadedModels <- function() {
 #' @return a model object
 #' @export
 getCurrentModel <- function() {
-  curr_dm <- pkg_env$curr_dm 
+  c_curr_dm <- pkg_env$c_curr_dm 
   
   assert_that(
-    !is.null(curr_dm),
+    !is.null(c_curr_dm),
     # There might be a case where a NULL pointer is here because of saving and loading workspaces?
-    !has_null_pointer(curr_dm),
+    !has_null_pointer(c_curr_dm),
     msg = "No model currently in use."
   )
 
-  curr_dm
+  c_curr_dm
 }
 
 #' Set the currently active model
 #'
 #' \code{setCurrentModel} sets the given model as the currently active model.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @return invisibly returns the model object
 #' @export
-setCurrentModel <- function(datamodel) {
-  assert_datamodel(datamodel)
-
-  pkg_env$curr_dm <- datamodel
+setCurrentModel <- function(model) {
+  c_datamodel <- assert_datamodel(model)
   
-  invisible(datamodel)
+  pkg_env$c_curr_dm <- c_datamodel
+  
+  invisible(c_datamodel)
 }
 
 #' Get a list of loaded models
@@ -49,7 +49,7 @@ getLoadedModels <- function() {
   discardUnloadedModels()
   
   # get_cdv(CRootContainer_getDatamodelList())
-  pkg_env$loaded_dms
+  pkg_env$cl_loaded_dms
 }
 
 # helper for loading models from urls
@@ -77,28 +77,28 @@ loadModel <- function(path) {
   assert_binaries()
   assert_that(is.string(path))
   
-  datamodel <- CRootContainer_addDatamodel()
+  c_datamodel <- CRootContainer_addDatamodel()
   
-  model <- url_to_string(path)
-  if (!is_null(model)) {
-    success <- grab_msg(datamodel$loadModelFromString(model, normalizePathC(getwd())),
+  c_model <- url_to_string(path)
+  if (!is_null(c_model)) {
+    success <- grab_msg(c_datamodel$loadModelFromString(c_model, normalizePathC(getwd())),
                         purge = "The content is created with a newer version .* of COPASI.")
   } else {
     assert_that(is.readable(path))
     
-    success <- grab_msg(datamodel$loadModel(normalizePathC(path)),
+    success <- grab_msg(c_datamodel$loadModel(normalizePathC(path)),
                         purge = "The content is created with a newer version .* of COPASI.")
   }
   
   if (!success) {
-    CRootContainer_removeDatamodel(datamodel)
+    CRootContainer_removeDatamodel(c_datamodel)
     stop("Couldn't load model file.")
   }
   
-  pkg_env$curr_dm <- datamodel
-  pkg_env$loaded_dms <- append(pkg_env$loaded_dms, datamodel)
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
   
-  invisible(datamodel)
+  invisible(c_datamodel)
 }
 
 #' Load SBML data
@@ -112,42 +112,42 @@ loadSBML <- function(path) {
   assert_binaries()
   assert_that(is.string(path))
   
-  datamodel <- CRootContainer_addDatamodel()
+  c_datamodel <- CRootContainer_addDatamodel()
   
   sbml <- url_to_string(path)
   if (!is_null(sbml)) {
-    success <- grab_msg(datamodel$importSBMLFromString(sbml))
+    success <- grab_msg(c_datamodel$importSBMLFromString(sbml))
   } else {
     assert_that(is.readable(path))
     
-    success <- grab_msg(datamodel$importSBML(normalizePathC(path)))
+    success <- grab_msg(c_datamodel$importSBML(normalizePathC(path)))
   }
   
   if (!success) {
-    CRootContainer_removeDatamodel(datamodel)
+    CRootContainer_removeDatamodel(c_datamodel)
     stop("Couldn't load SBML data.")
   }
   
-  pkg_env$curr_dm <- datamodel
-  pkg_env$loaded_dms <- append(pkg_env$loaded_dms, datamodel)
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
   
-  invisible(datamodel)
+  invisible(c_datamodel)
 }
 
 #' Unload a model
 #'
 #' \code{unloadModel} frees memory by unloading a model from copasi
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-unloadModel <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+unloadModel <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  # datamodel <- CRootContainer_removeDatamodel(datamodel)
-  delete(datamodel)
+  # CRootContainer_removeDatamodel(c_datamodel)
+  delete(c_datamodel)
   
   discardUnloadedModels()
-  pkg_env$curr_dm <- NULL
+  pkg_env$c_curr_dm <- NULL
 }
 
 #' Unload all loaded models
@@ -158,12 +158,12 @@ unloadModel <- function(datamodel = getCurrentModel()) {
 unloadAllModels <- function() {
   discardUnloadedModels()
   
-  pkg_env$loaded_dms %>%
+  pkg_env$cl_loaded_dms %>%
     # walk(~ CRootContainer_removeDatamodel(.x))
     walk(delete)
   
-  pkg_env$loaded_dms <- list()
-  pkg_env$curr_dm <- NULL
+  pkg_env$cl_loaded_dms <- list()
+  pkg_env$c_curr_dm <- NULL
 }
 
 #' Save a model as a .cps file
@@ -172,10 +172,10 @@ unloadAllModels <- function() {
 #'
 #' @param filename a path to save to
 #' @param overwrite is overwriting existing files allowed?
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+saveCPS <- function(filename = model$getFileName(), overwrite = FALSE, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.string(filename))
 
   if (!has_extension(filename, "cps"))
@@ -188,7 +188,7 @@ saveCPS <- function(filename = datamodel$getFileName(), overwrite = FALSE, datam
     filepath <- file.path(normalizePathC(dirname(filename)), basename(filename))
   }
   
-  success <- grab_msg(datamodel$saveModel(filepath, overwriteFile = overwrite))
+  success <- grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite))
 
   if (!success) {
     stop('Model failed to save at: "', filename, '".')
@@ -212,7 +212,8 @@ loadExamples <- function(indices = NULL) {
       "brusselator.cps",
       "chemotaxis_4.cps",
       "test_names.cps",
-      "test_paramest.cps"
+      "test_paramest.cps",
+      "ano1.cps"
     )
   
   assert_that(is.null(indices) || all(indices %in% seq_along(models)), msg = "Invalid indices.")
@@ -225,12 +226,12 @@ loadExamples <- function(indices = NULL) {
 
 #' Open the given model in the copasi UI
 #'
-#' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel
+#' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model
 #' @param copasi_loc location of CopasiUI
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(
     is.flag(readin) && !is.na(readin),
     is.string(copasi_loc) && !is.na(copasi_loc)
@@ -254,13 +255,13 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = getC
     msg = "Could not find CopasiUI."
   )
   
-  fittask <- as(datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-  fitproblem <- as(fittask$getProblem(), "_p_CFitProblem")
+  c_fittask <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_fitproblem <- as(c_fittask$getProblem(), "_p_CFitProblem")
   if (
     readin == FALSE &&
     (
-      !is_empty(fitproblem$getExperimentSet()$getFileNames()) ||
-      !is_empty(fitproblem$getCrossValidationSet()$getFileNames())
+      !is_empty(c_fitproblem$getExperimentSet()$getFileNames()) ||
+      !is_empty(c_fitproblem$getCrossValidationSet()$getFileNames())
     )
   ) {
     warning(
@@ -272,21 +273,21 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", datamodel = getC
   
   if (readin) {
     # Create a temp file for the model
-    file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(datamodel$getReferenceDirectory()), fileext = ".cps")
-    grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
+    file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(c_datamodel$getReferenceDirectory()), fileext = ".cps")
+    grab_msg(c_datamodel$saveModel(file, overwriteFile = TRUE))
     
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = TRUE, invisible = FALSE)
     else
       system2(copasi_loc, file, wait = TRUE)
     
-    grab_msg(datamodel$loadModel(file))
+    grab_msg(c_datamodel$loadModel(file))
     file.remove(file)
   } else {
     # Create a temp file for the model to open in the UI
     # This potentially could cause issues if it is possible for temp files to have spaces in its path on windows
     file <- tempfile(pattern = "CoRC", fileext = ".cps")
-    grab_msg(datamodel$saveModel(file, overwriteFile = TRUE))
+    grab_msg(c_datamodel$saveModel(file, overwriteFile = TRUE))
     
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = FALSE, invisible = FALSE)

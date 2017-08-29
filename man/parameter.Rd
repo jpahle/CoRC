@@ -4,14 +4,14 @@
 \alias{parameter}
 \title{Identify reaction parameter by name}
 \usage{
-parameter(key, reference = NULL, datamodel = getCurrentModel())
+parameter(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify reaction parameters}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a character vector of copasi keys

@@ -4,10 +4,10 @@
 \alias{setCurrentModel}
 \title{Set the currently active model}
 \usage{
-setCurrentModel(datamodel)
+setCurrentModel(model)
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 invisibly returns the model object

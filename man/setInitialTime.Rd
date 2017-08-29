@@ -4,12 +4,12 @@
 \alias{setInitialTime}
 \title{Set the model's initial time}
 \usage{
-setInitialTime(time, datamodel = getCurrentModel())
+setInitialTime(time, model = getCurrentModel())
 }
 \arguments{
 \item{time}{numeric}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setInitialTime} sets the initial time of the model.

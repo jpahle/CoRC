@@ -8,7 +8,7 @@ setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
   updateModel = NULL, executable = NULL, method = NULL,
-  datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
 \item{duration}{numeric time course duration}
@@ -31,7 +31,7 @@ setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{method}{character or list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setTimeCourseSettings} sets time course settings including method options.

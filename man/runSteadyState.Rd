@@ -5,7 +5,7 @@
 \title{Run to stready state}
 \usage{
 runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, method = NULL, datamodel = getCurrentModel())
+  updateModel = NULL, method = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{calculateJacobian}{boolean}
@@ -16,7 +16,7 @@ runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
 
 \item{method}{list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a list of results

@@ -4,10 +4,10 @@
 \alias{unloadModel}
 \title{Unload a model}
 \usage{
-unloadModel(datamodel = getCurrentModel())
+unloadModel(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{unloadModel} frees memory by unloading a model from copasi

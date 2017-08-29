@@ -4,10 +4,10 @@
 \alias{getQuantityUnit}
 \title{Get the unit of quantity}
 \usage{
-getQuantityUnit(datamodel = getCurrentModel())
+getQuantityUnit(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 unit of quantity

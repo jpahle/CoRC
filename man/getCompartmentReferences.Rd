@@ -4,12 +4,12 @@
 \alias{getCompartmentReferences}
 \title{Get compartment references}
 \usage{
-getCompartmentReferences(key = NULL, datamodel = getCurrentModel())
+getCompartmentReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with compartments and associated references

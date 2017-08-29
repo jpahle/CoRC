@@ -5,7 +5,7 @@
 \title{Set reactions}
 \usage{
 setReactions(key = NULL, name = NULL, data = NULL,
-  datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions}
@@ -14,7 +14,7 @@ setReactions(key = NULL, name = NULL, data = NULL,
 
 \item{data}{a data frame as given by \code{getReactions} which will be applied before the other arguments.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.

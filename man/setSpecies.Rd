@@ -4,8 +4,9 @@
 \alias{setSpecies}
 \title{Set species}
 \usage{
-setSpecies(key = NULL, name = NULL, initial.concentration = NULL,
-  initial.number = NULL, data = NULL, datamodel = getCurrentModel())
+setSpecies(key = NULL, name = NULL, type = NULL,
+  initial.concentration = NULL, initial.number = NULL, expression = NULL,
+  data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}
@@ -18,7 +19,7 @@ setSpecies(key = NULL, name = NULL, initial.concentration = NULL,
 
 \item{data}{a data frame as given by \code{getSpecies} which will be applied before the other arguments.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setSpecies} applies given values to species of the model depending on the 'key' parameter.

@@ -4,8 +4,9 @@
 \alias{setCompartments}
 \title{Set compartments}
 \usage{
-setCompartments(key = NULL, name = NULL, initial.volume = NULL,
-  data = NULL, datamodel = getCurrentModel())
+setCompartments(key = NULL, name = NULL, type = NULL,
+  initial.volume = NULL, expression = NULL, data = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}
@@ -16,7 +17,7 @@ setCompartments(key = NULL, name = NULL, initial.volume = NULL,
 
 \item{data}{a data frame as given by \code{getCompartments} which will be applied before the other arguments.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.

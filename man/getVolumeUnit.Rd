@@ -4,10 +4,10 @@
 \alias{getVolumeUnit}
 \title{Get the unit of volume}
 \usage{
-getVolumeUnit(datamodel = getCurrentModel())
+getVolumeUnit(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 unit of volume

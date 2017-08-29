@@ -4,10 +4,10 @@
 \alias{getTimeUnit}
 \title{Get the unit of time}
 \usage{
-getTimeUnit(datamodel = getCurrentModel())
+getTimeUnit(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 unit of time

@@ -78,7 +78,7 @@
       <h1>Handling Model Entities</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-07-31</h4>
+            <h4 class="date">2017-08-29</h4>
           </div>
 
     
@@ -93,49 +93,48 @@
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
 <span class="co">#&gt; Model name: "Bacterial chemotaxis model"</span>
-<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7fd33bff64f0&gt;</span>
+<span class="co">#&gt; @ref is set to: &lt;pointer: 0x7febed7f67b0&gt;</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 21</span>
 <span class="co">#&gt; Number of reactions: 14</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
-<span class="co">#&gt; # A tibble: 21 x 8</span>
-<span class="co">#&gt;       name compartment       type initial.concentration initial.number</span>
-<span class="co">#&gt;      &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt;  1    CheA compartment  reactions                  5.30       4468.429</span>
-<span class="co">#&gt;  2   CheAp compartment  reactions                  0.00          0.000</span>
-<span class="co">#&gt;  3    CheB compartment  reactions                  0.28        236.068</span>
-<span class="co">#&gt;  4   CheBp compartment  reactions                  0.00          0.000</span>
-<span class="co">#&gt;  5    CheY compartment  reactions                  9.70       8178.069</span>
-<span class="co">#&gt;  6   CheYp compartment  reactions                  0.00          0.000</span>
-<span class="co">#&gt;  7    CheR compartment      fixed                  0.16        134.896</span>
-<span class="co">#&gt;  8 Tactive compartment assignment                  0.00          0.000</span>
-<span class="co">#&gt;  9    CheZ compartment  reactions                  3.80       3203.779</span>
-<span class="co">#&gt; 10      T0 compartment  reactions                  5.30       4468.429</span>
-<span class="co">#&gt; # ... with 11 more rows, and 3 more variables: concentration &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   number &lt;dbl&gt;, key &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 21 x 9</span>
+<span class="co">#&gt;        key    name compartment       type initial.concentration</span>
+<span class="co">#&gt;      &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;</span>
+<span class="co">#&gt;  1    CheA    CheA compartment  reactions                  5.30</span>
+<span class="co">#&gt;  2   CheAp   CheAp compartment  reactions                  0.00</span>
+<span class="co">#&gt;  3    CheB    CheB compartment  reactions                  0.28</span>
+<span class="co">#&gt;  4   CheBp   CheBp compartment  reactions                  0.00</span>
+<span class="co">#&gt;  5    CheY    CheY compartment  reactions                  9.70</span>
+<span class="co">#&gt;  6   CheYp   CheYp compartment  reactions                  0.00</span>
+<span class="co">#&gt;  7    CheR    CheR compartment      fixed                  0.16</span>
+<span class="co">#&gt;  8 Tactive Tactive compartment assignment                  0.00</span>
+<span class="co">#&gt;  9    CheZ    CheZ compartment  reactions                  3.80</span>
+<span class="co">#&gt; 10      T0      T0 compartment  reactions                  5.30</span>
+<span class="co">#&gt; # ... with 11 more rows, and 4 more variables: initial.number &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   concentration &lt;dbl&gt;, number &lt;dbl&gt;, expression &lt;chr&gt;</span></code></pre></div>
 </div>
 <div id="identifying-entities" class="section level2">
 <h2 class="hasAnchor">
 <a href="#identifying-entities" class="anchor"></a>Identifying entities</h2>
 <p>There are at the moment 5 different types of model entities supported for identification by string. The strings are matched against the available ObjectDisplayNames.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheA"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheA]"</span>
+<span class="co">#&gt; [1] "CheA"</span>
 <span class="kw"><a href="../reference/compartment.html">compartment</a></span>(<span class="st">"comp"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment]"</span>
+<span class="co">#&gt; [1] "Compartments[compartment]"</span>
 <span class="kw"><a href="../reference/quantity.html">quantity</a></span>(<span class="st">"a"</span>)
 <span class="co">#&gt; Error: Could not match global quantity(s) "a".</span>
 <span class="kw"><a href="../reference/reaction.html">reaction</a></span>(<span class="st">"Che B phosph"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Che B phosph]"</span>
+<span class="co">#&gt; Error in x[[1]]$getObjectDisplayName: $ operator is invalid for atomic vectors</span>
 <span class="kw"><a href="../reference/parameter.html">parameter</a></span>(<span class="st">"4).kR"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Reactions[Rm4],ParameterGroup=Parameters,Parameter=kR"</span></code></pre></div>
+<span class="co">#&gt; [1] "(Rm4).kR"</span></code></pre></div>
 <p>These functions return CommonNames when a species is identified. They are vectorized and will always return a vector of identified entities of the same length or throw an error. This means the behavior for ‘NA’ or non-uniquely matching strings is to throw an error. REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]"</span>
+<span class="co">#&gt; [1] "CheY"</span>
 <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheYp"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheYp]"</span>
+<span class="co">#&gt; [1] "CheYp"</span>
 <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw">c</span>(<span class="st">"CheY"</span>, <span class="st">"CheYp"</span>))
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]" </span>
-<span class="co">#&gt; [2] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheYp]"</span>
+<span class="co">#&gt; [1] "CheY"  "CheYp"</span>
 <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"Che"</span>)
 <span class="co">#&gt; Error: Could not correctly identify some species:</span>
 <span class="co">#&gt; "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
@@ -145,29 +144,28 @@
 <span class="co">#&gt; Error: Could not match species "failure".</span></code></pre></div>
 <p>CommonNames are generally what is used by CoRC to identify entities. In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="st">"CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]"</span>)
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;    name compartment      type initial.concentration initial.number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  CheY compartment reactions                   9.7       8178.069</span>
-<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, key &lt;chr&gt;</span>
+<span class="co">#&gt; Error: Could not match species "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]".</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>))
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;    name compartment      type initial.concentration initial.number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  CheY compartment reactions                   9.7       8178.069</span>
-<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, key &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 1 x 9</span>
+<span class="co">#&gt;     key  name compartment      type initial.concentration initial.number</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  CheY  CheY compartment reactions                   9.7       8178.069</span>
+<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="st">"CheY"</span>)
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;    name compartment      type initial.concentration initial.number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  CheY compartment reactions                   9.7       8178.069</span>
-<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, key &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 1 x 9</span>
+<span class="co">#&gt;     key  name compartment      type initial.concentration initial.number</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  CheY  CheY compartment reactions                   9.7       8178.069</span>
+<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>)
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;    name compartment      type initial.concentration initial.number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  CheY compartment reactions                   9.7       8178.069</span>
-<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, key &lt;chr&gt;</span>
+<span class="co">#&gt; # A tibble: 1 x 9</span>
+<span class="co">#&gt;     key  name compartment      type initial.concentration initial.number</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  CheY  CheY compartment reactions                   9.7       8178.069</span>
+<span class="co">#&gt; # ... with 3 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"Che"</span>)
 <span class="co">#&gt; Error: Could not correctly identify some species:</span>
 <span class="co">#&gt; "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span></code></pre></div>
@@ -177,13 +175,14 @@
 <a href="#using-references" class="anchor"></a>Using References</h2>
 <p>The identifying functions can also return value references if specified. Such references are needed as input for example to define Parameter Estimations.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>, <span class="dt">reference =</span> <span class="st">"InitialConcentration"</span>)
-<span class="co">#&gt; [1] "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=InitialConcentration"</span></code></pre></div>
+<span class="co">#&gt; [1] "{[CheY]_0}"</span></code></pre></div>
 <p>These function however can not give any clues about what references are available.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>, <span class="dt">reference =</span> <span class="st">"failure"</span>)
 <span class="co">#&gt; Error: Failed to gather some references.</span></code></pre></div>
 <p>To help with this, functions implemented to get model values have similar functions that return references instead of values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>))
-<span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  8 variables:</span>
+<span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  9 variables:</span>
+<span class="co">#&gt;  $ key                  : chr "CheY"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
@@ -191,17 +190,18 @@
 <span class="co">#&gt;  $ initial.number       : num 8178</span>
 <span class="co">#&gt;  $ concentration        : num 9.7</span>
 <span class="co">#&gt;  $ number               : num 8178</span>
-<span class="co">#&gt;  $ key                  : chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]"</span>
+<span class="co">#&gt;  $ expression           : chr NA</span>
 <span class="kw">str</span>(<span class="kw"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span>(<span class="st">"CheY"</span>))
-<span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  8 variables:</span>
+<span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  9 variables:</span>
+<span class="co">#&gt;  $ key                  : chr "CheY"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
-<span class="co">#&gt;  $ initial.concentration: chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=In"| __truncated__</span>
-<span class="co">#&gt;  $ initial.number       : chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=In"| __truncated__</span>
-<span class="co">#&gt;  $ concentration        : chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=Concentration"</span>
-<span class="co">#&gt;  $ number               : chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY],Reference=ParticleNumber"</span>
-<span class="co">#&gt;  $ key                  : chr "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]"</span></code></pre></div>
+<span class="co">#&gt;  $ initial.concentration: chr "{[CheY]_0}"</span>
+<span class="co">#&gt;  $ initial.number       : chr "{CheY.InitialParticleNumber}"</span>
+<span class="co">#&gt;  $ concentration        : chr "{[CheY]}"</span>
+<span class="co">#&gt;  $ number               : chr "{CheY.ParticleNumber}"</span>
+<span class="co">#&gt;  $ expression           : chr NA</span></code></pre></div>
 <p>Being able to use [CheYp]_0 instead of a full CN would probably lead to more intuitive results (see Article: Issues).</p>
 </div>
 </div>

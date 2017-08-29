@@ -7,7 +7,7 @@
 setParamEstSettings(randomizeStartValues = NULL, createParameterSets = NULL,
   calculateStatistics = NULL, updateModel = NULL, executable = NULL,
   parameters = NULL, experiments = NULL, method = NULL,
-  datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
 \item{randomizeStartValues}{boolean}
@@ -22,7 +22,7 @@ setParamEstSettings(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{method}{character or list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setParamEstSettings} sets parameter estimation settings including method options.

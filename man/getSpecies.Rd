@@ -4,13 +4,12 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(key = NULL, prettyExpression = TRUE,
-  datamodel = getCurrentModel())
+getSpecies(key = NULL, rawExpressions = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with species and associated information

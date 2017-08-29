@@ -4,10 +4,10 @@
 \alias{getInitialTime}
 \title{Get the model's inital time}
 \usage{
-getInitialTime(datamodel = getCurrentModel())
+getInitialTime(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{getInitialTime} gets the initial time of the model.

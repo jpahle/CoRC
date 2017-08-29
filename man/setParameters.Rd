@@ -5,7 +5,7 @@
 \title{Set reaction parameters}
 \usage{
 setParameters(key = NULL, name = NULL, value = NULL, data = NULL,
-  datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reaction parameters}
@@ -14,7 +14,7 @@ setParameters(key = NULL, name = NULL, value = NULL, data = NULL,
 
 \item{data}{a data frame as given by \code{getParameters} which will be applied before the other arguments.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setParameters} applies given values to reaction parameters of the model depending on the 'key' parameter.

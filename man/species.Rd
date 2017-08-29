@@ -4,14 +4,14 @@
 \alias{species}
 \title{Identify species by name}
 \usage{
-species(key, reference = NULL, datamodel = getCurrentModel())
+species(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify species}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a character vector of copasi keys

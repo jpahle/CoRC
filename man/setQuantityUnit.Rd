@@ -4,12 +4,12 @@
 \alias{setQuantityUnit}
 \title{Set the unit of quantity}
 \usage{
-setQuantityUnit(unit, datamodel = getCurrentModel())
+setQuantityUnit(unit, model = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setQuantityUnit} sets the unit used for quantity.

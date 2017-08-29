@@ -2,13 +2,13 @@
 #'
 #' \code{getModelName} gives the name of the model.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @return name
 #' @export
-getModelName <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+getModelName <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  datamodel$getModel()$getObjectName()
+  c_datamodel$getModel()$getObjectName()
 }
 
 #' Set a model's name
@@ -16,14 +16,14 @@ getModelName <- function(datamodel = getCurrentModel()) {
 #' \code{setModelName} sets the name of the model.
 #'
 #' @param name the new model name
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setModelName <- function(name, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setModelName <- function(name, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.string(name))
   
   assert_that(
-    datamodel$getModel()$setObjectName(name),
+    c_datamodel$getModel()$setObjectName(name),
     msg = "Setting model name failed."
   )
   
@@ -34,13 +34,13 @@ setModelName <- function(name, datamodel = getCurrentModel()) {
 #'
 #' \code{getTimeUnit} gets the unit used for time.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @return unit of time
 #' @export
-getTimeUnit <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+getTimeUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  datamodel$getModel()$getTimeUnitName()
+  c_datamodel$getModel()$getTimeUnitName()
 }
 
 #' Set the unit of time
@@ -48,21 +48,21 @@ getTimeUnit <- function(datamodel = getCurrentModel()) {
 #' \code{setTimeUnit} sets the unit used for time.
 #'
 #' @param unit string
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setTimeUnit <- function(unit, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setTimeUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.string(unit))
   
-  cunit <- grab_msg(CUnit(unit))
-  cunit$buildExpression()
-  unit <- cunit$getExpression()
-  accepted <- cunit$isUnitType("time")
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  accepted <- c_unit$isUnitType("time")
   
   assert_that(accepted, msg = paste0(unit, " is not a valid time unit."))
   
   assert_that(
-    grab_msg(datamodel$getModel()$setTimeUnitFromString(unit)),
+    grab_msg(c_datamodel$getModel()$setTimeUnitFromString(unit)),
     msg = "Setting time unit failed."
   )
   
@@ -73,13 +73,13 @@ setTimeUnit <- function(unit, datamodel = getCurrentModel()) {
 #'
 #' \code{getTimeUnit} gets the unit used for volume.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @return unit of volume
 #' @export
-getVolumeUnit <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+getVolumeUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  datamodel$getModel()$getVolumeUnitName()
+  c_datamodel$getModel()$getVolumeUnitName()
 }
 
 #' Set the unit of volume
@@ -87,21 +87,21 @@ getVolumeUnit <- function(datamodel = getCurrentModel()) {
 #' \code{setVolumeUnit} sets the unit used for volume.
 #'
 #' @param unit string
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setVolumeUnit <- function(unit, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setVolumeUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.string(unit))
   
-  cunit <- grab_msg(CUnit(unit))
-  cunit$buildExpression()
-  unit <- cunit$getExpression()
-  accepted <- cunit$isUnitType("volume")
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  accepted <- c_unit$isUnitType("volume")
   
   assert_that(accepted, msg = paste0(unit, " is not a valid volume unit."))
   
   assert_that(
-    grab_msg(datamodel$getModel()$setVolumeUnitFromString(unit)),
+    grab_msg(c_datamodel$getModel()$setVolumeUnitFromString(unit)),
     msg = "Setting volume unit failed."
   )
   
@@ -112,13 +112,13 @@ setVolumeUnit <- function(unit, datamodel = getCurrentModel()) {
 #'
 #' \code{getQuantityUnit} gets the unit used for quantitiy.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @return unit of quantity
 #' @export
-getQuantityUnit <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+getQuantityUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  datamodel$getModel()$getQuantityUnitName()
+  c_datamodel$getModel()$getQuantityUnitName()
 }
 
 #' Set the unit of quantity
@@ -126,21 +126,21 @@ getQuantityUnit <- function(datamodel = getCurrentModel()) {
 #' \code{setQuantityUnit} sets the unit used for quantity.
 #'
 #' @param unit string
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setQuantityUnit <- function(unit, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setQuantityUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.string(unit))
   
-  cunit <- grab_msg(CUnit(unit))
-  cunit$buildExpression()
-  unit <- cunit$getExpression()
-  accepted <- cunit$isUnitType("quantity")
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  accepted <- c_unit$isUnitType("quantity")
   
   assert_that(accepted, msg = paste0(unit, " is not a valid quantity unit."))
   
   assert_that(
-    grab_msg(datamodel$getModel()$setQuantityUnitFromString(unit)),
+    grab_msg(c_datamodel$getModel()$setQuantityUnitFromString(unit)),
     msg = "Setting quantity unit failed."
   )
   
@@ -152,12 +152,12 @@ setQuantityUnit <- function(unit, datamodel = getCurrentModel()) {
 #'
 #' \code{getInitialTime} gets the initial time of the model.
 #'
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-getInitialTime <- function(datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+getInitialTime <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
-  datamodel$getModel()$getInitialTime()
+  c_datamodel$getModel()$getInitialTime()
 }
 
 #' Set the model's initial time
@@ -165,20 +165,20 @@ getInitialTime <- function(datamodel = getCurrentModel()) {
 #' \code{setInitialTime} sets the initial time of the model.
 #'
 #' @param time numeric
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setInitialTime <- function(time, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setInitialTime <- function(time, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.number(time), time >= 0)
   
-  model <- datamodel$getModel()
+  c_model <- c_datamodel$getModel()
   
   assert_that(
-    !model$isAutonomous(),
+    !c_model$isAutonomous(),
     msg = "Can't set initial time for autonomous models."
   )
   
-  model$setInitialTime(time)
+  c_model$setInitialTime(time)
   
   invisible()
 }

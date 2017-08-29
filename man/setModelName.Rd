@@ -4,12 +4,12 @@
 \alias{setModelName}
 \title{Set a model's name}
 \usage{
-setModelName(name, datamodel = getCurrentModel())
+setModelName(name, model = getCurrentModel())
 }
 \arguments{
 \item{name}{the new model name}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setModelName} sets the name of the model.

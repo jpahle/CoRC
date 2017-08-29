@@ -1,15 +1,41 @@
+escape_ref <- function(x) {
+  paste0(
+    "{",
+    stringr::str_replace_all(x, stringr::coll("}"), "\\}"),
+    "}"
+  )
+}
+
+unescape_ref <- function(x) {
+  x %>%
+    stringr::str_sub(2L, -2L) %>%
+    stringr::str_replace_all(stringr::coll("\\}"), "}")
+}
+
+as_ref <- function(cl_objects, c_datamodel) {
+  refs <- cl_objects %>% map_swig_chr("getObjectDisplayName")
+  
+  dn_unresolvable <- map(refs, dn_to_object, c_datamodel) %>% map_lgl(is_null)
+  
+  refs[dn_unresolvable] <- map_chr(cl_objects[dn_unresolvable], get_cn)
+  
+  refs[!dn_unresolvable] <- escape_ref(refs[!dn_unresolvable])
+  refs[dn_unresolvable] <- paste0("<", refs[dn_unresolvable], ">")
+  
+  refs
+}
+
 # check if an entity has an expression set
 # return NA_character_ or the expression string
-expr_to_str <- function(c_entity, pretty = FALSE) {
+expr_to_str <- function(c_entity, raw = FALSE) {
   c_expression <- c_entity$getExpressionPtr()
   
-  if (is_null(c_expression)) {
+  if (is_null(c_expression))
     NA_character_
-  } else if (pretty) {
-    c_expression$getDisplayString()
-  } else {
+  else if (raw)
     c_expression$getInfix()
-  }
+  else
+    read_expr(c_expression$getInfix(), as(c_expression$getObjectAncestor("CN"), "_p_CDataModel"))
 }
 
 # check if an entity has an expression set
@@ -20,76 +46,90 @@ expr_to_ref_str <- function(c_entity) {
   if (is_null(c_expression))
     NA_character_
   else
-    c_expression$getObjectDisplayName()
+    as_ref(list(c_expression), as(c_expression$getObjectAncestor("CN"), "_p_CDataModel"))
 }
 
-#' @export
-prettify <- function(expression, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
-  assert_that(is.string(expression))
-  map_chr(
-    expression,
-    ~ {
-      c_expression <- avert_gc(CExpression("CoRC_transl_expr", datamodel))
-      grab_msg(c_expression$setInfix(.x))
-      c_expression$compile()
-      str <- c_expression$getDisplayString()
-      delete(c_expression)
-      str
+# Copasi -> R
+read_expr <- function(x, c_datamodel) {
+  stringr::str_replace_all(
+    x,
+    "<CN=.*?[^\\\\]>",
+    function(x) {
+      x <- stringr::str_sub(x, 2L, -2L)
+      c_obj <- cn_to_object(x, c_datamodel)
+      assert_that(!is_null(c_obj), msg = paste0("Failure in expression readout"))
+      
+      escape_ref(c_obj$getObjectDisplayName())
+    }
+  )
+}
+
+# R -> Copasi
+write_expr <- function(x, c_datamodel) {
+  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Avogadro Constant>
+  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Quantity Conversion Factor>
+  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Time>
+  # {Quantity Conversion Factor} <- 
+  # {Avogadro Constant}
+  # {Time}
+  
+  stringr::str_replace_all(
+    x,
+    "\\{.*?[^\\\\]\\}",
+    function(x) {
+      c_obj <- dn_to_object(unescape_ref(x), c_datamodel)
+      assert_that(!is_null(c_obj), msg = paste0("Cannot resolve ", x, "."))
+      
+      if (c_obj$getObjectType() != "Reference")
+        c_obj <- c_obj$getValueReference()
+      
+      paste0("<", get_cn(c_obj), ">")
     }
   )
 }
 
 #' @export
-defineExpression <- function(template, ..., validate = TRUE, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
-  assert_that(
-    is.string(template),
-    is.flag(validate)
-  )
+getValue <- function(expression, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.character(expression))
   
-  args <- as.list(...)
-  arg_count = length(args)
-  
-  repfun <- function(x) {
-    x <- as.integer(stringr::str_sub(x, 2L, -2L))
-    assert_that(x <= arg_count, msg = paste0("No value supplied for {", x, "}."))
-    
-    c_obj <- dn_to_object(args[[x]], datamodel)
-    assert_that(!is_null(c_obj), msg = paste0("Could not resolve {", x, "}."))
-    
-    paste0("<", c_obj$getCN()$getString(), ">")
-  }
-  
-  expression <- stringr::str_replace_all(
-    template,
-    "\\{\\d+\\}",
-    repfun
-  )
-  
-  if (validate)
-    assert_that(
-      !is.nan(get_expr_val(expression, datamodel)),
-      msg = "The generated expression is invalid."
-    )
-  
-  expression
+  expression %>%
+    map_chr(write_expr, c_datamodel) %>%
+    map_dbl(get_expr_val, c_datamodel)
 }
 
 #' @export
-getExpressionValue <- function(expression, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
-  assert_that(is.string(expression))
+getInitialValue <- function(expression, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.character(expression))
   
-  get_expr_val(expression, datamodel)
+  expression %>%
+    map_chr(write_expr, c_datamodel) %>%
+    map_dbl(get_expr_init_val, c_datamodel)
 }
 
-get_expr_val <- function(x, datamodel) {
-  c_expression <- avert_gc(CExpression("CoRC_validate_expr", datamodel))
+get_expr_val <- function(x, c_datamodel) {
+  c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
+  
   grab_msg(c_expression$setInfix(x))
   c_expression$compile()
   val <- c_expression$calcValue()
+  
   delete(c_expression)
+  
+  val
+}
+
+get_expr_init_val <- function(x, c_datamodel) {
+  c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
+  c_init_expression <- grab_msg(CExpression_createInitialExpression(c_expression, c_datamodel))
+  delete(c_expression)
+  
+  grab_msg(c_init_expression$setInfix(x))
+  c_init_expression$compile()
+  val <- c_init_expression$calcValue()
+  
+  delete(c_init_expression)
   
   val
 }

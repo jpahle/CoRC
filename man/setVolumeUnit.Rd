@@ -4,12 +4,12 @@
 \alias{setVolumeUnit}
 \title{Set the unit of volume}
 \usage{
-setVolumeUnit(unit, datamodel = getCurrentModel())
+setVolumeUnit(unit, model = getCurrentModel())
 }
 \arguments{
 \item{unit}{string}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{setVolumeUnit} sets the unit used for volume.

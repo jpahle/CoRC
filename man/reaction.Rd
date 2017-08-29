@@ -4,14 +4,14 @@
 \alias{reaction}
 \title{Identify reaction by name}
 \usage{
-reaction(key, reference = NULL, datamodel = getCurrentModel())
+reaction(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify reactions}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a character vector of copasi keys

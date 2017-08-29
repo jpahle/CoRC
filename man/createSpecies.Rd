@@ -6,10 +6,10 @@
 \usage{
 createSpecies(name = NULL, compartment = NULL, type = c("fixed",
   "assignment", "reactions", "ode"), initial.concentration = 1,
-  expression = NULL, datamodel = getCurrentModel())
+  expression = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{createSpecies} creates a new species.

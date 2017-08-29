@@ -4,12 +4,12 @@
 \alias{getReactions}
 \title{Get reactions}
 \usage{
-getReactions(key = NULL, datamodel = getCurrentModel())
+getReactions(key = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with reactions and associated information

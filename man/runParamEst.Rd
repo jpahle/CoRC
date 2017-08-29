@@ -6,7 +6,7 @@
 \usage{
 runParamEst(randomizeStartValues = NULL, createParameterSets = NULL,
   calculateStatistics = NULL, updateModel = NULL, parameters = NULL,
-  experiments = NULL, method = NULL, datamodel = getCurrentModel())
+  experiments = NULL, method = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{calculateStatistics}{boolean}
@@ -15,7 +15,7 @@ runParamEst(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{method}{character or list}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 
 \item{calculateJacobian}{boolean}
 

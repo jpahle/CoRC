@@ -40,16 +40,18 @@ setMethod("show",
   }
 )
 
-# Checks whether the datamodel parameter is valid
-assert_datamodel <- function(datamodel) {
-  assert_that(inherits(datamodel, "_p_CDataModel"))
+# Checks whether the given c_datamodel is valid
+assert_datamodel <- function(c_datamodel) {
+  assert_that(inherits(c_datamodel, "_p_CDataModel"))
   
   assert_that(
-    !has_null_pointer(datamodel),
-    msg = "datamodel is not loaded in CoRC. Did you unload the model?"
+    !has_null_pointer(c_datamodel),
+    msg = "The model is not loaded in CoRC. Did you unload it?"
   )
   
-  pkg_env$curr_dm <- datamodel
+  pkg_env$c_curr_dm <- c_datamodel
+  
+  c_datamodel
 }
 
 # transforms names from how they appear in the GUI to the preferred format in CoRC
@@ -97,8 +99,8 @@ grab_msg <- function(x, purge = character(0)) {
 }
 
 # Check if object@ref pointer is NULL
-has_null_pointer <- function(object) {
-  capture.output(object@ref) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
+has_null_pointer <- function(c_object) {
+  capture.output(c_object@ref) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
 }
 
 # Hack to allow me to use swig constructors and hand the objects to C
@@ -206,10 +208,10 @@ cparameter_set_functions <-
     INVALID = NULL
   )
 
-methodstructure <- function(method) {
+methodstructure <- function(c_method) {
   struct <-
     tibble::tibble(
-      object = seq_along_v(method) %>% map(~ method$getParameter(.x)),
+      object = seq_along_v(c_method) %>% map(~ c_method$getParameter(.x)),
       name = object %>% map_chr(~ .x$getObjectName()) %>% make.names(unique = TRUE),
       type = object %>% map_chr(~ .x$getType()),
       control_fun = cparameter_control_functions[type],
@@ -224,18 +226,18 @@ methodstructure <- function(method) {
 
 # Convert annotated matrices to data frames
 # Is not sufficiently tested for col/row; colnames; rownames consistency
-get_annotated_matrix <- function(matrix) {
-  dims <- matrix$dimensionality()
+get_annotated_matrix <- function(c_matrix) {
+  dims <- c_matrix$dimensionality()
   
   assert_that(dims == 2, msg = "Only two dimensional annotated matrices can be read for now.")
   
-  col_headers <- get_sv(matrix$getAnnotationsString(1L))
-  row_headers <- get_sv(matrix$getAnnotationsString(0L))
+  col_headers <- get_sv(c_matrix$getAnnotationsString(1L))
+  row_headers <- get_sv(c_matrix$getAnnotationsString(0L))
   
   cols <- length(col_headers)
   rows <- length(row_headers)
   
-  array <- matrix$getArray()
+  array <- c_matrix$getArray()
   
   # Timecritical step optimization
   array_ref <- array@ref

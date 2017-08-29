@@ -4,12 +4,12 @@
 \alias{getParameters}
 \title{Get reaction parameters}
 \usage{
-getParameters(key = NULL, datamodel = getCurrentModel())
+getParameters(key = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions parameters}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a data frame with reaction parameters and associated information

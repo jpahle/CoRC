@@ -11,11 +11,11 @@
 #' @param startInSteadyState boolean
 #' @param updateModel boolean
 #' @param method character or list
-#' @param datamodel a model object
+#' @param model a model object
 #' @return a data frame with a time column and value columns
 #' @export
-runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   
   # use the worker function to apply all given arguments
   # the worker function returns all args needed to restore previous settings
@@ -30,16 +30,16 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     startInSteadyState = startInSteadyState,
     updateModel = updateModel,
     method = method,
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
-  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
-  success <- grab_msg(task$initializeRaw(OUTPUTFLAG))
+  success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
   if (success)
-    success <- grab_msg(task$processRaw(TRUE))
+    success <- grab_msg(c_task$processRaw(TRUE))
   if (success)
-    ret <- tc_result_worker(datamodel, saveResultInMemory)
+    ret <- tc_result_worker(c_datamodel, saveResultInMemory)
 
   # Call the worker again to restore previous settings.
   do.call(tc_settings_worker, restorationCall)
@@ -67,10 +67,10 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param updateModel boolean
 #' @param executable boolean
 #' @param method character or list
-#' @param datamodel a model object
+#' @param model a model object
 #' @export
-setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, datamodel = getCurrentModel()) {
-  assert_datamodel(datamodel)
+setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
   # Call the worker to set most settings
@@ -85,13 +85,13 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
     startInSteadyState = startInSteadyState,
     updateModel = updateModel,
     method = method,
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
-  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
   if (!is.null(executable)) {
-    task$setScheduled(executable)
+    c_task$setScheduled(executable)
   }
   
   invisible()
@@ -99,9 +99,9 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
 
 # .type can help in some situations to determine assertions etc
 # can be "temporary", "permanent" or "restore"
-tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, datamodel) {
-  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  problem <- as(task$getProblem(), "_p_CTrajectoryProblem")
+tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, c_datamodel) {
+  c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
   
   assert_that(
     is.null(duration)             || is.number(duration)             && duration >= 0,
@@ -119,69 +119,69 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
   if (!is.null(method)) {
     if (is_scalar_character(method)) method <- list(method = method)
     # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[task$getValidMethods() + 1L]))
+    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   }
   
   errors <- FALSE
   
   restorationCall <- list(
     .type = "restore",
-    datamodel = datamodel
+    c_datamodel = c_datamodel
   )
   
   if (!is.null(duration)) {
-    restorationCall$duration <- problem$getDuration()
-    problem$setDuration(duration)
+    restorationCall$duration <- c_problem$getDuration()
+    c_problem$setDuration(duration)
   }
   
   if (!is.null(dt)) {
-    restorationCall$dt <- problem$getStepSize()
-    problem$setStepSize(dt)
+    restorationCall$dt <- c_problem$getStepSize()
+    c_problem$setStepSize(dt)
   }
   
   if (!is.null(intervals)) {
-    restorationCall$intervals <- problem$getStepNumber()
-    problem$setStepNumber(intervals)
+    restorationCall$intervals <- c_problem$getStepNumber()
+    c_problem$setStepNumber(intervals)
   }
   
   if (!is.null(suppressOutputBefore)) {
-    restorationCall$suppressOutputBefore <- problem$getOutputStartTime()
-    problem$setOutputStartTime(suppressOutputBefore)
+    restorationCall$suppressOutputBefore <- c_problem$getOutputStartTime()
+    c_problem$setOutputStartTime(suppressOutputBefore)
   }
   
   if (!is.null(outputEvents)) {
-    restorationCall$outputEvents <- as.logical(problem$getOutputEvent())
-    problem$setOutputEvent(outputEvents)
+    restorationCall$outputEvents <- as.logical(c_problem$getOutputEvent())
+    c_problem$setOutputEvent(outputEvents)
   }
   
   if (!is.null(saveResultInMemory)) {
-    restorationCall$saveResultInMemory <- as.logical(problem$timeSeriesRequested())
-    problem$setTimeSeriesRequested(saveResultInMemory)
+    restorationCall$saveResultInMemory <- as.logical(c_problem$timeSeriesRequested())
+    c_problem$setTimeSeriesRequested(saveResultInMemory)
   }
   
   if (!is.null(startInSteadyState)) {
-    restorationCall$startInSteadyState <- as.logical(problem$getStartInSteadyState())
-    problem$setStartInSteadyState(startInSteadyState)
+    restorationCall$startInSteadyState <- as.logical(c_problem$getStartInSteadyState())
+    c_problem$setStartInSteadyState(startInSteadyState)
   }
   
   if (!is.null(updateModel)) {
-    restorationCall$updateModel <- as.logical(task$isUpdateModel())
-    task$setUpdateModel(updateModel)
+    restorationCall$updateModel <- as.logical(c_task$isUpdateModel())
+    c_task$setUpdateModel(updateModel)
   }
   
   if (!is.null(method)) {
     # We need to keep track of the previously set method
-    restorationCall$method_old = task$getMethod()$getSubType()
+    restorationCall$method_old = c_task$getMethod()$getSubType()
     
-    task$setMethodType(method$method)
+    c_task$setMethodType(method$method)
     restorationCall$method <- list(method = method$method)
-    method_cop = as(task$getMethod(), "_p_CTrajectoryMethod")
+    c_method = as(c_task$getMethod(), "_p_CTrajectoryMethod")
     
     method <- method[names(method) != "method"]
     
     if (!is_empty(method)) {
       # get some info on what parameters the method has
-      methodstruct <- methodstructure(method_cop) %>% tibble::rowid_to_column()
+      methodstruct <- methodstructure(c_method) %>% tibble::rowid_to_column()
       
       method <-
         tibble::tibble(value = method) %>%
@@ -241,7 +241,7 @@ tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NU
   
   # method_old is only set if the purpose of calling the function was a restorationCall
   if (!is.null(method_old)) {
-    task$setMethodType(method_old)
+    c_task$setMethodType(method_old)
   }
   
   if (errors && .type != "restore") {
@@ -289,16 +289,16 @@ is.copasi_ts <- function(x) {
 # 
 # }
 
-tc_result_worker <- function(datamodel, saveResultInMemory) {
-  task <- as(datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  timeSeries <- task$getTimeSeries()
-  recordedSteps <- timeSeries$getRecordedSteps()
+tc_result_worker <- function(c_datamodel, saveResultInMemory) {
+  c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+  c_timeseries <- c_task$getTimeSeries()
+  recordedSteps <- c_timeseries$getRecordedSteps()
   
   ret <- NULL
   
   if (recordedSteps) {
     # Timecritical step optimization
-    timeSeries_ref <- timeSeries@ref
+    timeSeries_ref <- c_timeseries@ref
     R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
     
     # assemble output dataframe
@@ -306,7 +306,7 @@ tc_result_worker <- function(datamodel, saveResultInMemory) {
     # Inner loops creates numeric() wrapped in a named list
     # Outer loop binds all lists to a data frame
     ret <-
-      seq_len_0(timeSeries$getNumVariables()) %>%
+      seq_len_0(c_timeseries$getNumVariables()) %>%
       map(function(i_var) {
         seq_len_0(recordedSteps) %>%
           map_dbl(function(i_step) {
@@ -318,12 +318,12 @@ tc_result_worker <- function(datamodel, saveResultInMemory) {
           }) %>%
           list() %>%
           # set_names(timeSeries$getTitle(i_var))
-          set_names(CTimeSeries_getTitle(timeSeries, i_var))
+          set_names(CTimeSeries_getTitle(c_timeseries, i_var))
       }) %>%
       dplyr::bind_cols() %>%
       new_copasi_ts(
-        unit_time = getTimeUnit(datamodel),
-        unit_conc = paste0(getQuantityUnit(datamodel), " / ", getVolumeUnit(datamodel))
+        unit_time = getTimeUnit(c_datamodel),
+        unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel))
       )
   } else if (is.null(saveResultInMemory))
     warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")

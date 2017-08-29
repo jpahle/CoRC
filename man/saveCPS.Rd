@@ -4,15 +4,15 @@
 \alias{saveCPS}
 \title{Save a model as a .cps file}
 \usage{
-saveCPS(filename = datamodel$getFileName(), overwrite = FALSE,
-  datamodel = getCurrentModel())
+saveCPS(filename = model$getFileName(), overwrite = FALSE,
+  model = getCurrentModel())
 }
 \arguments{
 \item{filename}{a path to save to}
 
 \item{overwrite}{is overwriting existing files allowed?}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \description{
 \code{saveCPS} saves a model as a .cps file

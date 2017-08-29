@@ -106,21 +106,21 @@
     
 
     <pre class="usage"><span class='fu'>openCopasi</span>(<span class='kw'>readin</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>copasi_loc</span> <span class='kw'>=</span> <span class='st'>"CopasiUI"</span>,
-  <span class='kw'>datamodel</span> <span class='kw'>=</span> <span class='no'>pkg_env</span>$<span class='no'>curr_dm</span>)</pre>
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>readin</th>
-      <td><p>if <code>TRUE</code>, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the give datamodel</p></td>
+      <td><p>if <code>TRUE</code>, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model</p></td>
     </tr>
     <tr>
       <th>copasi_loc</th>
       <td><p>location of CopasiUI</p></td>
     </tr>
     <tr>
-      <th>datamodel</th>
+      <th>model</th>
       <td><p>a model object</p></td>
     </tr>
     </table>

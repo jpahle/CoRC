@@ -4,14 +4,14 @@
 \alias{compartment}
 \title{Identify compartment by name}
 \usage{
-compartment(key, reference = NULL, datamodel = getCurrentModel())
+compartment(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a vector of strings to identify compartments}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 a character vector of copasi keys

@@ -4,10 +4,10 @@
 \alias{getModelName}
 \title{Get a model's name}
 \usage{
-getModelName(datamodel = getCurrentModel())
+getModelName(model = getCurrentModel())
 }
 \arguments{
-\item{datamodel}{a model object}
+\item{model}{a model object}
 }
 \value{
 name
