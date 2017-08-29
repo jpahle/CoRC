@@ -93,8 +93,8 @@ getCopasi <- function(path = NULL) {
         osfile <- readLines("/etc/os-release")
         id = na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
         version = na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
-        if (!is_empty(id)) id <- id[1,2]
-        if (!is_empty(version)) version <- version[1,c(2,3)]
+        if (!is_empty(id)) id <- id[1, 2]
+        if (!is_empty(version)) version <- version[1, c(2,3)]
       }
       platform <- paste0(id, "_", paste0(version, collapse = "_"))
       
