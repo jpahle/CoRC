@@ -11,6 +11,8 @@ getGlobalQuantities(key = NULL, rawExpressions = FALSE,
 \item{key}{a character vector uniquely identifying global quantities}
 
 \item{model}{a model object}
+
+\item{rawExpression}{a flag on whether expressions should be raw (not converted to readable format)}
 }
 \value{
 a data frame with global quantities and associated information

@@ -3,6 +3,7 @@
 #' \code{getSpecies} returns species information as a data frame.
 #'
 #' @param key a character vector uniquely identifying species
+#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with species and associated information
 #' @export
@@ -71,8 +72,10 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying species
 #' @param name a character vector of names to set
+#' @param type a character vector of types ("fixed", "assignment", "reactions", "ode").
 #' @param initial.concentration a numeric vector of concentrations to set
 #' @param initial.number a numeric vector of particle numbers to set
+#' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
@@ -180,6 +183,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
 #' @param key a character vector uniquely identifying global quantities
+#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with global quantities and associated information
 #' @export
@@ -242,7 +246,9 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying global quantities
 #' @param name a character vector of names to set
+#' @param type a character vector of types ("fixed", "assignment", "ode").
 #' @param initial.volume a numeric vector of values to set
+#' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
@@ -336,6 +342,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
 #' \code{getCompartments} returns compartments as a data frame.
 #'
 #' @param key a character vector uniquely identifying compartments
+#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with compartments and associated information
 #' @export
@@ -396,7 +403,9 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying compartments
 #' @param name a character vector of names to set
+#' @param type a character vector of species types ("fixed", "assignment", "ode").
 #' @param initial.volume a numeric vector of values to set
+#' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
 #' @param model a model object
 #' @export

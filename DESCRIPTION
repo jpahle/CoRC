@@ -48,4 +48,5 @@ Collate:
     'utils_copasi_key.R'
     'utils_copasi_vector.R'
     'utils_expressions.R'
+    'utils_stringr.R'
 VignetteBuilder: knitr

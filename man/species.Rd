@@ -7,7 +7,7 @@
 species(key, reference = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a vector of strings to identify species}
+\item{key}{a vector of strings to identify species.}
 
 \item{reference}{a scalar character or vector of characters naming the value references to be returned.}
 

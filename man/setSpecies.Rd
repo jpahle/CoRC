@@ -13,9 +13,13 @@ setSpecies(key = NULL, name = NULL, type = NULL,
 
 \item{name}{a character vector of names to set}
 
+\item{type}{a character vector of types ("fixed", "assignment", "reactions", "ode").}
+
 \item{initial.concentration}{a numeric vector of concentrations to set}
 
 \item{initial.number}{a numeric vector of particle numbers to set}
+
+\item{expression}{a character vector of expressions to set}
 
 \item{data}{a data frame as given by \code{getSpecies} which will be applied before the other arguments.}
 

@@ -13,6 +13,10 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
 
 \item{name}{a character vector of names to set}
 
+\item{type}{a character vector of types ("fixed", "assignment", "ode").}
+
+\item{expression}{a character vector of expressions to set}
+
 \item{data}{a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.}
 
 \item{initial.volume}{a numeric vector of values to set}
