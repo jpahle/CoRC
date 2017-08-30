@@ -2,20 +2,20 @@
 % Please edit documentation in R/quantity_finders.R
 \name{compartment}
 \alias{compartment}
-\title{Identify compartment by name}
+\title{Identify compartments by name}
 \usage{
-compartment(key, reference = NULL, model = getCurrentModel())
+compartment(key = "", reference = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a vector of strings to identify compartments}
+\item{key}{a string to identify compartments.}
 
-\item{reference}{a scalar character or vector of characters naming the value references to be returned.}
+\item{reference}{an optional string naming the value references to be returned.}
 
-\item{model}{a model object}
+\item{model}{a model object.}
 }
 \value{
-a character vector of copasi keys
+a character vector of compartment identifiers or references.
 }
 \description{
-\code{compartment} identifies compartments from the given name fragments.
+\code{compartment} identifies compartments matching a given name fragments.
 }

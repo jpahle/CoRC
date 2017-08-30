@@ -4,18 +4,18 @@
 \alias{species}
 \title{Identify species by name}
 \usage{
-species(key, reference = NULL, model = getCurrentModel())
+species(key = "", reference = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a vector of strings to identify species.}
+\item{key}{a string to identify species.}
 
-\item{reference}{a scalar character or vector of characters naming the value references to be returned.}
+\item{reference}{an optional string naming the value references to be returned.}
 
-\item{model}{a model object}
+\item{model}{a model object.}
 }
 \value{
-a character vector of copasi keys
+a character vector of species identifiers or references.
 }
 \description{
-\code{species} identifies species from the given name fragments.
+\code{species} identifies species matching a given name fragment.
 }

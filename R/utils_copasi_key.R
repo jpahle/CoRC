@@ -39,6 +39,8 @@ dn_to_object <- function(dn, c_datamodel, accepted_types = NULL) {
 # Takes wrapped CN "<*>", reference DN "{*}" and gives object
 # Only meant for references (for consistency)
 xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
+  if (xn == "") return()
+  
   if (stringr::str_detect(xn, "^<CN=.*>$"))
     return(
       cn_to_object(stringr::str_sub(xn, 2L, -2L), c_datamodel, accepted_types)

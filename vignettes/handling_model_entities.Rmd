@@ -45,29 +45,39 @@ reaction("Che B phosph")
 parameter("4).kR")
 ```
 
-These functions return CommonNames when a species is identified.
-They are vectorized and will always return a vector of identified entities of the same length or throw an error.
+These functions return ObjectDisplayNames when a species is identified.
+
+There are vectorized variants that will always return a vector of identified entities of the same length or throw an error.
 This means the behavior for 'NA' or non-uniquely matching strings is to throw an error.
-REGEX support could be implemented but under these limitations, regex strings would also have to yield unique matches.
+This allows to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.
 
 ```{r}
 species("CheY")
-species("CheYp")
-species(c("CheY", "CheYp"))
-species("Che")
-species(c(NA, "CheY"))
-species("failure")
+species_strict("CheY")
+species_strict("CheYp")
+species_strict(c("CheY", "CheYp"))
+species_strict("Che")
+species_strict(c(NA, "CheY"))
+species_strict("failure")
 ```
 
-CommonNames are generally what is used by CoRC to identify entities.
-In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself.
+CoRC makes use of the regex functionality of the stringr package.
+You can therefore wrap any string via \code{regex(string)} to enable regex matching.
 
 ```{r}
-getSpecies(key = "CN=Root,Model=Bacterial chemotaxis model,Vector=Compartments[compartment],Vector=Metabolites[CheY]")
+species(regex("Che.p"))
+```
+
+In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself.
+These methods will always use the strict variants to allow reliably matching species.
+
+```{r}
 getSpecies(key = species("CheY"))
+getSpecies(key = species_strict("CheY"))
 getSpecies(key = "CheY")
 getSpecies("CheY")
 getSpecies("Che")
+getSpecies(species(regex("Che.p")))
 ```
 
 ## Using References
@@ -91,5 +101,3 @@ To help with this, functions implemented to get model values have similar functi
 str(getSpecies("CheY"))
 str(getSpeciesReferences("CheY"))
 ```
-
-Being able to use [CheYp]_0 instead of a full CN would probably lead to more intuitive results (see Article: Issues).

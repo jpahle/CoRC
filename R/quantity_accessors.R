@@ -11,12 +11,10 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(rawExpressions))
   
-  key <- species(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
   else
-    cl_metabs <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+    cl_metabs <- species_obj(key, c_datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -44,12 +42,10 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
 getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- species(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
   else
-    cl_metabs <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+    cl_metabs <- species_obj(key, c_datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -98,15 +94,13 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  key <- species(key = key %||% character(), model = c_datamodel)
+  cl_metabs <- species_obj(key = key %||% character(), model = c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial.concentration", "initial.number", "expression")])
   
-  if (is_empty(key)) return(invisible())
-  
-  cl_metabs <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+  if (is_empty(cl_metabs)) return(invisible())
   
   # apparently I need to give changedObjects because I cant update initial values without
   c_changedObjects <- ObjectStdVector()
@@ -191,13 +185,11 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(rawExpressions))
   
-  key <- quantity(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
   else
-    cl_quants <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
-  
+    cl_quants <- quantity_obj(key, c_datamodel)
+
   # assemble output dataframe
   tibble::tibble(
     key = map_swig_chr(cl_quants, "getObjectDisplayName"),
@@ -221,12 +213,10 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
 getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- quantity(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
   else
-    cl_quants <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
+    cl_quants <- quantity_obj(key, c_datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -270,15 +260,13 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  key <- quantity(key = key %||% character(), model = c_datamodel)
+  c_quants <- quantity(key = key %||% character(), model = c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial.value", "expression")])
   
-  if (is_empty(key)) return(invisible())
-  
-  cl_quants <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
+  if (is_empty(c_quants)) return(invisible())
   
   # apparently I need to give changedObjects because I cant update initial values without
   c_changedObjects <- ObjectStdVector()
@@ -350,12 +338,10 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(rawExpressions))
   
-  key <- compartment(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
   else
-    cl_comps <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+    cl_comps <- compartment_obj(key, c_datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -379,12 +365,10 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
 getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- compartment(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
   else
-    cl_comps <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+    cl_comps <- compartment_obj(key, c_datamodel)
   
   # assemble output dataframe
   tibble::tibble(
@@ -427,15 +411,13 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  key <- compartment(key = key %||% character(), model = c_datamodel)
+  cl_comps <- compartment_obj(key = key %||% character(), model = c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.volume", "expression")])
   
-  if (is_empty(key)) return(invisible())
-  
-  cl_comps <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+  if (is_empty(cl_comps)) return(invisible())
   
   # apparently I need to give changedObjects because I cant update initial values without
   c_changedObjects <- ObjectStdVector()
@@ -505,13 +487,11 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
 getReactions <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- reaction(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     c_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
   else
-    c_reacts <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
-  
+    c_reacts <- reaction_obj(key, c_datamodel)
+
   # assemble output dataframe
   tibble::tibble(
     key = map_swig_chr(c_reacts, "getObjectDisplayName"),
@@ -538,15 +518,13 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   )
   
   # Do this as assertion before we start changing values
-  key <- reaction(key = key %||% character(), model = c_datamodel)
+  cl_reacts <- reaction_obj(key = key %||% character(), model = c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setReactions, data[names(data) %in% c("key", "name")])
   
-  if (is_empty(key)) return(invisible())
-  
-  cl_reacts <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
+  if (is_empty(cl_reacts)) return(invisible())
   
   # apply names
   if (!is_null(name)) {
@@ -570,8 +548,6 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
 getParameters <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- parameter(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_params <-
       get_cdv(c_datamodel$getModel()$getReactions()) %>%
@@ -581,8 +557,6 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
       }) %>%
       flatten()
   else
-    # no dn_to_object here because it doesnt work for parameters
-    # cl_params <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
     cl_params <- parameter_obj(key, c_datamodel)
   
   # assemble output dataframe
@@ -652,17 +626,13 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, mo
   )
   
   # Do this as assertion before we start changing values
-  key <- parameter(key = key %||% character(), model = c_datamodel)
+  cl_params <- parameter_obj(key = key %||% character(), model = c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is_null(data)) do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
   
-  if (is_empty(key)) return(invisible())
-  
-  # no dn_to_object here because it doesnt work for parameters
-  # cl_params <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
-  cl_params <- parameter_obj(key, c_datamodel)
+  if (is_empty(cl_params)) return(invisible())
   
   # apply names
   if (!is_null(name)) {

@@ -102,31 +102,31 @@
     </div>
 
     
-    <p><code>species</code> identifies species from the given name fragments.</p>
+    <p><code>species</code> identifies species matching a given name fragment.</p>
     
 
-    <pre class="usage"><span class='fu'>species</span>(<span class='no'>key</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>species</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>a vector of strings to identify species.</p></td>
+      <td><p>a string to identify species.</p></td>
     </tr>
     <tr>
       <th>reference</th>
-      <td><p>a scalar character or vector of characters naming the value references to be returned.</p></td>
+      <td><p>an optional string naming the value references to be returned.</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>a model object</p></td>
+      <td><p>a model object.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a character vector of copasi keys</p>
+    <p>a character vector of species identifiers or references.</p>
     
 
   </div>

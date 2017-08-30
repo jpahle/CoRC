@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identify global quantities by name — quantity • CoRC</title>
+<title>Identify single reactions by name — reaction_strict • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,25 +98,25 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identify global quantities by name</h1>
+    <h1>Identify single reactions by name</h1>
     </div>
 
     
-    <p><code>quantity</code> identifies global quantities matching a given name fragment.</p>
+    <p><code>reaction_strict</code> identifies strictly one reaction per given name fragment.</p>
     
 
-    <pre class="usage"><span class='fu'>quantity</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>reaction_strict</span>(<span class='no'>key</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>a string to identify global quantities.</p></td>
+      <td><p>a vector of strings to identify reactions.</p></td>
     </tr>
     <tr>
       <th>reference</th>
-      <td><p>an optional string naming the value references to be returned.</p></td>
+      <td><p>a scalar character or vector of characters naming the value references to be returned.</p></td>
     </tr>
     <tr>
       <th>model</th>
@@ -126,7 +126,7 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a character vector of global quantity identifiers or references.</p>
+    <p>a character vector of reaction identifiers or references.</p>
     
 
   </div>

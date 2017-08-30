@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identify compartment by name — compartment • CoRC</title>
+<title>Identify compartments by name — compartment • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,35 +98,35 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identify compartment by name</h1>
+    <h1>Identify compartments by name</h1>
     </div>
 
     
-    <p><code>compartment</code> identifies compartments from the given name fragments.</p>
+    <p><code>compartment</code> identifies compartments matching a given name fragments.</p>
     
 
-    <pre class="usage"><span class='fu'>compartment</span>(<span class='no'>key</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>compartment</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>a vector of strings to identify compartments</p></td>
+      <td><p>a string to identify compartments.</p></td>
     </tr>
     <tr>
       <th>reference</th>
-      <td><p>a scalar character or vector of characters naming the value references to be returned.</p></td>
+      <td><p>an optional string naming the value references to be returned.</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>a model object</p></td>
+      <td><p>a model object.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a character vector of copasi keys</p>
+    <p>a character vector of compartment identifiers or references.</p>
     
 
   </div>

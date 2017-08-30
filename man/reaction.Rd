@@ -2,20 +2,20 @@
 % Please edit documentation in R/quantity_finders.R
 \name{reaction}
 \alias{reaction}
-\title{Identify reaction by name}
+\title{Identify reactions by name}
 \usage{
-reaction(key, reference = NULL, model = getCurrentModel())
+reaction(key = "", reference = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a vector of strings to identify reactions}
+\item{key}{a string to identify reactions.}
 
-\item{reference}{a scalar character or vector of characters naming the value references to be returned.}
+\item{reference}{an optional string naming the value references to be returned.}
 
-\item{model}{a model object}
+\item{model}{a model object.}
 }
 \value{
-a character vector of copasi keys
+a character vector of reaction identifiers or references.
 }
 \description{
-\code{reaction} identifies reactions from the given name fragments.
+\code{reaction} identifies reactions matching a given name fragment.
 }
