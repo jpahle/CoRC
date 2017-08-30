@@ -324,6 +324,8 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   weight_method <- copasi_exp %@% "weight_method"
   filename <- copasi_exp %@% "filename"
   
+  assert_that(!is.na(filename))
+  
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
