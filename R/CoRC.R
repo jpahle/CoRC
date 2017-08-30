@@ -30,7 +30,7 @@ COPASI_BIN_HASHES <-
       ),
     "3.4" =
       c(
-        darwin = "7e0500aa8e31a029f0402c122b96ed1d5bb67d2ef7009a56fe11806c3939daaf",
+        darwin = "4ce0d24ef08874c4cff996a14204aa5ce0b734a026bed0784ce412207c508b9d",
         win = "045bf95f378a85f5ed25ee837cbc18510abedf20263ff39802214eaae6d5f7e9"
         # ubuntu_16_10 = ""
       )
