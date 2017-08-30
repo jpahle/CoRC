@@ -56,7 +56,7 @@ setTimeCourseSettings(24, intervals = 10000)
 
 timeseries <- list(
   deterministic = runTimeCourse(),
-  stochastic = runTimeCourse(method = list(method = "directMethod", Use.Random.Seed = T, Random.Seed = 1))
+  stochastic = runTimeCourse(method = list(method = "directMethod", use.random.seed = T, random.seed = 1))
 )
 
 # simplify species names so they are valid R syntax
@@ -96,12 +96,12 @@ timeseries <-
     .prep = quote({
       library(CoRC)
       loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-      setTimeCourseSettings(method = list(method = "directMethod", Use.Random.Seed = T))
+      setTimeCourseSettings(method = list(method = "directMethod", use.random.seed = T))
     }),
     # iteration data (1000 random seeds),
     1:1000,
     # iteration code (formula ~)
-    ~ runTimeCourse(method = list(method = "directMethod", Random.Seed = .x))
+    ~ runTimeCourse(method = list(method = "directMethod", random.seed = .x))
   )
 
 # Combine all results and reshape the data
