@@ -94,7 +94,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  cl_metabs <- species_obj(key = key %||% character(), model = c_datamodel)
+  cl_metabs <- species_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -260,7 +260,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  c_quants <- quantity(key = key %||% character(), model = c_datamodel)
+  c_quants <- quantity_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -411,7 +411,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
-  cl_comps <- compartment_obj(key = key %||% character(), model = c_datamodel)
+  cl_comps <- compartment_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -518,7 +518,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   )
   
   # Do this as assertion before we start changing values
-  cl_reacts <- reaction_obj(key = key %||% character(), model = c_datamodel)
+  cl_reacts <- reaction_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -626,7 +626,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, mo
   )
   
   # Do this as assertion before we start changing values
-  cl_params <- parameter_obj(key = key %||% character(), model = c_datamodel)
+  cl_params <- parameter_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
