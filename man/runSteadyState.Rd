@@ -5,14 +5,17 @@
 \title{Run to stready state}
 \usage{
 runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, method = NULL, model = getCurrentModel())
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
 }
 \arguments{
-\item{calculateJacobian}{boolean}
+\item{calculateJacobian}{flag}
 
-\item{performStabilityAnalysis}{boolean}
+\item{performStabilityAnalysis}{flag}
 
-\item{updateModel}{boolean}
+\item{updateModel}{flag}
+
+\item{executable}{flag}
 
 \item{method}{list}
 

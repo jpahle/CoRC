@@ -11,28 +11,28 @@ setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{duration}{numeric time course duration}
+\item{duration}{number}
 
-\item{dt}{numeric}
+\item{dt}{number}
 
-\item{intervals}{integer}
+\item{intervals}{count}
 
-\item{suppressOutputBefore}{boolean}
+\item{suppressOutputBefore}{flag}
 
-\item{outputEvents}{boolean}
+\item{outputEvents}{flag}
 
-\item{saveResultInMemory}{boolean}
+\item{saveResultInMemory}{flag}
 
-\item{startInSteadyState}{boolean}
+\item{startInSteadyState}{flag}
 
-\item{updateModel}{boolean}
+\item{updateModel}{flag}
 
-\item{executable}{boolean}
+\item{executable}{flag}
 
-\item{method}{character or list}
+\item{method}{string or list}
 
 \item{model}{a model object}
 }
 \description{
-\code{setTimeCourseSettings} sets time course settings including method options.
+\code{setTimeCourseSettings} sets time course task settings including method options.
 }

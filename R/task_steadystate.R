@@ -2,39 +2,66 @@
 #'
 #' \code{runSteadyState} calculates the steady state and returns results in a list.
 #'
-#' @param calculateJacobian boolean
-#' @param performStabilityAnalysis boolean
-#' @param updateModel boolean
+#' @param calculateJacobian flag
+#' @param performStabilityAnalysis flag
+#' @param updateModel flag
+#' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @return a list of results
 #' @export
-runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, model = getCurrentModel()) {
+runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  # use the worker function to apply all given arguments
-  # the worker function returns all args needed to restore previous settings
-  restorationCall <- ss_settings_worker(
-    .type = "temporary",
+  # does assertions
+  settings <- ss_assemble_settings(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   
-  success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
+  # does assertions
+  method_settings <- ss_assemble_method(method, c_task)
+  
+  # try to avoid doing changes for performance reasons
+  do_settings <- !is_empty(settings)
+  do_method <- !is_empty(method_settings)
+  
+  c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
+  
+  # save all previous settings
+  if (do_settings)
+    pre_settings <- ss_get_settings(c_task)
+  if (do_method)
+    pre_method_settings <- get_method_settings(c_method)
+  
+  # apply settings
+  success <- !is.error(try(ss_set_settings(settings, c_task)))
   if (success)
+    success <- !is.error(try(set_method_settings(method_settings, c_method)))
+  # initialize task
+  if (success)
+    success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
+  # run task and save current settings
+  if (success) {
+    full_settings <- ss_get_settings(c_task)
+    full_settings$method <- get_method_settings(c_method)
     success <- grab_msg(c_task$processRaw(TRUE))
+  }
+  # get results
   if (success)
-    ret <- ss_result_worker(c_datamodel)
+    ret <- ss_get_results(c_datamodel, full_settings)
   
-  # Call the worker again to restore previous settings.
-  do.call(ss_settings_worker, restorationCall)
+  # revert all settings
+  if (do_settings)
+    ss_set_settings(pre_settings, c_task)
+  if (do_method)
+    set_method_settings(pre_method_settings, c_method)
   
-  # Assertions only after restoration of settings
+  # assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
@@ -45,156 +72,140 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 
 #' Set steady state settings
 #'
-#' \code{setSteadyStateSettings} sets steady state settings including method options.
+#' \code{setSteadyStateSettings} sets steady state task settings including method options.
 #'
-#' @param calculateJacobian boolean
-#' @param performStabilityAnalysis boolean
-#' @param updateModel boolean
-#' @param executable boolean
+#' @param calculateJacobian flag
+#' @param performStabilityAnalysis flag
+#' @param updateModel flag
+#' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @export
 setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
-  # Call the worker to set most settings
-  ss_settings_worker(
-    .type = "permanent",
+  # does assertions
+  settings <- ss_assemble_settings(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
     updateModel = updateModel,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   
-  if (!is.null(executable)) {
-    c_task$setScheduled(executable)
-  }
+  # does assertions
+  method_settings <- ss_assemble_method(method, c_task)
+  
+  c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
+  
+  ss_set_settings(settings, c_task)
+  set_method_settings(method_settings, c_method)
   
   invisible()
 }
 
-ss_settings_worker <- function(.type, calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, method = NULL, c_datamodel) {
+#' Get steady state settings
+#'
+#' \code{getSteadyStateSettings} gets steady state task settings including method options.
+#'
+#' @param model a model object
+#' @return A list of time course task settings including method options.
+#' @export
+getSteadyStateSettings <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
+  c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
-  assert_that(
-    is.null(calculateJacobian)        || is.flag(calculateJacobian)        && !is.na(calculateJacobian),
-    is.null(performStabilityAnalysis) || is.flag(performStabilityAnalysis) && !is.na(performStabilityAnalysis),
-    is.null(updateModel)              || is.flag(updateModel)              && !is.na(updateModel),
-    is.null(method)                   || is.list(method)
-  )
+  ret <- ss_get_settings(c_task)
+  ret$method <- get_method_settings(c_method)
   
-  if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian)) stop("performStabilityAnalysis can only be set in combination with calculateJacobian.")
-  
-  errors <- FALSE
-  
-  restorationCall <- list(
-    .type = "restore",
-    c_datamodel = c_datamodel
-  )
-  
-  if (!is.null(calculateJacobian)) {
-    restorationCall$calculateJacobian <- as.logical(c_problem$isJacobianRequested())
-    c_problem$setJacobianRequested(calculateJacobian)
-  }
-  
-  if (!is.null(performStabilityAnalysis)) {
-    restorationCall$performStabilityAnalysis <- as.logical(c_problem$isStabilityAnalysisRequested())
-    c_problem$setStabilityAnalysisRequested(performStabilityAnalysis)
-  }
-  
-  if (!is.null(updateModel)) {
-    restorationCall$updateModel <- as.logical(c_task$isUpdateModel())
-    c_task$setUpdateModel(updateModel)
-  }
-  
-  if (!is.null(method) && !is_empty(method)) {
-    c_method = as(c_task$getMethod(), "_p_CSteadyStateMethod")
-  
-    # get some info on what parameters the method has
-    methodstruct <- methodstructure(c_method) %>% tibble::rowid_to_column()
-    
-    method <-
-      tibble::tibble(value = method) %>%
-      dplyr::mutate(rowid = pmatch(names(value), methodstruct$name))
-    
-    # all names that are not names of method parameters
-    bad_names <- names(method$value)[is.na(method$rowid)]
-    
-    # merge method with relevant lines from methodstruct and check if the given values is allowed
-    method <-
-      method %>%
-      dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
-      dplyr::left_join(methodstruct, by = "rowid") %>%
-      dplyr::mutate(
-        allowed = map2_lgl(control_fun, value, ~ {
-          if (!is_null(.x)) .x(.y)
-          # No control function defined means just pass
-          else TRUE
-        })
-      )
-    
-    # all parameters that did not satisfy the tests in methodstruct$control_fun
-    forbidden <- dplyr::filter(method, !allowed)
-    
-    method <- dplyr::filter(method, allowed)
-    
-    # gather old value and then set new value
-    method <-
-      method %>%
-      dplyr::mutate(
-        oldval = map2(get_fun, object, ~ .x(.y)),
-        success = pmap_lgl(., function(set_fun, object, value, ...) {set_fun(object, value)})
-      )
-    
-    # parameters where trying to set it somehow failed as per feedback from copasi
-    failures <- dplyr::filter(method, !success)
-    
-    method <- dplyr::filter(method, success)
-    
-    # Overwritten parameters need to be in the restorationCall
-    if (nrow(method) != 0L) {
-      restorationCall$method <- method %>% dplyr::select(name, oldval) %>% tibble::deframe()
-    }
-    
-    # Give complete feedback error.
-    errmsg <- ""
-    if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-    if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-    if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-    if (nchar(errmsg) != 0L) {
-      try(stop(errmsg))
-      errors <- TRUE
-    }
-  }
-  
-  if (errors && .type != "restore") {
-    do.call(ss_settings_worker, restorationCall)
-    stop("Rolled back task due to errors during setup.")
-  }
-  
-  restorationCall
+  ret
 }
 
-ss_result_worker <- function(c_datamodel) {
+# The following functions should be the basis for implementation of any task
+# They should allow for a common workflow with most tasks
+
+# does assertions
+# returns a list of settings
+ss_assemble_settings <- function(calculateJacobian, performStabilityAnalysis, updateModel, executable) {
+  assert_that(
+    is.null(calculateJacobian)        || noNA(calculateJacobian)        && is.flag(calculateJacobian),
+    is.null(performStabilityAnalysis) || noNA(performStabilityAnalysis) && is.flag(performStabilityAnalysis),
+    is.null(updateModel)              || noNA(updateModel)              && is.flag(updateModel),
+    is.null(executable)               || noNA(executable)               && is.flag(executable)
+  )
+  
+  if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian))
+    stop("performStabilityAnalysis can only be set in combination with calculateJacobian.")
+  
+  list(
+    calculateJacobian = calculateJacobian,
+    performStabilityAnalysis = performStabilityAnalysis,
+    updateModel = updateModel,
+    executable = executable
+  ) %>%
+    discard(is_null)
+}
+
+# does assertions
+# returns a list of method settings
+ss_assemble_method <- function(method, c_task) {
+  if (is_null(method))
+    return(list())
+  
+  assert_that(is.list(method), !has_name(method, "method"))
+  
+  method
+}
+
+# gets full list of settings
+ss_get_settings <- function(c_task) {
+  c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
+  
+  list(
+    calculateJacobian =        as.logical(c_problem$isJacobianRequested()),
+    performStabilityAnalysis = as.logical(c_problem$isStabilityAnalysisRequested()),
+    updateModel =              as.logical(c_task$isUpdateModel()),
+    executable =               as.logical(c_task$isScheduled())
+  )
+}
+
+# sets all settings given in list
+ss_set_settings <- function(data, c_task) {
+  if (is_empty(data))
+    return()
+  
+  c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
+  
+  if (!is_null(data$calculateJacobian))
+    c_problem$setJacobianRequested(data$calculateJacobian)
+  
+  if (!is_null(data$performStabilityAnalysis))
+    c_problem$setStabilityAnalysisRequested(data$performStabilityAnalysis)
+  
+  if (!is_null(data$updateModel))
+    c_task$setUpdateModel(data$updateModel)
+  
+  if (!is_null(data$executable))
+    c_task$setScheduled(data$executable)
+}
+
+# gathers all results
+ss_get_results <- function(c_datamodel, settings) {
   c_model <- as(c_datamodel$getModel(), "_p_CModel")
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
-  ret <- list()
-  
-  ret$result <- c_task$getResult()
+  result <- c_task$getResult()
   
   cl_metabs <- get_cdv(c_model$getMetabolites())
+  # if no transition time, metabs aren't listed
   cl_metabs_ss <- discard(cl_metabs, is.na(map_swig_dbl(cl_metabs, "getTransitionTime")))
   
-  ret$species <-
+  species <-
     tibble::tibble(
-      key = map_chr(cl_metabs_ss, get_cn),
+      key = map_swig_chr(cl_metabs_ss, "getObjectDisplayName"),
       name = map_swig_chr(cl_metabs_ss, "getObjectName"),
       type = cl_metabs_ss %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
       concentration = map_swig_dbl(cl_metabs_ss, "getConcentration"),
@@ -206,19 +217,31 @@ ss_result_worker <- function(c_datamodel) {
   
   cl_reacts <- get_cdv(c_model$getReactions())
   
-  ret$reactions <-
+  reactions <-
     tibble::tibble(
-      key = map_chr(cl_reacts, get_cn),
+      key = map_swig_chr(cl_reacts, "getObjectDisplayName"),
       name = map_swig_chr(cl_reacts, "getObjectName"),
       concentration.flux = map_swig_dbl(cl_reacts, "getFlux"),
       particlenum.flux = map_swig_dbl(cl_reacts, "getParticleFlux")
     )
   
-  ret$jacobian.complete <- get_annotated_matrix(c_task$getJacobianAnnotated())
-    
-  ret$jacobian.reduced <- get_annotated_matrix(c_task$getJacobianXAnnotated())
+  jacobian.complete <- NULL
+  jacobian.reduced <- NULL
   
-  ret$protocol <- c_method$getMethodLog()
+  if (settings$calculateJacobian) {
+    jacobian.complete <- get_annotated_matrix(c_task$getJacobianAnnotated())
+    jacobian.reduced <- get_annotated_matrix(c_task$getJacobianXAnnotated())
+  }
   
-  ret
+  protocol <- c_method$getMethodLog()
+  
+  list(
+    settings = settings,
+    result = result,
+    species = species,
+    reactions = reactions,
+    jacobian.complete = jacobian.complete,
+    jacobian.reduced = jacobian.reduced,
+    protocol = protocol
+  )
 }

@@ -1,51 +1,103 @@
 #' Run parameter estimation
 #'
-#' \code{runParamEst} runs parameter estimation and returns results in a list.
+#' \code{runParameterEstimation} runs parameter estimation and returns results in a list.
 #'
-#' @param calculateJacobian boolean
-#' @param performStabilityAnalysis boolean
-#' @param calculateStatistics boolean
-#' @param updateModel boolean
-#' @param method  character or list
+#' @param randomizeStartValues flag
+#' @param createParameterSets flag
+#' @param calculateStatistics flag
+#' @param updateModel flag
+#' @param executable flag
+#' @param parameters copasi_param or list of copasi_param objects
+#' @param experiments copasi_exp or list of copasi_exp objects
+#' @param method string or list
 #' @param model a model object
 #' @return a list of results
 #' @export
-runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+runParameterEstimation <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  # use the worker function to apply all given arguments
-  # the worker function returns all args needed to restore previous settings
-  restorationCall <- pe_settings_worker(
-    .type = "temporary",
+  # does assertions
+  settings <- pe_assemble_settings(
     randomizeStartValues = randomizeStartValues,
     createParameterSets = createParameterSets,
     calculateStatistics = calculateStatistics,
     updateModel = updateModel,
-    parameters = parameters,
-    experiments = experiments,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   
-  success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
+  # does assertions
+  method_settings <- pe_assemble_method(method, c_task)
+  
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  
+  # does assertions
+  parameter_list <- pe_assemble_parameters(parameters, c_problem)
+  experiment_list <- pe_assemble_experiments(experiments, c_problem, temp_filenames = TRUE)
+  
+  # try to avoid doing changes for performance reasons
+  do_settings <- !is_empty(settings)
+  do_method <- !is_empty(method_settings)
+  do_parameters <- !is_empty(parameter_list)
+  do_experiments <- !is_empty(experiment_list)
+  
+  # save all previous settings
+  if (do_settings)
+    pre_settings <- pe_get_settings(c_task)
+  if (do_method) {
+    # keep track of the originally set method
+    pre_method <- c_task$getMethod()$getSubType()
+    # change the method first, then save the settings for the new method
+    if (!is_null(method_settings$method)) c_task$setMethodType(method_settings$method)
+    c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
+    pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
+  } else {
+    c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
+  }
+  
+  # apply settings
+  success <- !is.error(try(pe_set_settings(settings, c_task)))
   if (success)
+    success <- !is.error(try(set_method_settings(method_settings, c_method)))
+  if (success)
+    success <- !is.error(try(walk(parameter_list, addParameter, c_datamodel)))
+  if (success)
+    success <- !is.error(try(walk(experiment_list, addExperiments, c_datamodel)))
+  # initialize task
+  if (success)
+    success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
+  # run task and save current settings
+  if (success) {
+    full_settings <- pe_get_settings(c_task)
+    full_settings$method <- get_method_settings(c_method, with_name = TRUE)
     success <- grab_msg(c_task$processRaw(TRUE))
+  }
+  # get results
   if (success)
-    ret <- try(pe_result_worker(c_datamodel))
+    ret <- pe_get_results(c_datamodel, full_settings)
   
-  # Call the worker again to restore previous settings.
-  do.call(pe_settings_worker, restorationCall)
+  # revert all settings
+  if (do_settings)
+    pe_set_settings(pre_settings, c_task)
+  if (do_method) {
+    set_method_settings(pre_method_settings, c_method)
+    c_task$setMethodType(pre_method)
+  }
+  if (do_parameters)
+    clearParameters()
+  if (do_experiments) {
+    clearExperiments()
+    model_dir <- c_datamodel$getReferenceDirectory()
+    if (model_dir == "") model_dir <- getwd()
+    model_dir <- normalizePathC(model_dir)
+    try(experiment_list %>% map_chr(attr_getter("filename")) %>% file.path(model_dir, .) %>% file.remove())
+  }
   
-  # Assertions only after restoration of settings
+  # assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
-  )
-  assert_that(
-    !is.error(ret),
-    msg = paste0("Result readout failed.")
   )
   
   ret
@@ -53,38 +105,85 @@ runParamEst <- function(randomizeStartValues = NULL, createParameterSets = NULL,
 
 #' Set parameter estimation settings
 #'
-#' \code{setParamEstSettings} sets parameter estimation settings including method options.
+#' \code{setParameterEstimationSettings} sets parameter estimation task settings including parameters, experiments and method options.
 #'
-#' @param randomizeStartValues boolean
-#' @param createParameterSets boolean
-#' @param calculateStatistics boolean
-#' @param updateModel boolean
-#' @param executable boolean
-#' @param method character or list
+#' @param randomizeStartValues flag
+#' @param createParameterSets flag
+#' @param calculateStatistics flag
+#' @param updateModel flag
+#' @param executable flag
+#' @param parameters copasi_param or list of copasi_param objects
+#' @param experiments copasi_exp or list of copasi_exp objects
+#' @param method string or list
 #' @param model a model object
 #' @export
-setParamEstSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+setParameterEstimationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
-  # Call the worker to set most settings
-  pe_settings_worker(
-    .type = "permanent",
+  # does assertions
+  settings <- pe_assemble_settings(
     randomizeStartValues = randomizeStartValues,
     createParameterSets = createParameterSets,
     calculateStatistics = calculateStatistics,
     updateModel = updateModel,
-    parameters = parameters,
-    experiments = experiments,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
-  if (!is_null(executable)) {
-    c_datamodel$getTask("Parameter Estimation")$setScheduled(executable)
-  }
+  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  
+  # does assertions
+  method_settings <- pe_assemble_method(method, c_task)
+  
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  
+  # does assertions
+  parameter_list <- pe_assemble_parameters(parameters, c_problem)
+  experiment_list <- pe_assemble_experiments(experiments, c_problem)
+  
+  # experiments and parameters get rolled back when not setting them properly
+  tryCatch(
+    walk(parameter_list, addParameter, c_datamodel),
+    error = {
+      clearParameters()
+      stop("Failed when applying parameters.")
+    }
+  )
+  tryCatch(
+    walk(experiment_list, addExperiments, c_datamodel),
+    error = {
+      clearExperiments()
+      stop("Failed when applying experiments.")
+    }
+  )
+  
+  # switch to given method
+  if (!is_null(method_settings$method))
+    c_task$setMethodType(method_settings$method)
+  
+  c_method <- as(c_task$getMethod(), "_p_COptMethod")
+  
+  pe_set_settings(settings, c_task)
+  set_method_settings(method_settings, c_method)
   
   invisible()
+}
+
+#' Set parameter estimation settings
+#'
+#' \code{getParameterEstimationSettings} gets parameter estimation task settings including method options.
+#'
+#' @param model a model object
+#' @return A list of parameter estimation task settings including method options.
+#' @export
+getParameterEstimationSettings <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_method <- as(c_task$getMethod(), "_p_COptMethod")
+  
+  ret <- pe_get_settings(c_task)
+  ret$method <- get_method_settings(c_method, with_name = TRUE)
+  
+  ret
 }
 
 new_copasi_parm <- function(x, lower, upper, start) {
@@ -179,7 +278,7 @@ new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, wei
     is.character(types), length(types) == ncol(x),
     is.character(mappings), length(mappings) == ncol(x),
     is.string(weight_method),
-    is.null(filename) || is.string(filename)
+    is.string(filename)
   )
   
   x <- tibble::as_tibble(x)
@@ -193,7 +292,7 @@ new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, wei
     types = types,
     mappings = mappings,
     weight_method = weight_method,
-    filename = filename %||% NA_character_
+    filename = filename
   )
 }
 
@@ -228,7 +327,8 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
   
   # data
-  if (is.data.frame(data)) data <- list(data)
+  if (is.data.frame(data))
+    data <- list(data)
   assert_that(every(data, is.data.frame))
   data <- map(data, tibble::as_tibble)
 
@@ -289,10 +389,12 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   }
   
   # filename
-  if (!is_null(filename)) {
-    assert_that(is.string(filename) && !is.na(filename))
-    if (!has_extension(filename, ".txt")) filename <- paste0(filename, ".txt")
-  }
+  assert_that(is.null(filename) || is.string(filename) && noNA(filename))
+  if (is.null(filename))
+    # if no filename given, just use random one.
+    filename <- paste0("CoRC_exp_", digest::digest(runif(1)))
+  if (!has_extension(filename, ".txt"))
+    filename <- paste0(filename, ".txt")
   
   new_copasi_exp(
     data,
@@ -324,17 +426,21 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   weight_method <- copasi_exp %@% "weight_method"
   filename <- copasi_exp %@% "filename"
   
-  assert_that(!is.na(filename))
-  
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
   
   # Create experiment file
   model_dir <- c_datamodel$getReferenceDirectory()
-  if (model_dir == "") model_dir <- getwd()
+  if (model_dir == "")
+    model_dir <- getwd()
   model_dir <- normalizePathC(model_dir)
   filepath <- file.path(model_dir, filename)
+  assert_that(
+    # If the user has set a manual filename, try to be safe and not overwrite anything
+    !file.exists(filepath) || grepl("^CoRC_exp_", filename),
+    msg = paste0('Experiment file path "', filepath, '" already exists.')
+  )
   readr::write_tsv(copasi_exp, filepath)
   
   # Construct individual experiments
@@ -392,203 +498,131 @@ clearExperiments <- function(model = getCurrentModel()) {
   seq_len_0(c_experiment_set$getExperimentCount()) %>% walk(~ c_experiment_set$removeExperiment(0))
 }
 
-# .type can help in some situations to determine assertions etc
-# can be "temporary", "permanent" or "restore"
-pe_settings_worker <- function(.type, randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, parameters = NULL, experiments = NULL, method = NULL, method_old = NULL, c_datamodel) {
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+pe_assemble_parameters <- function(parameters, c_problem) {
+  assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.copasi_parm) || is.copasi_parm(parameters))
+  
+  if (is.copasi_parm(parameters))
+    parameters <- list(parameters)
+  
+  if (is_empty(parameters))
+    return(list())
   
   assert_that(
-    is.null(randomizeStartValues)   || is.flag(randomizeStartValues) && !is.na(randomizeStartValues),
-    is.null(createParameterSets)    || is.flag(createParameterSets)  && !is.na(createParameterSets),
-    is.null(calculateStatistics)    || is.flag(calculateStatistics)  && !is.na(calculateStatistics),
-    is.null(updateModel)            || is.flag(updateModel)          && !is.na(updateModel),
-    is.null(parameters)             || is.list(parameters)           && every(parameters, is.copasi_parm) || is.copasi_parm(parameters),
-    is.null(experiments)            || is.list(experiments)          && every(experiments, is.copasi_exp) || is.copasi_exp(experiments),
-    is.null(method)                 || is.string(method)             && !is.na(method) || is.list(method) && is.string(method$method) && !is.na(method$method)
+    c_problem$getOptItemSize() == 0L,
+    msg = "This function can not set parameters if there are already parameters set in copasi."
   )
   
-  if (!is_null(parameters) && .type != "restore") {
-    assert_that(
-      c_problem$getOptItemSize() == 0L,
-      msg = "This function can not set parameters if there are already parameters set in copasi."
-    )
-    
-    if (is.copasi_parm(parameters))
-      parameters <- list(parameters)
-    
-    parameters %>% walk(validate_copasi_parm)
-  }
-    
-  if (!is_null(experiments) && .type != "restore") {
-    assert_that(
-      c_problem$getExperimentSet()$getExperimentCount() == 0L,
-      msg = "This function can not set experiments if there are already experiments set in copasi."
-    )
-    
-    if (is.copasi_exp(experiments))
-      experiments <- list(experiments)
-    
-    no_filename <- experiments %>% map(attr_getter("filename")) %>% map_lgl(is.na)
-    if (any(no_filename)) {
-      assert_that(.type != "permanent", msg = "If setting experiments permanently, all experiments need a defined filename.")
-      experiments <- experiments %>% modify_if(
-        no_filename,
-        ~ {
-          attr(.x, "filename") <- paste0("CoRC_temp_", digest::digest(.x), ".txt")
-          .x
-        }
-      )
-    }
-  }
+  walk(parameters, validate_copasi_parm)
   
-  if (!is_null(method)) {
-    if (is_scalar_character(method)) method <- list(method = method)
-    # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
-  }
-  
-  errors <- FALSE
-  
-  restorationCall <- list(
-    .type = "restore",
-    c_datamodel = c_datamodel
-  )
-  
-  if (!is_null(randomizeStartValues)) {
-    restorationCall$randomizeStartValues <- as.logical(c_problem$getRandomizeStartValues())
-    c_problem$setRandomizeStartValues(randomizeStartValues)
-  }
-  
-  if (!is_null(createParameterSets)) {
-    restorationCall$createParameterSets <- as.logical(c_problem$getCreateParameterSets())
-    c_problem$setCreateParameterSets(createParameterSets)
-  }
-  
-  if (!is_null(calculateStatistics)) {
-    restorationCall$calculateStatistics <- as.logical(c_problem$getCalculateStatistics())
-    c_problem$setCalculateStatistics(calculateStatistics)
-  }
-  
-  if (!is_null(updateModel)) {
-    restorationCall$updateModel <- as.logical(c_task$isUpdateModel())
-    c_task$setUpdateModel(updateModel)
-  }
-  
-  if (!is_null(parameters)) {
-    if (.type != "restore") {
-      restorationCall$parameters <- parameters
-      parameters %>% walk(~ {
-        e <- try(addParameter(.x, model = c_datamodel))
-        if (is.error(e)) errors <<- TRUE
-      })
-    } else {
-      clearParameters(model = c_datamodel)
-    }
-  }
-  
-  if (!is_null(experiments)) {
-    if (.type != "restore") {
-      restorationCall$experiments <- experiments
-        
-      experiments %>% walk(~ {
-        e <- try(addExperiments(.x, model = c_datamodel))
-        if (is.error(e)) errors <<- TRUE
-      })
-    } else {
-      clearExperiments(model = c_datamodel)
-      # delete the file
-      model_dir <- c_datamodel$getReferenceDirectory()
-      if (model_dir == "") model_dir <- getwd()
-      model_dir <- normalizePathC(model_dir)
-      e <- try(experiments %>% map_chr(attr_getter("filename")) %>% file.path(model_dir, .) %>% file.remove())
-      if (is.error(e)) errors <- TRUE
-    }
-  }
-  
-  if (!is_null(method)) {
-    # We need to keep track of the previously set method
-    restorationCall$method_old = c_task$getMethod()$getSubType()
-    
-    c_task$setMethodType(method$method)
-    restorationCall$method <- list(method = method$method)
-    c_method = as(c_task$getMethod(), "_p_COptMethod")
-    
-    method <- method[names(method) != "method"]
-    
-    if (!is_empty(method)) {
-      # get some info on what parameters the method has
-      methodstruct <- methodstructure(c_method) %>% tibble::rowid_to_column()
-      
-      method <-
-        tibble::tibble(value = method) %>%
-        dplyr::mutate(rowid = pmatch(names(value), methodstruct$name))
-      
-      # all names that are not names of method parameters
-      bad_names <- names(method$value)[is.na(method$rowid)]
-      
-      # merge method with relevant lines from methodstruct and check if the given values is allowed
-      method <-
-        method %>%
-        dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
-        dplyr::left_join(methodstruct, by = "rowid") %>%
-        dplyr::mutate(
-          allowed = map2_lgl(control_fun, value, ~ {
-            if (!is_null(.x)) .x(.y)
-            # No control function defined means just pass
-            else TRUE
-          })
-        )
-      
-      # all parameters that did not satisfy the tests in methodstruct$control_fun
-      forbidden <- dplyr::filter(method, !allowed)
-      
-      method <- dplyr::filter(method, allowed)
-      
-      # gather old value and then set new value
-      method <-
-        method %>%
-        dplyr::mutate(
-          oldval = map2(get_fun, object, ~ .x(.y)),
-          success = pmap_lgl(., function(set_fun, object, value, ...) {set_fun(object, value)})
-        )
-      
-      # parameters where trying to set it somehow failed as per feedback from copasi
-      failures <- dplyr::filter(method, !success)
-      
-      method <- dplyr::filter(method, success)
-      
-      # Overwritten parameters need to be in the restorationCall
-      if (nrow(method) != 0L) {
-        restorationCall$method <- method %>% dplyr::select(name, oldval) %>% tibble::deframe()
-      }
-      
-      # Give complete feedback error.
-      errmsg <- ""
-      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-      if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-      if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-      if (nchar(errmsg) != 0L) {
-        try(stop(errmsg))
-        errors <- TRUE
-      }
-    }
-  }
-  
-  # method_old is only set if the purpose of calling the function was a restorationCall
-  if (!is_null(method_old)) {
-    c_task$setMethodType(method_old)
-  }
-  
-  if (errors && .type != "restore") {
-    do.call(pe_settings_worker, restorationCall)
-    stop("Rolled back task due to errors during setup.")
-  }
-  
-  restorationCall
+  parameters
 }
 
-pe_result_worker <- function(c_datamodel) {
+pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FALSE) {
+  assert_that(is.null(experiments) || is.list(experiments) && every(experiments, is.copasi_exp) || is.copasi_exp(experiments))
+  
+  if (is.copasi_exp(experiments))
+    experiments <- list(experiments)
+  
+  if (is_empty(experiments))
+    return(list())
+  
+  assert_that(
+    c_problem$getExperimentSet()$getExperimentCount() == 0L,
+    msg = "This function can not set experiments if there are already experiments set in copasi."
+  )
+  
+  # force temporary experiment file names so they can be deleted safely
+  if (temp_filenames)
+    experiments <-
+      experiments %>%
+      map(~ {
+        attr(.x, "filename") <- paste0("CoRC_exp_", digest::digest(runif(1)), ".txt")
+        .x
+      })
+  
+  experiments
+}
+
+# The following functions should be the basis for implementation of any task
+# They should allow for a common workflow with most tasks
+
+# does assertions
+# returns a list of settings
+pe_assemble_settings <- function(randomizeStartValues, createParameterSets, calculateStatistics, updateModel, executable) {
+  assert_that(
+    is.null(randomizeStartValues) || noNA(randomizeStartValues) && is.flag(randomizeStartValues),
+    is.null(createParameterSets)  || noNA(createParameterSets)  && is.flag(createParameterSets),
+    is.null(calculateStatistics)  || noNA(calculateStatistics)  && is.flag(calculateStatistics),
+    is.null(updateModel)          || noNA(updateModel)          && is.flag(updateModel),
+    is.null(executable)           || noNA(executable)           && is.flag(executable)
+  )
+  
+  list(
+    randomizeStartValues = randomizeStartValues,
+    createParameterSets = createParameterSets,
+    calculateStatistics = calculateStatistics,
+    updateModel = updateModel,
+    executable = executable
+  ) %>%
+    discard(is_null)
+}
+
+# does assertions
+# returns a list of method settings
+pe_assemble_method <- function(method, c_task) {
+  if (is_null(method))
+    return(list())
+  
+  assert_that(is.string(method) || is.list(method))
+  
+  if (is_scalar_character(method))
+    method <- list(method = method)
+  
+  if (has_name(method, "method"))
+    # hack to get nice error message if method string is not accepted.
+    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+  
+  method
+}
+
+# gets full list of settings
+pe_get_settings <- function(c_task) {
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  
+  list(
+    randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
+    createParameterSets =  as.logical(c_problem$getCreateParameterSets()),
+    calculateStatistics =  as.logical(c_problem$getCalculateStatistics()),
+    updateModel =          as.logical(c_task$isUpdateModel()),
+    executable =           as.logical(c_task$isScheduled())
+  )
+}
+
+# sets all settings given in list
+pe_set_settings <- function(data, c_task) {
+  if (is_empty(data))
+    return()
+  
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  
+  if (!is_null(data$randomizeStartValues))
+    c_problem$setRandomizeStartValues(data$randomizeStartValues)
+  
+  if (!is_null(data$createParameterSets))
+    c_problem$setCreateParameterSets(data$createParameterSets)
+  
+  if (!is_null(data$calculateStatistics))
+    c_problem$setCalculateStatistics(data$calculateStatistics)
+  
+  if (!is_null(data$updateModel))
+    c_task$setUpdateModel(data$updateModel)
+  
+  if (!is_null(data$executable))
+    c_task$setScheduled(data$executable)
+}
+
+# gathers all results
+pe_get_results <- function(c_datamodel, settings) {
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
@@ -600,12 +634,10 @@ pe_result_worker <- function(c_datamodel) {
     map(~ c_experiment_set$getExperiment(.x))
   cl_dependent_obj <- swigfix_resolve_obj_cvector(c_experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
   
-  ret <- list()
-  
   evals <- c_problem$getFunctionEvaluations()
   evaltime <- c_problem$getExecutionTime()
   
-  ret$main <-
+  main <-
     list(
       "Objective Value" = c_problem$getSolutionValue(),
       "Root Mean Square" = c_problem$getRMS(),
@@ -619,7 +651,7 @@ pe_result_worker <- function(c_datamodel) {
     ) %>%
     transform_names()
   
-  ret$parameters <-
+  parameters <-
     tibble::tibble(
       "Parameter" = map_swig_chr(cl_items, "getObjectDisplayName"),
       "Lower Bound" = map_swig_dbl(cl_items, "getLowerBoundValue"),
@@ -632,7 +664,7 @@ pe_result_worker <- function(c_datamodel) {
     ) %>%
     transform_names()
   
-  ret$experiments <-
+  experiments <-
     tibble::tibble(
       "Experiment" = map_swig_chr(cl_experiments, "getObjectName"),
       "Objective Value" = map_swig_dbl(cl_experiments, "getObjectiveValue"),
@@ -642,7 +674,7 @@ pe_result_worker <- function(c_datamodel) {
     ) %>%
     transform_names()
   
-  ret$fitted.values <-
+  fitted.values <-
     tibble::tibble(
       "Fitted Value" = map_swig_chr(cl_dependent_obj, "getObjectDisplayName"),
       "Objective Value" = get_cv(c_experiment_set$getDependentObjectiveValues()),
@@ -652,17 +684,32 @@ pe_result_worker <- function(c_datamodel) {
     ) %>%
     transform_names()
   
-  ret$correlation <- get_annotated_matrix(c_problem$getCorrelations())
+  correlation <- get_annotated_matrix(c_problem$getCorrelations())
   
-  ret$fim <- get_annotated_matrix(c_problem$getFisherInformation())
-  ret$fim.eigenvalues <- get_annotated_matrix(c_problem$getFisherInformationEigenvalues())
-  ret$fim.eigenvectors <- get_annotated_matrix(c_problem$getFisherInformationEigenvectors())
+  fim <- get_annotated_matrix(c_problem$getFisherInformation())
+  fim.eigenvalues <- get_annotated_matrix(c_problem$getFisherInformationEigenvalues())
+  fim.eigenvectors <- get_annotated_matrix(c_problem$getFisherInformationEigenvectors())
   
-  ret$fim.scaled <- get_annotated_matrix(c_problem$getScaledFisherInformation())
-  ret$fim.scaled.eigenvalues <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvalues())
-  ret$fim.scaled.eigenvectors <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvectors())
+  fim.scaled <- get_annotated_matrix(c_problem$getScaledFisherInformation())
+  fim.scaled.eigenvalues <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvalues())
+  fim.scaled.eigenvectors <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvectors())
   
-  ret$protocol <- c_method$getMethodLog()$getPlainLog()
+  protocol <- c_method$getMethodLog()$getPlainLog()
   
-  ret
+  list(
+    settings = settings,
+    main = main,
+    parameters = parameters,
+    experiments = experiments,
+    fitted.values = fitted.values,
+    correlation = correlation,
+    fim = fim,
+    fim.eigenvalues = fim.eigenvalues,
+    fim.eigenvectors = fim.eigenvectors,
+    fim.scaled = fim.scaled,
+    fim.scaled.eigenvalues = fim.scaled.eigenvalues,
+    fim.scaled.eigenvectors = fim.scaled.eigenvectors,
+    protocol = protocol
+  )
 }
+

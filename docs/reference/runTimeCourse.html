@@ -108,46 +108,51 @@
     <pre class="usage"><span class='fu'>runTimeCourse</span>(<span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppressOutputBefore</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>outputEvents</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>saveResultInMemory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startInSteadyState</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>duration</th>
-      <td><p>numeric time course duration</p></td>
+      <td><p>number</p></td>
     </tr>
     <tr>
       <th>dt</th>
-      <td><p>numeric</p></td>
+      <td><p>number</p></td>
     </tr>
     <tr>
       <th>intervals</th>
-      <td><p>integer</p></td>
+      <td><p>count</p></td>
     </tr>
     <tr>
       <th>suppressOutputBefore</th>
-      <td><p>boolean</p></td>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>outputEvents</th>
-      <td><p>boolean</p></td>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>saveResultInMemory</th>
-      <td><p>boolean</p></td>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>startInSteadyState</th>
-      <td><p>boolean</p></td>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>updateModel</th>
-      <td><p>boolean</p></td>
+      <td><p>flag</p></td>
+    </tr>
+    <tr>
+      <th>executable</th>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>character or list</p></td>
+      <td><p>string or list</p></td>
     </tr>
     <tr>
       <th>model</th>
@@ -157,7 +162,8 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data frame with a time column and value columns</p>
+    <p>A data frame with a time column and value columns.
+  Has attributes for units and settings.</p>
     
 
   </div>

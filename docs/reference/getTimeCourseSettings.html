@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set parameter estimation settings — setParamEstSettings • CoRC</title>
+<title>Get time course settings — getTimeCourseSettings • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,50 +98,27 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set parameter estimation settings</h1>
+    <h1>Get time course settings</h1>
     </div>
 
     
-    <p><code>setParamEstSettings</code> sets parameter estimation settings including method options.</p>
+    <p><code>getTimeCourseSettings</code> gets time course task settings including method options.</p>
     
 
-    <pre class="usage"><span class='fu'>setParamEstSettings</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>getTimeCourseSettings</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>randomizeStartValues</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>createParameterSets</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>calculateStatistics</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>updateModel</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>executable</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>character or list</p></td>
-    </tr>
-    <tr>
       <th>model</th>
       <td><p>a model object</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list of time course task settings including method options.</p>
     
 
   </div>
@@ -149,7 +126,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

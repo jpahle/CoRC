@@ -7,31 +7,35 @@
 runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, method = NULL, model = getCurrentModel())
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
 }
 \arguments{
-\item{duration}{numeric time course duration}
+\item{duration}{number}
 
-\item{dt}{numeric}
+\item{dt}{number}
 
-\item{intervals}{integer}
+\item{intervals}{count}
 
-\item{suppressOutputBefore}{boolean}
+\item{suppressOutputBefore}{flag}
 
-\item{outputEvents}{boolean}
+\item{outputEvents}{flag}
 
-\item{saveResultInMemory}{boolean}
+\item{saveResultInMemory}{flag}
 
-\item{startInSteadyState}{boolean}
+\item{startInSteadyState}{flag}
 
-\item{updateModel}{boolean}
+\item{updateModel}{flag}
 
-\item{method}{character or list}
+\item{executable}{flag}
+
+\item{method}{string or list}
 
 \item{model}{a model object}
 }
 \value{
-a data frame with a time column and value columns
+A data frame with a time column and value columns.
+  Has attributes for units and settings.
 }
 \description{
 \code{runTimeCourse} runs a time course and returns the time course data as a data frame.

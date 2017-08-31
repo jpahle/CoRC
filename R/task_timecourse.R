@@ -2,25 +2,25 @@
 #'
 #' \code{runTimeCourse} runs a time course and returns the time course data as a data frame.
 #'
-#' @param duration numeric time course duration
-#' @param dt numeric
-#' @param intervals integer
-#' @param suppressOutputBefore boolean
-#' @param outputEvents boolean
-#' @param saveResultInMemory boolean
-#' @param startInSteadyState boolean
-#' @param updateModel boolean
-#' @param method character or list
+#' @param duration number
+#' @param dt number
+#' @param intervals count
+#' @param suppressOutputBefore flag
+#' @param outputEvents flag
+#' @param saveResultInMemory flag
+#' @param startInSteadyState flag
+#' @param updateModel flag
+#' @param executable flag
+#' @param method string or list
 #' @param model a model object
-#' @return a data frame with a time column and value columns
+#' @return A data frame with a time column and value columns.
+#'   Has attributes for units and settings.
 #' @export
-runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, model = getCurrentModel()) {
+runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  # use the worker function to apply all given arguments
-  # the worker function returns all args needed to restore previous settings
-  restorationCall <- tc_settings_worker(
-    .type = "temporary",
+  # does assertions
+  settings <- tc_assemble_settings(
     duration = duration,
     dt = dt,
     intervals = intervals,
@@ -29,22 +29,58 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     saveResultInMemory = saveResultInMemory,
     startInSteadyState = startInSteadyState,
     updateModel = updateModel,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
-  success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
-  if (success)
-    success <- grab_msg(c_task$processRaw(TRUE))
-  if (success)
-    ret <- tc_result_worker(c_datamodel, saveResultInMemory)
-
-  # Call the worker again to restore previous settings.
-  do.call(tc_settings_worker, restorationCall)
+  # does assertions
+  method_settings <- tc_assemble_method(method, c_task)
   
-  # Assertions only after restoration of settings
+  # try to avoid doing changes for performance reasons
+  do_settings <- !is_empty(settings)
+  do_method <- !is_empty(method_settings)
+  
+  # save all previous settings
+  if (do_settings)
+    pre_settings <- tc_get_settings(c_task)
+  if (do_method) {
+    # keep track of the originally set method
+    pre_method <- c_task$getMethod()$getSubType()
+    # change the method first, then save the settings for the new method
+    if (!is_null(method_settings$method)) c_task$setMethodType(method_settings$method)
+    c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
+    pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
+  } else {
+    c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
+  }
+  
+  # apply settings
+  success <- !is.error(try(tc_set_settings(settings, c_task)))
+  if (success)
+    success <- !is.error(try(set_method_settings(method_settings, c_method)))
+  # initialize task
+  if (success)
+    success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
+  # run task and save current settings
+  if (success) {
+    full_settings <- tc_get_settings(c_task)
+    full_settings$method <- get_method_settings(c_method, with_name = TRUE)
+    success <- grab_msg(c_task$processRaw(TRUE))
+  }
+  # get results
+  if (success)
+    ret <- tc_get_results(c_datamodel, full_settings)
+  
+  # revert all settings
+  if (do_settings)
+    tc_set_settings(pre_settings, c_task)
+  if (do_method) {
+    set_method_settings(pre_method_settings, c_method)
+    c_task$setMethodType(pre_method)
+  }
+  
+  # assertions only after restoration of settings
   assert_that(
     success,
     msg = paste0("Processing the task failed.")
@@ -55,27 +91,25 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 
 #' Set time course settings
 #'
-#' \code{setTimeCourseSettings} sets time course settings including method options.
+#' \code{setTimeCourseSettings} sets time course task settings including method options.
 #'
-#' @param duration numeric time course duration
-#' @param dt numeric
-#' @param intervals integer
-#' @param suppressOutputBefore boolean
-#' @param outputEvents boolean
-#' @param saveResultInMemory boolean
-#' @param startInSteadyState boolean
-#' @param updateModel boolean
-#' @param executable boolean
-#' @param method character or list
+#' @param duration number
+#' @param dt number
+#' @param intervals count
+#' @param suppressOutputBefore flag
+#' @param outputEvents flag
+#' @param saveResultInMemory flag
+#' @param startInSteadyState flag
+#' @param updateModel flag
+#' @param executable flag
+#' @param method string or list
 #' @param model a model object
 #' @export
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.null(executable) || is.flag(executable) && !is.na(executable))
   
-  # Call the worker to set most settings
-  tc_settings_worker(
-    .type = "permanent",
+  # does assertions
+  settings <- tc_assemble_settings(
     duration = duration,
     dt = dt,
     intervals = intervals,
@@ -84,176 +118,47 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
     saveResultInMemory = saveResultInMemory,
     startInSteadyState = startInSteadyState,
     updateModel = updateModel,
-    method = method,
-    c_datamodel = c_datamodel
+    executable = executable
   )
   
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   
-  if (!is.null(executable)) {
-    c_task$setScheduled(executable)
-  }
+  # does assertions
+  method_settings <- tc_assemble_method(method, c_task)
+  
+  # switch to given method
+  if (!is_null(method_settings$method))
+    c_task$setMethodType(method_settings$method)
+  
+  c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
+  
+  tc_set_settings(settings, c_task)
+  set_method_settings(method_settings, c_method)
   
   invisible()
 }
 
-# .type can help in some situations to determine assertions etc
-# can be "temporary", "permanent" or "restore"
-tc_settings_worker <- function(.type, duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, method = NULL, method_old = NULL, c_datamodel) {
+#' Get time course settings
+#'
+#' \code{getTimeCourseSettings} gets time course task settings including method options.
+#'
+#' @param model a model object
+#' @return A list of time course task settings including method options.
+#' @export
+getTimeCourseSettings <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
-  c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
+  c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
   
-  assert_that(
-    is.null(duration)             || is.number(duration)             && duration >= 0,
-    is.null(dt)                   || is.number(dt)                   && dt >= 0,
-    is.null(intervals)            || is.count(intervals),
-    is.null(suppressOutputBefore) || is.number(suppressOutputBefore) && !is.na(suppressOutputBefore),
-    is.null(outputEvents)         || is.flag(outputEvents)           && !is.na(outputEvents),
-    is.null(saveResultInMemory)   || is.flag(saveResultInMemory)     && !is.na(saveResultInMemory),
-    is.null(startInSteadyState)   || is.flag(startInSteadyState)     && !is.na(startInSteadyState),
-    is.null(updateModel)          || is.flag(updateModel)            && !is.na(updateModel),
-    is.null(method)               || is.string(method)               && !is.na(method) || is.list(method) && is.string(method$method) && !is.na(method$method)
-  )
-  assert_that(.type == "restore" || !(!is.null(dt) && !is.null(intervals)), msg = "Only one of dt and intervals can be given")
+  ret <- tc_get_settings(c_task)
+  ret$method <- get_method_settings(c_method, with_name = TRUE)
   
-  if (!is.null(method)) {
-    if (is_scalar_character(method)) method <- list(method = method)
-    # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
-  }
-  
-  errors <- FALSE
-  
-  restorationCall <- list(
-    .type = "restore",
-    c_datamodel = c_datamodel
-  )
-  
-  if (!is.null(duration)) {
-    restorationCall$duration <- c_problem$getDuration()
-    c_problem$setDuration(duration)
-  }
-  
-  if (!is.null(dt)) {
-    restorationCall$dt <- c_problem$getStepSize()
-    c_problem$setStepSize(dt)
-  }
-  
-  if (!is.null(intervals)) {
-    restorationCall$intervals <- c_problem$getStepNumber()
-    c_problem$setStepNumber(intervals)
-  }
-  
-  if (!is.null(suppressOutputBefore)) {
-    restorationCall$suppressOutputBefore <- c_problem$getOutputStartTime()
-    c_problem$setOutputStartTime(suppressOutputBefore)
-  }
-  
-  if (!is.null(outputEvents)) {
-    restorationCall$outputEvents <- as.logical(c_problem$getOutputEvent())
-    c_problem$setOutputEvent(outputEvents)
-  }
-  
-  if (!is.null(saveResultInMemory)) {
-    restorationCall$saveResultInMemory <- as.logical(c_problem$timeSeriesRequested())
-    c_problem$setTimeSeriesRequested(saveResultInMemory)
-  }
-  
-  if (!is.null(startInSteadyState)) {
-    restorationCall$startInSteadyState <- as.logical(c_problem$getStartInSteadyState())
-    c_problem$setStartInSteadyState(startInSteadyState)
-  }
-  
-  if (!is.null(updateModel)) {
-    restorationCall$updateModel <- as.logical(c_task$isUpdateModel())
-    c_task$setUpdateModel(updateModel)
-  }
-  
-  if (!is.null(method)) {
-    # We need to keep track of the previously set method
-    restorationCall$method_old = c_task$getMethod()$getSubType()
-    
-    c_task$setMethodType(method$method)
-    restorationCall$method <- list(method = method$method)
-    c_method = as(c_task$getMethod(), "_p_CTrajectoryMethod")
-    
-    method <- method[names(method) != "method"]
-    
-    if (!is_empty(method)) {
-      # get some info on what parameters the method has
-      methodstruct <- methodstructure(c_method) %>% tibble::rowid_to_column()
-      
-      method <-
-        tibble::tibble(value = method) %>%
-        dplyr::mutate(rowid = pmatch(names(value), methodstruct$name))
-      
-      # all names that are not names of method parameters
-      bad_names <- names(method$value)[is.na(method$rowid)]
-      
-      # merge method with relevant lines from methodstruct and check if the given values is allowed
-      method <-
-        method %>%
-        dplyr::filter(!is.na(rowid), map_lgl(value, negate(is_null))) %>%
-        dplyr::left_join(methodstruct, by = "rowid") %>%
-        dplyr::mutate(
-          allowed = map2_lgl(control_fun, value, ~ {
-            if (!is_null(.x)) .x(.y)
-            # No control function defined means just pass
-            else TRUE
-          })
-        )
-      
-      # all parameters that did not satisfy the tests in methodstruct$control_fun
-      forbidden <- dplyr::filter(method, !allowed)
-      
-      method <- dplyr::filter(method, allowed)
-      
-      # gather old value and then set new value
-      method <-
-        method %>%
-        dplyr::mutate(
-          oldval = map2(get_fun, object, ~ .x(.y)),
-          success = pmap_lgl(., function(set_fun, object, value, ...) {set_fun(object, value)})
-        )
-      
-      # parameters where trying to set it somehow failed as per feedback from copasi
-      failures <- dplyr::filter(method, !success)
-      
-      method <- dplyr::filter(method, success)
-      
-      # Overwritten parameters need to be in the restorationCall
-      if (nrow(method) != 0L) {
-        restorationCall$method <- 
-          append(restorationCall$method, method %>% dplyr::select(name, oldval) %>% tibble::deframe())
-      }
-      
-      # Give complete feedback error.
-      errmsg <- ""
-      if (!is_empty(bad_names)) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(bad_names, collapse = "\", \""), "\" invalid. Should be one of : \"", paste0(methodstruct$name, collapse = "\", \""), "\"\n")
-      if (nrow(forbidden) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(forbidden$name, collapse = "\", \""), "\" have to be of type(s) ", paste0(forbidden$type, collapse = "\", \""), ".\n")
-      if (nrow(failures) != 0L) errmsg <- paste0(errmsg, "Method parameter(s) \"", paste0(failures$name, collapse = "\", \""), "\" could not be set.\n")
-      if (nchar(errmsg) != 0L) {
-        try(stop(errmsg))
-        errors <- TRUE
-      }
-    }
-  }
-  
-  # method_old is only set if the purpose of calling the function was a restorationCall
-  if (!is.null(method_old)) {
-    c_task$setMethodType(method_old)
-  }
-  
-  if (errors && .type != "restore") {
-    do.call(tc_settings_worker, restorationCall)
-    stop("Rolled back task due to errors during setup.")
-  }
-  
-  restorationCall
+  ret
 }
 
-new_copasi_ts <- function(x, unit_time, unit_conc) {
+new_copasi_ts <- function(x, settings, unit_time, unit_conc) {
   assert_that(
+    is.list(settings),
     is.string(unit_time),
     is.string(unit_conc)
   )
@@ -263,18 +168,22 @@ new_copasi_ts <- function(x, unit_time, unit_conc) {
   structure(
     x,
     class = c("copasi_ts", class(x)),
+    settings = settings,
     units = c(Time = unit_time, Concentration = unit_conc)
   )
 }
 
 #' @export
-validate_copasi_ts <- function(x) {
-  units <- x %@% "units"
-  
+validate_copasi_ts <- function(object) {
   assert_that(
-    is.data.frame(x),
-    is.string(units$Time),
-    is.string(units$Concentration)
+    is.data.frame(object),
+    object %has_attr% "settings",
+    is.list(object %@% "settings"),
+    object %has_attr% "units",
+    is.character(object %@% "units"),
+    noNA(object %@% "units"),
+    object %@% "units" %has_name% "Time",
+    object %@% "units" %has_name% "Concentration"
   )
 }
 
@@ -289,7 +198,114 @@ is.copasi_ts <- function(x) {
 # 
 # }
 
-tc_result_worker <- function(c_datamodel, saveResultInMemory) {
+# The following functions should be the basis for implementation of any task
+# They should allow for a common workflow with most tasks
+
+# does assertions
+# returns a list of settings
+tc_assemble_settings <- function(duration, dt, intervals, suppressOutputBefore, outputEvents, saveResultInMemory, startInSteadyState, updateModel, executable) {
+  assert_that(
+    is.null(duration)             || noNA(duration)             && is.number(duration)             && duration >= 0,
+    is.null(dt)                   || noNA(dt)                   && is.number(dt)                   && dt >= 0,
+    is.null(intervals)            || noNA(intervals)            && is.count(intervals),
+    is.null(suppressOutputBefore) || noNA(suppressOutputBefore) && is.number(suppressOutputBefore),
+    is.null(outputEvents)         || noNA(outputEvents)         && is.flag(outputEvents),
+    is.null(saveResultInMemory)   || noNA(saveResultInMemory)   && is.flag(saveResultInMemory),
+    is.null(startInSteadyState)   || noNA(startInSteadyState)   && is.flag(startInSteadyState),
+    is.null(updateModel)          || noNA(updateModel)          && is.flag(updateModel),
+    is.null(executable)           || noNA(executable)           && is.flag(executable)
+  )
+  
+  if (!is_null(dt) && !is_null(intervals))
+    stop("Only one of dt and intervals can be given")
+  
+  list(
+    duration = duration,
+    dt = dt,
+    intervals = intervals,
+    suppressOutputBefore = suppressOutputBefore,
+    outputEvents = outputEvents,
+    saveResultInMemory = saveResultInMemory,
+    startInSteadyState = startInSteadyState,
+    updateModel = updateModel,
+    executable = executable
+  ) %>%
+    discard(is_null)
+}
+
+# does assertions
+# returns a list of method settings
+tc_assemble_method <- function(method, c_task) {
+  if (is_null(method))
+    return(list())
+  
+  assert_that(is.string(method) || is.list(method))
+  
+  if (is_scalar_character(method))
+    method <- list(method = method)
+  
+  if (has_name(method, "method"))
+    # hack to get nice error message if method string is not accepted.
+    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+  
+  method
+}
+
+# gets full list of settings
+tc_get_settings <- function(c_task) {
+  c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
+  
+  list(
+    duration =             c_problem$getDuration(),
+    dt =                   c_problem$getStepSize(),
+    intervals =            c_problem$getStepNumber(),
+    suppressOutputBefore = c_problem$getOutputStartTime(),
+    outputEvents =         as.logical(c_problem$getOutputEvent()),
+    saveResultInMemory =   as.logical(c_problem$timeSeriesRequested()),
+    startInSteadyState =   as.logical(c_problem$getStartInSteadyState()),
+    updateModel =          as.logical(c_task$isUpdateModel()),
+    executable =           as.logical(c_task$isScheduled())
+  )
+}
+
+# sets all settings given in list
+tc_set_settings <- function(data, c_task) {
+  if (is_empty(data))
+    return()
+  
+  c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
+  
+  if (!is_null(data$duration))
+    c_problem$setDuration(data$duration)
+  
+  if (!is_null(data$dt))
+    c_problem$setStepSize(data$dt)
+  
+  if (!is_null(data$intervals))
+    c_problem$setStepNumber(data$intervals)
+  
+  if (!is_null(data$suppressOutputBefore))
+    c_problem$setOutputStartTime(data$suppressOutputBefore)
+  
+  if (!is_null(data$outputEvents))
+    c_problem$setOutputEvent(data$outputEvents)
+  
+  if (!is_null(data$saveResultInMemory))
+    c_problem$setTimeSeriesRequested(data$saveResultInMemory)
+  
+  if (!is_null(data$startInSteadyState))
+    c_problem$setStartInSteadyState(data$startInSteadyState)
+  
+  if (!is_null(data$updateModel))
+    c_task$setUpdateModel(data$updateModel)
+  
+  if (!is_null(data$executable))
+    c_task$setScheduled(data$executable)
+}
+
+# gathers all results
+# needs to know settings results in memory are from current run
+tc_get_results <- function(c_datamodel, settings) {
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
   c_timeseries <- c_task$getTimeSeries()
   recordedSteps <- c_timeseries$getRecordedSteps()
@@ -304,7 +320,7 @@ tc_result_worker <- function(c_datamodel, saveResultInMemory) {
     # assemble output dataframe
     # Iterates over all species/variables and all timepoints/steps
     # Inner loops creates numeric() wrapped in a named list
-    # Outer loop binds all lists to a data frame
+    # Outer loop creates list of columns for binding to data frame
     ret <-
       seq_len_0(c_timeseries$getNumVariables()) %>%
       map(function(i_var) {
@@ -322,11 +338,12 @@ tc_result_worker <- function(c_datamodel, saveResultInMemory) {
       }) %>%
       dplyr::bind_cols() %>%
       new_copasi_ts(
+        settings = settings,
         unit_time = getTimeUnit(c_datamodel),
         unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel))
       )
-  } else if (is.null(saveResultInMemory))
-    warning("No results generated because saveResultInMemory is set to FALSE in the model. Explicitly set the argument to silence this warning.")
+  } else if (!full_settings$saveResultInMemory)
+    warning("No results generated because saveResultInMemory is set to FALSE in the model.")
   
   ret
 }

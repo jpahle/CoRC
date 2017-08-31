@@ -284,7 +284,7 @@ fit_parameters <-
   )
 
 result <-
-  runParamEst(
+  runParameterEstimation(
     parameters = fit_parameters,
     experiments = fit_experiments,
     method = "LevenbergMarquardt",
@@ -321,12 +321,14 @@ plots <- list(
     )
 )
 
-# unloadModel()
+unloadModel()
 
 result$fitted.values
 result$parameters
 result$protocol
 
-plotly::ggplotly(plots$Erk2.P)
-plotly::ggplotly(plots$Mos.P)
+plots$Erk2.P
+# plotly::ggplotly(plots$Erk2.P)
+plots$Mos.P
+# plotly::ggplotly(plots$Mos.P)
 ```

@@ -249,12 +249,18 @@ get_method_settings <- function(c_method, with_name = FALSE) {
   c(ret, params)
 }
 
-set_method_settings <- function(c_method, value_l) {
+set_method_settings <- function(values, c_method) {
+  # parameter "method" is reserved for CoRC
+  # if a parameter "method" is ever created in CoRC, adjust methodstructure() to call it "method_"
+  values <- values[names(values) != "method"]
+  
+  if (is_empty(values)) return()
+  
   struct <- methodstructure(c_method) %>% tibble::rowid_to_column()
   
   data <-
-    tibble::tibble(value = value_l) %>%
-    dplyr::mutate(rowid = pmatch(names(value_l), struct$name))
+    tibble::tibble(value = values) %>%
+    dplyr::mutate(rowid = pmatch(names(values), struct$name))
   
   matched <- !is.na(data$rowid)
   
@@ -262,7 +268,7 @@ set_method_settings <- function(c_method, value_l) {
     all(matched),
     msg = paste0(
       "Bad method parameter names.\n",
-      '"', names(value_l)[!matched][1], '" should be one of "',
+      '"', names(values)[!matched][1], '" should be one of "',
       paste0(struct$name, collapse = '", "'), '".'
     )
   )
@@ -280,7 +286,7 @@ set_method_settings <- function(c_method, value_l) {
       warning('Parameter "', data$name[.x], '" was skipped because it is of unsupported type "', data$struct[.x], '".')
     )
   
-  data <- data %>% filter(!skipped)
+  data <- data %>% dplyr::filter(!skipped)
   
   allowed <- map2_lgl(data$control_fun, data$value, ~ .x(.y))
   
@@ -326,7 +332,7 @@ get_annotated_matrix <- function(c_matrix) {
   # assemble output dataframe
   # Iterates over all cols and rows
   # Inner loops creates numeric()
-  # Outer loop binds all vectors to a data frame
+  # Outer loop creates list of columns for conversion to matrix
   seq_len_0(cols) %>%
     map(function(i_col) {
       seq_len_0(rows) %>%
@@ -338,6 +344,6 @@ get_annotated_matrix <- function(c_matrix) {
           .Call(R_swig_CArrayInterface_get__SWIG_1, array_ref, i_row, i_col, FALSE)
         })
     }) %>%
-    set_names(col_headers) %>%
-    dplyr::bind_cols(list(rowname = row_headers), .)
+    flatten_dbl() %>%
+    matrix(rows, cols, dimnames = list(row_headers, col_headers))
 }

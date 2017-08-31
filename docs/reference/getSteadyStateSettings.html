@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run parameter estimation — runParamEst • CoRC</title>
+<title>Get steady state settings — getSteadyStateSettings • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,49 +98,27 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run parameter estimation</h1>
+    <h1>Get steady state settings</h1>
     </div>
 
     
-    <p><code>runParamEst</code> runs parameter estimation and returns results in a list.</p>
+    <p><code>getSteadyStateSettings</code> gets steady state task settings including method options.</p>
     
 
-    <pre class="usage"><span class='fu'>runParamEst</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>getSteadyStateSettings</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>calculateStatistics</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>updateModel</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>character or list</p></td>
-    </tr>
-    <tr>
       <th>model</th>
       <td><p>a model object</p></td>
-    </tr>
-    <tr>
-      <th>calculateJacobian</th>
-      <td><p>boolean</p></td>
-    </tr>
-    <tr>
-      <th>performStabilityAnalysis</th>
-      <td><p>boolean</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of results</p>
+    <p>A list of time course task settings including method options.</p>
     
 
   </div>

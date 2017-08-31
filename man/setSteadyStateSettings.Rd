@@ -9,18 +9,18 @@ setSteadyStateSettings(calculateJacobian = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{calculateJacobian}{boolean}
+\item{calculateJacobian}{flag}
 
-\item{performStabilityAnalysis}{boolean}
+\item{performStabilityAnalysis}{flag}
 
-\item{updateModel}{boolean}
+\item{updateModel}{flag}
 
-\item{executable}{boolean}
+\item{executable}{flag}
 
 \item{method}{list}
 
 \item{model}{a model object}
 }
 \description{
-\code{setSteadyStateSettings} sets steady state settings including method options.
+\code{setSteadyStateSettings} sets steady state task settings including method options.
 }
