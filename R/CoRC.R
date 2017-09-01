@@ -69,7 +69,7 @@ getCopasi <- function(path = NULL) {
   assert_that(is.null(path) || is.readable(path))
   
   # if no path is given we download the binaries
-  if (is_null(path)) {
+  if (is.null(path)) {
     dlurl <- "http://juergen.pahle.de/CoRC_libs/"
     
     r_version <- paste0(version$major, ".", strsplit(version$minor, ".", fixed = TRUE)[[1]][1])

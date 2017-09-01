@@ -27,7 +27,7 @@ species <- function(key = "", reference = NULL, model = getCurrentModel()) {
     cl_matches <- cl_metabs[matches]
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_matches, "getObjectDisplayName")
   else
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
@@ -47,7 +47,7 @@ species_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   
   cl_metabs <- species_obj(key, c_datamodel, reference)
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_metabs, "getObjectDisplayName")
   else
     as_ref(cl_metabs, c_datamodel)
@@ -55,12 +55,12 @@ species_strict <- function(key, reference = NULL, model = getCurrentModel()) {
 
 species_obj <- function(key, c_datamodel, reference = NULL) {
   assert_that(
-    is.character(key), !anyNA(key), !("" %in% key),
+    is.character(key), noNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (inherits(key, "regex"))
+  if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
   else
     matches <- vector("list", length(key))
@@ -70,39 +70,34 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
   if (!all(matched)) {
     info <- "species"
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
-    ns <- cl_metabs %>% map_swig_chr("getObjectName")
     dns <- cl_metabs %>% map_swig_chr("getObjectDisplayName")
     # keys are needed as list, else attributes are lost on subsetting
     key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    # find matches to ObjectName
-    # first full (str_replace is hacky to find complete matches)
-    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-    matched <- map_int(matches, length) == 1L
-    
-    # then partial
-    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
-    assert_matches(matches, key, dns, info)
-    
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
     matched <- map_int(matches, length) == 1L
     
     if (!all(matched)) {
-      # find matches to ObjectDisplayName
-      # first full
-      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-      matched <- map_int(matches, length) == 1L
-             
-      # then partial
-      matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
-      assert_matches(matches, key, dns, info)
-      
+      ns <- cl_metabs %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
       matched <- map_int(matches, length) == 1L
       
-      assert_that(all(matched), msg = paste0(
-        "Couldn't match ", info, ' "',
-        key[!matched], '".',
-        collapse = '", "'
-      ))
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+        assert_matches(matches, key, dns, info)
+      
+        matched <- map_int(matches, length) == 1L
+      
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
     }
     
     # apply all missing matches
@@ -114,7 +109,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
       )
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     matches
   else
     apply_ref(matches, reference)
@@ -149,7 +144,7 @@ quantity <- function(key = "", reference = NULL, model = getCurrentModel()) {
     cl_matches <- cl_quants[matches]
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_matches, "getObjectDisplayName")
   else
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
@@ -169,7 +164,7 @@ quantity_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   
   cl_quants <- quantity_obj(key, c_datamodel, reference)
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_quants, "getObjectDisplayName")
   else
     as_ref(cl_quants, c_datamodel)
@@ -177,12 +172,12 @@ quantity_strict <- function(key, reference = NULL, model = getCurrentModel()) {
 
 quantity_obj <- function(key, c_datamodel, reference = NULL) {
   assert_that(
-    is.character(key), !anyNA(key), !("" %in% key),
+    is.character(key), noNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (inherits(key, "regex"))
+  if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
   else
     matches <- vector("list", length(key))
@@ -192,26 +187,35 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
   if (!all(matched)) {
     info <- "global quantity(s)"
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
-    ns <- cl_quants %>% map_swig_chr("getObjectName")
+    dns <- cl_quants %>% map_swig_chr("getObjectDisplayName")
     # keys are needed as list, else attributes are lost on subsetting
     key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    # find matches to ObjectName
-    # first full (str_replace is hacky to find complete matches)
-    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
     matched <- map_int(matches, length) == 1L
     
-    # then partial
-    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
-    assert_matches(matches, key, ns, info)
-    
-    matched <- map_int(matches, length) == 1L
+    if (!all(matched)) {
+      ns <- cl_quants %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+      matched <- map_int(matches, length) == 1L
       
-    assert_that(all(matched), msg = paste0(
-      "Couldn't match ", info, ' "',
-      key[!matched], '".',
-      collapse = '", "'
-    ))
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+        assert_matches(matches, key, dns, info)
+        
+        matched <- map_int(matches, length) == 1L
+        
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
+    }
     
     # apply all missing matches
     matches <-
@@ -222,7 +226,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
       )
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     matches
   else
     apply_ref(matches, reference)
@@ -257,7 +261,7 @@ compartment <- function(key = "", reference = NULL, model = getCurrentModel()) {
     cl_matches <- cl_comps[matches]
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_matches, "getObjectDisplayName")
   else
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
@@ -277,7 +281,7 @@ compartment_strict <- function(key, reference = NULL, model = getCurrentModel())
   
   cl_comps <- compartment_obj(key, c_datamodel, reference)
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_comps, "getObjectDisplayName")
   else
     as_ref(cl_comps, c_datamodel)
@@ -285,12 +289,12 @@ compartment_strict <- function(key, reference = NULL, model = getCurrentModel())
 
 compartment_obj <- function(key, c_datamodel, reference = NULL) {
   assert_that(
-    is.character(key), !anyNA(key), !("" %in% key),
+    is.character(key), noNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (inherits(key, "regex"))
+  if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
   else
     matches <- vector("list", length(key))
@@ -300,26 +304,35 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
   if (!all(matched)) {
     info <- "compartment(s)"
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
-    ns <- cl_comps %>% map_swig_chr("getObjectName")
+    dns <- cl_comps %>% map_swig_chr("getObjectDisplayName")
     # keys are needed as list, else attributes are lost on subsetting
     key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    # find matches to ObjectName
-    # first full (str_replace is hacky to find complete matches)
-    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
     matched <- map_int(matches, length) == 1L
     
-    # then partial
-    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
-    assert_matches(matches, key, ns, info)
-    
-    matched <- map_int(matches, length) == 1L
-    
-    assert_that(all(matched), msg = paste0(
-      "Couldn't match ", info, ' "',
-      key[!matched], '".',
-      collapse = '", "'
-    ))
+    if (!all(matched)) {
+      ns <- cl_comps %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+      matched <- map_int(matches, length) == 1L
+      
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+        assert_matches(matches, key, dns, info)
+        
+        matched <- map_int(matches, length) == 1L
+        
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
+    }
     
     # apply all missing matches
     matches <-
@@ -330,7 +343,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
       )
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     matches
   else
     apply_ref(matches, reference)
@@ -365,7 +378,7 @@ reaction <- function(key = "", reference = NULL, model = getCurrentModel()) {
     cl_matches <- cl_reacts[matches]
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_matches, "getObjectDisplayName")
   else
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
@@ -383,9 +396,9 @@ reaction <- function(key = "", reference = NULL, model = getCurrentModel()) {
 reaction_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  cl_reacts <- reaction_obj(key, c_datamodel, reference) %>% map_swig_chr("getObjectDisplayName")
+  cl_reacts <- reaction_obj(key, c_datamodel, reference)
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_reacts, "getObjectDisplayName")
   else
     as_ref(cl_reacts, c_datamodel)
@@ -393,12 +406,12 @@ reaction_strict <- function(key, reference = NULL, model = getCurrentModel()) {
 
 reaction_obj <- function(key, c_datamodel, reference = NULL) {
   assert_that(
-    is.character(key), !anyNA(key), !("" %in% key),
+    is.character(key), noNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (inherits(key, "regex"))
+  if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
   else
     matches <- vector("list", length(key))
@@ -408,26 +421,35 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
   if (!all(matched)) {
     info <- "reaction(s)"
     cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
-    ns <- cl_reacts %>% map_swig_chr("getObjectName")
+    dns <- cl_reacts %>% map_swig_chr("getObjectDisplayName")
     # keys are needed as list, else attributes are lost on subsetting
     key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    # find matches to ObjectName
-    # first full (str_replace is hacky to find complete matches)
-    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
     matched <- map_int(matches, length) == 1L
     
-    # then partial
-    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
-    assert_matches(matches, key, ns, info)
-    
-    matched <- map_int(matches, length) == 1L
-    
-    assert_that(all(matched), msg = paste0(
-      "Couldn't match ", info, ' "',
-      key[!matched], '".',
-      collapse = '", "'
-    ))
+    if (!all(matched)) {
+      ns <- cl_reacts %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+      matched <- map_int(matches, length) == 1L
+      
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+        assert_matches(matches, key, dns, info)
+        
+        matched <- map_int(matches, length) == 1L
+        
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
+    }
     
     # apply all missing matches
     matches <-
@@ -438,7 +460,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
       )
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     matches
   else
     apply_ref(matches, reference)
@@ -479,7 +501,7 @@ parameter <- function(key = "", reference = NULL, model = getCurrentModel()) {
     cl_matches <- cl_params[matches]
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_matches, "getObjectDisplayName")
   else
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
@@ -499,7 +521,7 @@ parameter_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   
   cl_params <- parameter_obj(key, c_datamodel, reference)
 
-  if (is_null(reference))
+  if (is.null(reference))
     map_swig_chr(cl_params, "getObjectDisplayName")
   else
     as_ref(cl_params, c_datamodel)
@@ -507,7 +529,7 @@ parameter_strict <- function(key, reference = NULL, model = getCurrentModel()) {
 
 parameter_obj <- function(key, c_datamodel, reference = NULL) {
   assert_that(
-    is.character(key), !anyNA(key), !("" %in% key),
+    is.character(key), noNA(key), !("" %in% key),
     is.null(reference) || is.string(reference) || is.character(reference) && length(key) == length(reference)
   )
   
@@ -528,26 +550,35 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
         seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
       }) %>%
       flatten()
-    ns <- cl_params %>% map_swig_chr("getObjectDisplayName")
+    dns <- cl_params %>% map_swig_chr("getObjectDisplayName")
     # keys are needed as list, else attributes are lost on subsetting
     key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
     
-    # find matches to ObjectName
-    # first full (str_replace is hacky to find complete matches)
-    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
     matched <- map_int(matches, length) == 1L
     
-    # then partial
-    matches[!matched] <- map(key_l[!matched], stringr::str_which, string = ns)
-    assert_matches(matches, key, ns, info)
-    
-    matched <- map_int(matches, length) == 1L
-    
-    assert_that(all(matched), msg = paste0(
-      "Couldn't match ", info, ' "',
-      key[!matched], '".',
-      collapse = '", "'
-    ))
+    if (!all(matched)) {
+      ns <- cl_params %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+      matched <- map_int(matches, length) == 1L
+      
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+        assert_matches(matches, key, dns, info)
+        
+        matched <- map_int(matches, length) == 1L
+        
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
+    }
     
     # apply all missing matches
     matches <-
@@ -558,7 +589,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
       )
   }
   
-  if (is_null(reference))
+  if (is.null(reference))
     matches
   else
     apply_ref(matches, reference)
@@ -586,7 +617,7 @@ apply_ref <- function(cl_objs, refs) {
     refs,
     ~ {
       c_obj <- .x$getObject(CCommonName(paste0("Reference=", .y)))
-      assert_that(!is_null(c_obj), msg = paste0('Failed to gather reference "', .y, '".'))
+      assert_that(!is.null(c_obj), msg = paste0('Failed to gather reference "', .y, '".'))
       c_obj
     }
   )

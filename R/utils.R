@@ -151,7 +151,8 @@ autoplot.copasi_ts <- function(object, ...) {
   }
   
   # only add species selected in ...
-  if (!is_empty(selected)) object <- object %>% dplyr::select(Time, !!!selected)
+  if (!is_empty(selected))
+    object <- object %>% dplyr::select(Time, !!!selected)
   
   units <- object %@% "units"
   
@@ -232,7 +233,8 @@ methodstructure <- function(c_method) {
       set_fun = cparameter_set_functions[type]
     )
   
-  if (has_element(struct$control_fun, NULL)) warning("Internal: Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is_null)], collapse = "; "))
+  if (has_element(struct$control_fun, NULL))
+    warning("Internal: Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is.null)], collapse = "; "))
   
   struct
 }
@@ -275,10 +277,10 @@ set_method_settings <- function(values, c_method) {
   
   data <-
     data %>%
-    dplyr::filter(map_lgl(value, negate(is_null))) %>%
+    dplyr::filter(map_lgl(value, negate(is.null))) %>%
     dplyr::left_join(struct, by = "rowid")
   
-  skipped <- map_lgl(data$control_fun, is_null)
+  skipped <- map_lgl(data$control_fun, is.null)
   
   skipped %>%
     which() %>%

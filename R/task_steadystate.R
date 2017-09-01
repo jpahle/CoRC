@@ -53,7 +53,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   }
   # get results
   if (success)
-    ret <- ss_get_results(c_datamodel, full_settings)
+    ret <- ss_get_results(c_task, full_settings)
   
   # revert all settings
   if (do_settings)
@@ -130,10 +130,10 @@ getSteadyStateSettings <- function(model = getCurrentModel()) {
 # returns a list of settings
 ss_assemble_settings <- function(calculateJacobian, performStabilityAnalysis, updateModel, executable) {
   assert_that(
-    is.null(calculateJacobian)        || noNA(calculateJacobian)        && is.flag(calculateJacobian),
-    is.null(performStabilityAnalysis) || noNA(performStabilityAnalysis) && is.flag(performStabilityAnalysis),
-    is.null(updateModel)              || noNA(updateModel)              && is.flag(updateModel),
-    is.null(executable)               || noNA(executable)               && is.flag(executable)
+    is.null(calculateJacobian)        || is.flag(calculateJacobian)        && noNA(calculateJacobian),
+    is.null(performStabilityAnalysis) || is.flag(performStabilityAnalysis) && noNA(performStabilityAnalysis),
+    is.null(updateModel)              || is.flag(updateModel)              && noNA(updateModel),
+    is.null(executable)               || is.flag(executable)               && noNA(executable)
   )
   
   if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian))
@@ -145,13 +145,13 @@ ss_assemble_settings <- function(calculateJacobian, performStabilityAnalysis, up
     updateModel = updateModel,
     executable = executable
   ) %>%
-    discard(is_null)
+    discard(is.null)
 }
 
 # does assertions
 # returns a list of method settings
 ss_assemble_method <- function(method, c_task) {
-  if (is_null(method))
+  if (is.null(method))
     return(list())
   
   assert_that(is.list(method), !has_name(method, "method"))
@@ -164,10 +164,10 @@ ss_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
   list(
-    calculateJacobian =        as.logical(c_problem$isJacobianRequested()),
+    calculateJacobian        = as.logical(c_problem$isJacobianRequested()),
     performStabilityAnalysis = as.logical(c_problem$isStabilityAnalysisRequested()),
-    updateModel =              as.logical(c_task$isUpdateModel()),
-    executable =               as.logical(c_task$isScheduled())
+    updateModel              = as.logical(c_task$isUpdateModel()),
+    executable               = as.logical(c_task$isScheduled())
   )
 }
 
@@ -178,23 +178,22 @@ ss_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
-  if (!is_null(data$calculateJacobian))
+  if (!is.null(data$calculateJacobian))
     c_problem$setJacobianRequested(data$calculateJacobian)
   
-  if (!is_null(data$performStabilityAnalysis))
+  if (!is.null(data$performStabilityAnalysis))
     c_problem$setStabilityAnalysisRequested(data$performStabilityAnalysis)
   
-  if (!is_null(data$updateModel))
+  if (!is.null(data$updateModel))
     c_task$setUpdateModel(data$updateModel)
   
-  if (!is_null(data$executable))
+  if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
 }
 
 # gathers all results
-ss_get_results <- function(c_datamodel, settings) {
-  c_model <- as(c_datamodel$getModel(), "_p_CModel")
-  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
+ss_get_results <- function(c_task, settings) {
+  c_model <- as(c_task$getObjectDataModel()$getModel(), "_p_CModel")
   c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
   result <- c_task$getResult()

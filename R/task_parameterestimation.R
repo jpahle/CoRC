@@ -49,7 +49,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
     # keep track of the originally set method
     pre_method <- c_task$getMethod()$getSubType()
     # change the method first, then save the settings for the new method
-    if (!is_null(method_settings$method)) c_task$setMethodType(method_settings$method)
+    if (!is.null(method_settings$method)) c_task$setMethodType(method_settings$method)
     c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
     pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
   } else {
@@ -75,7 +75,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
   }
   # get results
   if (success)
-    ret <- pe_get_results(c_datamodel, full_settings)
+    ret <- pe_get_results(c_task, full_settings)
   
   # revert all settings
   if (do_settings)
@@ -143,21 +143,23 @@ setParameterEstimationSettings <- function(randomizeStartValues = NULL, createPa
   # experiments and parameters get rolled back when not setting them properly
   tryCatch(
     walk(parameter_list, addParameter, c_datamodel),
-    error = {
-      clearParameters()
-      stop("Failed when applying parameters.")
+    error = function(e) {
+      clearParameters(c_datamodel)
+      base::stop(e)
+      # stop("Failed when applying parameters.")
     }
   )
   tryCatch(
     walk(experiment_list, addExperiments, c_datamodel),
-    error = {
-      clearExperiments()
-      stop("Failed when applying experiments.")
+    error = function(e) {
+      clearExperiments(c_datamodel)
+      base::stop(e)
+      # stop("Failed when applying experiments.")
     }
   )
   
   # switch to given method
-  if (!is_null(method_settings$method))
+  if (!is.null(method_settings$method))
     c_task$setMethodType(method_settings$method)
   
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
@@ -381,7 +383,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   # allowed weight methods are taken from the copasi enumeration
   weight_methods <- names(.__E___CExperiment__WeightMethod)
   weight_methods_lower <- stringr::str_to_lower(weight_methods)
-  if (is_null(weight_method)) {
+  if (is.null(weight_method)) {
     weight_method <- weight_methods[1]
   } else {
     weight_method <- rlang::arg_match(weight_method, weight_methods_lower)
@@ -550,11 +552,11 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
 # returns a list of settings
 pe_assemble_settings <- function(randomizeStartValues, createParameterSets, calculateStatistics, updateModel, executable) {
   assert_that(
-    is.null(randomizeStartValues) || noNA(randomizeStartValues) && is.flag(randomizeStartValues),
-    is.null(createParameterSets)  || noNA(createParameterSets)  && is.flag(createParameterSets),
-    is.null(calculateStatistics)  || noNA(calculateStatistics)  && is.flag(calculateStatistics),
-    is.null(updateModel)          || noNA(updateModel)          && is.flag(updateModel),
-    is.null(executable)           || noNA(executable)           && is.flag(executable)
+    is.null(randomizeStartValues) || is.flag(randomizeStartValues) && noNA(randomizeStartValues),
+    is.null(createParameterSets)  || is.flag(createParameterSets)  && noNA(createParameterSets),
+    is.null(calculateStatistics)  || is.flag(calculateStatistics)  && noNA(calculateStatistics),
+    is.null(updateModel)          || is.flag(updateModel)          && noNA(updateModel),
+    is.null(executable)           || is.flag(executable)           && noNA(executable)
   )
   
   list(
@@ -564,13 +566,13 @@ pe_assemble_settings <- function(randomizeStartValues, createParameterSets, calc
     updateModel = updateModel,
     executable = executable
   ) %>%
-    discard(is_null)
+    discard(is.null)
 }
 
 # does assertions
 # returns a list of method settings
 pe_assemble_method <- function(method, c_task) {
-  if (is_null(method))
+  if (is.null(method))
     return(list())
   
   assert_that(is.string(method) || is.list(method))
@@ -580,7 +582,7 @@ pe_assemble_method <- function(method, c_task) {
   
   if (has_name(method, "method"))
     # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+    method$method <- map_chr(method$method, function(method) {rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L])})
   
   method
 }
@@ -591,10 +593,10 @@ pe_get_settings <- function(c_task) {
   
   list(
     randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
-    createParameterSets =  as.logical(c_problem$getCreateParameterSets()),
-    calculateStatistics =  as.logical(c_problem$getCalculateStatistics()),
-    updateModel =          as.logical(c_task$isUpdateModel()),
-    executable =           as.logical(c_task$isScheduled())
+    createParameterSets  = as.logical(c_problem$getCreateParameterSets()),
+    calculateStatistics  = as.logical(c_problem$getCalculateStatistics()),
+    updateModel          = as.logical(c_task$isUpdateModel()),
+    executable           = as.logical(c_task$isScheduled())
   )
 }
 
@@ -605,25 +607,24 @@ pe_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
-  if (!is_null(data$randomizeStartValues))
+  if (!is.null(data$randomizeStartValues))
     c_problem$setRandomizeStartValues(data$randomizeStartValues)
   
-  if (!is_null(data$createParameterSets))
+  if (!is.null(data$createParameterSets))
     c_problem$setCreateParameterSets(data$createParameterSets)
   
-  if (!is_null(data$calculateStatistics))
+  if (!is.null(data$calculateStatistics))
     c_problem$setCalculateStatistics(data$calculateStatistics)
   
-  if (!is_null(data$updateModel))
+  if (!is.null(data$updateModel))
     c_task$setUpdateModel(data$updateModel)
   
-  if (!is_null(data$executable))
+  if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
 }
 
 # gathers all results
-pe_get_results <- function(c_datamodel, settings) {
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+pe_get_results <- function(c_task, settings) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
   

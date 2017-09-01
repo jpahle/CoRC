@@ -78,7 +78,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(key) || is.character(key) && noNA(key),
     is.null(name) || is.character(name) && length(name) == length(key),
     is.null(type) || is.character(type) && length(type) == length(key),
     is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
@@ -87,10 +87,10 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     is.null(data) || is.data.frame(data)
   )
   
-  if (!is_null(type))
+  if (!is.null(type))
     type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode"))})
   
-  if (!is_null(expression))
+  if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
@@ -98,15 +98,15 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
-  if (!is_null(data)) do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial.concentration", "initial.number", "expression")])
+  if (!is.null(data))
+    do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial.concentration", "initial.number", "expression")])
   
   if (is_empty(cl_metabs)) return(invisible())
   
-  # apparently I need to give changedObjects because I cant update initial values without
-  c_changedObjects <- ObjectStdVector()
+  c_vals_to_update <- ObjectStdVector()
   
   # apply names
-  if (!is_null(name)) {
+  if (!is.null(name)) {
     walk2(
       cl_metabs, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
@@ -114,7 +114,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   }
   
   # apply types
-  if (!is_null(type)) {
+  if (!is.null(type)) {
     type_to_c <- stringr::str_to_upper(type)
     walk2(
       cl_metabs, type_to_c,
@@ -123,33 +123,33 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   }
   
   # apply concentrations
-  if (!is_null(initial.concentration)) {
+  if (!is.null(initial.concentration)) {
     walk2(
       cl_metabs, initial.concentration,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialConcentration(.y)
-          c_changedObjects$push_back(.x$getInitialConcentrationReference())
+          c_vals_to_update$push_back(.x$getInitialConcentrationReference())
         }
       }
     )
   }
   
   # apply particlenum
-  if (!is_null(initial.number)) {
+  if (!is.null(initial.number)) {
     walk2(
       cl_metabs, initial.number,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
-          c_changedObjects$push_back(.x$getInitialValueReference())
+          c_vals_to_update$push_back(.x$getInitialValueReference())
         }
       }
     )
   }
   
   # apply expressions
-  if (!is_null(expression)) {
+  if (!is.null(expression)) {
     walk2(
       cl_metabs, expression,
       ~ {
@@ -163,7 +163,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_changedObjects)
+  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
   
   # model$compileIfNecessary()
   
@@ -245,7 +245,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(key) || is.character(key) && noNA(key),
     is.null(name) || is.character(name) && length(name) == length(key),
     is.null(type) || is.character(type) && length(type) == length(key),
     is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
@@ -253,10 +253,10 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     is.null(data) || is.data.frame(data)
   )
   
-  if (!is_null(type))
+  if (!is.null(type))
     type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))})
   
-  if (!is_null(expression))
+  if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
@@ -264,15 +264,15 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
-  if (!is_null(data)) do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial.value", "expression")])
+  if (!is.null(data))
+    do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial.value", "expression")])
   
   if (is_empty(c_quants)) return(invisible())
   
-  # apparently I need to give changedObjects because I cant update initial values without
-  c_changedObjects <- ObjectStdVector()
+  c_vals_to_update <- ObjectStdVector()
   
   # apply names
-  if (!is_null(name)) {
+  if (!is.null(name)) {
     walk2(
       cl_quants, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
@@ -280,7 +280,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   }
   
   # apply types
-  if (!is_null(type)) {
+  if (!is.null(type)) {
     type_to_c <- stringr::str_to_upper(type)
     walk2(
       cl_quants, type_to_c,
@@ -289,20 +289,20 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   }
   
   # apply value
-  if (!is_null(initial.value)) {
+  if (!is.null(initial.value)) {
     walk2(
       cl_quants, initial.value,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
-          c_changedObjects$push_back(.x$getInitialValueReference())
+          c_vals_to_update$push_back(.x$getInitialValueReference())
         }
       }
     )
   }
   
   # apply expressions
-  if (!is_null(expression)) {
+  if (!is.null(expression)) {
     walk2(
       cl_quants, expression,
       ~ {
@@ -316,7 +316,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_changedObjects)
+  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
   
   # model$compileIfNecessary()
   
@@ -396,7 +396,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(key) || is.character(key) && noNA(key),
     is.null(name) || is.character(name) && length(name) == length(key),
     is.null(type) || is.character(type) && length(type) == length(key),
     is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
@@ -404,10 +404,10 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     is.null(data) || is.data.frame(data)
   )
   
-  if (!is_null(type))
+  if (!is.null(type))
     type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))})
   
-  if (!is_null(expression))
+  if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
   
   # Do this as assertion before we start changing values
@@ -415,15 +415,16 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
-  if (!is_null(data)) do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.volume", "expression")])
+  if (!is.null(data))
+    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.volume", "expression")])
   
   if (is_empty(cl_comps)) return(invisible())
   
   # apparently I need to give changedObjects because I cant update initial values without
-  c_changedObjects <- ObjectStdVector()
+  c_vals_to_update <- ObjectStdVector()
   
   # apply names
-  if (!is_null(name)) {
+  if (!is.null(name)) {
     walk2(
       cl_comps, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
@@ -431,7 +432,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   }
   
   # apply types
-  if (!is_null(type)) {
+  if (!is.null(type)) {
     type_to_c <- stringr::str_to_upper(type)
     walk2(
       cl_quants, type_to_c,
@@ -440,20 +441,20 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   }
   
   # apply volume
-  if (!is_null(initial.volume)) {
+  if (!is.null(initial.volume)) {
     walk2(
       cl_comps, initial.volume,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
-          c_changedObjects$push_back(.x$getInitialValueReference())
+          c_vals_to_update$push_back(.x$getInitialValueReference())
         }
       }
     )
   }
   
   # apply expressions
-  if (!is_null(expression)) {
+  if (!is.null(expression)) {
     walk2(
       cl_quants, expression,
       ~ {
@@ -467,7 +468,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_changedObjects)
+  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
   
   # model$compileIfNecessary()
   
@@ -512,7 +513,7 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(key) || is.character(key) && noNA(key),
     is.null(name) || is.character(name) && length(name) == length(key),
     is.null(data) || is.data.frame(data)
   )
@@ -522,12 +523,13 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
-  if (!is_null(data)) do.call(setReactions, data[names(data) %in% c("key", "name")])
+  if (!is.null(data))
+    do.call(setReactions, data[names(data) %in% c("key", "name")])
   
   if (is_empty(cl_reacts)) return(invisible())
   
   # apply names
-  if (!is_null(name)) {
+  if (!is.null(name)) {
     walk2(
       cl_reacts, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
@@ -619,7 +621,7 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && !anyNA(key),
+    is.null(key) || is.character(key) && noNA(key),
     is.null(name) || is.character(name) && length(name) == length(key),
     is.null(value) || is.number(value) && length(value) == length(key),
     is.null(data) || is.data.frame(data)
@@ -630,12 +632,13 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, mo
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
-  if (!is_null(data)) do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
+  if (!is.null(data))
+    do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
   
   if (is_empty(cl_params)) return(invisible())
   
   # apply names
-  if (!is_null(name)) {
+  if (!is.null(name)) {
     walk2(
       cl_params, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
@@ -643,7 +646,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, mo
   }
   
   # apply concentrations
-  if (!is_null(value)) {
+  if (!is.null(value)) {
     walk2(
       cl_params, value,
       ~ {

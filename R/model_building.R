@@ -20,7 +20,7 @@ createSpecies <- function(name = NULL, compartment = NULL, type = c("fixed", "as
   
   c_model <- c_datamodel$getModel()
   
-  if (is_null(compartment)) {
+  if (is.null(compartment)) {
     cl_compartments <- c_model$getCompartments()
     # Even if multiple compartments exist, use the first as default
     c_compartment <- cl_compartments$get(0L)

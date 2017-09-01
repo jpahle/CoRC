@@ -36,24 +36,28 @@ getInitialValue <- function(expression, model = getCurrentModel()) {
 # return NA_character_ or the expression string
 expr_to_str <- function(c_entity, raw = FALSE) {
   c_expression <- c_entity$getExpressionPtr()
+  c_datamodel <- c_expression$getObjectDataModel()
+  assert_that(!is.null(c_datamodel))
   
-  if (is_null(c_expression))
+  if (is.null(c_expression))
     NA_character_
   else if (raw)
     c_expression$getInfix()
   else
-    read_expr(c_expression$getInfix(), as(c_expression$getObjectAncestor("CN"), "_p_CDataModel"))
+    read_expr(c_expression$getInfix(), c_datamodel)
 }
 
 # check if an entity has an expression set
 # return NA_character_ or the expression DisplayName
 expr_to_ref_str <- function(c_entity) {
   c_expression <- c_entity$getExpressionPtr()
+  c_datamodel <- c_expression$getObjectDataModel()
+  assert_that(!is.null(c_datamodel))
   
-  if (is_null(c_expression))
+  if (is.null(c_expression))
     NA_character_
   else
-    as_ref(list(c_expression), as(c_expression$getObjectAncestor("CN"), "_p_CDataModel"))
+    as_ref(list(c_expression), c_datamodel)
 }
 
 # Copasi -> R
@@ -65,7 +69,7 @@ read_expr <- function(x, c_datamodel) {
     function(x) {
       x <- stringr::str_sub(x, 2L, -2L)
       c_obj <- cn_to_object(x, c_datamodel)
-      assert_that(!is_null(c_obj), msg = paste0("Failure in expression readout"))
+      assert_that(!is.null(c_obj), msg = paste0("Failure in expression readout"))
       
       escape_ref(c_obj$getObjectDisplayName())
     }
@@ -87,7 +91,7 @@ write_expr <- function(x, c_datamodel) {
     "\\{.*?[^\\\\]\\}",
     function(x) {
       c_obj <- dn_to_object(unescape_ref(x), c_datamodel)
-      assert_that(!is_null(c_obj), msg = paste0("Cannot resolve ", x, "."))
+      assert_that(!is.null(c_obj), msg = paste0("Cannot resolve ", x, "."))
       
       if (c_obj$getObjectType() != "Reference")
         c_obj <- c_obj$getValueReference()

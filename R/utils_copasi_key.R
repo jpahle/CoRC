@@ -21,30 +21,33 @@ auto_cast <- function(c_object) {
 # Takes CN as character and gives object
 cn_to_object <- function(cn, c_datamodel, accepted_types = NULL) {
   c_object <- c_datamodel$getObjectFromCN(CCommonName(cn))
-  if (is_null(c_object)) return()
+  if (is.null(c_object)) return()
   c_object <- auto_cast(c_object$getDataObject())
-  if (!is_null(accepted_types) && !inherits(c_object, accepted_types)) return()
+  if (!is.null(accepted_types) && !inherits(c_object, accepted_types)) return()
   c_object
 }
 
 # Takes DisplayName as character and gives object
 dn_to_object <- function(dn, c_datamodel, accepted_types = NULL) {
   c_object <- c_datamodel$findObjectByDisplayName(dn)
-  if (is_null(c_object)) return()
+  if (is.null(c_object))
+    return()
+  
   c_object <- auto_cast(c_object$getDataObject())
-  if (!is_null(accepted_types) && !inherits(c_object, accepted_types)) return()
+  if (!is.null(accepted_types) && !inherits(c_object, accepted_types))
+    return()
+  
   c_object
 }
 
 # Takes wrapped CN "<*>", reference DN "{*}" and gives object
 # Only meant for references (for consistency)
 xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
-  if (xn == "") return()
+  if (xn == "")
+    return()
   
   if (stringr::str_detect(xn, "^<CN=.*>$"))
-    return(
-      cn_to_object(stringr::str_sub(xn, 2L, -2L), c_datamodel, accepted_types)
-    )
+    return(cn_to_object(stringr::str_sub(xn, 2L, -2L), c_datamodel, accepted_types))
   
   # All references should be wrapped either <CN> or {DN} 
   assert_that(
@@ -65,7 +68,8 @@ xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
 
 # get the CN of an object as string
 get_cn <- function(c_object) {
-  if (is_null(c_object)) return(NA_character_)
+  if (is.null(c_object))
+    return(NA_character_)
   
   # cl_object$getCN()$getString()
   # For performance reasons:
@@ -93,7 +97,7 @@ unescape_ref <- function(x) {
 as_ref <- function(cl_objects, c_datamodel) {
   refs <- cl_objects %>% map_swig_chr("getObjectDisplayName")
   
-  dn_unresolvable <- map(refs, dn_to_object, c_datamodel) %>% map_lgl(is_null)
+  dn_unresolvable <- map(refs, dn_to_object, c_datamodel) %>% map_lgl(is.null)
   
   refs[dn_unresolvable] <- map_chr(cl_objects[dn_unresolvable], get_cn)
   

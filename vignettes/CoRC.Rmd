@@ -101,7 +101,7 @@ timeseries <-
     # iteration data (1000 random seeds),
     1:1000,
     # iteration code (formula ~)
-    ~ runTimeCourse(method = list(method = "directMethod", random.seed = .x))
+    ~ runTimeCourse(method = list(random.seed = .x))
   )
 
 # Combine all results and reshape the data

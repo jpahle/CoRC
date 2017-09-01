@@ -80,7 +80,7 @@ loadModel <- function(path) {
   c_datamodel <- CRootContainer_addDatamodel()
   
   c_model <- url_to_string(path)
-  if (!is_null(c_model)) {
+  if (!is.null(c_model)) {
     success <- grab_msg(c_datamodel$loadModelFromString(c_model, normalizePathC(getwd())),
                         purge = "The content is created with a newer version .* of COPASI.")
   } else {
@@ -115,7 +115,7 @@ loadSBML <- function(path) {
   c_datamodel <- CRootContainer_addDatamodel()
   
   sbml <- url_to_string(path)
-  if (!is_null(sbml)) {
+  if (!is.null(sbml)) {
     success <- grab_msg(c_datamodel$importSBMLFromString(sbml))
   } else {
     assert_that(is.readable(path))

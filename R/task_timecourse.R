@@ -48,7 +48,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     # keep track of the originally set method
     pre_method <- c_task$getMethod()$getSubType()
     # change the method first, then save the settings for the new method
-    if (!is_null(method_settings$method)) c_task$setMethodType(method_settings$method)
+    if (!is.null(method_settings$method)) c_task$setMethodType(method_settings$method)
     c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
     pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
   } else {
@@ -127,7 +127,7 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
   method_settings <- tc_assemble_method(method, c_task)
   
   # switch to given method
-  if (!is_null(method_settings$method))
+  if (!is.null(method_settings$method))
     c_task$setMethodType(method_settings$method)
   
   c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
@@ -205,18 +205,18 @@ is.copasi_ts <- function(x) {
 # returns a list of settings
 tc_assemble_settings <- function(duration, dt, intervals, suppressOutputBefore, outputEvents, saveResultInMemory, startInSteadyState, updateModel, executable) {
   assert_that(
-    is.null(duration)             || noNA(duration)             && is.number(duration)             && duration >= 0,
-    is.null(dt)                   || noNA(dt)                   && is.number(dt)                   && dt >= 0,
-    is.null(intervals)            || noNA(intervals)            && is.count(intervals),
-    is.null(suppressOutputBefore) || noNA(suppressOutputBefore) && is.number(suppressOutputBefore),
-    is.null(outputEvents)         || noNA(outputEvents)         && is.flag(outputEvents),
-    is.null(saveResultInMemory)   || noNA(saveResultInMemory)   && is.flag(saveResultInMemory),
-    is.null(startInSteadyState)   || noNA(startInSteadyState)   && is.flag(startInSteadyState),
-    is.null(updateModel)          || noNA(updateModel)          && is.flag(updateModel),
-    is.null(executable)           || noNA(executable)           && is.flag(executable)
+    is.null(duration)             || is.number(duration)             && noNA(duration) && duration >= 0,
+    is.null(dt)                   || is.number(dt)                   && noNA(dt)       && dt >= 0,
+    is.null(intervals)            || is.count(intervals)             && noNA(intervals),
+    is.null(suppressOutputBefore) || is.number(suppressOutputBefore) && noNA(suppressOutputBefore),
+    is.null(outputEvents)         || is.flag(outputEvents)           && noNA(outputEvents),
+    is.null(saveResultInMemory)   || is.flag(saveResultInMemory)     && noNA(saveResultInMemory),
+    is.null(startInSteadyState)   || is.flag(startInSteadyState)     && noNA(startInSteadyState),
+    is.null(updateModel)          || is.flag(updateModel)            && noNA(updateModel),
+    is.null(executable)           || is.flag(executable)             && noNA(executable)
   )
   
-  if (!is_null(dt) && !is_null(intervals))
+  if (!is.null(dt) && !is.null(intervals))
     stop("Only one of dt and intervals can be given")
   
   list(
@@ -230,13 +230,13 @@ tc_assemble_settings <- function(duration, dt, intervals, suppressOutputBefore, 
     updateModel = updateModel,
     executable = executable
   ) %>%
-    discard(is_null)
+    discard(is.null)
 }
 
 # does assertions
 # returns a list of method settings
 tc_assemble_method <- function(method, c_task) {
-  if (is_null(method))
+  if (is.null(method))
     return(list())
   
   assert_that(is.string(method) || is.list(method))
@@ -246,7 +246,7 @@ tc_assemble_method <- function(method, c_task) {
   
   if (has_name(method, "method"))
     # hack to get nice error message if method string is not accepted.
-    with(method, rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+    method$method <- map_chr(method$method, function(method) {rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L])})
   
   method
 }
@@ -256,15 +256,15 @@ tc_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
   
   list(
-    duration =             c_problem$getDuration(),
-    dt =                   c_problem$getStepSize(),
-    intervals =            c_problem$getStepNumber(),
+    duration             = c_problem$getDuration(),
+    dt                   = c_problem$getStepSize(),
+    intervals            = c_problem$getStepNumber(),
     suppressOutputBefore = c_problem$getOutputStartTime(),
-    outputEvents =         as.logical(c_problem$getOutputEvent()),
-    saveResultInMemory =   as.logical(c_problem$timeSeriesRequested()),
-    startInSteadyState =   as.logical(c_problem$getStartInSteadyState()),
-    updateModel =          as.logical(c_task$isUpdateModel()),
-    executable =           as.logical(c_task$isScheduled())
+    outputEvents         = as.logical(c_problem$getOutputEvent()),
+    saveResultInMemory   = as.logical(c_problem$timeSeriesRequested()),
+    startInSteadyState   = as.logical(c_problem$getStartInSteadyState()),
+    updateModel          = as.logical(c_task$isUpdateModel()),
+    executable           = as.logical(c_task$isScheduled())
   )
 }
 
@@ -275,38 +275,38 @@ tc_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
   
-  if (!is_null(data$duration))
+  if (!is.null(data$duration))
     c_problem$setDuration(data$duration)
   
-  if (!is_null(data$dt))
+  if (!is.null(data$dt))
     c_problem$setStepSize(data$dt)
   
-  if (!is_null(data$intervals))
+  if (!is.null(data$intervals))
     c_problem$setStepNumber(data$intervals)
   
-  if (!is_null(data$suppressOutputBefore))
+  if (!is.null(data$suppressOutputBefore))
     c_problem$setOutputStartTime(data$suppressOutputBefore)
   
-  if (!is_null(data$outputEvents))
+  if (!is.null(data$outputEvents))
     c_problem$setOutputEvent(data$outputEvents)
   
-  if (!is_null(data$saveResultInMemory))
+  if (!is.null(data$saveResultInMemory))
     c_problem$setTimeSeriesRequested(data$saveResultInMemory)
   
-  if (!is_null(data$startInSteadyState))
+  if (!is.null(data$startInSteadyState))
     c_problem$setStartInSteadyState(data$startInSteadyState)
   
-  if (!is_null(data$updateModel))
+  if (!is.null(data$updateModel))
     c_task$setUpdateModel(data$updateModel)
   
-  if (!is_null(data$executable))
+  if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
 }
 
 # gathers all results
 # needs to know settings results in memory are from current run
-tc_get_results <- function(c_datamodel, settings) {
-  c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
+tc_get_results <- function(c_task, settings) {
+  c_datamodel <- c_task$getObjectDataModel()
   c_timeseries <- c_task$getTimeSeries()
   recordedSteps <- c_timeseries$getRecordedSteps()
   
