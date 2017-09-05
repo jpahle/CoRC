@@ -2,9 +2,16 @@
 % Please edit documentation in R/task_timecourse.R
 \name{runTimeCourse}
 \alias{runTimeCourse}
+\alias{runTC}
 \title{Run a time course}
 \usage{
 runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
+  suppressOutputBefore = NULL, outputEvents = NULL,
+  saveResultInMemory = NULL, startInSteadyState = NULL,
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
+
+runTC(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
   updateModel = NULL, executable = NULL, method = NULL,

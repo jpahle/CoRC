@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get steady state settings — getSteadyStateSettings • CoRC</title>
+<title>Set metabolic control analysis settings — setMetabolicControlAnalysisSettings • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,29 +98,39 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get steady state settings</h1>
+    <h1>Set metabolic control analysis settings</h1>
     </div>
 
     
-    <p><code>getSteadyStateSettings</code> gets steady state task settings including method options.</p>
+    <p><code>setMetabolicControlAnalysis</code> sets metabolic control analysis task settings including method options.</p>
     
 
-    <pre class="usage"><span class='fu'>getSteadyStateSettings</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+    <pre class="usage"><span class='fu'>setMetabolicControlAnalysisSettings</span>(<span class='kw'>performSteadyStateAnalysis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
-<span class='fu'>getSS</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+<span class='fu'>setMCA</span>(<span class='kw'>performSteadyStateAnalysis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>performSteadyStateAnalysis</th>
+      <td><p>flag</p></td>
+    </tr>
+    <tr>
+      <th>executable</th>
+      <td><p>flag</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>list</p></td>
+    </tr>
+    <tr>
       <th>model</th>
       <td><p>a model object</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A list of steady state task settings including method options.</p>
     
 
   </div>
@@ -128,9 +138,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

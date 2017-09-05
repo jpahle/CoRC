@@ -156,6 +156,16 @@ getTimeCourseSettings <- function(model = getCurrentModel()) {
   ret
 }
 
+#' @rdname runTimeCourse
+#' @export
+runTC <- runTimeCourse
+#' @rdname setTimeCourseSettings
+#' @export
+setTC <- setTimeCourseSettings
+#' @rdname getTimeCourseSettings
+#' @export
+getTC <- getTimeCourseSettings
+
 new_copasi_ts <- function(x, settings, unit_time, unit_conc) {
   assert_that(
     is.list(settings),

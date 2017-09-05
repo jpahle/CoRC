@@ -2,11 +2,16 @@
 % Please edit documentation in R/task_steadystate.R
 \name{setSteadyStateSettings}
 \alias{setSteadyStateSettings}
+\alias{setSS}
 \title{Set steady state settings}
 \usage{
 setSteadyStateSettings(calculateJacobian = NULL,
   performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL,
   method = NULL, model = getCurrentModel())
+
+setSS(calculateJacobian = NULL, performStabilityAnalysis = NULL,
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{calculateJacobian}{flag}

@@ -2,9 +2,14 @@
 % Please edit documentation in R/task_steadystate.R
 \name{runSteadyState}
 \alias{runSteadyState}
+\alias{runSS}
 \title{Run to stready state}
 \usage{
 runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
+
+runSS(calculateJacobian = NULL, performStabilityAnalysis = NULL,
   updateModel = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 }
@@ -25,5 +30,5 @@ runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
 a list of results
 }
 \description{
-\code{runSteadyState} calculates the steady state and returns results in a list.
+\code{runSteadyState} calculates the steady state and returns the results in a list.
 }

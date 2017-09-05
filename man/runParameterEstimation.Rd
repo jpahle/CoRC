@@ -2,12 +2,18 @@
 % Please edit documentation in R/task_parameterestimation.R
 \name{runParameterEstimation}
 \alias{runParameterEstimation}
+\alias{runPE}
 \title{Run parameter estimation}
 \usage{
 runParameterEstimation(randomizeStartValues = NULL,
   createParameterSets = NULL, calculateStatistics = NULL,
   updateModel = NULL, executable = NULL, parameters = NULL,
   experiments = NULL, method = NULL, model = getCurrentModel())
+
+runPE(randomizeStartValues = NULL, createParameterSets = NULL,
+  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
+  parameters = NULL, experiments = NULL, method = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{randomizeStartValues}{flag}
@@ -32,5 +38,5 @@ runParameterEstimation(randomizeStartValues = NULL,
 a list of results
 }
 \description{
-\code{runParameterEstimation} runs parameter estimation and returns results in a list.
+\code{runParameterEstimation} runs parameter estimation and returns the results in a list.
 }

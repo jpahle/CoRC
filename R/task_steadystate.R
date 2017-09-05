@@ -1,6 +1,6 @@
 #' Run to stready state
 #'
-#' \code{runSteadyState} calculates the steady state and returns results in a list.
+#' \code{runSteadyState} calculates the steady state and returns the results in a list.
 #'
 #' @param calculateJacobian flag
 #' @param performStabilityAnalysis flag
@@ -110,7 +110,7 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
 #' \code{getSteadyStateSettings} gets steady state task settings including method options.
 #'
 #' @param model a model object
-#' @return A list of time course task settings including method options.
+#' @return A list of steady state task settings including method options.
 #' @export
 getSteadyStateSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -122,6 +122,16 @@ getSteadyStateSettings <- function(model = getCurrentModel()) {
   
   ret
 }
+
+#' @rdname runSteadyState
+#' @export
+runSS <- runSteadyState
+#' @rdname setSteadyStateSettings
+#' @export
+setSS <- setSteadyStateSettings
+#' @rdname getSteadyStateSettings
+#' @export
+getSS <- getSteadyStateSettings
 
 # The following functions should be the basis for implementation of any task
 # They should allow for a common workflow with most tasks

@@ -2,9 +2,12 @@
 % Please edit documentation in R/task_timecourse.R
 \name{getTimeCourseSettings}
 \alias{getTimeCourseSettings}
+\alias{getTC}
 \title{Get time course settings}
 \usage{
 getTimeCourseSettings(model = getCurrentModel())
+
+getTC(model = getCurrentModel())
 }
 \arguments{
 \item{model}{a model object}

@@ -168,13 +168,13 @@ unloadAllModels <- function() {
 
 #' Save a model as a .cps file
 #'
-#' \code{saveCPS} saves a model as a .cps file
+#' \code{saveModel} saves a model as a .cps file
 #'
 #' @param filename a path to save to
 #' @param overwrite is overwriting existing files allowed?
 #' @param model a model object
 #' @export
-saveCPS <- function(filename = model$getFileName(), overwrite = FALSE, model = getCurrentModel()) {
+saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(is.string(filename))
 

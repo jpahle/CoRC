@@ -2,9 +2,12 @@
 % Please edit documentation in R/task_parameterestimation.R
 \name{getParameterEstimationSettings}
 \alias{getParameterEstimationSettings}
+\alias{getPE}
 \title{Set parameter estimation settings}
 \usage{
 getParameterEstimationSettings(model = getCurrentModel())
+
+getPE(model = getCurrentModel())
 }
 \arguments{
 \item{model}{a model object}

@@ -1,4 +1,4 @@
-#' Get a model's name
+#' Get the model's name
 #'
 #' \code{getModelName} gives the name of the model.
 #'
@@ -182,3 +182,40 @@ setInitialTime <- function(time, model = getCurrentModel()) {
   
   invisible()
 }
+
+#' @export
+getStoichiometryMatrix <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_model <- c_datamodel$getModel()
+  
+  c_model$buildStoi()
+  
+  # mb should be integer
+  get_annotated_matrix(
+    c_model$getStoiAnnotation()
+  )
+}
+
+# #' @export
+# getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
+#   c_datamodel <- assert_datamodel(model)
+#   
+#   c_model <- c_datamodel$getModel()
+#   
+#   c_model$buildRedStoi()
+#   
+#   get_annotated_matrix(
+#     c_model$getRedStoiAnnotation()
+#   )
+# }
+
+# #' @export
+# getLinkMatrix <- function(model = getCurrentModel()) {
+#   c_datamodel <- assert_datamodel(model)
+#   
+#   c_model <- c_datamodel$getModel()
+#   
+#   c_model$buildLinkZero()
+#   c_model$getL0()
+# }

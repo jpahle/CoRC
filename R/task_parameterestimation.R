@@ -1,6 +1,6 @@
 #' Run parameter estimation
 #'
-#' \code{runParameterEstimation} runs parameter estimation and returns results in a list.
+#' \code{runParameterEstimation} runs parameter estimation and returns the results in a list.
 #'
 #' @param randomizeStartValues flag
 #' @param createParameterSets flag
@@ -187,6 +187,16 @@ getParameterEstimationSettings <- function(model = getCurrentModel()) {
   
   ret
 }
+
+#' @rdname runParameterEstimation
+#' @export
+runPE <- runParameterEstimation
+#' @rdname setParameterEstimationSettings
+#' @export
+setPE<- setParameterEstimationSettings
+#' @rdname getParameterEstimationSettings
+#' @export
+getPE <- getParameterEstimationSettings
 
 new_copasi_parm <- function(x, lower, upper, start) {
   assert_that(

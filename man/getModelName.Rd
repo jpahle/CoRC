@@ -2,7 +2,7 @@
 % Please edit documentation in R/manage_properties.R
 \name{getModelName}
 \alias{getModelName}
-\title{Get a model's name}
+\title{Get the model's name}
 \usage{
 getModelName(model = getCurrentModel())
 }

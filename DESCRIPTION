@@ -41,6 +41,7 @@ Collate:
     'quantity_finders.R'
     'swig_workarounds.R'
     'swig_wrapper.R'
+    'task_mca.R'
     'task_parameterestimation.R'
     'task_steadystate.R'
     'task_timecourse.R'

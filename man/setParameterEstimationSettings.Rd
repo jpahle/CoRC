@@ -2,12 +2,18 @@
 % Please edit documentation in R/task_parameterestimation.R
 \name{setParameterEstimationSettings}
 \alias{setParameterEstimationSettings}
+\alias{setPE}
 \title{Set parameter estimation settings}
 \usage{
 setParameterEstimationSettings(randomizeStartValues = NULL,
   createParameterSets = NULL, calculateStatistics = NULL,
   updateModel = NULL, executable = NULL, parameters = NULL,
   experiments = NULL, method = NULL, model = getCurrentModel())
+
+setPE(randomizeStartValues = NULL, createParameterSets = NULL,
+  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
+  parameters = NULL, experiments = NULL, method = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{randomizeStartValues}{flag}

@@ -2,15 +2,18 @@
 % Please edit documentation in R/task_steadystate.R
 \name{getSteadyStateSettings}
 \alias{getSteadyStateSettings}
+\alias{getSS}
 \title{Get steady state settings}
 \usage{
 getSteadyStateSettings(model = getCurrentModel())
+
+getSS(model = getCurrentModel())
 }
 \arguments{
 \item{model}{a model object}
 }
 \value{
-A list of time course task settings including method options.
+A list of steady state task settings including method options.
 }
 \description{
 \code{getSteadyStateSettings} gets steady state task settings including method options.

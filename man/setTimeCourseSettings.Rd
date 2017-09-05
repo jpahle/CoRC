@@ -2,9 +2,16 @@
 % Please edit documentation in R/task_timecourse.R
 \name{setTimeCourseSettings}
 \alias{setTimeCourseSettings}
+\alias{setTC}
 \title{Set time course settings}
 \usage{
 setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
+  suppressOutputBefore = NULL, outputEvents = NULL,
+  saveResultInMemory = NULL, startInSteadyState = NULL,
+  updateModel = NULL, executable = NULL, method = NULL,
+  model = getCurrentModel())
+
+setTC(duration = NULL, dt = NULL, intervals = NULL,
   suppressOutputBefore = NULL, outputEvents = NULL,
   saveResultInMemory = NULL, startInSteadyState = NULL,
   updateModel = NULL, executable = NULL, method = NULL,
