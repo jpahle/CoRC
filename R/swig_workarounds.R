@@ -51,7 +51,8 @@ swigfix_resolve_int_stdvector <- function(self, fun) {
 # Thus, unexpected results might happen with inhomogenous lists
 map_swig <- function(x, fun, ..., .mapfun = map) {
   # if list is empty, use force as dummy function to return empty vector/list
-  if (is_empty(x)) return(.mapfun(list(), force))
+  if (is_empty(x))
+    return(.mapfun(list(), force))
   x_q <- quote(x)
   .mapfun(
     .x = x,

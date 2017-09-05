@@ -14,7 +14,9 @@ current_example = 4L
 
 ```{r, include=FALSE}
 devtools::document()
+pkgdown::build_reference()
 ```
+
 ```{r, include=FALSE}
 pkgdown::clean_site()
 pkgdown::build_site()
