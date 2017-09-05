@@ -142,8 +142,12 @@ normalizePathC <- partial(normalizePath, winslash = .Platform$file.sep)
 #' @importFrom ggplot2 autoplot
 #' @export
 autoplot.copasi_ts <- function(object, ...) {
+  validate_copasi_ts(object)
+  
+  tc <- object$result
+  
   # use partial matching with ... args
-  selected <- flatten_chr(list(...)) %>% pmatch(names(object))
+  selected <- flatten_chr(list(...)) %>% pmatch(names(tc))
   
   if (anyNA(selected)) {
     warning("Partial matching failed for some species")
@@ -152,18 +156,18 @@ autoplot.copasi_ts <- function(object, ...) {
   
   # only add species selected in ...
   if (!is_empty(selected))
-    object <- object %>% dplyr::select(Time, !!!selected)
+    tc <- tc %>% dplyr::select(Time, !!!selected)
   
-  units <- object %@% "units"
+  units <- object$units
   
   # reshape data frame for ggplot and define the plot
-  object %>%
+  tc %>%
     tidyr::gather(Species, Concentration, -Time) %>%
     ggplot2::ggplot(ggplot2::aes(x = Time, y = Concentration, group = Species, color = Species)) +
     ggplot2::geom_line() +
     ggplot2::labs(
-      x = paste0("Time (", units[["Time"]], ")"),
-      y = paste0("Concentration (", units[["Concentration"]], ")")
+      x = paste0("Time (", units$time, ")"),
+      y = paste0("Concentration (", units$concentration, ")")
     )
 }
 

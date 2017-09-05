@@ -13,8 +13,7 @@
 #' @param executable flag
 #' @param method string or list
 #' @param model a model object
-#' @return A data frame with a time column and value columns.
-#'   Has attributes for units and settings.
+#' @return a list of results
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -70,7 +69,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   }
   # get results
   if (success)
-    ret <- tc_get_results(c_datamodel, full_settings)
+    ret <- tc_get_results(c_task, full_settings)
   
   # revert all settings
   if (do_settings)
@@ -166,34 +165,32 @@ setTC <- setTimeCourseSettings
 #' @export
 getTC <- getTimeCourseSettings
 
-new_copasi_ts <- function(x, settings, unit_time, unit_conc) {
+new_copasi_ts <- function(settings, unit_time, unit_conc, result) {
   assert_that(
     is.list(settings),
     is.string(unit_time),
-    is.string(unit_conc)
+    is.string(unit_conc),
+    is.data.frame(result)
   )
   
-  x <- tibble::as_tibble(x)
-  
   structure(
-    x,
-    class = c("copasi_ts", class(x)),
-    settings = settings,
-    units = c(Time = unit_time, Concentration = unit_conc)
+    list(
+      settings = settings,
+      units = list(time = unit_time, concentration = unit_conc),
+      result = result
+    ),
+    class = "copasi_ts"
   )
 }
 
 #' @export
-validate_copasi_ts <- function(object) {
+validate_copasi_ts <- function(x) {
   assert_that(
-    is.data.frame(object),
-    object %has_attr% "settings",
-    is.list(object %@% "settings"),
-    object %has_attr% "units",
-    is.character(object %@% "units"),
-    noNA(object %@% "units"),
-    object %@% "units" %has_name% "Time",
-    object %@% "units" %has_name% "Concentration"
+    is.list(x$settings),
+    is.list(x$units),
+    is.string(x$units$time),
+    is.string(x$units$concentration),
+    is.data.frame(x$result)
   )
 }
 
@@ -201,12 +198,6 @@ validate_copasi_ts <- function(object) {
 is.copasi_ts <- function(x) {
   inherits(x, "copasi_ts")
 }
-
-# Define this when the package hadley/sloop is released
-# Allows maniuplation with dplyr without losing class and attributes
-# reconstruct.copasi_ts <- function(x) {
-# 
-# }
 
 # The following functions should be the basis for implementation of any task
 # They should allow for a common workflow with most tasks
@@ -346,14 +337,14 @@ tc_get_results <- function(c_task, settings) {
           # set_names(timeSeries$getTitle(i_var))
           set_names(CTimeSeries_getTitle(c_timeseries, i_var))
       }) %>%
-      dplyr::bind_cols() %>%
-      new_copasi_ts(
-        settings = settings,
-        unit_time = getTimeUnit(c_datamodel),
-        unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel))
-      )
+      dplyr::bind_cols()
   } else if (!full_settings$saveResultInMemory)
-    warning("No results generated because saveResultInMemory is set to FALSE in the model.")
+    warning("No result generated because saveResultInMemory is set to FALSE in the model.")
   
-  ret
+  new_copasi_ts(
+    settings = settings,
+    unit_time = getTimeUnit(c_datamodel),
+    unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel)),
+    result = ret
+  )
 }

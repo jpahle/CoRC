@@ -41,8 +41,7 @@ runTC(duration = NULL, dt = NULL, intervals = NULL,
 \item{model}{a model object}
 }
 \value{
-A data frame with a time column and value columns.
-  Has attributes for units and settings.
+a list of results
 }
 \description{
 \code{runTimeCourse} runs a time course and returns the time course data as a data frame.

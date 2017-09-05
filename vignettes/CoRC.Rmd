@@ -55,8 +55,8 @@ loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
 setTimeCourseSettings(24, intervals = 10000)
 
 timeseries <- list(
-  deterministic = runTimeCourse(),
-  stochastic = runTimeCourse(method = list(method = "directMethod", use.random.seed = T, random.seed = 1))
+  deterministic = runTimeCourse()$result,
+  stochastic = runTimeCourse(method = list(method = "directMethod", use.random.seed = T, random.seed = 1))$result
 )
 
 # simplify species names so they are valid R syntax
@@ -88,7 +88,7 @@ The example illustrates advantages of parallel processing.
 ```{r}
 # Run 1000 stochastic time series possibly in parallel
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-# timeseries <- 1:1000 %>% map(~ runTimeCourse())
+# timeseries <- 1:1000 %>% map(~ runTimeCourse()$result)
 timeseries <-
   # Defines parallel evaluation:
   mapInParallel(
@@ -101,7 +101,7 @@ timeseries <-
     # iteration data (1000 random seeds),
     1:1000,
     # iteration code (formula ~)
-    ~ runTimeCourse(method = list(random.seed = .x))
+    ~ runTimeCourse(method = list(random.seed = .x))$result
   )
 
 # Combine all results and reshape the data
@@ -256,7 +256,7 @@ loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
 
 # get timeseries for the record
 data_before <-
-  runTimeCourse(1000, 1) %>%
+  runTimeCourse(1000, 1)$result %>%
   set_tidy_names(TRUE)
 
 # read experimental data
@@ -293,7 +293,7 @@ result <-
 
 # get timeseries for the record
 data_after <-
-  runTimeCourse(1000, 1) %>%
+  runTimeCourse(1000, 1)$result %>%
   set_tidy_names(TRUE)
 
 plots <- list(
