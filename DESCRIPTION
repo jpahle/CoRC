@@ -34,9 +34,9 @@ Suggests:
     pkgdown
 Collate: 
     'CoRC.R'
-    'manage_models.R'
-    'manage_properties.R'
     'model_building.R'
+    'model_management.R'
+    'model_properties.R'
     'quantity_accessors.R'
     'quantity_finders.R'
     'swig_workarounds.R'
@@ -46,7 +46,7 @@ Collate:
     'task_steadystate.R'
     'task_timecourse.R'
     'utils.R'
-    'utils_copasi_key.R'
+    'utils_copasi_keys.R'
     'utils_copasi_vector.R'
     'utils_expressions.R'
     'utils_stringr.R'
