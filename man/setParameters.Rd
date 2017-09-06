@@ -4,8 +4,8 @@
 \alias{setParameters}
 \title{Set reaction parameters}
 \usage{
-setParameters(key = NULL, name = NULL, value = NULL, data = NULL,
-  model = getCurrentModel())
+setParameters(key, name = NULL, value = NULL, mapping = NULL,
+  data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reaction parameters}

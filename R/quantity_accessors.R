@@ -18,15 +18,15 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
   
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_metabs, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_metabs, "getObjectName"),
-    "Compartment" = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type" = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
+    "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
+    "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
-    "Initial Number" = map_swig_dbl(cl_metabs, "getInitialValue"),
-    "Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
-    "Number" = map_swig_dbl(cl_metabs, "getInitialValue"),
-    "Expression" = map_chr(cl_metabs, expr_to_str, raw = rawExpressions)
+    "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
+    "Concentration"         = map_swig_dbl(cl_metabs, "getInitialConcentration"),
+    "Number"                = map_swig_dbl(cl_metabs, "getInitialValue"),
+    "Expression"            = map_chr(cl_metabs, expr_to_str, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -49,15 +49,15 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_metabs, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_metabs, "getObjectName"),
-    "Compartment" = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type" = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
+    "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
+    "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Concentration" = cl_metabs %>% map_swig("getInitialConcentrationReference") %>% as_ref(c_datamodel),
-    "Initial Number" = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Concentration" = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
-    "Number" = cl_metabs %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
-    "Expression" = map_chr(cl_metabs, expr_to_ref_str)
+    "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
+    "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
+    "Number"                = cl_metabs %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Expression"            = map_chr(cl_metabs, expr_to_ref_str)
   ) %>%
     transform_names()
 }
@@ -75,16 +75,16 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
+setSpecies <- function(key, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && noNA(key),
-    is.null(name) || is.character(name) && length(name) == length(key),
-    is.null(type) || is.character(type) && length(type) == length(key),
+    is.character(key)              && noNA(key),
+    is.null(name)                  || is.character(name)                && length(name) == length(key),
+    is.null(type)                  || is.character(type)                && length(type) == length(key),
     is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
-    is.null(initial.number) || is.numeric(initial.number) && length(initial.number) == length(key),
-    is.null(expression) || is.character(expression) && length(expression) == length(key),
-    is.null(data) || is.data.frame(data)
+    is.null(initial.number)        || is.numeric(initial.number)        && length(initial.number) == length(key),
+    is.null(expression)            || is.character(expression)          && length(expression) == length(key),
+    is.null(data)                  || is.data.frame(data)
   )
   
   if (!is.null(type))
@@ -192,12 +192,12 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
 
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_quants, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_quants, "getObjectName"),
-    "Type" = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    "Name"          = map_swig_chr(cl_quants, "getObjectName"),
+    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Value" = map_swig_dbl(cl_quants, "getInitialValue"),
-    "Value" = map_swig_dbl(cl_quants, "getValue"),
-    "Expression" = map_chr(cl_quants, expr_to_str, raw = rawExpressions)
+    "Value"         = map_swig_dbl(cl_quants, "getValue"),
+    "Expression"    = map_chr(cl_quants, expr_to_str, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -220,12 +220,12 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_quants, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_quants, "getObjectName"),
-    "Type" = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    "Name"          = map_swig_chr(cl_quants, "getObjectName"),
+    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Value" = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Value" = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
-    "Expression" = map_chr(cl_quants, expr_to_ref_str)
+    "Value"         = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Expression"    = map_chr(cl_quants, expr_to_ref_str)
   ) %>%
     transform_names()
 }
@@ -242,15 +242,15 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
+setGlobalQuantities <- function(key, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && noNA(key),
-    is.null(name) || is.character(name) && length(name) == length(key),
-    is.null(type) || is.character(type) && length(type) == length(key),
+    is.character(key)      && noNA(key),
+    is.null(name)          || is.character(name)        && length(name) == length(key),
+    is.null(type)          || is.character(type)        && length(type) == length(key),
     is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
-    is.null(expression) || is.character(expression) && length(expression) == length(key),
-    is.null(data) || is.data.frame(data)
+    is.null(expression)    || is.character(expression)  && length(expression) == length(key),
+    is.null(data)          || is.data.frame(data)
   )
   
   if (!is.null(type))
@@ -345,11 +345,11 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
   
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_comps, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_comps, "getObjectName"),
-    "Type" = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    "Name"           = map_swig_chr(cl_comps, "getObjectName"),
+    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Volume" = map_swig_dbl(cl_comps, "getInitialValue"),
-    "Expression" = map_chr(cl_comps, expr_to_str, raw = rawExpressions)
+    "Expression"     = map_chr(cl_comps, expr_to_str, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -372,11 +372,11 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_comps, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_comps, "getObjectName"),
-    "Type" = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    "Name"           = map_swig_chr(cl_comps, "getObjectName"),
+    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Volume" = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Expression" = map_chr(cl_comps, expr_to_ref_str)
+    "Expression"     = map_chr(cl_comps, expr_to_ref_str)
   ) %>%
     transform_names()
 }
@@ -393,15 +393,15 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && noNA(key),
-    is.null(name) || is.character(name) && length(name) == length(key),
-    is.null(type) || is.character(type) && length(type) == length(key),
+    is.character(key)       && noNA(key),
+    is.null(name)           || is.character(name)         && length(name) == length(key),
+    is.null(type)           || is.character(type)         && length(type) == length(key),
     is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
-    is.null(expression) || is.character(expression) && length(expression) == length(key),
-    is.null(data) || is.data.frame(data)
+    is.null(expression)     || is.character(expression)   && length(expression) == length(key),
+    is.null(data)           || is.data.frame(data)
   )
   
   if (!is.null(type))
@@ -489,14 +489,15 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   if (is_empty(key))
-    c_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
+    cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
   else
-    c_reacts <- reaction_obj(key, c_datamodel)
+    cl_reacts <- reaction_obj(key, c_datamodel)
 
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(c_reacts, "getObjectDisplayName"),
-    "Name" = map_swig_chr(c_reacts, "getObjectName")
+    key    = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+    "Name" = map_swig_chr(cl_reacts, "getObjectName"),
+    "Scheme" = map_swig_chr(cl_reacts, "getReactionScheme")
   ) %>%
     transform_names()
 }
@@ -510,12 +511,12 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getReactions} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
+setReactions <- function(key, name = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && noNA(key),
-    is.null(name) || is.character(name) && length(name) == length(key),
-    is.null(data) || is.data.frame(data)
+    is.character(key)  && noNA(key),
+    is.null(name)      || is.character(name) && length(name) == length(key),
+    is.null(data)      || is.data.frame(data)
   )
   
   # Do this as assertion before we start changing values
@@ -549,6 +550,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
 #' @export
 getParameters <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
+  c_keyfactory <- CRootContainer_getKeyFactory()
   
   if (is_empty(key))
     cl_params <-
@@ -561,12 +563,33 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
   else
     cl_params <- parameter_obj(key, c_datamodel)
   
+  cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
+  
+  names <- map_swig_chr(cl_params, "getObjectName")
+  
+  # find out what the parameters are mapped to
+  mappings <- map2_chr(names, cl_reacts,
+    function(name, c_react) {
+      if (c_react$isLocalParameter(name))
+        return(NA_character_)
+      
+      val <- get_sv(c_react$getParameterMapping(name))
+      
+      # For now don't support multiple mappings
+      if (length(val) > 1)
+        return("<MULTIPLE>")
+
+      c_keyfactory$get(val)$getObjectDisplayName()
+    }
+  )
+  
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_params, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_params, "getObjectName"),
-    "Reaction" = cl_params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
-    "Value" = map_swig_dbl(cl_params, "getDblValue")
+    key        = map_swig_chr(cl_params, "getObjectDisplayName"),
+    "Name"     = names,
+    "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
+    "Value"    = map_swig_dbl(cl_params, "getDblValue"),
+    "Mapping"  = mappings
   ) %>%
     transform_names()
 }
@@ -597,13 +620,33 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
     # cl_params <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
     cl_params <- parameter_obj(key, c_datamodel)
   
+  cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
+  
+  names <- map_swig_chr(cl_params, "getObjectName")
+  
+  # find out what the parameters are mapped to
+  mappings <- map2_chr(names, cl_reacts,
+    function(name, c_react) {
+      if (c_react$isLocalParameter(name))
+        return(NA_character_)
+    
+      val <- get_sv(c_react$getParameterMapping(name))
+    
+      # For now don't support multiple mappings
+      if (length(val) > 1)
+        return("<MULTIPLE>")
+    
+      c_keyfactory$get(val)$getObjectDisplayName()
+    }
+  )
   # assemble output dataframe
   tibble::tibble(
-    key = map_swig_chr(cl_params, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_params, "getObjectName"),
+    key        = map_swig_chr(cl_params, "getObjectDisplayName"),
+    "Name"     = names,
     "Reaction" = cl_params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
-    "Type" = cl_params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
-    "Value" = cl_params %>% map_swig("getValueReference") %>% as_ref(c_datamodel)
+    "Type"     = cl_params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
+    "Value"    = cl_params %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Mapping"  = mappings
   ) %>%
     transform_names()
 }
@@ -617,22 +660,32 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getParameters} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, model = getCurrentModel()) {
+setParameters <- function(key, name = NULL, value = NULL, mapping = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key) || is.character(key) && noNA(key),
-    is.null(name) || is.character(name) && length(name) == length(key),
-    is.null(value) || is.number(value) && length(value) == length(key),
-    is.null(data) || is.data.frame(data)
+    is.character(key) && noNA(key),
+    is.null(name)     || is.character(name)    && length(name) == length(key),
+    is.null(value)    || is.numeric(value)     && length(value) == length(key),
+    is.null(mapping)  || is.character(mapping) && length(mapping) == length(key),
+    is.null(data)     || is.data.frame(data)
   )
   
   # Do this as assertion before we start changing values
   cl_params <- parameter_obj(key %||% character(), c_datamodel)
   
+  # Do this as assertion before we start changing values
+  # Makes sure mapping is either NA or a copasi key
+  if (!is.null(mapping)) {
+    mapping[!is.na(mapping)] <-
+      mapping[!is.na(mapping)] %>%
+      quantity_obj(c_datamodel) %>%
+      map_swig_chr("getKey")
+  }
+  
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setParameters, data[names(data) %in% c("key", "name", "value")])
+    do.call(setParameters, data[names(data) %in% c("key", "name", "value", "mapping")])
   
   if (is_empty(cl_params)) return(invisible())
   
@@ -644,16 +697,41 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, data = NULL, mo
     )
   }
   
-  # apply concentrations
-  if (!is.null(value)) {
-    walk2(
-      cl_params, value,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setDblValue(.y)
+  # Parameters are only those of type "PARAMETER I think.
+  # So I can safely set a value and make them local or set a mapping
+  # as long as that mapping is a global quantity.
+  # Changing the parameters directly seems to be unsafe.
+  # The safe method seems to be to go back to the reaction and do manipulations from there.
+  
+  cl_mod_reacts <- vector("list", length(cl_params) * 2L)
+  
+  # apply values
+  if (!is.null(value) || !is.null(mapping)) {
+    cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
+    names <- map_swig_chr(cl_params, "getObjectName")
+    
+    
+    if (!is.null(value))
+      pwalk(
+        list(cl_reacts, names, value),
+        function(c_react, name, value) {
+          if (!is.na(value))
+            c_react$setParameterValue(name, value)
         }
-      }
-    )
+      )
+    
+    if (!is.null(mapping))
+      pwalk(
+        list(cl_reacts, names, mapping),
+        function(c_react, name, value) {
+          if (!is.na(value))
+            c_react$setParameterMapping(name, value)
+        }
+      )
+    
+    cl_reacts %>%
+      unique() %>%
+      walk_swig("compile")
   }
   
   invisible()

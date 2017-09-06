@@ -327,8 +327,6 @@ result$fitted.values
 result$parameters
 result$protocol
 
-plots$Erk2.P
-# plotly::ggplotly(plots$Erk2.P)
-plots$Mos.P
-# plotly::ggplotly(plots$Mos.P)
+plotly::ggplotly(plots$Erk2.P)
+plotly::ggplotly(plots$Mos.P)
 ```

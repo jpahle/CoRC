@@ -198,7 +198,7 @@ mca_get_results <- function(c_task, settings) {
     elasticities.scaled = elasticities.scaled,
     elasticities.unscaled = elasticities.unscaled,
     flux.control.coefficients.scaled = flux.control.coefficients.scaled,
-    flux.control.coefficients.scaled = flux.control.coefficients.scaled,
+    flux.control.coefficients.unscaled = flux.control.coefficients.unscaled,
     concentration.control.coefficients.scaled = concentration.control.coefficients.scaled,
     concentration.control.coefficients.unscaled = concentration.control.coefficients.unscaled
   )

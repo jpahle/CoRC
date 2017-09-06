@@ -4,8 +4,7 @@
 \alias{setReactions}
 \title{Set reactions}
 \usage{
-setReactions(key = NULL, name = NULL, data = NULL,
-  model = getCurrentModel())
+setReactions(key, name = NULL, data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying reactions}

@@ -4,9 +4,8 @@
 \alias{setCompartments}
 \title{Set compartments}
 \usage{
-setCompartments(key = NULL, name = NULL, type = NULL,
-  initial.volume = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+setCompartments(key, name = NULL, type = NULL, initial.volume = NULL,
+  expression = NULL, data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}

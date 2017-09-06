@@ -353,10 +353,7 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
     )
     
     c_reacti$setMapping(i, c_comp$getObjectName())
-  } else if (type == "TIME") {
-    warning("Parameter `", c_reacti$getParameterName(i), "` is a time parameter and cannot be mapped. It has been skipped.")
-  } else {
-    # If just any mapping I guess we go for local value or global quantity
+  } else if (type == "PARAMETER") {
     if (is.number(value)) {
       c_reacti$setLocalValue(i, value)
     } else {
@@ -371,5 +368,7 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
       
       c_reacti$setMapping(i, c_quant$getObjectName())
     }
+  } else {
+    warning("Parameter `", c_reacti$getParameterName(i), "` is of type `", stringr::str_to_lower(type), "` and cannot be mapped through ", getPackageName(),". It has been skipped.")
   }
 }

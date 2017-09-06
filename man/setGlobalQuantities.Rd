@@ -4,9 +4,8 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(key = NULL, name = NULL, type = NULL,
-  initial.value = NULL, expression = NULL, data = NULL,
-  c_datamodel = getCurrentModel())
+setGlobalQuantities(key, name = NULL, type = NULL, initial.value = NULL,
+  expression = NULL, data = NULL, c_datamodel = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
