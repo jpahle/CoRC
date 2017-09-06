@@ -566,7 +566,6 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
     key = map_swig_chr(cl_params, "getObjectDisplayName"),
     "Name" = map_swig_chr(cl_params, "getObjectName"),
     "Reaction" = cl_params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
-    "Type" = cl_params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
     "Value" = map_swig_dbl(cl_params, "getDblValue")
   ) %>%
     transform_names()
