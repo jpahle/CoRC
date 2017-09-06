@@ -162,7 +162,7 @@ Now I will save the model into a tmp folder.
 
 ```{r}
 file <- tempfile(fileext = ".cps")
-saveCPS(file)
+saveModel(file)
 unloadModel()
 
 datamodel <- loadModel(file)

@@ -78,7 +78,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-08-31</h4>
+            <h4 class="date">2017-09-06</h4>
           </div>
 
     
@@ -208,7 +208,7 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>Now I will save the model into a tmp folder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".cps"</span>)
-<span class="kw"><a href="../reference/saveCPS.html">saveCPS</a></span>(file)
+<span class="kw"><a href="../reference/saveModel.html">saveModel</a></span>(file)
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
 
 datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadModel.html">loadModel</a></span>(file)
@@ -216,7 +216,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<s
 filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/Rtmppzaydw/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpU8B2Be/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()

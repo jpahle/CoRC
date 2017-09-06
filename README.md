@@ -41,10 +41,10 @@ loadExamples(1)
 #> Number of compartments: 1
 #> Number of species: 6
 #> Number of reactions: 4
-runTimeCourse()
+runTimeCourse()$result
 #> # A tibble: 201 x 3
 #>     Time         X         Y
-#>  * <dbl>     <dbl>     <dbl>
+#>    <dbl>     <dbl>     <dbl>
 #>  1   0.0 3.0000000 3.0000000
 #>  2   0.5 3.4081600 0.8174841
 #>  3   1.0 1.8964569 1.2767901

@@ -78,7 +78,7 @@
       <h1>Handling Model Entities</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-08-31</h4>
+            <h4 class="date">2017-09-06</h4>
           </div>
 
     
@@ -140,11 +140,11 @@
 <span class="kw"><a href="../reference/species_strict.html">species_strict</a></span>(<span class="st">"Che"</span>)
 <span class="co">#&gt; Error: "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
 <span class="kw"><a href="../reference/species_strict.html">species_strict</a></span>(<span class="kw">c</span>(<span class="ot">NA</span>, <span class="st">"CheY"</span>))
-<span class="co">#&gt; Error: !anyNA(key) is not TRUE</span>
+<span class="co">#&gt; Error: key contains 1 missing values</span>
 <span class="kw"><a href="../reference/species_strict.html">species_strict</a></span>(<span class="st">"failure"</span>)
 <span class="co">#&gt; Error: Couldn't match species "failure".</span></code></pre></div>
 <p>CoRC makes use of the regex functionality of the stringr package. You can therefore wrap any string via  to enable regex matching.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw">regex</span>(<span class="st">"Che.p"</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/CoRC/topics/regex">regex</a></span>(<span class="st">"Che.p"</span>))
 <span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
 <p>In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself. These methods will always use the strict variants to allow reliably matching species.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/species.html">species</a></span>(<span class="st">"CheY"</span>))
@@ -178,7 +178,7 @@
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"Che"</span>)
 <span class="co">#&gt; Error: "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw">regex</span>(<span class="st">"Che.p"</span>)))
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/species.html">species</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/CoRC/topics/regex">regex</a></span>(<span class="st">"Che.p"</span>)))
 <span class="co">#&gt; # A tibble: 3 x 9</span>
 <span class="co">#&gt;     key  name compartment      type initial.concentration initial.number</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>

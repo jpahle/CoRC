@@ -42,5 +42,5 @@ devtools::install_github("jpahle/CoRC")
 ```{r example}
 library(CoRC)
 loadExamples(1)
-runTimeCourse()
+runTimeCourse()$result
 ```
