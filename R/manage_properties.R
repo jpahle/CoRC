@@ -189,7 +189,7 @@ getStoichiometryMatrix <- function(model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  c_model$buildStoi()
+  # c_model$buildStoi()
   
   # mb should be integer
   get_annotated_matrix(
@@ -216,6 +216,7 @@ getStoichiometryMatrix <- function(model = getCurrentModel()) {
 #   
 #   c_model <- c_datamodel$getModel()
 #   
-#   c_model$buildLinkZero()
-#   c_model$getL0()
+#   get_annotated_matrix(
+#     c_model$getLinkAnnotation()
+#   )
 # }

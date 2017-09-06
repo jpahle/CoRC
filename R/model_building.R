@@ -174,7 +174,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
   
   dn <- c_react$getObjectDisplayName()
   
-  # run fun and mapping via successive functions
+  # apply fun and mapping via successive functions
   tryCatch(
     {
       if (!is.null(fun))
@@ -338,10 +338,23 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
     
     assert_that(
       key %in% valid_vals,
-      msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '"')
+      msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '".')
     )
     
     c_reacti$setMapping(i, key)
+  } else if (type == "VOLUME") {
+    # CReactionInterface allows mapping by ObjectName but CoRC uses ObjectDisplayName so do a bit of translation.
+    c_comp <- compartment_obj(value, c_datamodel)[[1]]
+    valid_vals <- compartment(model = c_datamodel)
+    
+    assert_that(
+      c_comp$getObjectDisplayName() %in% valid_vals,
+      msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '".')
+    )
+    
+    c_reacti$setMapping(i, c_comp$getObjectName())
+  } else if (type == "TIME") {
+    warning("Parameter `", c_reacti$getParameterName(i), "` is a time parameter and cannot be mapped. It has been skipped.")
   } else {
     # If just any mapping I guess we go for local value or global quantity
     if (is.number(value)) {

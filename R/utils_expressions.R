@@ -82,14 +82,8 @@ read_expr <- function(x, c_datamodel) {
 
 # R -> Copasi
 # In copasi, expressions consist of <CN>, in R they should be mostly {DN}
+# Also implicitly translates {Time}, {Avogadro Constant} and {Quantity Conversion Factor}
 write_expr <- function(x, c_datamodel) {
-  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Avogadro Constant>
-  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Quantity Conversion Factor>
-  # <CN=Root,Model=mouse Anoctamin-1 (ac variant) model according to Contreras-Vite et. al. (2016),Reference=Time>
-  # {Quantity Conversion Factor} <- 
-  # {Avogadro Constant}
-  # {Time}
-  
   stringr::str_replace_all(
     x,
     "\\{.*?[^\\\\]\\}",

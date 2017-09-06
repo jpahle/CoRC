@@ -19,7 +19,7 @@ OUTPUTFLAG <- 119L
 #' @export
 COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/7ae2179c547635ebb54d6bb30cba806f40b05949"
 
-COPASI_BIN_VERSION <- 3L
+COPASI_BIN_VERSION <- 4L
 COPASI_BIN_HASHES <-
   list(
     "3.3" =
@@ -30,8 +30,8 @@ COPASI_BIN_HASHES <-
       ),
     "3.4" =
       c(
-        darwin = "4ce0d24ef08874c4cff996a14204aa5ce0b734a026bed0784ce412207c508b9d",
-        win = "045bf95f378a85f5ed25ee837cbc18510abedf20263ff39802214eaae6d5f7e9"
+        darwin = "",
+        win = ""
         # ubuntu_16_10 = ""
       )
   )
