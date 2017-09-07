@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run a time course — runTimeCourse • CoRC</title>
+<title>Run linear noise approximation — runLinearNoiseApproximation • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,58 +98,24 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run a time course</h1>
+    <h1>Run linear noise approximation</h1>
     </div>
 
     
-    <p><code>runTimeCourse</code> runs a time course and returns the results in a list.</p>
+    <p><code>runLinearNoiseApproximation</code> runs linear noise approximation and returns the results in a list.</p>
     
 
-    <pre class="usage"><span class='fu'>runTimeCourse</span>(<span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>suppressOutputBefore</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>outputEvents</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>saveResultInMemory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startInSteadyState</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+    <pre class="usage"><span class='fu'>runLinearNoiseApproximation</span>(<span class='kw'>performSteadyStateAnalysis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
-<span class='fu'>runTC</span>(<span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>suppressOutputBefore</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>outputEvents</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>saveResultInMemory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>startInSteadyState</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+<span class='fu'>runLNA</span>(<span class='kw'>performSteadyStateAnalysis</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>duration</th>
-      <td><p>number</p></td>
-    </tr>
-    <tr>
-      <th>dt</th>
-      <td><p>number</p></td>
-    </tr>
-    <tr>
-      <th>intervals</th>
-      <td><p>count</p></td>
-    </tr>
-    <tr>
-      <th>suppressOutputBefore</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>outputEvents</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>saveResultInMemory</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>startInSteadyState</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>updateModel</th>
+      <th>performSteadyStateAnalysis</th>
       <td><p>flag</p></td>
     </tr>
     <tr>
@@ -158,7 +124,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>string or list</p></td>
+      <td><p>list</p></td>
     </tr>
     <tr>
       <th>model</th>

@@ -203,7 +203,7 @@ ss_set_settings <- function(data, c_task) {
 
 # gathers all results
 ss_get_results <- function(c_task, settings) {
-  c_model <- as(c_task$getObjectDataModel()$getModel(), "_p_CModel")
+  c_model <- c_task$getObjectDataModel()$getModel()
   c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
   result <- c_task$getResult()

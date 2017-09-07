@@ -1,6 +1,6 @@
 #' Run a time course
 #'
-#' \code{runTimeCourse} runs a time course and returns the time course data as a data frame.
+#' \code{runTimeCourse} runs a time course and returns the results in a list.
 #'
 #' @param duration number
 #' @param dt number
@@ -47,7 +47,8 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     # keep track of the originally set method
     pre_method <- c_task$getMethod()$getSubType()
     # change the method first, then save the settings for the new method
-    if (!is.null(method_settings$method)) c_task$setMethodType(method_settings$method)
+    if (!is.null(method_settings$method))
+      c_task$setMethodType(method_settings$method)
     c_method <- as(c_task$getMethod(), "_p_CTrajectoryMethod")
     pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
   } else {

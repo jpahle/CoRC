@@ -180,17 +180,16 @@ mca_set_settings <- function(data, c_task) {
 
 # gathers all results
 mca_get_results <- function(c_task, settings) {
-  c_model <- as(c_task$getObjectDataModel()$getModel(), "_p_CModel")
   c_method <- as(c_task$getMethod(), "_p_CMCAMethod")
   
-  ss.result <- c_task$getSteadyStateStatus()
+  ss.result <- c_method$getSteadyStateStatus()
   
-  elasticities.scaled <- get_annotated_matrix(c_task$getScaledElasticitiesAnn())
-  elasticities.unscaled <- get_annotated_matrix(c_task$getUnscaledElasticitiesAnn())
-  flux.control.coefficients.scaled <- get_annotated_matrix(c_task$getScaledFluxCCAnn())
-  flux.control.coefficients.unscaled <- get_annotated_matrix(c_task$getUnscaledFluxCCAnn())
-  concentration.control.coefficients.scaled <- get_annotated_matrix(c_task$getScaledConcentrationCCAnn())
-  concentration.control.coefficients.unscaled <- get_annotated_matrix(c_task$getUnscaledConcentrationCCAnn())
+  elasticities.scaled <- get_annotated_matrix(c_method$getScaledElasticitiesAnn())
+  elasticities.unscaled <- get_annotated_matrix(c_method$getUnscaledElasticitiesAnn())
+  flux.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledFluxCCAnn())
+  flux.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledFluxCCAnn())
+  concentration.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledConcentrationCCAnn())
+  concentration.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledConcentrationCCAnn())
   
   list(
     settings = settings,
