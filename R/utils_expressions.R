@@ -121,10 +121,11 @@ get_expr_init_val <- function(x, c_datamodel) {
   # CExpressions get destructed on model unloading and
   # are therefore unsafe to keep around until next gc
   c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
+  grab_msg(c_expression$setInfix(x))
+  
   c_init_expression <- grab_msg(CExpression_createInitialExpression(c_expression, c_datamodel))
   delete(c_expression)
   
-  grab_msg(c_init_expression$setInfix(x))
   c_init_expression$compile()
   val <- c_init_expression$calcValue()
   
