@@ -75,10 +75,10 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setSpecies <- function(key, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
+setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.character(key)              && noNA(key),
+    is.null(key)                   || is.character(key)                 && noNA(key),
     is.null(name)                  || is.character(name)                && length(name) == length(key),
     is.null(type)                  || is.character(type)                && length(type) == length(key),
     is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
@@ -242,10 +242,10 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setGlobalQuantities <- function(key, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
+setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.character(key)      && noNA(key),
+    is.null(key)           || is.character(key)         && noNA(key),
     is.null(name)          || is.character(name)        && length(name) == length(key),
     is.null(type)          || is.character(type)        && length(type) == length(key),
     is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
@@ -393,10 +393,10 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setCompartments <- function(key, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.character(key)       && noNA(key),
+    is.null(key)            || is.character(key)          && noNA(key),
     is.null(name)           || is.character(name)         && length(name) == length(key),
     is.null(type)           || is.character(type)         && length(type) == length(key),
     is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
@@ -511,10 +511,10 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getReactions} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setReactions <- function(key, name = NULL, data = NULL, model = getCurrentModel()) {
+setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.character(key)  && noNA(key),
+    is.null(key)       || is.character(key)  && noNA(key),
     is.null(name)      || is.character(name) && length(name) == length(key),
     is.null(data)      || is.data.frame(data)
   )
@@ -660,10 +660,10 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param data a data frame as given by \code{getParameters} which will be applied before the other arguments.
 #' @param model a model object
 #' @export
-setParameters <- function(key, name = NULL, value = NULL, mapping = NULL, data = NULL, model = getCurrentModel()) {
+setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.character(key) && noNA(key),
+    is.null(key)      || is.character(key)     && noNA(key),
     is.null(name)     || is.character(name)    && length(name) == length(key),
     is.null(value)    || is.numeric(value)     && length(value) == length(key),
     is.null(mapping)  || is.character(mapping) && length(mapping) == length(key),
