@@ -703,13 +703,10 @@ setParameters <- function(key, name = NULL, value = NULL, mapping = NULL, data =
   # Changing the parameters directly seems to be unsafe.
   # The safe method seems to be to go back to the reaction and do manipulations from there.
   
-  cl_mod_reacts <- vector("list", length(cl_params) * 2L)
-  
   # apply values
   if (!is.null(value) || !is.null(mapping)) {
     cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
     names <- map_swig_chr(cl_params, "getObjectName")
-    
     
     if (!is.null(value))
       pwalk(

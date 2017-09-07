@@ -72,7 +72,8 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
   
-  expression <- write_expr(expression, c_datamodel)
+  if (!is.null(expression))
+    expression <- write_expr(expression, c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
@@ -82,12 +83,13 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
   c_quant$setStatus(stringr::str_to_upper(type))
+  if (type %in% c("assignment", "ode")) {
+    success <- grab_msg(c_quant$setExpression(expression)$isSuccess())
   
-  success <- grab_msg(c_quant$setExpression(expression)$isSuccess())
-  
-  if (!success) {
-    c_model$removeModelValue(c_quant)
-    stop("Global quantity creation failed when applying the expression.")
+    if (!success) {
+      c_model$removeModelValue(c_quant)
+      stop("Global quantity creation failed when applying the expression.")
+    }
   }
   
   c_quant$getObjectDisplayName()
