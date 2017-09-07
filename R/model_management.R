@@ -75,24 +75,47 @@ url_to_string <- function(x) {
 #' @export
 loadModel <- function(path) {
   assert_binaries()
-  assert_that(is.string(path))
+  assert_that(is.string(path), noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
   
-  c_model <- url_to_string(path)
-  if (!is.null(c_model)) {
-    success <- grab_msg(c_datamodel$loadModelFromString(c_model, normalizePathC(getwd())),
-                        purge = "The content is created with a newer version .* of COPASI.")
+  model <- url_to_string(path)
+  if (!is.null(model)) {
+    success <- grab_msg(c_datamodel$loadModelFromString(model, normalizePathC(getwd())))
   } else {
     assert_that(is.readable(path))
     
-    success <- grab_msg(c_datamodel$loadModel(normalizePathC(path)),
-                        purge = "The content is created with a newer version .* of COPASI.")
+    success <- grab_msg(c_datamodel$loadModel(normalizePathC(path)))
   }
   
   if (!success) {
     CRootContainer_removeDatamodel(c_datamodel)
     stop("Couldn't load model file.")
+  }
+  
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
+  
+  invisible(c_datamodel)
+}
+
+#' Load a model from string
+#'
+#' \code{loadModelFromString} loads a model from a string.
+#'
+#' @param model string
+#' @export
+loadModelFromString <- function(model) {
+  assert_binaries()
+  assert_that(is.string(model), noNA(model))
+  
+  c_datamodel <- CRootContainer_addDatamodel()
+  
+  success <- grab_msg(c_datamodel$loadModelFromString(model, normalizePathC(getwd())))
+  
+  if (!success) {
+    CRootContainer_removeDatamodel(c_datamodel)
+    stop("Couldn't load model string.")
   }
   
   pkg_env$c_curr_dm <- c_datamodel
@@ -110,7 +133,7 @@ loadModel <- function(path) {
 #' @export
 loadSBML <- function(path) {
   assert_binaries()
-  assert_that(is.string(path))
+  assert_that(is.string(path), noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
   
@@ -190,11 +213,22 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
   
   success <- grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite))
 
-  if (!success) {
+  if (!success)
     stop('Model failed to save at: "', filename, '".')
-  }
 
   invisible(success)
+}
+
+#' Save a model to string
+#'
+#' \code{saveModelToString} saves a model to a string.
+#'
+#' @param model a model object
+#' @export
+saveModelToString <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  grab_msg(c_datamodel$saveModelToString())
 }
 
 #' Load example models
@@ -291,7 +325,7 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
     if (.Platform$OS.type == "windows")
       system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
     else
-      system2(copasi_loc, file, wait = FALSE)
+      system2(copasi_loc, c(file, "&"))
   }
   
   invisible()
