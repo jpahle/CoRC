@@ -34,34 +34,30 @@ getInitialValue <- function(expression, model = getCurrentModel()) {
 
 # check if an entity has an expression set
 # return NA_character_ or the expression string
-expr_to_str <- function(c_entity, raw = FALSE) {
+expr_to_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(), raw = FALSE) {
   c_expression <- c_entity$getExpressionPtr()
   
   if (is.null(c_expression)) {
-    NA_character_
-  } else {
-    expr <- c_expression$getInfix()
-    if (!raw) {
-      c_datamodel <- c_expression$getObjectDataModel()
-      assert_that(!is.null(c_datamodel))
-      expr <- read_expr(expr, c_datamodel)
-    }
-    expr
-  }
+    return(NA_character_)
+
+  expr <- c_expression$getInfix()
+  
+  if (!raw)
+    expr <- read_expr(expr, c_datamodel)
+  
+  expr
 }
 
 # check if an entity has an expression set
 # return NA_character_ or the expression DisplayName
-expr_to_ref_str <- function(c_entity) {
+expr_to_ref_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel()) {
   c_expression <- c_entity$getExpressionPtr()
   
   if (is.null(c_expression))
-    NA_character_
-  else {
-    c_datamodel <- c_expression$getObjectDataModel()
-    assert_that(!is.null(c_datamodel))
-    as_ref(list(c_expression), c_datamodel)
-  }
+    return(NA_character_)
+
+  as_ref(list(c_expression), c_datamodel)
+
 }
 
 # Copasi -> R

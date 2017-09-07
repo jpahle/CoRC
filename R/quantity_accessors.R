@@ -26,7 +26,7 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
     "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
     "Concentration"         = map_swig_dbl(cl_metabs, "getInitialConcentration"),
     "Number"                = map_swig_dbl(cl_metabs, "getInitialValue"),
-    "Expression"            = map_chr(cl_metabs, expr_to_str, raw = rawExpressions)
+    "Expression"            = map_chr(cl_metabs, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -57,7 +57,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
     "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
     "Number"                = cl_metabs %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
-    "Expression"            = map_chr(cl_metabs, expr_to_ref_str)
+    "Expression"            = map_chr(cl_metabs, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
 }
@@ -197,7 +197,7 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
     "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Value" = map_swig_dbl(cl_quants, "getInitialValue"),
     "Value"         = map_swig_dbl(cl_quants, "getValue"),
-    "Expression"    = map_chr(cl_quants, expr_to_str, raw = rawExpressions)
+    "Expression"    = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -225,7 +225,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
     "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Value" = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Value"         = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
-    "Expression"    = map_chr(cl_quants, expr_to_ref_str)
+    "Expression"    = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
 }
@@ -349,7 +349,7 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
     "Name"           = map_swig_chr(cl_comps, "getObjectName"),
     "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Volume" = map_swig_dbl(cl_comps, "getInitialValue"),
-    "Expression"     = map_chr(cl_comps, expr_to_str, raw = rawExpressions)
+    "Expression"     = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
 }
@@ -376,7 +376,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
     "Name"           = map_swig_chr(cl_comps, "getObjectName"),
     "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
     "Initial Volume" = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Expression"     = map_chr(cl_comps, expr_to_ref_str)
+    "Expression"     = map_chr(cl_comps, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
 }
