@@ -16,7 +16,8 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
   
-  expression <- write_expr(expression, c_datamodel)
+  if (!is.null(expression))
+    expression <- write_expr(expression, c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
@@ -35,11 +36,13 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
-  success <- grab_msg(c_metab$setExpression(expression)$isSuccess())
-  
-  if (!success) {
-    c_model$removeMetabolite(c_metab)
-    stop("Species creation failed when applying the expression.")
+  if (!is.null(expression)) {
+    success <- grab_msg(c_metab$setExpression(expression)$isSuccess())
+    
+    if (!success) {
+      c_model$removeMetabolite(c_metab)
+      stop("Species creation failed when applying the expression.")
+    }
   }
   
   c_metab$getObjectDisplayName()
@@ -77,13 +80,13 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   c_model <- c_datamodel$getModel()
   
-  # type is missing
   c_quant <- c_model$createModelValue(name, initial.value)
   
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
   c_quant$setStatus(stringr::str_to_upper(type))
-  if (type %in% c("assignment", "ode")) {
+  
+  if (!is.null(expression)) {
     success <- grab_msg(c_quant$setExpression(expression)$isSuccess())
   
     if (!success) {
@@ -122,7 +125,8 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   # .__E___CModelEntity__Status has other weird entries
   type <- stringr::str_to_upper(rlang::arg_match(type))
   
-  expression <- write_expr(expression, c_datamodel)
+  if (!is.null(expression))
+    expression <- write_expr(expression, c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
@@ -133,14 +137,16 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   
   c_comp$setStatus(stringr::str_to_upper(type))
   
-  success <- grab_msg(c_comp$setExpression(expression)$isSuccess())
-  
-  if (!success) {
-    c_model$removeCompartment(c_comp)
-    stop("Compartment creation failed when applying the expression.")
+  if (!is.null(expression)) {
+    success <- grab_msg(c_comp$setExpression(expression)$isSuccess())
+    
+    if (!success) {
+      c_model$removeCompartment(c_comp)
+      stop("Compartment creation failed when applying the expression.")
+    }
+    
+    c_comp$getObjectDisplayName()
   }
-  
-  c_comp$getObjectDisplayName()
 }
 
 #' @export

@@ -37,7 +37,7 @@ getInitialValue <- function(expression, model = getCurrentModel()) {
 expr_to_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(), raw = FALSE) {
   c_expression <- c_entity$getExpressionPtr()
   
-  if (is.null(c_expression)) {
+  if (is.null(c_expression))
     return(NA_character_)
 
   expr <- c_expression$getInfix()
@@ -57,7 +57,6 @@ expr_to_ref_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(
     return(NA_character_)
 
   as_ref(list(c_expression), c_datamodel)
-
 }
 
 # Copasi -> R

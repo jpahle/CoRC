@@ -567,28 +567,33 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
   
   names <- map_swig_chr(cl_params, "getObjectName")
   
-  # find out what the parameters are mapped to
-  mappings <- map2_chr(names, cl_reacts,
-    function(name, c_react) {
-      if (c_react$isLocalParameter(name))
-        return(NA_character_)
-      
-      val <- get_sv(c_react$getParameterMapping(name))
-      
-      # For now don't support multiple mappings
-      if (length(val) > 1)
-        return("<MULTIPLE>")
-
-      c_keyfactory$get(val)$getObjectDisplayName()
-    }
-  )
+  are_local <- map2_lgl(names, cl_reacts, ~ .y$isLocalParameter(.x))
+  
+  values <- rep(NA_real_, length(cl_params))
+  values[are_local] <-
+    cl_params[are_local] %>%
+    map_swig_dbl("getDblValue")
+  
+  mappings <- rep(NA_character_, length(cl_params))
+  mappings[!are_local] <- 
+    map2_chr(names[!are_local], cl_reacts[!are_local],
+      function(name, c_react) {
+        val <- get_sv(c_react$getParameterMapping(name))
+        
+        # For now don't support multiple mappings
+        if (length(val) > 1)
+          return("<MULTIPLE>")
+  
+        c_keyfactory$get(val)$getObjectDisplayName()
+      }
+    )
   
   # assemble output dataframe
   tibble::tibble(
     key        = map_swig_chr(cl_params, "getObjectDisplayName"),
     "Name"     = names,
     "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
-    "Value"    = map_swig_dbl(cl_params, "getDblValue"),
+    "Value"    = values,
     "Mapping"  = mappings
   ) %>%
     transform_names()
