@@ -51,7 +51,7 @@ brew install cmake swig gawk wget astyle
 
 Use chocolatey to install:
 ```
-choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable
+choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable wget
 ```
 
 Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
@@ -93,6 +93,14 @@ cd ../../../
 ```
 
 ## Windows
+
+to update Copasi Version, use git bash for example:
+
+```
+cd development/copasi-source/COPASI/
+./gitTools/UpdateCopasiVersion
+cd ../../..
+```
 
 run:
 ```
