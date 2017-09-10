@@ -7,7 +7,7 @@
 getInitialValue(expression, model = getCurrentModel())
 }
 \arguments{
-\item{expression}{an character vector of expressions}
+\item{expression}{a character vector of expressions}
 
 \item{model}{a model object}
 }

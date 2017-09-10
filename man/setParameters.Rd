@@ -4,7 +4,7 @@
 \alias{setParameters}
 \title{Set reaction parameters}
 \usage{
-setParameters(key, name = NULL, value = NULL, mapping = NULL,
+setParameters(key = NULL, name = NULL, value = NULL, mapping = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{

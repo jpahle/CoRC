@@ -247,9 +247,20 @@ copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start
   )
 }
 
+#' Define a parameter estimation parameter
+#' 
+#' @param key entity key
+#' @param lower.bound lower value bound
+#' @param upper.bound upper value bound
+#' @param start.value start value
+#' @return copasi_parm object for input into related functions
 #' @export
 defineParameter <- copasi_parm
 
+#' Add a parameter estimation parameter
+#' 
+#' @param copasi_parm object as returned by \code{defineParameter}
+#' @param model a model object
 #' @export
 addParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -273,8 +284,13 @@ addParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_fititem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
   c_fititem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
   c_fititem$setStartValue(copasi_parm$start)
+  
+  invisible()
 }
 
+#' Clear all parameter estimation parameters
+#' 
+#' @param model a model object
 #' @export
 clearParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -283,6 +299,8 @@ clearParameters <- function(model = getCurrentModel()) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
   seq_len_0(c_problem$getOptItemSize()) %>% walk(~ c_problem$removeOptItem(0))
+  
+  invisible()
 }
 
 new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, weight_method, filename) {
@@ -424,9 +442,22 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   )
 }
 
+#' Define a parameter estimation experiment
+#' 
+#' @param experiment_type string
+#' @param data list of tidy data frames
+#' @param types character vector
+#' @param mappings character vector
+#' @param weight_method string
+#' @param filename string
+#' @return copasi_exp object for input into related functions
 #' @export
 defineExperiments <- copasi_exp
 
+#' Add a parameter estimation experiment
+#' 
+#' @param copasi_exp object as returned by \code{defineExperiment}
+#' @param model a model object
 #' @export
 addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -499,8 +530,14 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   
   # possibly compile
   # c_experiment_set$compile(problem$getMathContainer())
+  
+  invisible()
 }
 
+
+#' Clear all parameter estimation experiments
+#' 
+#' @param model a model object
 #' @export
 clearExperiments <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

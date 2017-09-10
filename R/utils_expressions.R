@@ -2,7 +2,7 @@
 #'
 #' \code{getValue} calculates the value of a given expression or reference.
 #'
-#' @param expression an character vector of expressions
+#' @param expression a character vector of expressions
 #' @param model a model object
 #' @return a numeric vector of values
 #' @export
@@ -19,7 +19,7 @@ getValue <- function(expression, model = getCurrentModel()) {
 #'
 #' \code{getValue} calculates the initial value of a given expression or reference.
 #'
-#' @param expression an character vector of expressions
+#' @param expression a character vector of expressions
 #' @param model a model object
 #' @return a numeric vector of initial values
 #' @export

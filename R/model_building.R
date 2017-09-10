@@ -2,7 +2,13 @@
 #'
 #' \code{newSpecies} creates a new species.
 #'
+#' @param name string
+#' @param compartment compartment key
+#' @param type string
+#' @param initial.concentration number
+#' @param expression string
 #' @param model a model object
+#' @return species key
 #' @export
 newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment", "reactions", "ode"), initial.concentration = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -45,9 +51,15 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
     }
   }
   
+  c_model$compileIfNecessary()
+  
   c_metab$getObjectDisplayName()
 }
 
+#' Delete a species
+#' 
+#' @param key species keys
+#' @param model a model object
 #' @export
 deleteSpecies <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -60,9 +72,19 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeMetabolite(.x))
   
+  c_model$compileIfNecessary()
+  
   invisible()
 }
 
+#' Create a new global quantity
+#'
+#' @param name string
+#' @param type string
+#' @param initial.value number
+#' @param expression string
+#' @param model a model object
+#' @return quantity key
 #' @export
 newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial.value = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -95,9 +117,15 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
     }
   }
   
+  c_model$compileIfNecessary()
+  
   c_quant$getObjectDisplayName()
 }
 
+#' Delete a global quantity
+#' 
+#' @param key quantity keys
+#' @param model a model object
 #' @export
 deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -110,9 +138,18 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeModelValue(.x))
   
+  c_model$compileIfNecessary()
+  
   invisible()
 }
 
+#' Create a new compartment
+#'
+#' @param name string
+#' @param type string
+#' @param initial.volume number
+#' @param expression string
+#' @param model a model object
 #' @export
 newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial.volume = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -144,11 +181,17 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
       c_model$removeCompartment(c_comp)
       stop("Compartment creation failed when applying the expression.")
     }
-    
-    c_comp$getObjectDisplayName()
   }
+  
+  c_model$compileIfNecessary()
+  
+  c_comp$getObjectDisplayName()
 }
 
+#' Delete a compartment
+#' 
+#' @param key compartment keys
+#' @param model a model object
 #' @export
 deleteCompartment <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -161,9 +204,19 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeCompartment(.x))
   
+  c_model$compileIfNecessary()
+  
   invisible()
 }
 
+#' Create a new reaction
+#'
+#' @param scheme string
+#' @param name string
+#' @param fun string
+#' @param mappings named list
+#' @param model a model object
+#' @return reaction key
 #' @export
 newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -204,9 +257,15 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
     }
   )
   
+  c_model$compileIfNecessary()
+  
   dn
 }
 
+#' Delete a reaction
+#' 
+#' @param key reaction keys
+#' @param model a model object
 #' @export
 deleteReaction <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -219,9 +278,17 @@ deleteReaction <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeReaction(.x))
   
+  c_model$compileIfNecessary()
+  
   invisible()
 }
 
+#' Get valid function names for reaction
+#' 
+#' @param key reaction key
+#' @param model a model object
+#' @return vector of function names
+#' @export
 getValidReactionFunctions <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
@@ -242,6 +309,13 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
   get_sv(c_flist)
 }
 
+#' Set a reaction function
+#' 
+#' @param key reaction key
+#' @param fun string
+#' @param mappings list
+#' @param model a model object
+#' @export
 setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
@@ -271,8 +345,18 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
     set_react_mapping(c_model, c_reacti, mappings)
   
   c_reacti$writeBackToReaction(c_react)
+  
+  c_model$compileIfNecessary()
+  
+  invisible()
 }
 
+#' Get reaction parameter mappings
+#' 
+#' @param key reaction key
+#' @param model a model object
+#' @return list of parameter mappings
+#' @export
 getReactionMappings <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(is.scalar(key))
@@ -299,6 +383,12 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
     )
 }
 
+#' Set reaction parameter mappings
+#' 
+#' @param key reaction key
+#' @param mappings list
+#' @param model a model object
+#' @export
 setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(is.scalar(key))
@@ -313,6 +403,10 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   set_react_mapping(c_model, c_reacti, mappings)
   
   c_reacti$writeBackToReaction(c_react)
+  
+  c_model$compileIfNecessary()
+  
+  invisible()
 }
 
 set_react_mapping <- function(c_model, c_reacti, mappings) {

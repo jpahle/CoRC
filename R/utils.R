@@ -9,12 +9,12 @@ setMethod("format",
     if (has_null_pointer(x))
       return(paste0(string, "Model has been unloaded."))
     
-    model <- x$getModel()
-    string <- paste0(string, "Model name: \"" , model$getObjectName() , "\"\n")
+    c_model <- x$getModel()
+    string <- paste0(string, "Model name: \"" , c_model$getObjectName() , "\"\n")
     # string <- paste0(string, "@ref is set to: " , utils::capture.output(x@ref) , "\n")
-    string <- paste0(string, "Number of compartments: " , model$getCompartments()$size(), "\n")
-    string <- paste0(string, "Number of species: " , model$getMetabolites()$size(), "\n")
-    string <- paste0(string, "Number of reactions: " , model$getReactions()$size())
+    string <- paste0(string, "Number of compartments: " , c_model$getNumCompartments(), "\n")
+    string <- paste0(string, "Number of species: " , c_model$getNumMetabs(), "\n")
+    string <- paste0(string, "Number of reactions: " , c_model$getNumReactions())
 
     string
   }

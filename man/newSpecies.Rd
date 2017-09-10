@@ -9,7 +9,20 @@ newSpecies(name, compartment = NULL, type = c("fixed", "assignment",
   model = getCurrentModel())
 }
 \arguments{
+\item{name}{string}
+
+\item{compartment}{compartment key}
+
+\item{type}{string}
+
+\item{initial.concentration}{number}
+
+\item{expression}{string}
+
 \item{model}{a model object}
+}
+\value{
+species key
 }
 \description{
 \code{newSpecies} creates a new species.

@@ -186,10 +186,18 @@ mca_get_results <- function(c_task, settings) {
   
   elasticities.scaled <- get_annotated_matrix(c_method$getScaledElasticitiesAnn())
   elasticities.unscaled <- get_annotated_matrix(c_method$getUnscaledElasticitiesAnn())
-  flux.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledFluxCCAnn())
-  flux.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledFluxCCAnn())
-  concentration.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledConcentrationCCAnn())
-  concentration.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledConcentrationCCAnn())
+  
+  flux.control.coefficients.scaled <- NULL
+  flux.control.coefficients.unscaled <- NULL
+  concentration.control.coefficients.scaled <- NULL
+  concentration.control.coefficients.unscaled <- NULL
+  
+  if (ss.result != "foundEquilibrium") {
+    flux.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledFluxCCAnn())
+    flux.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledFluxCCAnn())
+    concentration.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledConcentrationCCAnn())
+    concentration.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledConcentrationCCAnn())
+  }
   
   list(
     settings = settings,

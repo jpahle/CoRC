@@ -183,6 +183,10 @@ setInitialTime <- function(time, model = getCurrentModel()) {
   invisible()
 }
 
+#' Get stoichiometry matrix
+#' 
+#' @param model a model object
+#' @return stoichiometry matrix matrix
 #' @export
 getStoichiometryMatrix <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -191,32 +195,42 @@ getStoichiometryMatrix <- function(model = getCurrentModel()) {
   
   # c_model$buildStoi()
   
-  # mb should be integer
+  # mb should be integer matrix
   get_annotated_matrix(
     c_model$getStoiAnnotation()
   )
 }
 
-# #' @export
-# getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
-#   c_datamodel <- assert_datamodel(model)
-#   
-#   c_model <- c_datamodel$getModel()
-#   
-#   c_model$buildRedStoi()
-#   
-#   get_annotated_matrix(
-#     c_model$getRedStoiAnnotation()
-#   )
-# }
+#' Get reduced stoichiometry matrix
+#' 
+#' @param model a model object
+#' @return reduced stoichiometry matrix
+#' @export
+getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
 
-# #' @export
-# getLinkMatrix <- function(model = getCurrentModel()) {
-#   c_datamodel <- assert_datamodel(model)
-#   
-#   c_model <- c_datamodel$getModel()
-#   
-#   get_annotated_matrix(
-#     c_model$getLinkAnnotation()
-#   )
-# }
+  c_model <- c_datamodel$getModel()
+
+  c_model$buildRedStoi()
+  
+  # mb should be integer matrix
+  get_annotated_matrix(
+    c_model$getRedStoiAnnotation()
+  )
+}
+
+#' Get link matrix
+#' 
+#' @param model a model object
+#' @return matrix
+#' @export
+getLinkMatrix <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+
+  c_model <- c_datamodel$getModel()
+  
+  # mb should be integer matrix
+  get_annotated_matrix(
+    c_model$getLAnnotation()
+  )
+}

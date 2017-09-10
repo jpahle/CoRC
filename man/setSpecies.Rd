@@ -4,9 +4,9 @@
 \alias{setSpecies}
 \title{Set species}
 \usage{
-setSpecies(key, name = NULL, type = NULL, initial.concentration = NULL,
-  initial.number = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+setSpecies(key = NULL, name = NULL, type = NULL,
+  initial.concentration = NULL, initial.number = NULL, expression = NULL,
+  data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}

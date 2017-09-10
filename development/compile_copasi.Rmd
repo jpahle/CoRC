@@ -138,6 +138,8 @@ cd ../../../
 
 ## macOS
 
+Instructions build on top of already compiled R bindings.
+
 Cosider using homebrew for macOS intall qt5:
 
 ```{bash, eval=FALSE}

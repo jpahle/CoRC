@@ -52,14 +52,14 @@ swigfix_resolve_int_stdvector <- function(self, fun) {
 map_swig <- function(x, fun, ..., .mapfun = map) {
   # if list is empty, use force as dummy function to return empty vector/list
   if (is_empty(x))
-    return(.mapfun(list(), force))
-  x_q <- quote(x)
-  .mapfun(
-    .x = x,
-    # Find the actual function and strip its class attribute
-    .f = unclass(environment(eval(substitute(x_q[[1]]$fun)))$f),
-    ...
-  )
+    return(.mapfun(logical(), force))
+  
+  fun <- eval(fun)
+  x1 <- x[[1]]
+  # Find the actual function and strip its class attribute
+  f <- unclass(environment(eval(substitute(x1$fun)))$f)
+  
+  .mapfun(x, f, ...)
 }
 
 map_swig_lgl <- partial(map_swig, .mapfun = map_lgl)
@@ -70,3 +70,36 @@ map_swig_dfr <- partial(map_swig, .mapfun = map_dfr)
 map_swig_dfc <- partial(map_swig, .mapfun = map_dfc)
 
 walk_swig <- partial(map_swig, .mapfun = walk)
+
+# Inverted mapping, meaning to map some other param and keep the c_obj fixed
+# e.g.:
+# 1:10 %>% map_iswig(c_model, "removeCompartment")
+# equals
+# 1:10 %>% map(~ c_metab$removeCompartment(.x))
+map_iswig <- function(x, c_obj, fun, ..., .mapfun = map) {
+  # if list is empty, use force as dummy function to return empty vector/list
+  if (is_empty(x))
+    return(.mapfun(logical(), force))
+  
+  # Find the actual function and strip its class attribute
+  # standard would be adding self as further arg to .mapfun but then the call is
+  # f(x, self = c_obj) which breaks because swig has a bug.
+  # Use partial instead.
+  fun <- eval(fun)
+  c_obj_q <- quote(c_obj)
+  f <-
+    environment(eval(substitute(c_obj_q$fun)))$f %>%
+    unclass() %>%
+    partial(self = c_obj, .lazy = FALSE)
+  
+  .mapfun(x, f, ...)
+}
+
+map_iswig_lgl <- partial(map_iswig, .mapfun = map_lgl)
+map_iswig_chr <- partial(map_iswig, .mapfun = map_chr)
+map_iswig_int <- partial(map_iswig, .mapfun = map_int)
+map_iswig_dbl <- partial(map_iswig, .mapfun = map_dbl)
+map_iswig_dfr <- partial(map_iswig, .mapfun = map_dfr)
+map_iswig_dfc <- partial(map_iswig, .mapfun = map_dfc)
+
+walk_iswig <- partial(map_iswig, .mapfun = walk)

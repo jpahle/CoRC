@@ -163,9 +163,11 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
+  c_model <- c_datamodel$getModel()
   
-  # model$compileIfNecessary()
+  c_model$updateInitialValues(c_vals_to_update)
+  
+  c_model$compileIfNecessary()
   
   # model$initializeMetabolites()
   
@@ -316,9 +318,11 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
+  c_model <- c_datamodel$getModel()
   
-  # model$compileIfNecessary()
+  c_model$updateInitialValues(c_vals_to_update)
+  
+  c_model$compileIfNecessary()
   
   # model$initializeMetabolites()
   
@@ -468,9 +472,11 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     )
   }
   
-  c_datamodel$getModel()$updateInitialValues(c_vals_to_update)
+  c_model <- c_datamodel$getModel()
   
-  # model$compileIfNecessary()
+  c_model$updateInitialValues(c_vals_to_update)
+  
+  c_model$compileIfNecessary()
   
   # model$initializeMetabolites()
   
@@ -735,6 +741,8 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
       unique() %>%
       walk_swig("compile")
   }
+  
+  c_datamodel$getModel()$compileIfNecessary()
   
   invisible()
 }
