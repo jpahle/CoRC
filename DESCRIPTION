@@ -35,11 +35,11 @@ Suggests:
     plotly
 Collate: 
     'CoRC.R'
+    'entity_accessors.R'
+    'entity_finders.R'
     'model_building.R'
     'model_management.R'
     'model_properties.R'
-    'quantity_accessors.R'
-    'quantity_finders.R'
     'swig_workarounds.R'
     'swig_wrapper.R'
     'task_lna.R'
