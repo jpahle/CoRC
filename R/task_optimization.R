@@ -40,55 +40,58 @@ runOptimization <- function(randomizeStartValues = NULL, createParameterSets = N
   do_method <- !is_empty(method_settings)
   do_parameters <- !is_empty(parameter_list)
   
-  # save all previous settings
-  if (do_settings)
-    pre_settings <- opt_get_settings(c_task)
-  if (do_method) {
-    # keep track of the originally set method
-    pre_method <- c_task$getMethod()$getSubType()
-    # change the method first, then save the settings for the new method
-    if (!is.null(method_settings$method))
-      c_task$setMethodType(method_settings$method)
-    c_method <- as(c_task$getMethod(), "_p_COptMethod")
-    pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
-  } else {
-    c_method <- as(c_task$getMethod(), "_p_COptMethod")
-  }
-  
-  # apply settings
-  success <- !is.error(try(opt_set_settings(settings, c_task)))
-  if (success)
-    success <- !is.error(try(set_method_settings(method_settings, c_method)))
-  if (success)
-    success <- !is.error(try(walk(parameter_list, addParameter, c_datamodel)))
-  # initialize task
-  if (success)
-    success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
-  # run task and save current settings
-  if (success) {
+  tryCatch({
+    # save all previous settings
+    if (do_settings)
+      pre_settings <- opt_get_settings(c_task)
+    if (do_method) {
+      # keep track of the originally set method
+      pre_method <- c_task$getMethod()$getSubType()
+      # change the method first, then save the settings for the new method
+      if (!is.null(method_settings$method))
+        c_task$setMethodType(method_settings$method)
+      c_method <- as(c_task$getMethod(), "_p_COptMethod")
+      pre_method_settings <- get_method_settings(c_method, with_name = TRUE)
+    } else {
+      c_method <- as(c_task$getMethod(), "_p_COptMethod")
+    }
+    
+    # apply settings
+    if (do_settings)
+      opt_set_settings(settings, c_task)
+    if (do_method)
+      set_method_settings(method_settings, c_method)
+    if (do_parameters)
+      walk(parameter_list, addParameter, c_datamodel)
+    
+    # initialize task
+    assert_that(
+      grab_msg(c_task$initializeRaw(OUTPUTFLAG)),
+      msg = "Initializing the task failed."
+    )
+    
+    # run task and save current settings
     full_settings <- opt_get_settings(c_task)
     full_settings$method <- get_method_settings(c_method, with_name = TRUE)
-    success <- grab_msg(c_task$processRaw(TRUE))
-  }
-  # get results
-  if (success)
+    assert_that(
+      grab_msg(c_task$processRaw(TRUE)),
+      msg = "Processing the task failed."
+    )
+    
+    # get results
     ret <- opt_get_results(c_task, full_settings)
-  
-  # revert all settings
-  if (do_settings)
-    opt_set_settings(pre_settings, c_task)
-  if (do_method) {
-    set_method_settings(pre_method_settings, c_method)
-    c_task$setMethodType(pre_method)
-  }
-  if (do_parameters)
-    clearParameters()
-
-  # assertions only after restoration of settings
-  assert_that(
-    success,
-    msg = paste0("Processing the task failed.")
-  )
+  },
+  finally = {
+    # revert all settings
+    if (do_settings)
+      opt_set_settings(pre_settings, c_task)
+    if (do_method) {
+      set_method_settings(pre_method_settings, c_method)
+      c_task$setMethodType(pre_method)
+    }
+    if (do_parameters)
+      clearParameters()
+  })
   
   ret
 }

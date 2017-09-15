@@ -42,14 +42,18 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
-  if (!is.null(expression)) {
-    success <- grab_msg(c_metab$setExpression(expression)$isSuccess())
-    
-    if (!success) {
-      c_model$removeMetabolite(c_metab)
-      stop("Species creation failed when applying the expression.")
+  tryCatch({
+    if (!is.null(expression)) {
+      assert_that(
+        grab_msg(c_metab$setExpression(expression)$isSuccess()),
+        msg = "Species creation failed when applying the expression."
+      )
     }
-  }
+  },
+  error = function(e) {
+    c_model$removeMetabolite(c_metab)
+    base::stop(e)
+  })
   
   c_model$compileIfNecessary()
   
@@ -108,14 +112,18 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   c_quant$setStatus(stringr::str_to_upper(type))
   
-  if (!is.null(expression)) {
-    success <- grab_msg(c_quant$setExpression(expression)$isSuccess())
-  
-    if (!success) {
-      c_model$removeModelValue(c_quant)
-      stop("Global quantity creation failed when applying the expression.")
+  tryCatch({
+    if (!is.null(expression)) {
+      assert_that(
+        grab_msg(c_quant$setExpression(expression)$isSuccess()),
+        msg = "Global quantity creation failed when applying the expression."
+      )
     }
-  }
+  },
+  error = function(e) {
+    c_model$removeModelValue(c_quant)
+    base::stop(e)
+  })
   
   c_model$compileIfNecessary()
   
@@ -174,14 +182,18 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   
   c_comp$setStatus(stringr::str_to_upper(type))
   
-  if (!is.null(expression)) {
-    success <- grab_msg(c_comp$setExpression(expression)$isSuccess())
-    
-    if (!success) {
-      c_model$removeCompartment(c_comp)
-      stop("Compartment creation failed when applying the expression.")
+  tryCatch({
+    if (!is.null(expression)) {
+      assert_that(
+        grab_msg(c_comp$setExpression(expression)$isSuccess()),
+        msg = "Compartment creation failed when applying the expression."
+      )
     }
-  }
+  },
+  error = function(e) {
+    c_model$removeCompartment(c_comp)
+    base::stop(e)
+  })
   
   c_model$compileIfNecessary()
   

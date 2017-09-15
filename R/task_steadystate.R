@@ -38,34 +38,37 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
   if (do_method)
     pre_method_settings <- get_method_settings(c_method)
   
-  # apply settings
-  success <- !is.error(try(ss_set_settings(settings, c_task)))
-  if (success)
-    success <- !is.error(try(set_method_settings(method_settings, c_method)))
-  # initialize task
-  if (success)
-    success <- grab_msg(c_task$initializeRaw(OUTPUTFLAG))
-  # run task and save current settings
-  if (success) {
+  tryCatch({
+    # apply settings
+    if (do_settings)
+      ss_set_settings(settings, c_task)
+    if (do_method)
+      set_method_settings(method_settings, c_method)
+    
+    # initialize task
+    assert_that(
+      grab_msg(c_task$initializeRaw(OUTPUTFLAG)),
+      msg = "Initializing the task failed."
+    )
+    
+    # run task and save current settings
     full_settings <- ss_get_settings(c_task)
     full_settings$method <- get_method_settings(c_method)
-    success <- grab_msg(c_task$processRaw(TRUE))
-  }
-  # get results
-  if (success)
+    assert_that(
+      grab_msg(c_task$processRaw(TRUE)),
+      msg = "Processing the task failed."
+    )
+    
+    # get results
     ret <- ss_get_results(c_task, full_settings)
-  
-  # revert all settings
-  if (do_settings)
-    ss_set_settings(pre_settings, c_task)
-  if (do_method)
-    set_method_settings(pre_method_settings, c_method)
-  
-  # assertions only after restoration of settings
-  assert_that(
-    success,
-    msg = paste0("Processing the task failed.")
-  )
+  },
+  finally = {
+    # revert all settings
+    if (do_settings)
+      ss_set_settings(pre_settings, c_task)
+    if (do_method)
+      set_method_settings(pre_method_settings, c_method)
+  })
   
   ret
 }

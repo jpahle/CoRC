@@ -114,7 +114,7 @@ getCopasi <- function(path = NULL) {
     path <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
     # download the binaries
-    success = download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
+    success <- download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
     
     assert_that(success == 0, msg = "Downloading copasi binaries failed.")
     
@@ -131,13 +131,15 @@ getCopasi <- function(path = NULL) {
   if (x64folder && version$arch == "x86_64") libsdir <- file.path(libsdir, "x64")
   
   success <- TRUE
-  if (!dir.exists(libsdir)) success <- dir.create(libsdir, recursive = TRUE)
+  if (!dir.exists(libsdir))
+    success <- dir.create(libsdir, recursive = TRUE)
   
   # Try to unload COPASI if loaded so the binaries can be overwritten
   try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
   
   # Copy file into package folder
-  if (success) success <- file.copy(path, file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
+  if (success)
+    success <- file.copy(path, file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 
   assert_that(success, msg = "Copying copasi binaries into package folder failed.")
   

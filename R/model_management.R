@@ -226,16 +226,19 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
     filename <- paste0(filename, ".cps")
   
   if (file.exists(filename)) {
-    assert_that(overwrite, msg = paste0('File: \"', filename, '\" already exists and overwrite is set to FALSE.'))
+    assert_that(
+      overwrite,
+      msg = paste0('File: \"', filename, '\" already exists and overwrite is set to FALSE.')
+    )
     filepath <- normalizePathC(filename)
   } else {
     filepath <- file.path(normalizePathC(dirname(filename)), basename(filename))
   }
   
-  success <- grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite))
-
-  if (!success)
-    stop('Model failed to save at: "', filename, '".')
+  assert_that(
+    grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite)),
+    msg = paste0('Model failed to save at: "', filename, '".')
+  )
 
   invisible(success)
 }

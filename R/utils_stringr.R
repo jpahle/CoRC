@@ -27,7 +27,7 @@ apply_eng <- function(x, engine = coll) {
   x
 }
 
-# Subsetting engines (x[1]) usually clears all attributes
+# Subsetting vectors with engine attribute (x[1]) usually clears all attributes
 # This method prevents that
 subset_eng <- function(x, i) {
   attrs <- attributes(x)
