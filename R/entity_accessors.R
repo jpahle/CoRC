@@ -547,6 +547,202 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   invisible()
 }
 
+#' Get valid function names for reaction
+#' 
+#' @param key reaction key
+#' @param model a model object
+#' @return vector of function names
+#' @export
+getValidReactionFunctions <- function(key, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.scalar(key)
+  )
+  
+  c_react <- reaction_obj(key, c_datamodel)[[1]]
+  
+  c_model <- c_datamodel$getModel()
+  c_reacti <- CReactionInterface(c_model)
+  c_reacti$initFromReaction(c_react)
+  
+  # Workaround because the function vector is somehow only given as bare pointer
+  # Coerce it to a string vector object
+  c_fun_vector <- new(
+    "_p_std__vectorT_std__string_std__allocatorT_std__string_t_t",
+    ref = c_reacti$getListOfPossibleFunctions()
+  )
+  
+  c_fun_vector %>% get_sv() %>% kinfunction_strict()
+}
+
+#' Set a reaction function
+#' 
+#' @param key reaction key
+#' @param fun string
+#' @param mappings list
+#' @param model a model object
+#' @export
+setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.scalar(key),
+    is.scalar(fun)
+  )
+  
+  c_react <- reaction_obj(key, c_datamodel)[[1]]
+  c_fun <- kinfunction_obj(fun)[[1]]
+  fun <- c_fun$getObjectName()
+  
+  c_model <- c_datamodel$getModel()
+  c_reacti <- CReactionInterface(c_model)
+  c_reacti$initFromReaction(c_react)
+  
+  valid_funs <-
+    get_sv(
+      new(
+        "_p_std__vectorT_std__string_std__allocatorT_std__string_t_t",
+        ref = c_reacti$getListOfPossibleFunctions()
+      )
+    )
+  
+  fun <- rlang::arg_match(fun, valid_funs)
+  
+  c_reacti$setFunctionAndDoMapping(fun)
+  
+  if (!is.null(mappings))
+    set_react_mapping(c_model, c_reacti, mappings)
+  
+  c_reacti$writeBackToReaction(c_react)
+  
+  c_model$compileIfNecessary()
+  
+  invisible()
+}
+
+#' Get reaction parameter mappings
+#' 
+#' @param key reaction key
+#' @param model a model object
+#' @return list of parameter mappings
+#' @export
+getReactionMappings <- function(key, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.scalar(key))
+  
+  c_react <- reaction_obj(key, c_datamodel)[[1]]
+  
+  c_model <- c_datamodel$getModel()
+  c_reacti <- CReactionInterface(c_model)
+  c_reacti$initFromReaction(c_react)
+  
+  params <- seq_along_v(c_reacti)
+  names(params) <- map_chr(params, ~ c_reacti$getParameterName(.x))
+  
+  params_is_local <- map_lgl(params, ~ c_reacti$isLocalValue(.x))
+  
+  params %>%
+    map_if(
+      params_is_local,
+      ~ c_reacti$getLocalValue(.x)
+    ) %>%
+    map_if(
+      !params_is_local,
+      ~ get_sv(c_reacti$getMappings(.x))
+    )
+}
+
+#' Set reaction parameter mappings
+#' 
+#' @param key reaction key
+#' @param mappings list
+#' @param model a model object
+#' @export
+setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.scalar(key))
+  
+  c_react <- reaction_obj(key, c_datamodel)[[1]]
+  
+  c_model <- c_datamodel$getModel()
+  
+  c_reacti <- CReactionInterface(c_model)
+  c_reacti$initFromReaction(c_react)
+  
+  set_react_mapping(c_model, c_reacti, mappings)
+  
+  c_reacti$writeBackToReaction(c_react)
+  
+  c_model$compileIfNecessary()
+  
+  invisible()
+}
+
+set_react_mapping <- function(c_model, c_reacti, mappings) {
+  assert_that(is.list(mappings), !is.null(names(mappings)), noNA(names(mappings)))
+  
+  params <- seq_along_v(c_reacti)
+  names(params) <- map_chr(params, ~ c_reacti$getParameterName(.x))
+  
+  names(mappings) <- map_chr(names(mappings), function(parameter) {rlang::arg_match(parameter, names(params))})
+  
+  iwalk(mappings, ~ {
+    set_rparam_mapping(c_model, c_reacti, i = params[[.y]], value = .x)
+  })
+  
+  assert_that(c_reacti$isValid(), msg = "Result of mapping is invalid.")
+}
+
+set_rparam_mapping <- function(c_model, c_reacti, i, value) {
+  type <- c_reacti$getUsage(i)
+  
+  assert_that(is.scalar(value), msg = paste0("Parameter `", c_reacti$getParameterName(i), '` must be scalar.'))
+  
+  valid_vals <- NULL
+  if (type %in% c("SUBSTRATE", "PRODUCT", "MODIFIER")) {
+    key <- species_strict(value, model = c_datamodel)
+    
+    valid_vals <-
+      c_reacti$getListOfMetabs(type) %>%
+      get_sv() %>%
+      species_strict(model = c_datamodel)
+    
+    assert_that(
+      key %in% valid_vals,
+      msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '".')
+    )
+    
+    c_reacti$setMapping(i, key)
+  } else if (type == "VOLUME") {
+    # CReactionInterface allows mapping by ObjectName but CoRC uses ObjectDisplayName so do a bit of translation.
+    c_comp <- compartment_obj(value, c_datamodel)[[1]]
+    valid_vals <- compartment(model = c_datamodel)
+    
+    assert_that(
+      c_comp$getObjectDisplayName() %in% valid_vals,
+      msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '".')
+    )
+    
+    c_reacti$setMapping(i, c_comp$getObjectName())
+  } else if (type == "PARAMETER") {
+    if (is.number(value)) {
+      c_reacti$setLocalValue(i, value)
+    } else {
+      # CReactionInterface allows mapping by ObjectName but CoRC uses ObjectDisplayName so do a bit of translation.
+      c_quant <- quantity_obj(value, c_datamodel)[[1]]
+      valid_vals <- quantity(model = c_datamodel)
+      
+      assert_that(
+        c_quant$getObjectDisplayName() %in% valid_vals,
+        msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '" or a number.')
+      )
+      
+      c_reacti$setMapping(i, c_quant$getObjectName())
+    }
+  } else {
+    warning("Parameter `", c_reacti$getParameterName(i), "` is of type `", stringr::str_to_lower(type), "` and cannot be mapped through ", getPackageName(),". It has been skipped.")
+  }
+}
+
 #'  Get reaction parameters
 #'
 #' \code{getParameters} returns reaction parameters as a data frame.

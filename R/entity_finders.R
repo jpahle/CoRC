@@ -600,6 +600,100 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
+#' Identify functions by name
+#'
+#' \code{kinfunction} identifies kinetic functions matching a given name fragment.
+#'
+#' @param key a string to identify reactions.
+#' @return a character vector of kinetic function identifiers or references.
+#' @export
+kinfunction <- function(key = "") {
+  assert_that(
+    is.string(key), !is.na(key)
+  )
+  
+  c_fun_db <- CRootContainer_getFunctionList()
+  
+  cl_funs <- c_fun_db$loadedFunctions() %>% get_cdv()
+  
+  if (key == "") {
+    cl_matches <- cl_funs
+  } else {
+    matches <- stringr::str_which(
+      cl_funs %>% map_swig_chr("getObjectDisplayName"),
+      apply_eng(key)
+    )
+    cl_matches <- cl_funs[matches]
+  }
+  
+  map_swig_chr(cl_matches, "getObjectDisplayName")
+}
+
+#' Identify single function by name
+#'
+#' \code{kinfunction_strict} identifies strictly one kinetic function per given name fragment.
+#'
+#' @param key a vector of strings to identify reactions.
+#' @return a character vector of kinetic function identifiers or references.
+#' @export
+kinfunction_strict <- function(key) {
+  cl_funs <- kinfunction_obj(key)
+  
+  map_swig_chr(cl_funs, "getObjectDisplayName")
+}
+
+kinfunction_obj <- function(key) {
+  assert_that(
+    is.character(key), noNA(key), !("" %in% key)
+  )
+  
+  c_fun_db <- CRootContainer_getFunctionList()
+  
+  matches <- vector("list", length(key))
+  
+  matched <- rep(FALSE, length(key))
+  
+  info <- "functions(s)"
+  cl_funs <- c_fun_db$loadedFunctions() %>% get_cdv()
+  dns <- cl_funs %>% map_swig_chr("getObjectDisplayName")
+  # keys are needed as list, else attributes are lost on subsetting
+  key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+  
+  # find full matches to ObjectDisplayName
+  # str_replace as hack to find complete matches
+  matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
+  matched <- map_int(matches, length) == 1L
+  
+  if (!all(matched)) {
+    ns <- cl_funs %>% map_swig_chr("getObjectName")
+    # find full matches to ObjectName
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+    matched <- map_int(matches, length) == 1L
+    
+    if (!all(matched)) {
+      # then partial matches to ObjectDisplayName
+      matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
+      assert_matches(matches, key, dns, info)
+      
+      matched <- map_int(matches, length) == 1L
+      
+      assert_that(all(matched), msg = paste0(
+        "Couldn't match ", info, ' "',
+        key[!matched], '".',
+        collapse = '", "'
+      ))
+    }
+  }
+  
+  # the matches list contains integers and objects
+  # integers signal matches and have to be converted to objects before returning
+  matches %>%
+    map_if(
+      map_lgl(., is_scalar_integer),
+      ~ cl_funs[[.x]]
+    )
+}
+
 assert_matches <- function(matches, keys, names, info) {
   iwalk(matches, ~ {
     assert_that(
