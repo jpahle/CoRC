@@ -100,7 +100,8 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
       }
     }
     
-    # apply all missing matches
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
     matches <-
       matches %>%
       map_if(
@@ -217,7 +218,8 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
       }
     }
     
-    # apply all missing matches
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
     matches <-
       matches %>%
       map_if(
@@ -334,7 +336,8 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
       }
     }
     
-    # apply all missing matches
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
     matches <-
       matches %>%
       map_if(
@@ -451,7 +454,8 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
       }
     }
     
-    # apply all missing matches
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
     matches <-
       matches %>%
       map_if(
@@ -580,7 +584,8 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
       }
     }
     
-    # apply all missing matches
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
     matches <-
       matches %>%
       map_if(

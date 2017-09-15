@@ -67,6 +67,25 @@ transform_names_worker <- function(x) {
   x %>% make.names(unique = TRUE) %>% stringr::str_to_lower()
 }
 
+# Convert lists that are equivalent to vectors to vectors
+# This function is a helper for functions that takes (named) vectors as argument.
+# It generates helpful error messages by using substitute.
+# In R, users often like to give named lists instead of named vectors which is an easy mistake.
+# This function is very specific to R and can likely be cut completely in other languages.
+to_param_vector <- function(x, type) {
+  x_val <- x
+  if (is.list(x_val)) {
+    type_fun <- get(type)
+    x_val <- try(as_vector(x_val, .type = type_fun(1)), silent = TRUE)
+    assert_that(!is.error(x_val), msg = paste0(deparse(substitute(x)), " can not be converted to vector of type ", type, "."))
+  } else {
+    is.type_fun <- as.symbol(paste0("is.", type))
+    eval(substitute(assert_that(is.type_fun(x))))
+  }
+  
+  x_val
+}
+
 # finds copasi messages and helps purge known annoying messages
 # because of lazy evaluation, x will evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character(0)) {

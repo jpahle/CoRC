@@ -503,7 +503,8 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
   tibble::tibble(
     key    = map_swig_chr(cl_reacts, "getObjectDisplayName"),
     "Name" = map_swig_chr(cl_reacts, "getObjectName"),
-    "Scheme" = map_swig_chr(cl_reacts, "getReactionScheme")
+    "Scheme" = map_swig_chr(cl_reacts, "getReactionScheme"),
+    "Rate Law" = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName")
   ) %>%
     transform_names()
 }

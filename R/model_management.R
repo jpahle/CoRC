@@ -52,18 +52,35 @@ getLoadedModels <- function() {
   pkg_env$cl_loaded_dms
 }
 
-# helper for loading models from urls
-# If x is url, the contents are returned as string, else NULL
-url_to_string <- function(x) {
-  con <- try(url(x), silent = TRUE)
-  if (is.error(con)) return()
+# helper for loading models from connections
+# If x is a readable path, the contents are returned as string, else NULL
+con_to_string <- function(x) {
+  if (is.character(x))
+    x <- file(x)
   
-  result <- quietly(readLines)(con)
-  close(con)
+  result <- quietly(readLines)(x)
+  close(x)
   
-  assert_that(is_empty(result$warnings), msg = "Could not interpret url contents.")
+  assert_that(is_empty(result$warnings), msg = "Could not interpret path contents.")
   
   paste0(result$result, collapse = "\n")
+}
+
+#' Load an empty model
+#'
+#' \code{newModel} creates a new model returns a reference to it.
+#'
+#' @return a model object
+#' @export
+newModel <- function() {
+  assert_binaries()
+  
+  c_datamodel <- CRootContainer_addDatamodel()
+  
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
+  
+  c_datamodel
 }
 
 #' Load a model
@@ -75,28 +92,30 @@ url_to_string <- function(x) {
 #' @export
 loadModel <- function(path) {
   assert_binaries()
-  assert_that(is.string(path), noNA(path))
+  assert_that(inherits(path, "connection") || is.string(path) && noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
   
-  model <- url_to_string(path)
-  if (!is.null(model)) {
-    success <- grab_msg(c_datamodel$loadModelFromString(model, normalizePathC(getwd())))
-  } else {
-    assert_that(is.readable(path))
-    
+  success <- FALSE
+  
+  if (is.character(path) && file.exists(path) && is.readable(path)) {
     success <- grab_msg(c_datamodel$loadModel(normalizePathC(path)))
   }
   
   if (!success) {
+    model_str <- con_to_string(path)
+    success <- grab_msg(c_datamodel$loadModelFromString(model_str, normalizePathC(getwd())))
+  }
+  
+  if (!success) {
     CRootContainer_removeDatamodel(c_datamodel)
-    stop("Couldn't load model file.")
+    stop("Failed to load model.")
   }
   
   pkg_env$c_curr_dm <- c_datamodel
   pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
   
-  invisible(c_datamodel)
+  c_datamodel
 }
 
 #' Load a model from string
@@ -115,13 +134,13 @@ loadModelFromString <- function(model) {
   
   if (!success) {
     CRootContainer_removeDatamodel(c_datamodel)
-    stop("Couldn't load model string.")
+    stop("Failed to load model.")
   }
   
   pkg_env$c_curr_dm <- c_datamodel
   pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
   
-  invisible(c_datamodel)
+  c_datamodel
 }
 
 #' Load SBML data
@@ -133,28 +152,30 @@ loadModelFromString <- function(model) {
 #' @export
 loadSBML <- function(path) {
   assert_binaries()
-  assert_that(is.string(path), noNA(path))
+  assert_that(inherits(path, "connection") || is.string(path) && noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
   
-  sbml <- url_to_string(path)
-  if (!is.null(sbml)) {
-    success <- grab_msg(c_datamodel$importSBMLFromString(sbml))
-  } else {
-    assert_that(is.readable(path))
-    
-    success <- grab_msg(c_datamodel$importSBML(normalizePathC(path)))
+  success <- FALSE
+  
+  if (is.character(path) && file.exists(path) && is.readable(path)) {
+    success <- grab_msg(c_datamodel$importSMBL(normalizePathC(path)))
+  }
+  
+  if (!success) {
+    sbml_str <- con_to_string(path)
+    success <- grab_msg(c_datamodel$importSBMLFromString(sbml_str))
   }
   
   if (!success) {
     CRootContainer_removeDatamodel(c_datamodel)
-    stop("Couldn't load SBML data.")
+    stop("Failed to load SBML data.")
   }
   
   pkg_env$c_curr_dm <- c_datamodel
   pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
   
-  invisible(c_datamodel)
+  c_datamodel
 }
 
 #' Unload a model
@@ -255,6 +276,17 @@ loadExamples <- function(indices = NULL) {
   
   pkgname <- getPackageName()
   map(models, ~ loadModel(system.file("extdata", .x, package = pkgname)))
+}
+
+#' Compile the given model.
+#' 
+#' Forces compilation of the given model
+#' 
+#' @export
+compileModel <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  grab_msg(c_datamodel$getModel()$forceCompile())
 }
 
 #' Open the given model in the copasi UI
