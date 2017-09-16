@@ -5,20 +5,26 @@
 \alias{runOpt}
 \title{Run optimization}
 \usage{
-runOptimization(randomizeStartValues = NULL, createParameterSets = NULL,
-  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
-  parameters = NULL, experiments = NULL, method = NULL,
-  model = getCurrentModel())
+runOptimization(expression = NULL, maximize = NULL, subtask = NULL,
+  randomizeStartValues = NULL, calculateStatistics = NULL,
+  updateModel = NULL, executable = NULL, parameters = NULL,
+  method = NULL, model = getCurrentModel())
 
-runOpt(randomizeStartValues = NULL, createParameterSets = NULL,
-  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
-  parameters = NULL, experiments = NULL, method = NULL,
-  model = getCurrentModel())
+runOpt(expression = NULL, maximize = NULL, subtask = NULL,
+  randomizeStartValues = NULL, calculateStatistics = NULL,
+  updateModel = NULL, executable = NULL, parameters = NULL,
+  method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{randomizeStartValues}{flag}
+\item{expression}{string}
 
-\item{createParameterSets}{flag}
+\item{maximize}{flag}
+
+\item{subtask}{string
+
+Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics}
+
+\item{randomizeStartValues}{flag}
 
 \item{calculateStatistics}{flag}
 
@@ -28,9 +34,10 @@ runOpt(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{parameters}{copasi_param or list of copasi_param objects}
 
-\item{experiments}{copasi_exp or list of copasi_exp objects}
+\item{method}{string or list
 
-\item{method}{string or list}
+Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
 }

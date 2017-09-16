@@ -9,7 +9,7 @@
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
-#' @param method string or list
+#' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
 #' @return a list of results
 #' @export
@@ -64,7 +64,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
     if (do_method)
       set_method_settings(method_settings, c_method)
     if (do_parameters)
-      walk(parameter_list, addParameter, c_datamodel)
+      walk(parameter_list, addParameterEstimationParameter, c_datamodel)
     if (do_experiments)
       walk(experiment_list, addExperiments, c_datamodel)
     
@@ -94,7 +94,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
       c_task$setMethodType(pre_method)
     }
     if (do_parameters)
-      clearParameters()
+      clearParameterEstimationParameters()
     if (do_experiments) {
       clearExperiments()
       model_dir <- c_datamodel$getReferenceDirectory()
@@ -118,7 +118,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
-#' @param method string or list
+#' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
 #' @export
 setParameterEstimationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
@@ -146,7 +146,7 @@ setParameterEstimationSettings <- function(randomizeStartValues = NULL, createPa
   
   # experiments and parameters get rolled back when not setting them properly
   tryCatch(
-    walk(parameter_list, addParameter, c_datamodel),
+    walk(parameter_list, addParameterEstimationParameter, c_datamodel),
     error = function(e) {
       clearParameters(c_datamodel)
       base::stop(e)
@@ -202,53 +202,53 @@ setPE<- setParameterEstimationSettings
 #' @export
 getPE <- getParameterEstimationSettings
 
-new_copasi_parm <- function(x, lower, upper, start) {
-  assert_that(
-    is.string(x),
-    is.number(lower),
-    is.number(upper),
-    is.number(start),
-    lower <= start,
-    start <= upper
-  )
-  
-  structure(
-    list(
-      key = x,
-      lower = lower,
-      upper = upper,
-      start = start
-    ),
-    class = "copasi_parm"
-  )
-}
+# new_copasi_parm <- function(x, lower, upper, start) {
+#   assert_that(
+#     is.string(x),
+#     is.number(lower),
+#     is.number(upper),
+#     is.number(start),
+#     lower <= start,
+#     start <= upper
+#   )
+#   
+#   structure(
+#     list(
+#       key = x,
+#       lower = lower,
+#       upper = upper,
+#       start = start
+#     ),
+#     class = "copasi_parm"
+#   )
+# }
 
-#' @export
-validate_copasi_parm <- function(x) {
-  assert_that(
-    is.string(x$key),
-    is.number(x$lower),
-    is.number(x$upper),
-    is.number(x$start),
-    x$lower <= x$start,
-    x$start <= x$upper
-  )
-}
+# #' @export
+# validate_copasi_parm <- function(x) {
+#   assert_that(
+#     is.string(x$key),
+#     is.number(x$lower),
+#     is.number(x$upper),
+#     is.number(x$start),
+#     x$lower <= x$start,
+#     x$start <= x$upper
+#   )
+# }
 
-#' @export
-is.copasi_parm <- function(x) {
-  inherits(x, "copasi_parm")
-}
+# #' @export
+# is.copasi_parm <- function(x) {
+#   inherits(x, "copasi_parm")
+# }
 
-#' @export
-copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
-  new_copasi_parm(
-    key,
-    lower = lower.bound,
-    upper = upper.bound,
-    start = start.value
-  )
-}
+# #' @export
+# copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
+#   new_copasi_parm(
+#     key,
+#     lower = lower.bound,
+#     upper = upper.bound,
+#     start = start.value
+#   )
+# }
 
 #' Define a parameter estimation parameter
 #' 
@@ -258,14 +258,14 @@ copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start
 #' @param start.value start value
 #' @return copasi_parm object for input into related functions
 #' @export
-defineParameter <- copasi_parm
+defineParameterEstimationParameter <- copasi_parm
 
 #' Add a parameter estimation parameter
 #' 
-#' @param copasi_parm object as returned by \code{defineParameter}
+#' @param copasi_parm object as returned by \code{defineParameterEstimationParameter}
 #' @param model a model object
 #' @export
-addParameter <- function(copasi_parm, model = getCurrentModel()) {
+addParameterEstimationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.copasi_parm(copasi_parm)
@@ -295,7 +295,7 @@ addParameter <- function(copasi_parm, model = getCurrentModel()) {
 #' 
 #' @param model a model object
 #' @export
-clearParameters <- function(model = getCurrentModel()) {
+clearParameterEstimationParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
@@ -354,6 +354,8 @@ format.copasi_exp <- function (x, ...) {
   )
 }
 
+exp_weight_methods <- tolower(names(.__E___CExperiment__WeightMethod))
+
 #' @export
 copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
   # experiment_type
@@ -385,9 +387,9 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
     all(names(mappings) %in% data_cols)
   )
   
-  types <- stringr::str_to_lower(types)
+  types <- tolower(types)
   names(types) <- names(types) %||% data_cols
-  types <- map_chr(types, function(types) {rlang::arg_match(types, c("time", "independent", "dependent", "ignore"))})
+  types <- map_chr(types, function(types) rlang::arg_match(types, c("time", "independent", "dependent", "ignore")))
   types <- types[types != "ignore"]
   
   assert_that(
@@ -412,14 +414,12 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   # all mappings to time and ignore are forced to be blank
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
   
-  # allowed weight methods are taken from the copasi enumeration
-  weight_methods <- names(.__E___CExperiment__WeightMethod)
-  weight_methods_lower <- stringr::str_to_lower(weight_methods)
   if (is.null(weight_method)) {
-    weight_method <- weight_methods[1]
+    weight_method <- exp_weight_methods[1]
   } else {
-    weight_method <- rlang::arg_match(weight_method, weight_methods_lower)
-    weight_method <- weight_methods[weight_method == weight_methods_lower]
+    weight_method <- lolower(weight_method)
+    weight_method <- rlang::arg_match(weight_method, exp_weight_methods)
+    weight_method <- toupper(weight_method)
   }
   
   # filename
@@ -633,7 +633,7 @@ pe_assemble_method <- function(method, c_task) {
   
   if (has_name(method, "method"))
     # hack to get nice error message if method string is not accepted.
-    method$method <- map_chr(method$method, function(method) {rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L])})
+    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   
   method
 }

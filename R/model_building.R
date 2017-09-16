@@ -38,7 +38,7 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
   }
   
-  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial.concentration, stringr::str_to_upper(type))
+  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial.concentration, toupper(type))
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
@@ -110,7 +110,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
-  c_quant$setStatus(stringr::str_to_upper(type))
+  c_quant$setStatus(toupper(type))
   
   tryCatch({
     if (!is.null(expression)) {
@@ -168,7 +168,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   )
   
   # .__E___CModelEntity__Status has other weird entries
-  type <- stringr::str_to_upper(rlang::arg_match(type))
+  type <- rlang::arg_match(type)
   
   if (!is.null(expression))
     expression <- write_expr(expression, c_datamodel)
@@ -180,7 +180,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   
   assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed.")
   
-  c_comp$setStatus(stringr::str_to_upper(type))
+  c_comp$setStatus(toupper(type))
   
   tryCatch({
     if (!is.null(expression)) {
@@ -295,6 +295,20 @@ deleteReaction <- function(key, model = getCurrentModel()) {
   invisible()
 }
 
+#' @include swig_wrapper.R
+function_role_enum <-
+  names(.__E___CFunctionParameter__Role) %>%
+  .[. != "VARIABLE" & . != "TEMPORARY"] %>%
+  tolower()
+
+#' Create a new kinetic function
+#' 
+#' @param name string
+#' @param formula string
+#' @eval rox_param("parameters", "named character vector", function_role_enum)
+#' @param function.type string
+#' @return function key
+#' @export
 newKineticFunction <- function(name, formula, parameters, function.type = c("general", "reversible", "irreversible")) {
   assert_that(
     is.string(name), noNA(name),
@@ -311,12 +325,7 @@ newKineticFunction <- function(name, formula, parameters, function.type = c("gen
   
   parameters <- tolower(parameters)
   
-  allowed_roles <-
-    names(.__E___CFunctionParameter__Role) %>%
-    .[. != "VARIABLE" & . != "TEMPORARY"] %>%
-    tolower()
-  
-  parameters <- map_chr(parameters, function(parameters) rlang::arg_match(parameters, allowed_roles))
+  parameters <- map_chr(parameters, function(parameters) rlang::arg_match(parameters, function_role_enum))
   
   function.type <- rlang::arg_match(function.type)
   function.type_map <- c(

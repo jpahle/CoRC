@@ -1,6 +1,5 @@
-#' @title String matching engines from stringr
+#' String matching engines from stringr
 #'
-#' @details
 #' CoRC makes use of the string matching engines from the stringr package.
 #' 
 #' By default matching is done with \code{coll}.

@@ -1,28 +1,31 @@
 #' Run optimization
 #'
 #' \code{runOptimization} runs optimization and returns the results in a list.
-#'
+#' 
+#' @param expression string
+#' @param maximize flag
+#' @eval rox_param("subtask", "string", task_enum)
 #' @param randomizeStartValues flag
-#' @param createParameterSets flag
 #' @param calculateStatistics flag
 #' @param updateModel flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
-#' @param experiments copasi_exp or list of copasi_exp objects
-#' @param method string or list
+#' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @return a list of results
 #' @export
-runOptimization <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- opt_assemble_settings(
+    expression           = expression,
+    maximize             = maximize,
+    subtask              = subtask,
     randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    calculateStatistics  = calculateStatistics,
+    updateModel          = updateModel,
+    executable           = executable
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
@@ -30,7 +33,7 @@ runOptimization <- function(randomizeStartValues = NULL, createParameterSets = N
   # does assertions
   method_settings <- opt_assemble_method(method, c_task)
   
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   # does assertions
   parameter_list <- opt_assemble_parameters(parameters, c_problem)
@@ -62,7 +65,7 @@ runOptimization <- function(randomizeStartValues = NULL, createParameterSets = N
     if (do_method)
       set_method_settings(method_settings, c_method)
     if (do_parameters)
-      walk(parameter_list, addParameter, c_datamodel)
+      walk(parameter_list, addOptimizationParameter, c_datamodel)
     
     # initialize task
     assert_that(
@@ -90,7 +93,7 @@ runOptimization <- function(randomizeStartValues = NULL, createParameterSets = N
       c_task$setMethodType(pre_method)
     }
     if (do_parameters)
-      clearParameters()
+      clearOptimizationParameters()
   })
   
   ret
@@ -107,7 +110,7 @@ runOptimization <- function(randomizeStartValues = NULL, createParameterSets = N
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
-#' @param method string or list
+#' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @export
 setOptimizationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
@@ -122,19 +125,19 @@ setOptimizationSettings <- function(randomizeStartValues = NULL, createParameter
     executable = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
   
   # does assertions
   method_settings <- opt_assemble_method(method, c_task)
   
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   # does assertions
   parameter_list <- opt_assemble_parameters(parameters, c_problem)
 
-  # experiments and parameters get rolled back when not setting them properly
+  # parameters get rolled back when not setting them properly
   tryCatch(
-    walk(parameter_list, addParameter, c_datamodel),
+    walk(parameter_list, addOptimizationParameter, c_datamodel),
     error = function(e) {
       clearParameters(c_datamodel)
       base::stop(e)
@@ -163,7 +166,7 @@ setOptimizationSettings <- function(randomizeStartValues = NULL, createParameter
 #' @export
 getOptimizationSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
   
   ret <- opt_get_settings(c_task)
@@ -230,11 +233,22 @@ copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start
   )
 }
 
+#' Define an optimization parameter
+#' 
+#' @param key entity key
+#' @param lower.bound lower value bound
+#' @param upper.bound upper value bound
+#' @param start.value start value
+#' @return copasi_parm object for input into related functions
 #' @export
-defineParameter <- copasi_parm
+defineOptimizationParameter <- copasi_parm
 
+#' Add an optimization parameter
+#' 
+#' @param copasi_parm object as returned by \code{defineOptimizationParameter}
+#' @param model a model object
 #' @export
-addParameter <- function(copasi_parm, model = getCurrentModel()) {
+addOptimizationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.copasi_parm(copasi_parm)
@@ -249,21 +263,21 @@ addParameter <- function(copasi_parm, model = getCurrentModel()) {
     msg = "The given parameter is invalid for this model"
   )
   
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
-  c_fititem <- c_problem$addFitItem(c_obj$getCN())
-  c_fititem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
-  c_fititem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
-  c_fititem$setStartValue(copasi_parm$start)
+  c_optitem <- c_problem$addOptItem(c_obj$getCN())
+  c_optitem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
+  c_optitem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
+  c_optitem$setStartValue(copasi_parm$start)
 }
 
 #' @export
-clearParameters <- function(model = getCurrentModel()) {
+clearOptimizationParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   seq_len_0(c_problem$getOptItemSize()) %>% walk(~ c_problem$removeOptItem(0))
 }
@@ -292,18 +306,25 @@ opt_assemble_parameters <- function(parameters, c_problem) {
 
 # does assertions
 # returns a list of settings
-opt_assemble_settings <- function(randomizeStartValues, createParameterSets, calculateStatistics, updateModel, executable) {
+opt_assemble_settings <- function(expression, maximize, subtask, randomizeStartValues, calculateStatistics, updateModel, executable) {
   assert_that(
+    is.null(expression)           || is.string(expression)         && noNA(expression),
+    is.null(maximize)             || is.flag(maximize)             && noNA(maximize),
+    is.null(subtask)              || is.string(subtask),
     is.null(randomizeStartValues) || is.flag(randomizeStartValues) && noNA(randomizeStartValues),
-    is.null(createParameterSets)  || is.flag(createParameterSets)  && noNA(createParameterSets),
     is.null(calculateStatistics)  || is.flag(calculateStatistics)  && noNA(calculateStatistics),
     is.null(updateModel)          || is.flag(updateModel)          && noNA(updateModel),
     is.null(executable)           || is.flag(executable)           && noNA(executable)
   )
   
+  if (!is.null(subtask)) {
+    subtask <- rlang::arg_match(subtask, task_enum)
+  }
+  
   list(
-    randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
+    expression = expression,
+    maximize = maximize,
+    subtask = subtask,
     calculateStatistics = calculateStatistics,
     updateModel = updateModel,
     executable = executable
@@ -324,14 +345,14 @@ opt_assemble_method <- function(method, c_task) {
   
   if (has_name(method, "method"))
     # hack to get nice error message if method string is not accepted.
-    method$method <- map_chr(method$method, function(method) {rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L])})
+    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   
   method
 }
 
 # gets full list of settings
 opt_get_settings <- function(c_task) {
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   list(
     randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
@@ -347,7 +368,7 @@ opt_set_settings <- function(data, c_task) {
   if (is_empty(data))
     return()
   
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   if (!is.null(data$randomizeStartValues))
     c_problem$setRandomizeStartValues(data$randomizeStartValues)
@@ -367,7 +388,7 @@ opt_set_settings <- function(data, c_task) {
 
 # gathers all results
 opt_get_results <- function(c_task, settings) {
-  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
   
   cl_items <- get_sv(c_problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")

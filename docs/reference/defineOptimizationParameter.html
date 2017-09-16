@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set parameter estimation settings — setParameterEstimationSettings • CoRC</title>
+<title>Define an optimization parameter — defineOptimizationParameter • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,65 +98,40 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set parameter estimation settings</h1>
+    <h1>Define an optimization parameter</h1>
     </div>
 
     
-    <p><code>setParameterEstimationSettings</code> sets parameter estimation task settings including parameters, experiments and method options.</p>
+    <p>Define an optimization parameter</p>
     
 
-    <pre class="usage"><span class='fu'>setParameterEstimationSettings</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
-
-<span class='fu'>setPE</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>defineOptimizationParameter</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>lower.bound</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>,
+  <span class='kw'>upper.bound</span> <span class='kw'>=</span> <span class='fl'>1e+06</span>, <span class='kw'>start.value</span> <span class='kw'>=</span> (<span class='no'>lower.bound</span> + <span class='no'>upper.bound</span>)/<span class='fl'>2</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>randomizeStartValues</th>
-      <td><p>flag</p></td>
+      <th>key</th>
+      <td><p>entity key</p></td>
     </tr>
     <tr>
-      <th>createParameterSets</th>
-      <td><p>flag</p></td>
+      <th>lower.bound</th>
+      <td><p>lower value bound</p></td>
     </tr>
     <tr>
-      <th>calculateStatistics</th>
-      <td><p>flag</p></td>
+      <th>upper.bound</th>
+      <td><p>upper value bound</p></td>
     </tr>
     <tr>
-      <th>updateModel</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>executable</th>
-      <td><p>flag</p></td>
-    </tr>
-    <tr>
-      <th>parameters</th>
-      <td><p>copasi_param or list of copasi_param objects</p></td>
-    </tr>
-    <tr>
-      <th>experiments</th>
-      <td><p>copasi_exp or list of copasi_exp objects</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>string or list</p>
-<p>Set method with a string or list with entry `method`. The list may contain further method args and their values.
-Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton</p></td>
-    </tr>
-    <tr>
-      <th>model</th>
-      <td><p>a model object</p></td>
+      <th>start.value</th>
+      <td><p>start value</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>copasi_parm object for input into related functions</p>
     
 
   </div>
@@ -164,7 +139,9 @@ Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, G
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

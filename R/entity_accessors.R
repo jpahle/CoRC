@@ -21,7 +21,7 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
     key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
     "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
     "Concentration"         = map_swig_dbl(cl_metabs, "getInitialConcentration"),
@@ -52,7 +52,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
     key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Concentration" = cl_metabs %>% map_swig("getInitialConcentrationReference") %>% as_ref(c_datamodel),
     "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
@@ -88,7 +88,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   )
   
   if (!is.null(type))
-    type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode"))})
+    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
@@ -115,9 +115,8 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   
   # apply types
   if (!is.null(type)) {
-    type_to_c <- stringr::str_to_upper(type)
     walk2(
-      cl_metabs, type_to_c,
+      cl_metabs, toupper(type),
       ~ if (!is.na(.y)) .x$setStatus(.y)
     )
   }
@@ -196,7 +195,7 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
   tibble::tibble(
     key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
     "Name"          = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value" = map_swig_dbl(cl_quants, "getInitialValue"),
     "Value"         = map_swig_dbl(cl_quants, "getValue"),
     "Expression"    = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
@@ -224,7 +223,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   tibble::tibble(
     key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
     "Name"          = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value" = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Value"         = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Expression"    = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
@@ -256,7 +255,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   )
   
   if (!is.null(type))
-    type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))})
+    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
@@ -283,9 +282,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   
   # apply types
   if (!is.null(type)) {
-    type_to_c <- stringr::str_to_upper(type)
     walk2(
-      cl_quants, type_to_c,
+      cl_quants, toupper(type),
       ~ if (!is.na(.y)) .x$setStatus(.y)
     )
   }
@@ -351,7 +349,7 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
   tibble::tibble(
     key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
     "Name"           = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Volume" = map_swig_dbl(cl_comps, "getInitialValue"),
     "Expression"     = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
@@ -378,7 +376,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   tibble::tibble(
     key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
     "Name"           = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Volume" = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Expression"     = map_chr(cl_comps, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
@@ -409,7 +407,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   )
   
   if (!is.null(type))
-    type <- map_chr(type, function(type) {rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))})
+    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
@@ -437,9 +435,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   
   # apply types
   if (!is.null(type)) {
-    type_to_c <- stringr::str_to_upper(type)
     walk2(
-      cl_quants, type_to_c,
+      cl_quants, toupper(type),
       ~ if (!is.na(.y)) .x$setStatus(.y)
     )
   }
@@ -683,7 +680,7 @@ set_react_mapping <- function(c_model, c_reacti, mappings) {
   params <- seq_along_v(c_reacti)
   names(params) <- map_chr(params, ~ c_reacti$getParameterName(.x))
   
-  names(mappings) <- map_chr(names(mappings), function(parameter) {rlang::arg_match(parameter, names(params))})
+  names(mappings) <- map_chr(names(mappings), function(parameter) rlang::arg_match(parameter, names(params)))
   
   iwalk(mappings, ~ {
     set_rparam_mapping(c_model, c_reacti, i = params[[.y]], value = .x)
@@ -739,7 +736,7 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
       c_reacti$setMapping(i, c_quant$getObjectName())
     }
   } else {
-    warning("Parameter `", c_reacti$getParameterName(i), "` is of type `", stringr::str_to_lower(type), "` and cannot be mapped through ", getPackageName(),". It has been skipped.")
+    warning("Parameter `", c_reacti$getParameterName(i), "` is of type `", tolower(type), "` and cannot be mapped through ", getPackageName(),". It has been skipped.")
   }
 }
 
@@ -852,7 +849,7 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
     key        = map_swig_chr(cl_params, "getObjectDisplayName"),
     "Name"     = names,
     "Reaction" = cl_params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
-    "Type"     = cl_params %>% map_swig_chr("getType") %>% stringr::str_to_lower(),
+    "Type"     = cl_params %>% map_swig_chr("getType") %>% tolower(),
     "Value"    = cl_params %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Mapping"  = mappings
   ) %>%

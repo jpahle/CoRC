@@ -219,7 +219,7 @@ ss_get_results <- function(c_task, settings) {
     tibble::tibble(
       key = map_swig_chr(cl_metabs_ss, "getObjectDisplayName"),
       name = map_swig_chr(cl_metabs_ss, "getObjectName"),
-      type = cl_metabs_ss %>% map_swig_chr("getStatus") %>% stringr::str_to_lower(),
+      type = cl_metabs_ss %>% map_swig_chr("getStatus") %>% tolower(),
       concentration = map_swig_dbl(cl_metabs_ss, "getConcentration"),
       concentration.rate = map_swig_dbl(cl_metabs_ss, "getConcentrationRate"),
       number = map_swig_dbl(cl_metabs_ss, "getValue"),

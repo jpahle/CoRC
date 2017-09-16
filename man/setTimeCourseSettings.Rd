@@ -36,7 +36,10 @@ setTC(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{executable}{flag}
 
-\item{method}{string or list}
+\item{method}{string or list
+
+Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Allowed methods: deterministic, stochastic, directMethod, tauLeap, adaptiveSA, hybrid, hybridLSODA, hybridODE45}
 
 \item{model}{a model object}
 }

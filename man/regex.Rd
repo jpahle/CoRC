@@ -5,14 +5,12 @@
 \alias{regex}
 \alias{reexports}
 \alias{fixed}
-\alias{reexports}
 \alias{coll}
-\alias{reexports}
-\alias{regex}
 \title{String matching engines from stringr}
-\details{
+\description{
 CoRC makes use of the string matching engines from the stringr package.
-
+}
+\details{
 By default matching is done with \code{coll}.
 }
 \keyword{internal}

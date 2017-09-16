@@ -11,7 +11,7 @@
 #' @param startInSteadyState flag
 #' @param updateModel flag
 #' @param executable flag
-#' @param method string or list
+#' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
 #' @return a list of results
 #' @export
@@ -105,7 +105,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param startInSteadyState flag
 #' @param updateModel flag
 #' @param executable flag
-#' @param method string or list
+#' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
 #' @export
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
@@ -251,7 +251,7 @@ tc_assemble_method <- function(method, c_task) {
   
   if (has_name(method, "method"))
     # hack to get nice error message if method string is not accepted.
-    method$method <- map_chr(method$method, function(method) {rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L])})
+    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   
   method
 }

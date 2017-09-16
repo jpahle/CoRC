@@ -30,7 +30,10 @@ setOpt(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{experiments}{copasi_exp or list of copasi_exp objects}
 
-\item{method}{string or list}
+\item{method}{string or list
+
+Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
 }

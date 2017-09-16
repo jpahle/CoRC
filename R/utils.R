@@ -40,6 +40,12 @@ setMethod("show",
   }
 )
 
+# List of all available tasks
+#' @include swig_wrapper.R
+task_enum <-
+  names(.__E___CTaskEnum__Task) %>%
+  .[. != "UnsetTask" & . != "__SIZE"]
+
 # Checks whether the given c_datamodel is valid / loaded
 assert_datamodel <- function(c_datamodel) {
   assert_that(inherits(c_datamodel, "_p_CDataModel"))
@@ -64,7 +70,7 @@ transform_names <- function(x) {
 }
 
 transform_names_worker <- function(x) {
-  x %>% make.names(unique = TRUE) %>% stringr::str_to_lower()
+  x %>% make.names(unique = TRUE) %>% tolower()
 }
 
 # Convert lists that are equivalent to vectors to vectors
