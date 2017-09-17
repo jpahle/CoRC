@@ -17,3 +17,10 @@ openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
 \description{
 Open the given model in the copasi UI
 }
+\seealso{
+Other model handlers: \code{\link{compileModel}},
+  \code{\link{getCurrentModel}},
+  \code{\link{getLoadedModels}},
+  \code{\link{setCurrentModel}}
+}
+\concept{model handlers}

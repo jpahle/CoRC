@@ -38,7 +38,7 @@ setTC(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{method}{string or list
 
-Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
 Allowed methods: deterministic, stochastic, directMethod, tauLeap, adaptiveSA, hybrid, hybridLSODA, hybridODE45}
 
 \item{model}{a model object}
@@ -46,3 +46,8 @@ Allowed methods: deterministic, stochastic, directMethod, tauLeap, adaptiveSA, h
 \description{
 \code{setTimeCourseSettings} sets time course task settings including method options.
 }
+\seealso{
+Other time course: \code{\link{getTimeCourseSettings}},
+  \code{\link{runTimeCourse}}
+}
+\concept{time course}

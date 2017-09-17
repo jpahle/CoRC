@@ -23,3 +23,8 @@ setMCA(performSteadyStateAnalysis = NULL, executable = NULL,
 \description{
 \code{setMetabolicControlAnalysis} sets metabolic control analysis task settings including method options.
 }
+\seealso{
+Other metabolic control analysis: \code{\link{getMetabolicControlAnalysisSettings}},
+  \code{\link{runMetabolicControlAnalysis}}
+}
+\concept{metabolic control analysis}

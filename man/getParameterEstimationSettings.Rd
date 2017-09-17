@@ -18,3 +18,13 @@ A list of parameter estimation task settings including method options.
 \description{
 \code{getParameterEstimationSettings} gets parameter estimation task settings including method options.
 }
+\seealso{
+Other parameter estimation: \code{\link{addExperiments}},
+  \code{\link{addParameterEstimationParameter}},
+  \code{\link{clearExperiments}},
+  \code{\link{clearParameterEstimationParameters}},
+  \code{\link{defineExperiments}},
+  \code{\link{runParameterEstimation}},
+  \code{\link{setParameterEstimationSettings}}
+}
+\concept{parameter estimation}

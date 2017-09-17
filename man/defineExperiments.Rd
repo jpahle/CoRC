@@ -27,3 +27,15 @@ copasi_exp object for input into related functions
 \description{
 Define a parameter estimation experiment
 }
+\seealso{
+\code{\link{addExperiments}} \code{\link{clearExperiments}}
+
+Other parameter estimation: \code{\link{addExperiments}},
+  \code{\link{addParameterEstimationParameter}},
+  \code{\link{clearExperiments}},
+  \code{\link{clearParameterEstimationParameters}},
+  \code{\link{getParameterEstimationSettings}},
+  \code{\link{runParameterEstimation}},
+  \code{\link{setParameterEstimationSettings}}
+}
+\concept{parameter estimation}

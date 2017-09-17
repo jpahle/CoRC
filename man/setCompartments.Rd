@@ -19,10 +19,20 @@ setCompartments(key = NULL, name = NULL, type = NULL,
 
 \item{expression}{a character vector of expressions to set}
 
-\item{data}{a data frame as given by \code{getCompartments} which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
 \code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.
 }
+\seealso{
+\code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
+
+Other compartment functions: \code{\link{deleteCompartment}},
+  \code{\link{entity_finders}},
+  \code{\link{getCompartmentReferences}},
+  \code{\link{getCompartments}},
+  \code{\link{newCompartment}}
+}
+\concept{compartment functions}

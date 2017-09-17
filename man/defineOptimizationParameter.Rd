@@ -22,3 +22,12 @@ copasi_parm object for input into related functions
 \description{
 Define an optimization parameter
 }
+\seealso{
+\code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
+
+Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{getOptimizationSettings}},
+  \code{\link{runOptimization}},
+  \code{\link{setOptimizationSettings}}
+}
+\concept{optimization}

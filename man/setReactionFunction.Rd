@@ -18,3 +18,20 @@ setReactionFunction(key, fun, mappings = NULL, model = getCurrentModel())
 \description{
 Set a reaction function
 }
+\seealso{
+\code{\link{getValidReactionFunctions}}
+
+Other reaction functions: \code{\link{deleteKineticFunction}},
+  \code{\link{deleteReaction}},
+  \code{\link{entity_finders}},
+  \code{\link{getParameterReferences}},
+  \code{\link{getParameters}},
+  \code{\link{getReactionMappings}},
+  \code{\link{getReactions}},
+  \code{\link{getValidReactionFunctions}},
+  \code{\link{newKineticFunction}},
+  \code{\link{newReaction}}, \code{\link{setParameters}},
+  \code{\link{setReactionMappings}},
+  \code{\link{setReactions}}
+}
+\concept{reaction functions}

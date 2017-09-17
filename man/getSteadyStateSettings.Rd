@@ -18,3 +18,8 @@ A list of steady state task settings including method options.
 \description{
 \code{getSteadyStateSettings} gets steady state task settings including method options.
 }
+\seealso{
+Other steady state: \code{\link{runSteadyState}},
+  \code{\link{setSteadyStateSettings}}
+}
+\concept{steady state}

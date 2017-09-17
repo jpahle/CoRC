@@ -15,3 +15,11 @@ a list of model objects
 \description{
 \code{loadExamples} loads several example models and returns them in a list.
 }
+\seealso{
+Other model loading: \code{\link{loadModelFromString}},
+  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{newModel}}, \code{\link{saveModelToString}},
+  \code{\link{saveModel}}, \code{\link{unloadAllModels}},
+  \code{\link{unloadModel}}
+}
+\concept{model loading}

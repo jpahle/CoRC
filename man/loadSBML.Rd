@@ -15,3 +15,11 @@ a model object
 \description{
 \code{loadSBML} loads SBML data into copasi and returns a reference to it.
 }
+\seealso{
+Other model loading: \code{\link{loadExamples}},
+  \code{\link{loadModelFromString}},
+  \code{\link{loadModel}}, \code{\link{newModel}},
+  \code{\link{saveModelToString}}, \code{\link{saveModel}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
+}
+\concept{model loading}

@@ -15,3 +15,16 @@ reduced stoichiometry matrix
 \description{
 Get reduced stoichiometry matrix
 }
+\seealso{
+\code{\link{getStoichiometryMatrix}}
+
+Other model property functions: \code{\link{getInitialTime}},
+  \code{\link{getLinkMatrix}}, \code{\link{getModelName}},
+  \code{\link{getQuantityUnit}},
+  \code{\link{getStoichiometryMatrix}},
+  \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
+  \code{\link{setInitialTime}}, \code{\link{setModelName}},
+  \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
+  \code{\link{setVolumeUnit}}
+}
+\concept{model property functions}

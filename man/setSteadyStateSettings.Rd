@@ -29,3 +29,8 @@ setSS(calculateJacobian = NULL, performStabilityAnalysis = NULL,
 \description{
 \code{setSteadyStateSettings} sets steady state task settings including method options.
 }
+\seealso{
+Other steady state: \code{\link{getSteadyStateSettings}},
+  \code{\link{runSteadyState}}
+}
+\concept{steady state}

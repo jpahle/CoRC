@@ -16,3 +16,20 @@ setReactionMappings(key, mappings, model = getCurrentModel())
 \description{
 Set reaction parameter mappings
 }
+\seealso{
+\code{\link{getReactionMappings}}
+
+Other reaction functions: \code{\link{deleteKineticFunction}},
+  \code{\link{deleteReaction}},
+  \code{\link{entity_finders}},
+  \code{\link{getParameterReferences}},
+  \code{\link{getParameters}},
+  \code{\link{getReactionMappings}},
+  \code{\link{getReactions}},
+  \code{\link{getValidReactionFunctions}},
+  \code{\link{newKineticFunction}},
+  \code{\link{newReaction}}, \code{\link{setParameters}},
+  \code{\link{setReactionFunction}},
+  \code{\link{setReactions}}
+}
+\concept{reaction functions}

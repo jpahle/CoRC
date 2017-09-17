@@ -12,10 +12,27 @@ setReactions(key = NULL, name = NULL, data = NULL,
 
 \item{name}{a character vector of names to set}
 
-\item{data}{a data frame as given by \code{getReactions} which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
 \code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.
 }
+\seealso{
+\code{\link{getReactions}}
+
+Other reaction functions: \code{\link{deleteKineticFunction}},
+  \code{\link{deleteReaction}},
+  \code{\link{entity_finders}},
+  \code{\link{getParameterReferences}},
+  \code{\link{getParameters}},
+  \code{\link{getReactionMappings}},
+  \code{\link{getReactions}},
+  \code{\link{getValidReactionFunctions}},
+  \code{\link{newKineticFunction}},
+  \code{\link{newReaction}}, \code{\link{setParameters}},
+  \code{\link{setReactionFunction}},
+  \code{\link{setReactionMappings}}
+}
+\concept{reaction functions}

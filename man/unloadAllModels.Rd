@@ -9,3 +9,11 @@ unloadAllModels()
 \description{
 \code{unloadAllModels} frees memory by unloading all loaded models from copasi
 }
+\seealso{
+Other model loading: \code{\link{loadExamples}},
+  \code{\link{loadModelFromString}},
+  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{newModel}}, \code{\link{saveModelToString}},
+  \code{\link{saveModel}}, \code{\link{unloadModel}}
+}
+\concept{model loading}

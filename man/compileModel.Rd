@@ -9,3 +9,9 @@ compileModel(model = getCurrentModel())
 \description{
 Forces compilation of the given model
 }
+\seealso{
+Other model handlers: \code{\link{getCurrentModel}},
+  \code{\link{getLoadedModels}}, \code{\link{openCopasi}},
+  \code{\link{setCurrentModel}}
+}
+\concept{model handlers}

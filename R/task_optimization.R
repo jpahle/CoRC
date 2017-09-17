@@ -13,6 +13,7 @@
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @return a list of results
+#' @family optimization
 #' @export
 runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -112,6 +113,7 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
+#' @family optimization
 #' @export
 setOptimizationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -163,6 +165,7 @@ setOptimizationSettings <- function(randomizeStartValues = NULL, createParameter
 #'
 #' @param model a model object
 #' @return A list of parameter estimation task settings including method options.
+#' @family optimization
 #' @export
 getOptimizationSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -240,13 +243,17 @@ copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start
 #' @param upper.bound upper value bound
 #' @param start.value start value
 #' @return copasi_parm object for input into related functions
+#' @seealso \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
+#' @family optimization
 #' @export
 defineOptimizationParameter <- copasi_parm
 
 #' Add an optimization parameter
 #' 
-#' @param copasi_parm object as returned by \code{defineOptimizationParameter}
+#' @param copasi_parm object as returned by \code{\link{defineOptimizationParameter}}
 #' @param model a model object
+#' @seealso \code{\link{defineOptimizationParameter}} \code{\link{clearOptimizationParameters}}
+#' @family optimization
 #' @export
 addOptimizationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -272,6 +279,7 @@ addOptimizationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_optitem$setStartValue(copasi_parm$start)
 }
 
+#' @seealso \code{\link{addOptimizationParameter}}
 #' @export
 clearOptimizationParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

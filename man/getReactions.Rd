@@ -17,3 +17,20 @@ a data frame with reactions and associated information
 \description{
 \code{getReactions} returns reactions as a data frame.
 }
+\seealso{
+\code{\link{setReactions}}
+
+Other reaction functions: \code{\link{deleteKineticFunction}},
+  \code{\link{deleteReaction}},
+  \code{\link{entity_finders}},
+  \code{\link{getParameterReferences}},
+  \code{\link{getParameters}},
+  \code{\link{getReactionMappings}},
+  \code{\link{getValidReactionFunctions}},
+  \code{\link{newKineticFunction}},
+  \code{\link{newReaction}}, \code{\link{setParameters}},
+  \code{\link{setReactionFunction}},
+  \code{\link{setReactionMappings}},
+  \code{\link{setReactions}}
+}
+\concept{reaction functions}

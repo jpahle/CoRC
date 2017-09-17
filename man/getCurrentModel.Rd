@@ -12,3 +12,9 @@ a model object
 \description{
 \code{getCurrentModel} returns the currently active model.
 }
+\seealso{
+Other model handlers: \code{\link{compileModel}},
+  \code{\link{getLoadedModels}}, \code{\link{openCopasi}},
+  \code{\link{setCurrentModel}}
+}
+\concept{model handlers}

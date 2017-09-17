@@ -4,6 +4,8 @@
 #'
 #' @param model a model object
 #' @return name
+#' @seealso \code{\link{setModelName}}
+#' @family model property functions
 #' @export
 getModelName <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -17,6 +19,8 @@ getModelName <- function(model = getCurrentModel()) {
 #'
 #' @param name the new model name
 #' @param model a model object
+#' @seealso \code{\link{getModelName}}
+#' @family model property functions
 #' @export
 setModelName <- function(name, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -36,6 +40,8 @@ setModelName <- function(name, model = getCurrentModel()) {
 #'
 #' @param model a model object
 #' @return unit of time
+#' @seealso \code{\link{setTimeUnit}}
+#' @family model property functions
 #' @export
 getTimeUnit <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -49,6 +55,8 @@ getTimeUnit <- function(model = getCurrentModel()) {
 #'
 #' @param unit string
 #' @param model a model object
+#' @seealso \code{\link{getTimeUnit}}
+#' @family model property functions
 #' @export
 setTimeUnit <- function(unit, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -75,6 +83,8 @@ setTimeUnit <- function(unit, model = getCurrentModel()) {
 #'
 #' @param model a model object
 #' @return unit of volume
+#' @seealso \code{\link{setVolumeUnit}}
+#' @family model property functions
 #' @export
 getVolumeUnit <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -88,6 +98,8 @@ getVolumeUnit <- function(model = getCurrentModel()) {
 #'
 #' @param unit string
 #' @param model a model object
+#' @seealso \code{\link{getTimeUnit}}
+#' @family model property functions
 #' @export
 setVolumeUnit <- function(unit, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -114,6 +126,8 @@ setVolumeUnit <- function(unit, model = getCurrentModel()) {
 #'
 #' @param model a model object
 #' @return unit of quantity
+#' @seealso \code{\link{setQuantityUnit}}
+#' @family model property functions
 #' @export
 getQuantityUnit <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -127,6 +141,8 @@ getQuantityUnit <- function(model = getCurrentModel()) {
 #'
 #' @param unit string
 #' @param model a model object
+#' @seealso \code{\link{getQuantityUnit}}
+#' @family model property functions
 #' @export
 setQuantityUnit <- function(unit, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -153,6 +169,8 @@ setQuantityUnit <- function(unit, model = getCurrentModel()) {
 #' \code{getInitialTime} gets the initial time of the model.
 #'
 #' @param model a model object
+#' @seealso \code{\link{setInitialTime}}
+#' @family model property functions
 #' @export
 getInitialTime <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -166,6 +184,8 @@ getInitialTime <- function(model = getCurrentModel()) {
 #'
 #' @param time numeric
 #' @param model a model object
+#' @seealso \code{\link{getInitialTime}}
+#' @family model property functions
 #' @export
 setInitialTime <- function(time, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -187,6 +207,8 @@ setInitialTime <- function(time, model = getCurrentModel()) {
 #' 
 #' @param model a model object
 #' @return stoichiometry matrix matrix
+#' @seealso \code{\link{getReducedStoichiometryMatrix}}
+#' @family model property functions
 #' @export
 getStoichiometryMatrix <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -205,6 +227,8 @@ getStoichiometryMatrix <- function(model = getCurrentModel()) {
 #' 
 #' @param model a model object
 #' @return reduced stoichiometry matrix
+#' @seealso \code{\link{getStoichiometryMatrix}}
+#' @family model property functions
 #' @export
 getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -223,6 +247,7 @@ getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
 #' 
 #' @param model a model object
 #' @return matrix
+#' @family model property functions
 #' @export
 getLinkMatrix <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

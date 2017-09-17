@@ -9,6 +9,7 @@
 #' @param method list
 #' @param model a model object
 #' @return a list of results
+#' @family steady state
 #' @export
 runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -83,6 +84,7 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #' @param executable flag
 #' @param method list
 #' @param model a model object
+#' @family steady state
 #' @export
 setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -114,6 +116,7 @@ setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAna
 #'
 #' @param model a model object
 #' @return A list of steady state task settings including method options.
+#' @family steady state
 #' @export
 getSteadyStateSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

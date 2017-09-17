@@ -12,3 +12,11 @@ saveModelToString(model = getCurrentModel())
 \description{
 \code{saveModelToString} saves a model to a string.
 }
+\seealso{
+Other model loading: \code{\link{loadExamples}},
+  \code{\link{loadModelFromString}},
+  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{newModel}}, \code{\link{saveModel}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
+}
+\concept{model loading}

@@ -26,3 +26,8 @@ a list of results
 \description{
 \code{runMetabolicControlAnalysis} runs metabolic control analysis and returns the results in a list.
 }
+\seealso{
+Other metabolic control analysis: \code{\link{getMetabolicControlAnalysisSettings}},
+  \code{\link{setMetabolicControlAnalysisSettings}}
+}
+\concept{metabolic control analysis}

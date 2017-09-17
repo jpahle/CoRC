@@ -32,7 +32,7 @@ setOpt(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{method}{string or list
 
-Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
 Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
@@ -40,3 +40,10 @@ Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, G
 \description{
 \code{setOptimizationSettings} sets optimization task settings including parameters, experiments and method options.
 }
+\seealso{
+Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{defineOptimizationParameter}},
+  \code{\link{getOptimizationSettings}},
+  \code{\link{runOptimization}}
+}
+\concept{optimization}

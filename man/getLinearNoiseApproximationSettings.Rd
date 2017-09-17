@@ -18,3 +18,8 @@ A list of metabolic control analysis task settings including method options.
 \description{
 \code{getLinearNoiseApproximationSettings} gets linear noise approximation settings including method options.
 }
+\seealso{
+Other linear noise approximation: \code{\link{runLinearNoiseApproximation}},
+  \code{\link{setLinearNoiseApproximationSettings}}
+}
+\concept{linear noise approximation}

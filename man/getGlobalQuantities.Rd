@@ -20,3 +20,13 @@ a data frame with global quantities and associated information
 \description{
 \code{getGlobalQuantities} returns global quantities as a data frame.
 }
+\seealso{
+\code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
+
+Other global quantity functions: \code{\link{deleteGlobalQuantity}},
+  \code{\link{entity_finders}},
+  \code{\link{getGlobalQuantityReferences}},
+  \code{\link{newGlobalQuantity}},
+  \code{\link{setGlobalQuantities}}
+}
+\concept{global quantity functions}

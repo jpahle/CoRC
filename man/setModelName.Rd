@@ -14,3 +14,17 @@ setModelName(name, model = getCurrentModel())
 \description{
 \code{setModelName} sets the name of the model.
 }
+\seealso{
+\code{\link{getModelName}}
+
+Other model property functions: \code{\link{getInitialTime}},
+  \code{\link{getLinkMatrix}}, \code{\link{getModelName}},
+  \code{\link{getQuantityUnit}},
+  \code{\link{getReducedStoichiometryMatrix}},
+  \code{\link{getStoichiometryMatrix}},
+  \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
+  \code{\link{setInitialTime}},
+  \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
+  \code{\link{setVolumeUnit}}
+}
+\concept{model property functions}

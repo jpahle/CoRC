@@ -14,3 +14,11 @@ deleteGlobalQuantity(key, model = getCurrentModel())
 \description{
 Delete a global quantity
 }
+\seealso{
+Other global quantity functions: \code{\link{entity_finders}},
+  \code{\link{getGlobalQuantities}},
+  \code{\link{getGlobalQuantityReferences}},
+  \code{\link{newGlobalQuantity}},
+  \code{\link{setGlobalQuantities}}
+}
+\concept{global quantity functions}

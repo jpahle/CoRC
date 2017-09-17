@@ -7,6 +7,7 @@
 #' @param method list
 #' @param model a model object
 #' @return a list of results
+#' @family linear noise approximation
 #' @export
 runLinearNoiseApproximation <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -77,6 +78,7 @@ runLinearNoiseApproximation <- function(performSteadyStateAnalysis = NULL, execu
 #' @param executable flag
 #' @param method list
 #' @param model a model object
+#' @family linear noise approximation
 #' @export
 setLinearNoiseApproximationSettings <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -106,6 +108,7 @@ setLinearNoiseApproximationSettings <- function(performSteadyStateAnalysis = NUL
 #'
 #' @param model a model object
 #' @return A list of metabolic control analysis task settings including method options.
+#' @family linear noise approximation
 #' @export
 getLinearNoiseApproximationSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

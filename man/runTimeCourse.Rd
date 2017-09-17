@@ -38,7 +38,7 @@ runTC(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{method}{string or list
 
-Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
 Allowed methods: deterministic, stochastic, directMethod, tauLeap, adaptiveSA, hybrid, hybridLSODA, hybridODE45}
 
 \item{model}{a model object}
@@ -49,3 +49,8 @@ a list of results
 \description{
 \code{runTimeCourse} runs a time course and returns the results in a list.
 }
+\seealso{
+Other time course: \code{\link{getTimeCourseSettings}},
+  \code{\link{setTimeCourseSettings}}
+}
+\concept{time course}

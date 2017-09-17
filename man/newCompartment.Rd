@@ -21,3 +21,11 @@ newCompartment(name, type = c("fixed", "assignment", "ode"),
 \description{
 Create a new compartment
 }
+\seealso{
+Other compartment functions: \code{\link{deleteCompartment}},
+  \code{\link{entity_finders}},
+  \code{\link{getCompartmentReferences}},
+  \code{\link{getCompartments}},
+  \code{\link{setCompartments}}
+}
+\concept{compartment functions}

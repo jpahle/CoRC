@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identify single reactions by name — reaction_strict • CoRC</title>
+<title>String matching engines from stringr — reexports • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,44 +98,25 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identify single reactions by name</h1>
+    <h1>String matching engines from stringr</h1>
     </div>
 
     
-    <p><code>reaction_strict</code> identifies strictly one reaction per given name fragment.</p>
+    <p>CoRC makes use of the string matching engines from the stringr package.</p>
     
 
-    <pre class="usage"><span class='fu'>reaction_strict</span>(<span class='no'>key</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>key</th>
-      <td><p>a vector of strings to identify reactions.</p></td>
-    </tr>
-    <tr>
-      <th>reference</th>
-      <td><p>a scalar character or vector of characters naming the value references to be returned.</p></td>
-    </tr>
-    <tr>
-      <th>model</th>
-      <td><p>a model object.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>a character vector of reaction identifiers or references.</p>
+    <p>By default matching is done with <code>coll</code>.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

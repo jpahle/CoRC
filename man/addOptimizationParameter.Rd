@@ -7,10 +7,19 @@
 addOptimizationParameter(copasi_parm, model = getCurrentModel())
 }
 \arguments{
-\item{copasi_parm}{object as returned by \code{defineOptimizationParameter}}
+\item{copasi_parm}{object as returned by \code{\link{defineOptimizationParameter}}}
 
 \item{model}{a model object}
 }
 \description{
 Add an optimization parameter
 }
+\seealso{
+\code{\link{defineOptimizationParameter}} \code{\link{clearOptimizationParameters}}
+
+Other optimization: \code{\link{defineOptimizationParameter}},
+  \code{\link{getOptimizationSettings}},
+  \code{\link{runOptimization}},
+  \code{\link{setOptimizationSettings}}
+}
+\concept{optimization}

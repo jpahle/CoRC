@@ -17,3 +17,11 @@ saveModel(filename = model$getFileName(), overwrite = FALSE,
 \description{
 \code{saveModel} saves a model as a .cps file
 }
+\seealso{
+Other model loading: \code{\link{loadExamples}},
+  \code{\link{loadModelFromString}},
+  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{newModel}}, \code{\link{saveModelToString}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
+}
+\concept{model loading}

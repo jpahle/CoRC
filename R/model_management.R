@@ -10,6 +10,7 @@ discardUnloadedModels <- function() {
 #' \code{getCurrentModel} returns the currently active model.
 #'
 #' @return a model object
+#' @family model handlers
 #' @export
 getCurrentModel <- function() {
   c_curr_dm <- pkg_env$c_curr_dm 
@@ -30,6 +31,7 @@ getCurrentModel <- function() {
 #'
 #' @param model a model object
 #' @return invisibly returns the model object
+#' @family model handlers
 #' @export
 setCurrentModel <- function(model) {
   c_datamodel <- assert_datamodel(model)
@@ -44,6 +46,7 @@ setCurrentModel <- function(model) {
 #' \code{getLoadedModels} returns a list of all loaded models.
 #'
 #' @return a list of model objects
+#' @family model handlers
 #' @export
 getLoadedModels <- function() {
   discardUnloadedModels()
@@ -72,6 +75,7 @@ con_to_string <- function(x) {
 #'
 #' @return a model object
 #' @export
+#' @family model loading
 newModel <- function() {
   assert_binaries()
   
@@ -89,6 +93,7 @@ newModel <- function() {
 #'
 #' @param path url or path
 #' @return a model object
+#' @family model loading
 #' @export
 loadModel <- function(path) {
   assert_binaries()
@@ -123,6 +128,7 @@ loadModel <- function(path) {
 #' \code{loadModelFromString} loads a model from a string.
 #'
 #' @param model string
+#' @family model loading
 #' @export
 loadModelFromString <- function(model) {
   assert_binaries()
@@ -149,6 +155,7 @@ loadModelFromString <- function(model) {
 #'
 #' @param path url or path
 #' @return a model object
+#' @family model loading
 #' @export
 loadSBML <- function(path) {
   assert_binaries()
@@ -183,6 +190,7 @@ loadSBML <- function(path) {
 #' \code{unloadModel} frees memory by unloading a model from copasi
 #'
 #' @param model a model object
+#' @family model loading
 #' @export
 unloadModel <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -198,6 +206,7 @@ unloadModel <- function(model = getCurrentModel()) {
 #'
 #' \code{unloadAllModels} frees memory by unloading all loaded models from copasi
 #'
+#' @family model loading
 #' @export
 unloadAllModels <- function() {
   discardUnloadedModels()
@@ -217,6 +226,7 @@ unloadAllModels <- function() {
 #' @param filename a path to save to
 #' @param overwrite is overwriting existing files allowed?
 #' @param model a model object
+#' @family model loading
 #' @export
 saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -248,6 +258,7 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
 #' \code{saveModelToString} saves a model to a string.
 #'
 #' @param model a model object
+#' @family model loading
 #' @export
 saveModelToString <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -261,6 +272,7 @@ saveModelToString <- function(model = getCurrentModel()) {
 #'
 #' @param indices optional indices of example models to load.
 #' @return a list of model objects
+#' @family model loading
 #' @export
 loadExamples <- function(indices = NULL) {
   assert_binaries()
@@ -285,6 +297,7 @@ loadExamples <- function(indices = NULL) {
 #' 
 #' Forces compilation of the given model
 #' 
+#' @family model handlers
 #' @export
 compileModel <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -297,6 +310,7 @@ compileModel <- function(model = getCurrentModel()) {
 #' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model
 #' @param copasi_loc location of CopasiUI
 #' @param model a model object
+#' @family model handlers
 #' @export
 openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

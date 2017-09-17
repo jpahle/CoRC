@@ -17,7 +17,7 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
 
 \item{expression}{a character vector of expressions to set}
 
-\item{data}{a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
 \item{initial.volume}{a numeric vector of values to set}
 
@@ -26,3 +26,13 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
 \description{
 \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.
 }
+\seealso{
+\code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
+
+Other global quantity functions: \code{\link{deleteGlobalQuantity}},
+  \code{\link{entity_finders}},
+  \code{\link{getGlobalQuantities}},
+  \code{\link{getGlobalQuantityReferences}},
+  \code{\link{newGlobalQuantity}}
+}
+\concept{global quantity functions}

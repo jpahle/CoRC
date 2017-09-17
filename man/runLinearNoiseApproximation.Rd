@@ -26,3 +26,8 @@ a list of results
 \description{
 \code{runLinearNoiseApproximation} runs linear noise approximation and returns the results in a list.
 }
+\seealso{
+Other linear noise approximation: \code{\link{getLinearNoiseApproximationSettings}},
+  \code{\link{setLinearNoiseApproximationSettings}}
+}
+\concept{linear noise approximation}

@@ -17,3 +17,20 @@ a data frame with reaction parameters and associated information
 \description{
 \code{getParameters} returns reaction parameters as a data frame.
 }
+\seealso{
+\code{\link{getParameterReferences}} \code{\link{setParameters}}
+
+Other reaction functions: \code{\link{deleteKineticFunction}},
+  \code{\link{deleteReaction}},
+  \code{\link{entity_finders}},
+  \code{\link{getParameterReferences}},
+  \code{\link{getReactionMappings}},
+  \code{\link{getReactions}},
+  \code{\link{getValidReactionFunctions}},
+  \code{\link{newKineticFunction}},
+  \code{\link{newReaction}}, \code{\link{setParameters}},
+  \code{\link{setReactionFunction}},
+  \code{\link{setReactionMappings}},
+  \code{\link{setReactions}}
+}
+\concept{reaction functions}

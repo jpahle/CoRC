@@ -18,3 +18,8 @@ A list of metabolic control analysis task settings including method options.
 \description{
 \code{getMetabolicControlAnalysisSettings} gets metabolic control analysis settings including method options.
 }
+\seealso{
+Other metabolic control analysis: \code{\link{runMetabolicControlAnalysis}},
+  \code{\link{setMetabolicControlAnalysisSettings}}
+}
+\concept{metabolic control analysis}

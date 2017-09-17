@@ -18,3 +18,8 @@ A list of time course task settings including method options.
 \description{
 \code{getTimeCourseSettings} gets time course task settings including method options.
 }
+\seealso{
+Other time course: \code{\link{runTimeCourse}},
+  \code{\link{setTimeCourseSettings}}
+}
+\concept{time course}

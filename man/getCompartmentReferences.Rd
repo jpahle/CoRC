@@ -17,3 +17,13 @@ a data frame with compartments and associated references
 \description{
 \code{getCompartmentReferences} returns compartment attribute references as a data frame.
 }
+\seealso{
+\code{\link{getCompartments}} \code{\link{setCompartments}}
+
+Other compartment functions: \code{\link{deleteCompartment}},
+  \code{\link{entity_finders}},
+  \code{\link{getCompartments}},
+  \code{\link{newCompartment}},
+  \code{\link{setCompartments}}
+}
+\concept{compartment functions}

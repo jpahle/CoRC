@@ -20,3 +20,13 @@ a data frame with compartments and associated information
 \description{
 \code{getCompartments} returns compartments as a data frame.
 }
+\seealso{
+\code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
+
+Other compartment functions: \code{\link{deleteCompartment}},
+  \code{\link{entity_finders}},
+  \code{\link{getCompartmentReferences}},
+  \code{\link{newCompartment}},
+  \code{\link{setCompartments}}
+}
+\concept{compartment functions}

@@ -12,6 +12,7 @@
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
 #' @return a list of results
+#' @family parameter estimation
 #' @export
 runParameterEstimation <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -120,6 +121,7 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
+#' @family parameter estimation
 #' @export
 setParameterEstimationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -180,6 +182,7 @@ setParameterEstimationSettings <- function(randomizeStartValues = NULL, createPa
 #'
 #' @param model a model object
 #' @return A list of parameter estimation task settings including method options.
+#' @family parameter estimation
 #' @export
 getParameterEstimationSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -256,14 +259,17 @@ getPE <- getParameterEstimationSettings
 #' @param lower.bound lower value bound
 #' @param upper.bound upper value bound
 #' @param start.value start value
+#' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
 #' @return copasi_parm object for input into related functions
 #' @export
 defineParameterEstimationParameter <- copasi_parm
 
 #' Add a parameter estimation parameter
 #' 
-#' @param copasi_parm object as returned by \code{defineParameterEstimationParameter}
+#' @param copasi_parm object as returned by \code{\link{defineParameterEstimationParameter}}
 #' @param model a model object
+#' @family parameter estimation
+#' @seealso \code{\link{defineParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
 #' @export
 addParameterEstimationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -294,6 +300,8 @@ addParameterEstimationParameter <- function(copasi_parm, model = getCurrentModel
 #' Clear all parameter estimation parameters
 #' 
 #' @param model a model object
+#' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{defineParameterEstimationParameters}}
+#' @family parameter estimation
 #' @export
 clearParameterEstimationParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -454,13 +462,17 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
 #' @param weight_method string
 #' @param filename string
 #' @return copasi_exp object for input into related functions
+#' @seealso \code{\link{addExperiments}} \code{\link{clearExperiments}}
+#' @family parameter estimation
 #' @export
 defineExperiments <- copasi_exp
 
 #' Add a parameter estimation experiment
 #' 
-#' @param copasi_exp object as returned by \code{defineExperiment}
+#' @param copasi_exp object as returned by \code{\link{defineExperiment}}
 #' @param model a model object
+#' @seealso \code{\link{defineExperiments}} \code{\link{clearExperiments}}
+#' @family parameter estimation
 #' @export
 addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -541,6 +553,8 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
 #' Clear all parameter estimation experiments
 #' 
 #' @param model a model object
+#' @seealso \code{\link{addExperiments}}
+#' @family parameter estimation
 #' @export
 clearExperiments <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

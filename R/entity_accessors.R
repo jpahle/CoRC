@@ -6,6 +6,8 @@
 #' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with species and associated information
+#' @seealso \code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
+#' @family species functions
 #' @export
 getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -38,6 +40,8 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
 #' @param key a character vector uniquely identifying species
 #' @param model a model object
 #' @return a data frame with species and associated references
+#' @seealso \code{\link{getSpecies}} \code{\link{setSpecies}}
+#' @family species functions
 #' @export
 getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -72,8 +76,10 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param initial.concentration a numeric vector of concentrations to set
 #' @param initial.number a numeric vector of particle numbers to set
 #' @param expression a character vector of expressions to set
-#' @param data a data frame as given by \code{getSpecies} which will be applied before the other arguments.
+#' @param data a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
 #' @param model a model object
+#' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
+#' @family species functions
 #' @export
 setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -181,6 +187,8 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
 #' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with global quantities and associated information
+#' @seealso \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
+#' @family global quantity functions
 #' @export
 getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -210,6 +218,8 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
 #' @param key a character vector uniquely identifying global quantities
 #' @param model a model object
 #' @return a data frame with global quantities and associated references
+#' @seealso \code{\link{getGlobalQuantities}} \code{\link{setGlobalQuantities}}
+#' @family global quantity functions
 #' @export
 getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -240,8 +250,10 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param type a character vector of types ("fixed", "assignment", "ode").
 #' @param initial.volume a numeric vector of values to set
 #' @param expression a character vector of expressions to set
-#' @param data a data frame as given by \code{getGlobalQuantities} which will be applied before the other arguments.
+#' @param data a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
 #' @param model a model object
+#' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
+#' @family global quantity functions
 #' @export
 setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -335,6 +347,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
 #' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with compartments and associated information
+#' @seealso \code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
+#' @family compartment functions
 #' @export
 getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -363,6 +377,8 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
 #' @param key a character vector uniquely identifying compartments
 #' @param model a model object
 #' @return a data frame with compartments and associated references
+#' @seealso \code{\link{getCompartments}} \code{\link{setCompartments}}
+#' @family compartment functions
 #' @export
 getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -392,8 +408,10 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param type a character vector of species types ("fixed", "assignment", "ode").
 #' @param initial.volume a numeric vector of values to set
 #' @param expression a character vector of expressions to set
-#' @param data a data frame as given by \code{getCompartments} which will be applied before the other arguments.
+#' @param data a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
 #' @param model a model object
+#' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
+#' @family compartment functions
 #' @export
 setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -487,6 +505,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
 #' @param key a character vector uniquely identifying reactions
 #' @param model a model object
 #' @return a data frame with reactions and associated information
+#' @seealso \code{\link{setReactions}}
+#' @family reaction functions
 #' @export
 getReactions <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -512,8 +532,10 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying reactions
 #' @param name a character vector of names to set
-#' @param data a data frame as given by \code{getReactions} which will be applied before the other arguments.
+#' @param data a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
 #' @param model a model object
+#' @seealso \code{\link{getReactions}}
+#' @family reaction functions
 #' @export
 setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -549,6 +571,8 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
 #' @param key reaction key
 #' @param model a model object
 #' @return vector of function names
+#' @seealso \code{\link{setReactionFunction}}
+#' @family reaction functions
 #' @export
 getValidReactionFunctions <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -578,6 +602,8 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
 #' @param fun string
 #' @param mappings list
 #' @param model a model object
+#' @seealso \code{\link{getValidReactionFunctions}}
+#' @family reaction functions
 #' @export
 setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -621,6 +647,8 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
 #' @param key reaction key
 #' @param model a model object
 #' @return list of parameter mappings
+#' @seealso \code{\link{setReactionMappings}}
+#' @family reaction functions
 #' @export
 getReactionMappings <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -653,6 +681,8 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
 #' @param key reaction key
 #' @param mappings list
 #' @param model a model object
+#' @seealso \code{\link{getReactionMappings}}
+#' @family reaction functions
 #' @export
 setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -747,6 +777,8 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
 #' @param key a character vector uniquely identifying reactions parameters
 #' @param model a model object
 #' @return a data frame with reaction parameters and associated information
+#' @seealso \code{\link{getParameterReferences}} \code{\link{setParameters}}
+#' @family reaction functions
 #' @export
 getParameters <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -806,6 +838,8 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
 #' @param key a character vector uniquely identifying reactions parameters
 #' @param model a model object
 #' @return a data frame with reaction parameters and associated references
+#' @seealso \code{\link{getParameters}} \code{\link{setParameters}}
+#' @family reaction functions
 #' @export
 getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -862,8 +896,10 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying reaction parameters
 #' @param name a character vector of names to set
-#' @param data a data frame as given by \code{getParameters} which will be applied before the other arguments.
+#' @param data a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.
 #' @param model a model object
+#' @seealso \code{\link{getParameters}} \code{\link{getParameterReferences}}
+#' @family reaction functions
 #' @export
 setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

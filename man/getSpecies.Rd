@@ -19,3 +19,12 @@ a data frame with species and associated information
 \description{
 \code{getSpecies} returns species information as a data frame.
 }
+\seealso{
+\code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
+
+Other species functions: \code{\link{deleteSpecies}},
+  \code{\link{entity_finders}},
+  \code{\link{getSpeciesReferences}},
+  \code{\link{newSpecies}}, \code{\link{setSpecies}}
+}
+\concept{species functions}

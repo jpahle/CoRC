@@ -15,3 +15,17 @@ unit of time
 \description{
 \code{getTimeUnit} gets the unit used for time.
 }
+\seealso{
+\code{\link{setTimeUnit}}
+
+Other model property functions: \code{\link{getInitialTime}},
+  \code{\link{getLinkMatrix}}, \code{\link{getModelName}},
+  \code{\link{getQuantityUnit}},
+  \code{\link{getReducedStoichiometryMatrix}},
+  \code{\link{getStoichiometryMatrix}},
+  \code{\link{getVolumeUnit}},
+  \code{\link{setInitialTime}}, \code{\link{setModelName}},
+  \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
+  \code{\link{setVolumeUnit}}
+}
+\concept{model property functions}

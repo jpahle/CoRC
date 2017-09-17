@@ -22,3 +22,6 @@ copasi_parm object for input into related functions
 \description{
 Define a parameter estimation parameter
 }
+\seealso{
+\code{\link{addParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
+}

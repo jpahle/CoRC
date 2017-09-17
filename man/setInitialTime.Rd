@@ -14,3 +14,17 @@ setInitialTime(time, model = getCurrentModel())
 \description{
 \code{setInitialTime} sets the initial time of the model.
 }
+\seealso{
+\code{\link{getInitialTime}}
+
+Other model property functions: \code{\link{getInitialTime}},
+  \code{\link{getLinkMatrix}}, \code{\link{getModelName}},
+  \code{\link{getQuantityUnit}},
+  \code{\link{getReducedStoichiometryMatrix}},
+  \code{\link{getStoichiometryMatrix}},
+  \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
+  \code{\link{setModelName}},
+  \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
+  \code{\link{setVolumeUnit}}
+}
+\concept{model property functions}

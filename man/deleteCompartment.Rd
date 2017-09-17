@@ -14,3 +14,11 @@ deleteCompartment(key, model = getCurrentModel())
 \description{
 Delete a compartment
 }
+\seealso{
+Other compartment functions: \code{\link{entity_finders}},
+  \code{\link{getCompartmentReferences}},
+  \code{\link{getCompartments}},
+  \code{\link{newCompartment}},
+  \code{\link{setCompartments}}
+}
+\concept{compartment functions}

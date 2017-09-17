@@ -14,3 +14,10 @@ deleteSpecies(key, model = getCurrentModel())
 \description{
 Delete a species
 }
+\seealso{
+Other species functions: \code{\link{entity_finders}},
+  \code{\link{getSpeciesReferences}},
+  \code{\link{getSpecies}}, \code{\link{newSpecies}},
+  \code{\link{setSpecies}}
+}
+\concept{species functions}

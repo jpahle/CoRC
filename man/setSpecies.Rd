@@ -21,10 +21,19 @@ setSpecies(key = NULL, name = NULL, type = NULL,
 
 \item{expression}{a character vector of expressions to set}
 
-\item{data}{a data frame as given by \code{getSpecies} which will be applied before the other arguments.}
+\item{data}{a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
 \code{setSpecies} applies given values to species of the model depending on the 'key' parameter.
 }
+\seealso{
+\code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
+
+Other species functions: \code{\link{deleteSpecies}},
+  \code{\link{entity_finders}},
+  \code{\link{getSpeciesReferences}},
+  \code{\link{getSpecies}}, \code{\link{newSpecies}}
+}
+\concept{species functions}

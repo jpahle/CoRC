@@ -17,3 +17,9 @@ a numeric vector of initial values
 \description{
 \code{getValue} calculates the initial value of a given expression or reference.
 }
+\seealso{
+\code{\link{getValue}}
+
+Other expression functions: \code{\link{getValue}}
+}
+\concept{expression functions}

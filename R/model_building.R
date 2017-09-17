@@ -9,6 +9,7 @@
 #' @param expression string
 #' @param model a model object
 #' @return species key
+#' @family species functions
 #' @export
 newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment", "reactions", "ode"), initial.concentration = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -64,6 +65,7 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
 #' 
 #' @param key species keys
 #' @param model a model object
+#' @family species functions
 #' @export
 deleteSpecies <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -89,6 +91,7 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #' @param expression string
 #' @param model a model object
 #' @return quantity key
+#' @family global quantity functions
 #' @export
 newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial.value = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -134,6 +137,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
 #' 
 #' @param key quantity keys
 #' @param model a model object
+#' @family global quantity functions
 #' @export
 deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -158,6 +162,7 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 #' @param initial.volume number
 #' @param expression string
 #' @param model a model object
+#' @family compartment functions
 #' @export
 newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial.volume = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -204,6 +209,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
 #' 
 #' @param key compartment keys
 #' @param model a model object
+#' @family compartment functions
 #' @export
 deleteCompartment <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -229,6 +235,7 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
 #' @param mappings named list
 #' @param model a model object
 #' @return reaction key
+#' @family reaction functions
 #' @export
 newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -278,6 +285,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
 #' 
 #' @param key reaction keys
 #' @param model a model object
+#' @family reaction functions
 #' @export
 deleteReaction <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -308,6 +316,7 @@ function_role_enum <-
 #' @eval rox_param("parameters", "named character vector", function_role_enum)
 #' @param function.type string
 #' @return function key
+#' @family reaction functions
 #' @export
 newKineticFunction <- function(name, formula, parameters, function.type = c("general", "reversible", "irreversible")) {
   assert_that(
@@ -384,6 +393,7 @@ newKineticFunction <- function(name, formula, parameters, function.type = c("gen
 #' Delete a function
 #' 
 #' @param key function keys
+#' @family reaction functions
 #' @export
 deleteKineticFunction <- function(key) {
   cl_funs <- kinfunction_obj(key)

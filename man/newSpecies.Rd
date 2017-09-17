@@ -27,3 +27,10 @@ species key
 \description{
 \code{newSpecies} creates a new species.
 }
+\seealso{
+Other species functions: \code{\link{deleteSpecies}},
+  \code{\link{entity_finders}},
+  \code{\link{getSpeciesReferences}},
+  \code{\link{getSpecies}}, \code{\link{setSpecies}}
+}
+\concept{species functions}

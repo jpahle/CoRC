@@ -17,3 +17,11 @@ a data frame with species and associated references
 \description{
 \code{getSpeciesReferences} returns species attribute references as a data frame.
 }
+\seealso{
+\code{\link{getSpecies}} \code{\link{setSpecies}}
+
+Other species functions: \code{\link{deleteSpecies}},
+  \code{\link{entity_finders}}, \code{\link{getSpecies}},
+  \code{\link{newSpecies}}, \code{\link{setSpecies}}
+}
+\concept{species functions}

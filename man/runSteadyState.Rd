@@ -32,3 +32,8 @@ a list of results
 \description{
 \code{runSteadyState} calculates the steady state and returns the results in a list.
 }
+\seealso{
+Other steady state: \code{\link{getSteadyStateSettings}},
+  \code{\link{setSteadyStateSettings}}
+}
+\concept{steady state}

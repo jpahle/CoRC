@@ -1,11 +1,43 @@
-#' Identify species by name
+#' Entity finders
+#' 
+#' The entity finder family of functions are a set of helpers to
+#' get unique identifiers for the various entities defined in copasi.
+#' They give a quick overview of available species, compartments etc..
 #'
-#' \code{species} identifies species matching a given name fragment.
-#'
-#' @param key a string to identify species.
+#' There are two classes of entity finders.
+#' 
+#' The main functions are flexible and return a vector of all entities matching a given name fragment.
+#' 
+#' The `_strict` varieties expect for all input keys to uniquely match one entity and throw errors otherwise.
+#' This ensures that there are always as many identifiers returned as are given to the functions.
+#' This mechanism is also used by CoRC internally to ensure that functions like \code{\link{getSpecies}}
+#' return one row in the output for each key given as parameter.
+#' 
+#' Whereas the main functions generally won't help seperate an entity `a` from and entity `ab`, the
+#' `_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets peference
+#' over the partial match with `ab`.
+#' 
+#' The matching mechanism can be tuned using a \code{\link{regex}} mechanism.
+#' 
+#' The functions can also be used to find value references by giving the `reference` argument.
+#' Various references such as "Value" or "InitialConcentration" are available for some types of entities.
+#' 
+#' @name entity_finders
+#' @param key entity name framents
+#' 
+#'   * main varieties: a string.
+#'   
+#'   * `_strict` varieties: a character vector with each entry uniquely matching one entity.
 #' @param reference an optional string naming the value references to be returned.
 #' @param model a model object.
-#' @return a character vector of species identifiers or references.
+#' @return A character vector of species identifiers or references.
+#'
+#'   References are in the form of "\{name\}" or in rare cases in the form of "<CN=...>" and can
+#'   be used in expressions or functions such as \code{\link{getValue}}.
+NULL
+
+#' @rdname entity_finders
+#' @family species functions
 #' @export
 species <- function(key = "", reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -33,14 +65,8 @@ species <- function(key = "", reference = NULL, model = getCurrentModel()) {
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
 }
 
-#' Identify single species by name
-#'
-#' \code{species_strict} identifies strictly one species per given name fragment.
-#'
-#' @param key a vector of strings to identify species.
-#' @param reference a string or vector of strings naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of species identifiers or references.
+#' @rdname entity_finders
+#' @family species functions
 #' @export
 species_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -116,14 +142,8 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
-#' Identify global quantities by name
-#'
-#' \code{quantity} identifies global quantities matching a given name fragment.
-#'
-#' @param key a string to identify global quantities.
-#' @param reference an optional string naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of global quantity identifiers or references.
+#' @rdname entity_finders
+#' @family global quantity functions
 #' @export
 quantity <- function(key = "", reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -151,14 +171,8 @@ quantity <- function(key = "", reference = NULL, model = getCurrentModel()) {
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
 }
 
-#' Identify single global quantities by name
-#'
-#' \code{quantity_strict} identifies strictly one global quantity per given name fragment.
-#'
-#' @param key a vector of strings to identify global quantities.
-#' @param reference a scalar character or vector of characters naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of global quantity identifiers or references.
+#' @rdname entity_finders
+#' @family global quantity functions
 #' @export
 quantity_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -234,14 +248,8 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
-#' Identify compartments by name
-#'
-#' \code{compartment} identifies compartments matching a given name fragments.
-#'
-#' @param key a string to identify compartments.
-#' @param reference an optional string naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of compartment identifiers or references.
+#' @rdname entity_finders
+#' @family compartment functions
 #' @export
 compartment <- function(key = "", reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -269,14 +277,8 @@ compartment <- function(key = "", reference = NULL, model = getCurrentModel()) {
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
 }
 
-#' Identify single compartments by name
-#'
-#' \code{compartment_strict} identifies strictly one compartment per given name fragment.
-#'
-#' @param key a vector of strings to identify compartments.
-#' @param reference a scalar character or vector of characters naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of compartment identifiers or references.
+#' @rdname entity_finders
+#' @family compartment functions
 #' @export
 compartment_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -352,14 +354,8 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
-#' Identify reactions by name
-#'
-#' \code{reaction} identifies reactions matching a given name fragment.
-#'
-#' @param key a string to identify reactions.
-#' @param reference an optional string naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of reaction identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 reaction <- function(key = "", reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -387,14 +383,8 @@ reaction <- function(key = "", reference = NULL, model = getCurrentModel()) {
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
 }
 
-#' Identify single reactions by name
-#'
-#' \code{reaction_strict} identifies strictly one reaction per given name fragment.
-#'
-#' @param key a vector of strings to identify reactions.
-#' @param reference a scalar character or vector of characters naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of reaction identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 reaction_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -470,14 +460,8 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
-#' Identify reaction parameters by name
-#'
-#' \code{parameter} identifies reaction parameters matching a given name fragment.
-#'
-#' @param key a string to identify reaction parameters.
-#' @param reference an optional string naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of reaction parameter identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 parameter <- function(key = "", reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -511,14 +495,8 @@ parameter <- function(key = "", reference = NULL, model = getCurrentModel()) {
     as_ref(apply_ref(cl_matches, reference), c_datamodel)
 }
 
-#' Identify single reaction parameters by name
-#'
-#' \code{reaction_strict} identifies strictly one reaction parameter per given name fragment.
-#'
-#' @param key a vector of strings to identify reaction parameters.
-#' @param reference a scalar character or vector of characters naming the value references to be returned.
-#' @param model a model object.
-#' @return a character vector of reaction parameter identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 parameter_strict <- function(key, reference = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -600,12 +578,8 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
     apply_ref(matches, reference)
 }
 
-#' Identify functions by name
-#'
-#' \code{kinfunction} identifies kinetic functions matching a given name fragment.
-#'
-#' @param key a string to identify reactions.
-#' @return a character vector of kinetic function identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 kinfunction <- function(key = "") {
   assert_that(
@@ -629,12 +603,8 @@ kinfunction <- function(key = "") {
   map_swig_chr(cl_matches, "getObjectDisplayName")
 }
 
-#' Identify single function by name
-#'
-#' \code{kinfunction_strict} identifies strictly one kinetic function per given name fragment.
-#'
-#' @param key a vector of strings to identify reactions.
-#' @return a character vector of kinetic function identifiers or references.
+#' @rdname entity_finders
+#' @family reaction functions
 #' @export
 kinfunction_strict <- function(key) {
   cl_funs <- kinfunction_obj(key)

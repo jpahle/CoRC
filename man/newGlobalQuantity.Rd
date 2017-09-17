@@ -24,3 +24,11 @@ quantity key
 \description{
 Create a new global quantity
 }
+\seealso{
+Other global quantity functions: \code{\link{deleteGlobalQuantity}},
+  \code{\link{entity_finders}},
+  \code{\link{getGlobalQuantities}},
+  \code{\link{getGlobalQuantityReferences}},
+  \code{\link{setGlobalQuantities}}
+}
+\concept{global quantity functions}

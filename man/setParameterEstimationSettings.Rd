@@ -32,7 +32,7 @@ setPE(randomizeStartValues = NULL, createParameterSets = NULL,
 
 \item{method}{string or list
 
-Set method with a string or list with entry `method`. The list may contain further method args and their values.
+Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
 Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
@@ -40,3 +40,13 @@ Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, G
 \description{
 \code{setParameterEstimationSettings} sets parameter estimation task settings including parameters, experiments and method options.
 }
+\seealso{
+Other parameter estimation: \code{\link{addExperiments}},
+  \code{\link{addParameterEstimationParameter}},
+  \code{\link{clearExperiments}},
+  \code{\link{clearParameterEstimationParameters}},
+  \code{\link{defineExperiments}},
+  \code{\link{getParameterEstimationSettings}},
+  \code{\link{runParameterEstimation}}
+}
+\concept{parameter estimation}

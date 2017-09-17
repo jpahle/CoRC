@@ -14,6 +14,7 @@
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
 #' @return a list of results
+#' @family time course
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -107,6 +108,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param executable flag
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
+#' @family time course
 #' @export
 setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -147,6 +149,7 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
 #'
 #' @param model a model object
 #' @return A list of time course task settings including method options.
+#' @family time course
 #' @export
 getTimeCourseSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

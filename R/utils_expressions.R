@@ -5,6 +5,8 @@
 #' @param expression a character vector of expressions
 #' @param model a model object
 #' @return a numeric vector of values
+#' @seealso \code{\link{getInitialValue}}
+#' @family expression functions
 #' @export
 getValue <- function(expression, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
@@ -22,6 +24,8 @@ getValue <- function(expression, model = getCurrentModel()) {
 #' @param expression a character vector of expressions
 #' @param model a model object
 #' @return a numeric vector of initial values
+#' @seealso \code{\link{getValue}}
+#' @family expression functions
 #' @export
 getInitialValue <- function(expression, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

@@ -18,3 +18,10 @@ A list of parameter estimation task settings including method options.
 \description{
 \code{getOptimizationSettings} gets optimization task settings including method options.
 }
+\seealso{
+Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{defineOptimizationParameter}},
+  \code{\link{runOptimization}},
+  \code{\link{setOptimizationSettings}}
+}
+\concept{optimization}

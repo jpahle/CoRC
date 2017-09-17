@@ -7,10 +7,22 @@
 addParameterEstimationParameter(copasi_parm, model = getCurrentModel())
 }
 \arguments{
-\item{copasi_parm}{object as returned by \code{defineParameterEstimationParameter}}
+\item{copasi_parm}{object as returned by \code{\link{defineParameterEstimationParameter}}}
 
 \item{model}{a model object}
 }
 \description{
 Add a parameter estimation parameter
 }
+\seealso{
+\code{\link{defineParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
+
+Other parameter estimation: \code{\link{addExperiments}},
+  \code{\link{clearExperiments}},
+  \code{\link{clearParameterEstimationParameters}},
+  \code{\link{defineExperiments}},
+  \code{\link{getParameterEstimationSettings}},
+  \code{\link{runParameterEstimation}},
+  \code{\link{setParameterEstimationSettings}}
+}
+\concept{parameter estimation}

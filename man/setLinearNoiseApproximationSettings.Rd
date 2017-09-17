@@ -23,3 +23,8 @@ setLNA(performSteadyStateAnalysis = NULL, executable = NULL,
 \description{
 \code{setLinearNoiseApproximation} sets linear noise approximation task settings including method options.
 }
+\seealso{
+Other linear noise approximation: \code{\link{getLinearNoiseApproximationSettings}},
+  \code{\link{runLinearNoiseApproximation}}
+}
+\concept{linear noise approximation}

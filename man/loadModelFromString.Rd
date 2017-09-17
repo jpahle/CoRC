@@ -12,3 +12,11 @@ loadModelFromString(model)
 \description{
 \code{loadModelFromString} loads a model from a string.
 }
+\seealso{
+Other model loading: \code{\link{loadExamples}},
+  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{newModel}}, \code{\link{saveModelToString}},
+  \code{\link{saveModel}}, \code{\link{unloadAllModels}},
+  \code{\link{unloadModel}}
+}
+\concept{model loading}
