@@ -333,6 +333,7 @@ opt_assemble_settings <- function(expression, maximize, subtask, randomizeStartV
     expression = expression,
     maximize = maximize,
     subtask = subtask,
+    randomizeStartValues = randomizeStartValues,
     calculateStatistics = calculateStatistics,
     updateModel = updateModel,
     executable = executable
@@ -360,11 +361,14 @@ opt_assemble_method <- function(method, c_task) {
 
 # gets full list of settings
 opt_get_settings <- function(c_task) {
+  c_datamodel <- c_task$getObjectDataModel()
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   list(
+    expression           = read_expr(c_problem$getObjectiveFunction(), c_datamodel),
+    maximize             = as.logical(c_problem$maximize()),
+    subtask              = c_problem$getSubtaskType(),
     randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
-    createParameterSets  = as.logical(c_problem$getCreateParameterSets()),
     calculateStatistics  = as.logical(c_problem$getCalculateStatistics()),
     updateModel          = as.logical(c_task$isUpdateModel()),
     executable           = as.logical(c_task$isScheduled())
@@ -378,11 +382,18 @@ opt_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
+  if (!is.null(data$expression))
+    c_datamodel <- c_task$getObjectDataModel()
+    c_problem$setObjectiveFunction(write_expr(data$expression, c_datamodel))
+  
+  if (!is.null(data$maximize))
+    c_problem$setMaximize(data$maximize)
+  
+  if (!is.null(data$subtask))
+    c_problem$setSubtaskType(data$subtask)
+  
   if (!is.null(data$randomizeStartValues))
     c_problem$setRandomizeStartValues(data$randomizeStartValues)
-  
-  if (!is.null(data$createParameterSets))
-    c_problem$setCreateParameterSets(data$createParameterSets)
   
   if (!is.null(data$calculateStatistics))
     c_problem$setCalculateStatistics(data$calculateStatistics)
@@ -399,12 +410,7 @@ opt_get_results <- function(c_task, settings) {
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   c_method <- as(c_task$getMethod(), "_p_COptMethod")
   
-  cl_items <- get_sv(c_problem$getOptItemList()) %>% map(as, Class = "_p_CFitItem")
-  c_experiment_set <- c_problem$getExperimentSet()
-  cl_experiments <-
-    seq_len_0(c_experiment_set$getExperimentCount()) %>%
-    map(~ c_experiment_set$getExperiment(.x))
-  cl_dependent_obj <- swigfix_resolve_obj_cvector(c_experiment_set, CExperimentSet_getDependentObjects, "CObjectInterface")
+  cl_items <- get_sv(c_problem$getOptItemList()) %>% map(as, Class = "_p_COptItem")
   
   evals <- c_problem$getFunctionEvaluations()
   evaltime <- c_problem$getExecutionTime()
@@ -412,11 +418,6 @@ opt_get_results <- function(c_task, settings) {
   main <-
     list(
       "Objective Value" = c_problem$getSolutionValue(),
-      "Root Mean Square" = c_problem$getRMS(),
-      "Standard Deviation" = c_problem$getStdDeviation(),
-      "Validation Objective Value" = c_problem$getCrossValidationSolutionValue(),
-      "Validation Root Mean Square" = c_problem$getCrossValidationRMS(),
-      "Validation Standard Deviation" = c_problem$getCrossValidationSD(),
       "Function Evaluations" = evals,
       "CPU Time [s]" = evaltime,
       "Evaluations/second [1/s]" = evals / evaltime
@@ -430,41 +431,9 @@ opt_get_results <- function(c_task, settings) {
       "Start Value" = map_swig_dbl(cl_items, "getStartValue"),
       "Value" = get_cv(c_problem$getSolutionVariables()),
       "Upper Bound" = map_swig_dbl(cl_items, "getUpperBoundValue"),
-      "Std. Deviation" = get_cv(c_problem$getVariableStdDeviations()),
-      "Coeff. of Variation [%]" = NaN, # TODO
       "Gradient" = get_cv(c_problem$getVariableGradients())
     ) %>%
     transform_names()
-  
-  experiments <-
-    tibble::tibble(
-      "Experiment" = map_swig_chr(cl_experiments, "getObjectName"),
-      "Objective Value" = map_swig_dbl(cl_experiments, "getObjectiveValue"),
-      "Root Mean Square" = map_swig_dbl(cl_experiments, "getRMS"),
-      "Error Mean" = map_swig_dbl(cl_experiments, "getErrorMean"),
-      "Error Mean Std. Deviation" = map_swig_dbl(cl_experiments, "getErrorMeanSD")
-    ) %>%
-    transform_names()
-  
-  fitted.values <-
-    tibble::tibble(
-      "Fitted Value" = map_swig_chr(cl_dependent_obj, "getObjectDisplayName"),
-      "Objective Value" = get_cv(c_experiment_set$getDependentObjectiveValues()),
-      "Root Mean Square" = get_cv(c_experiment_set$getDependentRMS()),
-      "Error Mean" = get_cv(c_experiment_set$getDependentErrorMean()),
-      "Error Mean Std. Deviation" = get_cv(c_experiment_set$getDependentErrorMeanSD())
-    ) %>%
-    transform_names()
-  
-  correlation <- get_annotated_matrix(c_problem$getCorrelations())
-  
-  fim <- get_annotated_matrix(c_problem$getFisherInformation())
-  fim.eigenvalues <- get_annotated_matrix(c_problem$getFisherInformationEigenvalues())
-  fim.eigenvectors <- get_annotated_matrix(c_problem$getFisherInformationEigenvectors())
-  
-  fim.scaled <- get_annotated_matrix(c_problem$getScaledFisherInformation())
-  fim.scaled.eigenvalues <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvalues())
-  fim.scaled.eigenvectors <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvectors())
   
   protocol <- c_method$getMethodLog()$getPlainLog()
   
@@ -472,15 +441,6 @@ opt_get_results <- function(c_task, settings) {
     settings = settings,
     main = main,
     parameters = parameters,
-    experiments = experiments,
-    fitted.values = fitted.values,
-    correlation = correlation,
-    fim = fim,
-    fim.eigenvalues = fim.eigenvalues,
-    fim.eigenvectors = fim.eigenvectors,
-    fim.scaled = fim.scaled,
-    fim.scaled.eigenvalues = fim.scaled.eigenvalues,
-    fim.scaled.eigenvectors = fim.scaled.eigenvectors,
     protocol = protocol
   )
 }
