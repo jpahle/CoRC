@@ -9,9 +9,9 @@ getSpecies(key = NULL, rawExpressions = FALSE, model = getCurrentModel())
 \arguments{
 \item{key}{a character vector uniquely identifying species}
 
-\item{model}{a model object}
+\item{rawExpressions}{a flag on whether expressions should be raw (not converted to readable format)}
 
-\item{rawExpression}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{model}{a model object}
 }
 \value{
 a data frame with species and associated information

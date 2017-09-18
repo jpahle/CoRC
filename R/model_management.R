@@ -187,7 +187,7 @@ loadSBML <- function(path) {
 
 #' Unload a model
 #'
-#' \code{unloadModel} frees memory by unloading a model from copasi
+#' \code{unloadModel} frees memory by unloading the given model from copasi
 #'
 #' @param model a model object
 #' @family model loading
@@ -219,9 +219,9 @@ unloadAllModels <- function() {
   pkg_env$c_curr_dm <- NULL
 }
 
-#' Save a model as a .cps file
+#' Save the model as a .cps file
 #'
-#' \code{saveModel} saves a model as a .cps file
+#' \code{saveModel} saves the given model as a .cps file
 #'
 #' @param filename a path to save to
 #' @param overwrite is overwriting existing files allowed?
@@ -253,9 +253,9 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
   invisible(success)
 }
 
-#' Save a model to string
+#' Save the model to string
 #'
-#' \code{saveModelToString} saves a model to a string.
+#' \code{saveModelToString} saves the given model to a string.
 #'
 #' @param model a model object
 #' @family model loading
@@ -287,25 +287,82 @@ loadExamples <- function(indices = NULL) {
   
   assert_that(is.null(indices) || all(indices %in% seq_along(models)), msg = "Invalid indices.")
   
-  if (!is.null(indices)) models <- models[indices]
+  if (!is.null(indices))
+    models <- models[indices]
   
   pkgname <- getPackageName()
   map(models, ~ loadModel(system.file("extdata", .x, package = pkgname)))
 }
 
-#' Compile the given model.
+#' Compile the model
 #' 
-#' Forces compilation of the given model
+#' \code{compileModel} potentially forces compilation of the given model.
 #' 
-#' @family model handlers
+#' @param force flag
+#' @param model a model object
+#' @family model actions
 #' @export
-compileModel <- function(model = getCurrentModel()) {
+compileModel <- function(force = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
+  assert_that(is.flag(force), noNA(force))
   
-  grab_msg(c_datamodel$getModel()$forceCompile())
+  if (force)
+    f <- c_datamodel$getModel()$forceCompile
+  else
+    f <- c_datamodel$getModel()$compileIfNecessary
+  
+  assert_that(grab_msg(f()), msg = "Compilation of the model failed.")
 }
 
-#' Open the given model in the copasi UI
+#' Apply the model's initial state
+#' 
+#' \code{applyInitialState} applies the given model's initial state.
+#' 
+#' @param model a model object
+#' @family model actions
+#' @export
+applyInitialState <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  grab_msg(c_datamodel$getModel()$applyInitialValues)
+  
+  invisible()
+}
+
+#' Update the model's initial state from the current state
+#' 
+#' \code{updateInitialState} updates the given model's initial state from the current state.
+#' 
+#' @param model a model object
+#' @family model actions
+#' @export
+updateInitialState <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  grab_msg(c_datamodel$getModel()$applyInitialValues)
+  
+  invisible()
+}
+
+#' Convert the model to irreversible reactions
+#' 
+#' \code{convertToIrreversible} converts the given model's reactions to irreversible reactions.
+#' 
+#' @param model a model object
+#' @family model actions
+#' @export
+convertToIrreversible <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  assert_that(
+    grab_msg(c_datamodel$getModel()$convert2NonReversible()),
+    msg = "Converting the model's reactions to irreversible reactions failed."
+  )
+  
+  invisible()
+}
+
+#' Open the model in the copasi UI
 #'
 #' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model
 #' @param copasi_loc location of CopasiUI

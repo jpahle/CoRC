@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_management.R
 \name{saveModelToString}
 \alias{saveModelToString}
-\title{Save a model to string}
+\title{Save the model to string}
 \usage{
 saveModelToString(model = getCurrentModel())
 }
@@ -10,7 +10,7 @@ saveModelToString(model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-\code{saveModelToString} saves a model to a string.
+\code{saveModelToString} saves the given model to a string.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

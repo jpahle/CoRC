@@ -235,7 +235,7 @@ getReducedStoichiometryMatrix <- function(model = getCurrentModel()) {
 
   c_model <- c_datamodel$getModel()
 
-  c_model$buildRedStoi()
+  # c_model$buildRedStoi()
   
   # mb should be integer matrix
   get_annotated_matrix(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_management.R
 \name{openCopasi}
 \alias{openCopasi}
-\title{Open the given model in the copasi UI}
+\title{Open the model in the copasi UI}
 \usage{
 openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
   model = getCurrentModel())
@@ -15,11 +15,10 @@ openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
 \item{model}{a model object}
 }
 \description{
-Open the given model in the copasi UI
+Open the model in the copasi UI
 }
 \seealso{
-Other model handlers: \code{\link{compileModel}},
-  \code{\link{getCurrentModel}},
+Other model handlers: \code{\link{getCurrentModel}},
   \code{\link{getLoadedModels}},
   \code{\link{setCurrentModel}}
 }

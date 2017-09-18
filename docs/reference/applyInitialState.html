@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get global quantities — getGlobalQuantities • CoRC</title>
+<title>Apply the model's initial state — applyInitialState • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,45 +98,29 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get global quantities</h1>
+    <h1>Apply the model's initial state</h1>
     </div>
 
     
-    <p><code>getGlobalQuantities</code> returns global quantities as a data frame.</p>
+    <p><code>applyInitialState</code> applies the given model's initial state.</p>
     
 
-    <pre class="usage"><span class='fu'>getGlobalQuantities</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rawExpressions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    <pre class="usage"><span class='fu'>applyInitialState</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>key</th>
-      <td><p>a character vector uniquely identifying global quantities</p></td>
-    </tr>
-    <tr>
-      <th>rawExpressions</th>
-      <td><p>a flag on whether expressions should be raw (not converted to readable format)</p></td>
-    </tr>
     <tr>
       <th>model</th>
       <td><p>a model object</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a data frame with global quantities and associated information</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='getGlobalQuantityReferences.html'>getGlobalQuantityReferences</a></code> <code><a href='setGlobalQuantities.html'>setGlobalQuantities</a></code></p>
-<p>Other global quantity functions: <code><a href='deleteGlobalQuantity.html'>deleteGlobalQuantity</a></code>,
-  <code><a href='entity_finders.html'>entity_finders</a></code>,
-  <code><a href='getGlobalQuantityReferences.html'>getGlobalQuantityReferences</a></code>,
-  <code><a href='newGlobalQuantity.html'>newGlobalQuantity</a></code>,
-  <code><a href='setGlobalQuantities.html'>setGlobalQuantities</a></code></p>
+    <p>Other model actions: <code><a href='compileModel.html'>compileModel</a></code>,
+  <code><a href='convertToIrreversible.html'>convertToIrreversible</a></code>,
+  <code><a href='updateInitialState.html'>updateInitialState</a></code></p>
     
 
   </div>
@@ -145,8 +129,6 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
           </ul>
 

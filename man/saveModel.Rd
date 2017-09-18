@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_management.R
 \name{saveModel}
 \alias{saveModel}
-\title{Save a model as a .cps file}
+\title{Save the model as a .cps file}
 \usage{
 saveModel(filename = model$getFileName(), overwrite = FALSE,
   model = getCurrentModel())
@@ -15,7 +15,7 @@ saveModel(filename = model$getFileName(), overwrite = FALSE,
 \item{model}{a model object}
 }
 \description{
-\code{saveModel} saves a model as a .cps file
+\code{saveModel} saves the given model as a .cps file
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

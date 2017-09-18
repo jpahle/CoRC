@@ -4,7 +4,7 @@
 \alias{setSpecies}
 \title{Set species}
 \usage{
-setSpecies(key = NULL, name = NULL, type = NULL,
+setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
   initial.concentration = NULL, initial.number = NULL, expression = NULL,
   data = NULL, model = getCurrentModel())
 }

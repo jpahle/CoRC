@@ -3,7 +3,7 @@
 #' \code{getSpecies} returns species information as a data frame.
 #'
 #' @param key a character vector uniquely identifying species
-#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
+#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with species and associated information
 #' @seealso \code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
@@ -81,26 +81,33 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
 #' @family species functions
 #' @export
-setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
+setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key)                   || is.character(key)                 && noNA(key),
     is.null(name)                  || is.character(name)                && length(name) == length(key),
     is.null(type)                  || is.character(type)                && length(type) == length(key),
+    is.null(compartment)           || is.character(compartment)         && length(compartment)  == length(key),
     is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
     is.null(initial.number)        || is.numeric(initial.number)        && length(initial.number) == length(key),
     is.null(expression)            || is.character(expression)          && length(expression) == length(key),
     is.null(data)                  || is.data.frame(data)
   )
   
+  # Do this as assertion before we start changing values
+  cl_metabs <- species_obj(key %||% character(), c_datamodel)
+  
+  # assemble compartments
+  if (!is.null(compartment)) {
+    cl_comps <- vector("list", length(key))
+    comps_to_write <- !is.na(compartment)
+    cl_comps[comps_to_write] <- compartment_obj(compartment[comps_to_write], c_datamodel)
+  }
+  
   if (!is.null(type))
     type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
-  
-  # Do this as assertion before we start changing values
-  cl_metabs <- species_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -116,6 +123,13 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
     walk2(
       cl_metabs, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
+    )
+  }
+  
+  if (!is.null(compartment)) {
+    walk2(
+      cl_metabs, cl_comps,
+      ~ if (!is.null(.y)) .x$initCompartment(.y)
     )
   }
   
@@ -170,7 +184,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
   
   c_model <- c_datamodel$getModel()
   
-  c_model$updateInitialValues(c_vals_to_update)
+  c_modelinitializeMetabolites 
   
   c_model$compileIfNecessary()
   
@@ -184,7 +198,7 @@ setSpecies <- function(key = NULL, name = NULL, type = NULL, initial.concentrati
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
 #' @param key a character vector uniquely identifying global quantities
-#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
+#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with global quantities and associated information
 #' @seealso \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
@@ -258,7 +272,6 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key)           || is.character(key)         && noNA(key),
     is.null(name)          || is.character(name)        && length(name) == length(key),
     is.null(type)          || is.character(type)        && length(type) == length(key),
     is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
@@ -266,14 +279,14 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     is.null(data)          || is.data.frame(data)
   )
   
+  # Do this as assertion before we start changing values
+  c_quants <- quantity_obj(key %||% character(), c_datamodel)
+  
   if (!is.null(type))
     type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
-  
-  # Do this as assertion before we start changing values
-  c_quants <- quantity_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -344,7 +357,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
 #' \code{getCompartments} returns compartments as a data frame.
 #'
 #' @param key a character vector uniquely identifying compartments
-#' @param rawExpression a flag on whether expressions should be raw (not converted to readable format)
+#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with compartments and associated information
 #' @seealso \code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
@@ -365,6 +378,8 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
     "Name"           = map_swig_chr(cl_comps, "getObjectName"),
     "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Volume" = map_swig_dbl(cl_comps, "getInitialValue"),
+    "Volume"         = NaN,
+    "Rate"           = NaN,
     "Expression"     = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
@@ -416,7 +431,6 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key)            || is.character(key)          && noNA(key),
     is.null(name)           || is.character(name)         && length(name) == length(key),
     is.null(type)           || is.character(type)         && length(type) == length(key),
     is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
@@ -424,14 +438,14 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
     is.null(data)           || is.data.frame(data)
   )
   
+  # Do this as assertion before we start changing values
+  cl_comps <- compartment_obj(key %||% character(), c_datamodel)
+  
   if (!is.null(type))
     type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (!is.null(expression))
     expression[!is.na(expression)] <- write_expr(expression[!is.na(expression)], c_datamodel)
-  
-  # Do this as assertion before we start changing values
-  cl_comps <- compartment_obj(key %||% character(), c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -540,7 +554,6 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key)       || is.character(key)  && noNA(key),
     is.null(name)      || is.character(name) && length(name) == length(key),
     is.null(data)      || is.data.frame(data)
   )
@@ -593,7 +606,9 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
     ref = c_reacti$getListOfPossibleFunctions()
   )
   
-  c_fun_vector %>% get_sv() %>% kinfunction_strict()
+  c_fun_vector %>%
+    get_sv() %>%
+    kinfunction_strict()
 }
 
 #' Set a reaction function
@@ -844,8 +859,6 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
 getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  key <- parameter(key = key %||% character(), model = c_datamodel)
-  
   if (is_empty(key))
     cl_params <-
       get_cdv(c_datamodel$getModel()$getReactions()) %>%
@@ -904,7 +917,6 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(key)      || is.character(key)     && noNA(key),
     is.null(name)     || is.character(name)    && length(name) == length(key),
     is.null(value)    || is.numeric(value)     && length(value) == length(key),
     is.null(mapping)  || is.character(mapping) && length(mapping) == length(key),

@@ -249,8 +249,10 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
   c_react <- c_model$createReaction(name)
   assert_that(inherits(c_react, "_p_CReaction"), msg = "Reaction creation failed")
   
-  success <- grab_msg(c_react$setReactionScheme(scheme))
-  assert_that(success, msg = "Reaction scheme invalid")
+  assert_that(
+    grab_msg(c_react$setReactionScheme(scheme)),
+    msg = "Reaction scheme invalid"
+  )
   
   dn <- c_react$getObjectDisplayName()
   

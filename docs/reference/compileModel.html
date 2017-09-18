@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compile the given model. — compileModel • CoRC</title>
+<title>Compile the model — compileModel • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,26 +98,40 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compile the given model.</h1>
+    <h1>Compile the model</h1>
     </div>
 
     
-    <p>Forces compilation of the given model</p>
+    <p><code>compileModel</code> potentially forces compilation of the given model.</p>
     
 
-    <pre class="usage"><span class='fu'>compileModel</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
-        
+    <pre class="usage"><span class='fu'>compileModel</span>(<span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>force</th>
+      <td><p>flag</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>a model object</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other model handlers: <code><a href='getCurrentModel.html'>getCurrentModel</a></code>,
-  <code><a href='getLoadedModels.html'>getLoadedModels</a></code>, <code><a href='openCopasi.html'>openCopasi</a></code>,
-  <code><a href='setCurrentModel.html'>setCurrentModel</a></code></p>
+    <p>Other model actions: <code><a href='applyInitialState.html'>applyInitialState</a></code>,
+  <code><a href='convertToIrreversible.html'>convertToIrreversible</a></code>,
+  <code><a href='updateInitialState.html'>updateInitialState</a></code></p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#see-also">See also</a></li>
           </ul>

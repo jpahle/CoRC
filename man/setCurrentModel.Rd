@@ -16,8 +16,7 @@ invisibly returns the model object
 \code{setCurrentModel} sets the given model as the currently active model.
 }
 \seealso{
-Other model handlers: \code{\link{compileModel}},
-  \code{\link{getCurrentModel}},
+Other model handlers: \code{\link{getCurrentModel}},
   \code{\link{getLoadedModels}}, \code{\link{openCopasi}}
 }
 \concept{model handlers}
