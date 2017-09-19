@@ -382,9 +382,10 @@ opt_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
-  if (!is.null(data$expression))
+  if (!is.null(data$expression)) {
     c_datamodel <- c_task$getObjectDataModel()
     c_problem$setObjectiveFunction(write_expr(data$expression, c_datamodel))
+  }
   
   if (!is.null(data$maximize))
     c_problem$setMaximize(data$maximize)

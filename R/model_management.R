@@ -1,5 +1,5 @@
 # helper to remove models that have NULL pointers
-discardUnloadedModels <- function() {
+discard_unloaded_models <- function() {
   pkg_env$cl_loaded_dms <-
     pkg_env$cl_loaded_dms %>%
     discard(map_lgl(., has_null_pointer))
@@ -49,7 +49,7 @@ setCurrentModel <- function(model) {
 #' @family model handlers
 #' @export
 getLoadedModels <- function() {
-  discardUnloadedModels()
+  discard_unloaded_models()
   
   # get_cdv(CRootContainer_getDatamodelList())
   pkg_env$cl_loaded_dms
@@ -198,7 +198,7 @@ unloadModel <- function(model = getCurrentModel()) {
   # CRootContainer_removeDatamodel(c_datamodel)
   delete(c_datamodel)
   
-  discardUnloadedModels()
+  discard_unloaded_models()
   pkg_env$c_curr_dm <- NULL
 }
 
@@ -209,7 +209,7 @@ unloadModel <- function(model = getCurrentModel()) {
 #' @family model loading
 #' @export
 unloadAllModels <- function() {
-  discardUnloadedModels()
+  discard_unloaded_models()
   
   pkg_env$cl_loaded_dms %>%
     # walk(~ CRootContainer_removeDatamodel(.x))

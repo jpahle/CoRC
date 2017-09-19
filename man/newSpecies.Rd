@@ -4,8 +4,8 @@
 \alias{newSpecies}
 \title{Create a new species}
 \usage{
-newSpecies(name, compartment = NULL, type = c("fixed", "assignment",
-  "reactions", "ode"), initial.concentration = 1, expression = NULL,
+newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
+  "assignment", "ode"), initial.concentration = 1, expression = NULL,
   model = getCurrentModel())
 }
 \arguments{

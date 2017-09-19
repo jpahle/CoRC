@@ -26,8 +26,11 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
     "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
     "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
-    "Concentration"         = map_swig_dbl(cl_metabs, "getInitialConcentration"),
-    "Number"                = map_swig_dbl(cl_metabs, "getInitialValue"),
+    "Concentration"         = map_swig_dbl(cl_metabs, "getConcentration"),
+    "Number"                = map_swig_dbl(cl_metabs, "getValue"),
+    "Rate"                  = map_swig_dbl(cl_metabs, "getConcentrationRate"),
+    "Number Rate"           = map_swig_dbl(cl_metabs, "getRate"),
+    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
     "Expression"            = map_chr(cl_metabs, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
@@ -61,6 +64,9 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
     "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
     "Number"                = cl_metabs %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Rate"                  = cl_metabs %>% map_swig("getConcentrationRateReference") %>% as_ref(c_datamodel),
+    "Number Rate"           = cl_metabs %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
+    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_ref_str, c_datamodel = c_datamodel),
     "Expression"            = map_chr(cl_metabs, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
@@ -81,7 +87,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
 #' @family species functions
 #' @export
-setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL,data = NULL, model = getCurrentModel()) {
+setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)                  || is.character(name)                && length(name) == length(key),
@@ -193,7 +199,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   invisible()
 }
 
-#'  Get global quantities
+#' Get global quantities
 #'
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
@@ -215,17 +221,19 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
 
   # assemble output dataframe
   tibble::tibble(
-    key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
-    "Name"          = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
-    "Initial Value" = map_swig_dbl(cl_quants, "getInitialValue"),
-    "Value"         = map_swig_dbl(cl_quants, "getValue"),
-    "Expression"    = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
+    key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    "Name"               = map_swig_chr(cl_quants, "getObjectName"),
+    "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
+    "Initial Value"      = map_swig_dbl(cl_quants, "getInitialValue"),
+    "Transient Value"    = map_swig_dbl(cl_quants, "getValue"),
+    "Rate"               = map_swig_dbl(cl_quants, "getRate"),
+    "Initial Expression" = map_chr(cl_quants, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
+    "Expression"         = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
 }
 
-#'  Get global quantitiy references
+#' Get global quantitiy references
 #'
 #' \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.
 #'
@@ -245,12 +253,14 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key             = map_swig_chr(cl_quants, "getObjectDisplayName"),
-    "Name"          = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"          = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
-    "Initial Value" = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Value"         = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
-    "Expression"    = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
+    key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    "Name"               = map_swig_chr(cl_quants, "getObjectName"),
+    "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
+    "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
+    "Transient Value"    = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
+    "Initial Expression" = map_chr(cl_quants, iexpr_to_ref_str, c_datamodel = c_datamodel),
+    "Expression"         = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
 }
@@ -352,7 +362,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   invisible()
 }
 
-#'  Get compartments
+#' Get compartments
 #'
 #' \code{getCompartments} returns compartments as a data frame.
 #'
@@ -374,18 +384,19 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
   
   # assemble output dataframe
   tibble::tibble(
-    key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
-    "Name"           = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
-    "Initial Volume" = map_swig_dbl(cl_comps, "getInitialValue"),
-    "Volume"         = NaN,
-    "Rate"           = NaN,
-    "Expression"     = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
+    key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    "Name"               = map_swig_chr(cl_comps, "getObjectName"),
+    "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
+    "Initial Size"       = map_swig_dbl(cl_comps, "getInitialValue"),
+    "Size"               = map_swig_dbl(cl_comps, "getValue"),
+    "Rate"               = map_swig_dbl(cl_comps, "getRate"),
+    "Initial Expression" = map_chr(cl_comps, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
+    "Expression"         = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
   ) %>%
     transform_names()
 }
 
-#'  Get compartment references
+#' Get compartment references
 #'
 #' \code{getCompartmentReferences} returns compartment attribute references as a data frame.
 #'
@@ -405,11 +416,14 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key              = map_swig_chr(cl_comps, "getObjectDisplayName"),
-    "Name"           = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"           = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
-    "Initial Volume" = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Expression"     = map_chr(cl_comps, expr_to_ref_str, c_datamodel = c_datamodel)
+    key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    "Name"               = map_swig_chr(cl_comps, "getObjectName"),
+    "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
+    "Initial Size"       = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
+    "Size"               = cl_comps %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Rate"               = cl_comps %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
+    "Initial Expression" = map_chr(cl_comps, iexpr_to_ref_str, c_datamodel = c_datamodel),
+    "Expression"         = map_chr(cl_comps, expr_to_ref_str, c_datamodel = c_datamodel)
   ) %>%
     transform_names()
 }
@@ -421,19 +435,19 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param key a character vector uniquely identifying compartments
 #' @param name a character vector of names to set
 #' @param type a character vector of species types ("fixed", "assignment", "ode").
-#' @param initial.volume a numeric vector of values to set
+#' @param initial.size a numeric vector of values to set
 #' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 #' @family compartment functions
 #' @export
-setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)           || is.character(name)         && length(name) == length(key),
     is.null(type)           || is.character(type)         && length(type) == length(key),
-    is.null(initial.volume) || is.numeric(initial.volume) && length(initial.volume) == length(key),
+    is.null(initial.size)   || is.numeric(initial.size)   && length(initial.size) == length(key),
     is.null(expression)     || is.character(expression)   && length(expression) == length(key),
     is.null(data)           || is.data.frame(data)
   )
@@ -450,7 +464,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.volume", "expression")])
+    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.size", "expression")])
   
   if (is_empty(cl_comps)) return(invisible())
   
@@ -474,9 +488,9 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   }
   
   # apply volume
-  if (!is.null(initial.volume)) {
+  if (!is.null(initial.size)) {
     walk2(
-      cl_comps, initial.volume,
+      cl_comps, initial.size,
       ~ {
         if (!is.na(.y)) {
           .x$setInitialValue(.y)
@@ -512,14 +526,14 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.volume
   invisible()
 }
 
-#'  Get reactions
+#' Get reactions
 #'
 #' \code{getReactions} returns reactions as a data frame.
 #'
 #' @param key a character vector uniquely identifying reactions
 #' @param model a model object
 #' @return a data frame with reactions and associated information
-#' @seealso \code{\link{setReactions}}
+#' @seealso \code{\link{getReactionReferences}} \code{\link{setReactions}}
 #' @family reaction functions
 #' @export
 getReactions <- function(key = NULL, model = getCurrentModel()) {
@@ -529,13 +543,45 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
     cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
   else
     cl_reacts <- reaction_obj(key, c_datamodel)
-
+  
   # assemble output dataframe
   tibble::tibble(
-    key    = map_swig_chr(cl_reacts, "getObjectDisplayName"),
-    "Name" = map_swig_chr(cl_reacts, "getObjectName"),
-    "Scheme" = map_swig_chr(cl_reacts, "getReactionScheme"),
-    "Rate Law" = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName")
+    key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+    "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
+    "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
+    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName"),
+    "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
+    "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")
+  ) %>%
+    transform_names()
+}
+
+#' Get reaction references
+#'
+#' \code{getReactions} returns reactions attribute references as a data frame.
+#'
+#' @param key a character vector uniquely identifying reactions
+#' @param model a model object
+#' @return a data frame with reactions and associated references
+#' @seealso \code{\link{getReactions}} \code{\link{setReactions}}
+#' @family reaction functions
+#' @export
+getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  if (is_empty(key))
+    cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
+  else
+    cl_reacts <- reaction_obj(key, c_datamodel)
+  
+  # assemble output dataframe
+  tibble::tibble(
+    key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+    "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
+    "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
+    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName"),
+    "Flux"        = cl_reacts %>% map_swig("getFluxReference") %>% as_ref(c_datamodel),
+    "Number Flux" = cl_reacts %>% map_swig("getParticleFluxReference") %>% as_ref(c_datamodel)
   ) %>%
     transform_names()
 }
@@ -548,7 +594,7 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #' @param name a character vector of names to set
 #' @param data a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
 #' @param model a model object
-#' @seealso \code{\link{getReactions}}
+#' @seealso \code{\link{getReactions}} \code{\link{getReactionReferencess}}
 #' @family reaction functions
 #' @export
 setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
@@ -785,7 +831,7 @@ set_rparam_mapping <- function(c_model, c_reacti, i, value) {
   }
 }
 
-#'  Get reaction parameters
+#' Get reaction parameters
 #'
 #' \code{getParameters} returns reaction parameters as a data frame.
 #'
@@ -846,7 +892,7 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
     transform_names()
 }
 
-#'  Get reaction parameter references
+#' Get reaction parameter references
 #'
 #' \code{getParameterReferences} returns reaction parameters as a data frame.
 #'

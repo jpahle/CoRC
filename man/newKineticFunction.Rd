@@ -25,12 +25,14 @@ function key
 Create a new kinetic function
 }
 \seealso{
-Other reaction functions: \code{\link{deleteKineticFunction}},
+Other reaction functions: \code{\link{clearCustomKineticFunctions}},
+  \code{\link{deleteKineticFunction}},
   \code{\link{deleteReaction}},
   \code{\link{entity_finders}},
   \code{\link{getParameterReferences}},
   \code{\link{getParameters}},
   \code{\link{getReactionMappings}},
+  \code{\link{getReactionReferences}},
   \code{\link{getReactions}},
   \code{\link{getValidReactionFunctions}},
   \code{\link{newReaction}}, \code{\link{setParameters}},

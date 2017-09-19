@@ -312,13 +312,11 @@ tc_set_settings <- function(data, c_task) {
 }
 
 # gathers all results
-# needs to know settings results in memory are from current run
 tc_get_results <- function(c_task, settings) {
-  c_datamodel <- c_task$getObjectDataModel()
+  # c_datamodel is used in exported functions so make sure its safe
+  c_datamodel <- make_dm_safe(c_task$getObjectDataModel())
   c_timeseries <- c_task$getTimeSeries()
   recordedSteps <- c_timeseries$getRecordedSteps()
-  
-  ret <- NULL
   
   if (recordedSteps) {
     # Timecritical step optimization
@@ -345,8 +343,9 @@ tc_get_results <- function(c_task, settings) {
           set_names(CTimeSeries_getTitle(c_timeseries, i_var))
       }) %>%
       dplyr::bind_cols()
-  } else if (!full_settings$saveResultInMemory)
-    warning("No result generated because saveResultInMemory is set to FALSE in the model.")
+  } else {
+    ret <- tibble::tibble()
+  }
   
   new_copasi_ts(
     settings = settings,

@@ -13,11 +13,13 @@ deleteKineticFunction(key)
 Delete a function
 }
 \seealso{
-Other reaction functions: \code{\link{deleteReaction}},
+Other reaction functions: \code{\link{clearCustomKineticFunctions}},
+  \code{\link{deleteReaction}},
   \code{\link{entity_finders}},
   \code{\link{getParameterReferences}},
   \code{\link{getParameters}},
   \code{\link{getReactionMappings}},
+  \code{\link{getReactionReferences}},
   \code{\link{getReactions}},
   \code{\link{getValidReactionFunctions}},
   \code{\link{newKineticFunction}},

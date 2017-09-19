@@ -18,14 +18,16 @@ a data frame with reactions and associated information
 \code{getReactions} returns reactions as a data frame.
 }
 \seealso{
-\code{\link{setReactions}}
+\code{\link{getReactionReferences}} \code{\link{setReactions}}
 
-Other reaction functions: \code{\link{deleteKineticFunction}},
+Other reaction functions: \code{\link{clearCustomKineticFunctions}},
+  \code{\link{deleteKineticFunction}},
   \code{\link{deleteReaction}},
   \code{\link{entity_finders}},
   \code{\link{getParameterReferences}},
   \code{\link{getParameters}},
   \code{\link{getReactionMappings}},
+  \code{\link{getReactionReferences}},
   \code{\link{getValidReactionFunctions}},
   \code{\link{newKineticFunction}},
   \code{\link{newReaction}}, \code{\link{setParameters}},

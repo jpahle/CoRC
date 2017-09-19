@@ -20,11 +20,13 @@ a data frame with reaction parameters and associated information
 \seealso{
 \code{\link{getParameterReferences}} \code{\link{setParameters}}
 
-Other reaction functions: \code{\link{deleteKineticFunction}},
+Other reaction functions: \code{\link{clearCustomKineticFunctions}},
+  \code{\link{deleteKineticFunction}},
   \code{\link{deleteReaction}},
   \code{\link{entity_finders}},
   \code{\link{getParameterReferences}},
   \code{\link{getReactionMappings}},
+  \code{\link{getReactionReferences}},
   \code{\link{getReactions}},
   \code{\link{getValidReactionFunctions}},
   \code{\link{newKineticFunction}},

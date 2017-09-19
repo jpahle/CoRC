@@ -5,7 +5,7 @@
 \title{Set compartments}
 \usage{
 setCompartments(key = NULL, name = NULL, type = NULL,
-  initial.volume = NULL, expression = NULL, data = NULL,
+  initial.size = NULL, expression = NULL, data = NULL,
   model = getCurrentModel())
 }
 \arguments{
@@ -15,7 +15,7 @@ setCompartments(key = NULL, name = NULL, type = NULL,
 
 \item{type}{a character vector of species types ("fixed", "assignment", "ode").}
 
-\item{initial.volume}{a numeric vector of values to set}
+\item{initial.size}{a numeric vector of values to set}
 
 \item{expression}{a character vector of expressions to set}
 

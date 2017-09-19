@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set compartments — setCompartments • CoRC</title>
+<title>Clear custom functions — clearCustomKineticFunctions • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -101,65 +101,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set compartments</h1>
+    <h1>Clear custom functions</h1>
     </div>
 
     
-    <p><code>setCompartments</code> applies given values to compartments of the model depending on the 'key' parameter.</p>
+    <p>Clear custom functions</p>
     
 
-    <pre class="usage"><span class='fu'>setCompartments</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>initial.size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>key</th>
-      <td><p>a character vector uniquely identifying compartments</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>a character vector of names to set</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>a character vector of species types ("fixed", "assignment", "ode").</p></td>
-    </tr>
-    <tr>
-      <th>initial.size</th>
-      <td><p>a numeric vector of values to set</p></td>
-    </tr>
-    <tr>
-      <th>expression</th>
-      <td><p>a character vector of expressions to set</p></td>
-    </tr>
-    <tr>
-      <th>data</th>
-      <td><p>a data frame as given by <code><a href='getCompartments.html'>getCompartments</a></code> which will be applied before the other arguments.</p></td>
-    </tr>
-    <tr>
-      <th>model</th>
-      <td><p>a model object</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>clearCustomKineticFunctions</span>()</pre>
+        
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='getCompartments.html'>getCompartments</a></code> <code><a href='getCompartmentReferences.html'>getCompartmentReferences</a></code></p>
-<p>Other compartment functions: <code><a href='deleteCompartment.html'>deleteCompartment</a></code>,
+    <p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+  <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='entity_finders.html'>entity_finders</a></code>,
-  <code><a href='getCompartmentReferences.html'>getCompartmentReferences</a></code>,
-  <code><a href='getCompartments.html'>getCompartments</a></code>,
-  <code><a href='newCompartment.html'>newCompartment</a></code></p>
+  <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
+  <code><a href='getParameters.html'>getParameters</a></code>,
+  <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
+  <code><a href='getReactions.html'>getReactions</a></code>,
+  <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
+  <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
+  <code><a href='newReaction.html'>newReaction</a></code>, <code><a href='setParameters.html'>setParameters</a></code>,
+  <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
+  <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
+  <code><a href='setReactions.html'>setReactions</a></code></p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#see-also">See also</a></li>
           </ul>

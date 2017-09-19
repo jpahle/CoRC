@@ -20,11 +20,14 @@ Get reaction parameter mappings
 \seealso{
 \code{\link{setReactionMappings}}
 
-Other reaction functions: \code{\link{deleteKineticFunction}},
+Other reaction functions: \code{\link{clearCustomKineticFunctions}},
+  \code{\link{deleteKineticFunction}},
   \code{\link{deleteReaction}},
   \code{\link{entity_finders}},
   \code{\link{getParameterReferences}},
-  \code{\link{getParameters}}, \code{\link{getReactions}},
+  \code{\link{getParameters}},
+  \code{\link{getReactionReferences}},
+  \code{\link{getReactions}},
   \code{\link{getValidReactionFunctions}},
   \code{\link{newKineticFunction}},
   \code{\link{newReaction}}, \code{\link{setParameters}},

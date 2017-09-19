@@ -11,7 +11,7 @@
 #' @return species key
 #' @family species functions
 #' @export
-newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment", "reactions", "ode"), initial.concentration = 1, expression = NULL, model = getCurrentModel()) {
+newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", "assignment", "ode"), initial.concentration = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
@@ -29,11 +29,18 @@ newSpecies <- function(name, compartment = NULL, type = c("fixed", "assignment",
   c_model <- c_datamodel$getModel()
   
   if (is.null(compartment)) {
-    cl_comps <- c_model$getCompartments()
-    # Even if multiple compartments exist, use the first as default
-    c_comp <- cl_comps$get(0L)
+    c_comps <- c_model$getCompartments()
+    comps_size <- c_comps$size()
     
-    if (cl_comps$size() > 1L)
+    if (c_comps$size() == 0L) {
+      c_model$createCompartment("compartment")
+      warning("No compartment exists. Created default compartment.")
+    }
+      
+    # Even if multiple compartments exist, use the first as default
+    c_comp <- c_comps$get(0L)
+    
+    if (c_comps$size() > 1L)
       warning("No compartment given, using default: ", c_comp$getObjectName())
   } else {
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
@@ -328,7 +335,7 @@ newKineticFunction <- function(name, formula, parameters, function.type = c("gen
   
   c_fun_db <- CRootContainer_getFunctionList()
   
-  assert_that(is.null(c_fun_db$findFunction(name)), msg = paste0("Name ", name, " is already taken."))
+  assert_that(is.null(c_fun_db$findFunction(name)), msg = paste0("Name `", name, "` is already taken."))
   
   parameters <- to_param_vector(parameters, "character")
   
@@ -418,4 +425,19 @@ deleteKineticFunction <- function(key) {
   invisible()
 }
 
-
+#' Clear custom functions
+#' 
+#' @family reaction functions
+#' @export
+clearCustomKineticFunctions <- function() {
+  c_fun_db <- CRootContainer_getFunctionList()
+  
+  cl_funs <-
+    c_fun_db$loadedFunctions() %>%
+    get_cdv() %>%
+    discard(map_swig_lgl(., "isReadOnly")) %>%
+    map_swig_chr("getKey") %>%
+    walk_iswig(c_fun_db, "removeFunction")
+  
+  invisible()
+}

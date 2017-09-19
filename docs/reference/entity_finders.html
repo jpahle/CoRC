@@ -76,6 +76,9 @@
     <li>
       <a href="../articles/issues.html">Issues</a>
     </li>
+    <li>
+      <a href="../articles/model_building.html">Model Building</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -167,7 +170,7 @@ return one row in the output for each key given as parameter.</p>
 <p>Whereas the main functions generally won't help seperate an entity `a` from and entity `ab`, the
 `_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets peference
 over the partial match with `ab`.</p>
-<p>The matching mechanism can be tuned using a <code><a href='http://www.rdocumentation.org/packages/stringr/topics/modifiers'>regex</a></code> mechanism.</p>
+<p>The matching mechanism can be tuned using a <code><a href='regex.html'>regex</a></code> mechanism.</p>
 <p>The functions can also be used to find value references by giving the `reference` argument.
 Various references such as "Value" or "InitialConcentration" are available for some types of entities.</p>
     
@@ -201,11 +204,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='getCompartments.html'>getCompartments</a></code>,
   <code><a href='newCompartment.html'>newCompartment</a></code>,
   <code><a href='setCompartments.html'>setCompartments</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
@@ -213,11 +218,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
@@ -225,11 +232,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
@@ -237,11 +246,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
@@ -249,11 +260,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
@@ -261,11 +274,13 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
-<p>Other reaction functions: <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
+<p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
+  <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
   <code><a href='getParameterReferences.html'>getParameterReferences</a></code>,
   <code><a href='getParameters.html'>getParameters</a></code>,
   <code><a href='getReactionMappings.html'>getReactionMappings</a></code>,
+  <code><a href='getReactionReferences.html'>getReactionReferences</a></code>,
   <code><a href='getReactions.html'>getReactions</a></code>,
   <code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code>,
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,

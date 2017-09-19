@@ -60,6 +60,27 @@ assert_datamodel <- function(c_datamodel) {
   c_datamodel
 }
 
+# Make c_datamodel variables safe to pass trough assert_datamodel.
+# expernal pointers in R are always copied by reference.
+# This is a major exception to typical copying rules of R.
+# This fact is crucial for CoRC to work safely because unloading a datamodel
+# from anywhere will invalidate the users references to it.
+# If I generate another reference to a datamodel by $getObjectDatamodel() I have
+# to make sure it never leaks back to the user.
+# For this reason, CoRC keeps track of references passed to users with the
+# pkg_env$cl_loaded_dms list.
+make_dm_safe <- function(c_datamodel) {
+  cl_loaded_dms <- pkg_env$cl_loaded_dms
+  
+  i_dm_in_list <-
+    cl_loaded_dms %>%
+    map(attr_getter("ref")) %>%
+    map_lgl(identical, c_datamodel@ref) %>%
+    which()
+  
+  cl_loaded_dms[[i_dm_in_list[1]]]
+}
+
 # transforms names from how they appear in the GUI to the preferred format in CoRC
 # e.g. "Initial Concentration" -> "initial.concentration" 
 transform_names <- function(x) {
@@ -80,14 +101,14 @@ transform_names_worker <- function(x) {
 # This function is very specific to R and can likely be cut completely in other languages.
 to_param_vector <- function(x, type) {
   x_val <- x
-  if (is.list(x_val)) {
-    type_fun <- get(type)
-    x_val <- try(as_vector(x_val, .type = type_fun(1)), silent = TRUE)
-    assert_that(!is.error(x_val), msg = paste0(deparse(substitute(x)), " can not be converted to vector of type ", type, "."))
-  } else {
-    is.type_fun <- as.symbol(paste0("is.", type))
-    eval(substitute(assert_that(is.type_fun(x))))
-  }
+  
+  type_fun <- get(type)
+  x_val <- try(as_vector(x_val, .type = type_fun(1)), silent = TRUE)
+  
+  assert_that(
+    !is.error(x_val),
+    msg = paste0(deparse(substitute(x)), " can not be converted to vector of type ", type, ".")
+  )
   
   x_val
 }
