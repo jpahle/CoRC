@@ -29,7 +29,7 @@ set.seed(1)
 library(tidyverse)
 library(CoRC)
 loadExamples(2)
-getSpecies()
+species()
 ```
 
 ## Identifying entities
@@ -43,6 +43,7 @@ compartment("comp")
 quantity("a")
 reaction("Che B phosph")
 parameter("4).kR")
+kinfunction("Michaelis-Menten")
 ```
 
 These functions return ObjectDisplayNames when a species is identified.
@@ -72,12 +73,12 @@ In cases, where a key is clear to always expect the same kind of entity, identif
 These methods will always use the strict variants to allow reliably matching species.
 
 ```{r}
-getSpecies(key = species("CheY"))
-getSpecies(key = species_strict("CheY"))
-getSpecies(key = "CheY")
-getSpecies("CheY")
-getSpecies("Che")
-getSpecies(species(regex("Che.p")))
+getSpecies(key = species("CheY"))$name
+getSpecies(key = species_strict("CheY"))$name
+getSpecies(key = "CheY")$name
+getSpecies("CheY")$name
+getSpecies("Che")$name
+getSpecies(species(regex("Che.p")))$name
 ```
 
 ## Using References
@@ -101,3 +102,21 @@ To help with this, functions implemented to get model values have similar functi
 str(getSpecies("CheY"))
 str(getSpeciesReferences("CheY"))
 ```
+
+# Extension suggestion
+
+Using numbers for referencing:
+
+```{r}
+species()[5]
+getSpecies(species()[5])$name
+```
+
+Maybe I should allow integers to be passed as keys:
+
+```{r}
+species(5)
+species_strict(5)
+getSpecies(5)$name
+```
+
