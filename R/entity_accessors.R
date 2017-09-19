@@ -184,7 +184,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   c_model <- c_datamodel$getModel()
   
-  c_modelinitializeMetabolites 
+  c_model$updateInitialValues(c_vals_to_update)
   
   c_model$compileIfNecessary()
   
