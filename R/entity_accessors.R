@@ -694,7 +694,7 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
   c_reacti$setFunctionAndDoMapping(fun)
   
   if (!is.null(mappings))
-    set_react_mapping(c_model, c_reacti, mappings)
+    set_react_mapping(c_datamodel, c_reacti, mappings)
   
   c_reacti$writeBackToReaction(c_react)
   
@@ -756,7 +756,7 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   c_reacti <- CReactionInterface(c_model)
   c_reacti$initFromReaction(c_react)
   
-  set_react_mapping(c_model, c_reacti, mappings)
+  set_react_mapping(c_datamodel, c_reacti, mappings)
   
   c_reacti$writeBackToReaction(c_react)
   
@@ -765,7 +765,7 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   invisible()
 }
 
-set_react_mapping <- function(c_model, c_reacti, mappings) {
+set_react_mapping <- function(c_datamodel, c_reacti, mappings) {
   assert_that(is.list(mappings), !is.null(names(mappings)), noNA(names(mappings)))
   
   params <- seq_along_v(c_reacti)
@@ -774,13 +774,13 @@ set_react_mapping <- function(c_model, c_reacti, mappings) {
   names(mappings) <- map_chr(names(mappings), function(parameter) rlang::arg_match(parameter, names(params)))
   
   iwalk(mappings, ~ {
-    set_rparam_mapping(c_model, c_reacti, i = params[[.y]], value = .x)
+    set_rparam_mapping(c_datamodel, c_reacti, i = params[[.y]], value = .x)
   })
   
   assert_that(c_reacti$isValid(), msg = "Result of mapping is invalid.")
 }
 
-set_rparam_mapping <- function(c_model, c_reacti, i, value) {
+set_rparam_mapping <- function(c_datamodel, c_reacti, i, value) {
   type <- c_reacti$getUsage(i)
   
   assert_that(is.scalar(value), msg = paste0("Parameter `", c_reacti$getParameterName(i), '` must be scalar.'))
