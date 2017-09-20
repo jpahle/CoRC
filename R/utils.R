@@ -113,6 +113,14 @@ to_param_vector <- function(x, type) {
   x_val
 }
 
+# Push transient values from mathcontainer back to the model.
+# Mostly called after task execution to update model values.
+update_model_from_mc <- function(c_mathcontainer) {
+  c_mathcontainer$updateSimulatedValues(FALSE);
+  c_mathcontainer$updateTransientDataValues();
+  c_mathcontainer$pushAllTransientValues();
+}
+
 # finds copasi messages and helps purge known annoying messages
 # because of lazy evaluation, x will evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character(0)) {
