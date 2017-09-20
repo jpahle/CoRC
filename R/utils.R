@@ -47,6 +47,7 @@ task_enum <-
   .[. != "UnsetTask" & . != "__SIZE"]
 
 # Checks whether the given c_datamodel is valid / loaded
+# Whenever it's called, it will also set the model as the currently active one
 assert_datamodel <- function(c_datamodel) {
   assert_that(inherits(c_datamodel, "_p_CDataModel"))
   
@@ -95,7 +96,7 @@ transform_names_worker <- function(x) {
 }
 
 # Convert lists that are equivalent to vectors to vectors
-# This function is a helper for functions that takes (named) vectors as argument.
+# This function is a helper for functions that take (named) vectors as argument.
 # It generates helpful error messages by using substitute.
 # In R, users often like to give named lists instead of named vectors which is an easy mistake.
 # This function is very specific to R and can likely be cut completely in other languages.
@@ -122,7 +123,8 @@ update_model_from_mc <- function(c_mathcontainer) {
 }
 
 # finds copasi messages and helps purge known annoying messages
-# because of lazy evaluation, x will evaluated with force(x) and then messages are checked
+# because of lazy evaluation, x will not be evaluated on the function
+# call but be evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character(0)) {
   purge_by_default <- c(
     ": No output file defined for report of task "
@@ -210,13 +212,13 @@ autoplot.copasi_ts <- function(object, ...) {
   
   # only add species selected in ...
   if (!is_empty(selected))
-    tc <- tc %>% dplyr::select(Time, !!!selected)
+    tc <- tc %>% dplyr::select(.data$Time, !!!selected)
   
   units <- object$units
   
   # reshape data frame for ggplot and define the plot
   tc %>%
-    tidyr::gather(Species, Concentration, -Time) %>%
+    tidyr::gather("Species", "Concentration", -.data$Time) %>%
     ggplot2::ggplot(ggplot2::aes(x = Time, y = Concentration, group = Species, color = Species)) +
     ggplot2::geom_line() +
     ggplot2::labs(

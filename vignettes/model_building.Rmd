@@ -78,13 +78,23 @@ newModel()
 newCompartment("compartment")
 newSpecies("a", type = "fixed", initial.concentration = 10)
 newSpecies("b")
-fun <-
-  newKineticFunction(
-    "manual MM",
-    "((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)",
-    parameters = c(substrate = "substrate", product = "product")
+newKineticFunction(
+  "manual MM",
+  "((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)",
+  parameters = c(substrate = "substrate", product = "product")
+)
+newReaction(
+  "a = b",
+  fun = "manual MM",
+  mapping = list(
+    substrate = "a",
+    product = "b",
+    Vf = 0.1,
+    Kms = 0.1,
+    Vr = 0.1,
+    Kmp = 0,1
   )
-newReaction("a = b", fun = fun)
+)
 
 runTC(1000) %>% autoplot()
 
@@ -102,11 +112,11 @@ subs_value <- quantity(subs_quant, reference = "Value")
 newSpecies("a", type = "assignment", expression = subs_value)
 newReaction("a = b", fun = "Reversible Michaelis-Menten")
 
-runTC(1000) %>% autoplot()
+runTC(1000)$result
 
 newGlobalQuantity("reaction rate", type = "assignment", expression = reaction("a = b", reference = "Flux"))
 
-runTC(1000) %>% autoplot()
+runTC(1000)$result
 
 unloadModel()
 ```
