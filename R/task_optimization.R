@@ -107,27 +107,30 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #'
 #' \code{setOptimizationSettings} sets optimization task settings including parameters, experiments and method options.
 #'
+#' @param expression string
+#' @param maximize flag
+#' @eval rox_param("subtask", "string", task_enum)
 #' @param randomizeStartValues flag
-#' @param createParameterSets flag
 #' @param calculateStatistics flag
 #' @param updateModel flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
-#' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @family optimization
 #' @export
-setOptimizationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
-  settings <- pe_assemble_settings(
+  settings <- opt_assemble_settings(
+    expression           = expression,
+    maximize             = maximize,
+    subtask              = subtask,
     randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    calculateStatistics  = calculateStatistics,
+    updateModel          = updateModel,
+    executable           = executable
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
@@ -387,7 +390,10 @@ opt_set_settings <- function(data, c_task) {
   
   if (!is.null(data$expression)) {
     c_datamodel <- c_task$getObjectDataModel()
-    c_problem$setObjectiveFunction(write_expr(data$expression, c_datamodel))
+    assert_that(
+      grab_msg(c_problem$setObjectiveFunction(write_expr(data$expression, c_datamodel))),
+      msg = "Error when setting optimization expression."
+    )
   }
   
   if (!is.null(data$maximize))
