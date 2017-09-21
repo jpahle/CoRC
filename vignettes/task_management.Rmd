@@ -1,0 +1,84 @@
+---
+title: "Managing Tasks"
+author: "Jonas Förster & Jürgen Pahle"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Managing Tasks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "100%",
+  error = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+set.seed(1)
+```
+
+## Initial Setup
+
+```{r setup}
+library(tidyverse)
+library(CoRC)
+loadExamples(2)
+```
+
+## Task functions
+
+# Task functions
+
+CoRC has implemented a variety of copasi functions.
+Tasks generally have an execution function (e.g. \code{runTimeCourse}), a settings setter function (e.g. \code{setTimeCourseSettings}) and a settings getter function (e.g. \code{getTimeCourseSettings}).
+
+```{r}
+tc_settings <- getTimeCourseSettings()
+tc_settings$duration
+
+setTimeCourseSettings(duration = 100)
+getTimeCourseSettings()$duration
+
+runTimeCourse()
+```
+
+# Task settings
+
+Task settings can be set in two ways.
+The set familiy of functions is the preferred way to set task settings.
+The run familiy of functions will generally take the same arguments as the set familiy of functions but will only set them temporarily.
+The get familiy of functions will return a list that can be used as a template for calling functions that expect settings as input.
+A similar list is also given in every output of a run function.
+
+```{r}
+getTimeCourseSettings()$duration
+setTimeCourseSettings(duration = 10)
+runTimeCourse()$settings$duration
+runTimeCourse(duration = 1)$settings$duration
+getTimeCourseSettings()$duration
+```
+
+# Task execution
+
+Executing a task will return a list with all relevant outputs.
+
+```{r}
+str(runTimeCourse())
+str(runSteadyState())
+```
+
+# Further remarks
+
+Settings from get functions should serve as input for set functions
+
+```{r}
+settings <- getTimeCourseSettings()
+do.call(setTimeCourseSettings, settings)
+```
+

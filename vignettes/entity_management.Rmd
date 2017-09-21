@@ -1,10 +1,10 @@
 ---
-title: "Handling Model Entities"
+title: "Managing Model Entities"
 author: "Jonas Förster & Jürgen Pahle"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Handling Model Entities}
+  %\VignetteIndexEntry{Managing Model Entities}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -118,5 +118,21 @@ Maybe I should allow integers to be passed as keys:
 species(5)
 species_strict(5)
 getSpecies(5)$name
+```
+
+# Entity modification
+
+For most kinds of entities there is a finder function (e.g. species), a getter function (e.g. getSpecies) and a setter function (e.g. setSpecies).
+Other ways to access model Values is by evaluating copasi expressions (e.g. getValue).
+
+
+```{r}
+getSpecies("CheYp")$initial.concentration
+
+setSpecies("CheYp", initial.concentration = 1)
+
+getSpecies("CheYp")$initial.concentration
+getValue(species("CheYp", reference = "InitialConcentration"))
+getValue("{[CheYp]_0}")
 ```
 
