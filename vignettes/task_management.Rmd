@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
-## Initial Setup
+# Initial Setup
 
 ```{r setup}
 library(tidyverse)
@@ -31,54 +31,68 @@ library(CoRC)
 loadExamples(2)
 ```
 
-## Task functions
-
 # Task functions
 
 CoRC has implemented a variety of copasi functions.
-Tasks generally have an execution function (e.g. \code{runTimeCourse}), a settings setter function (e.g. \code{setTimeCourseSettings}) and a settings getter function (e.g. \code{getTimeCourseSettings}).
+Tasks generally have an `run` execution function (e.g. `runTimeCourse`), a settings `set` function (e.g. `setTimeCourseSettings`) and a settings `get` function (e.g. `getTimeCourseSettings`).
+
+**Get task settings**:
+
+Get functions return a list of settings in the same format as is expected as input to `set` functions.
 
 ```{r}
-tc_settings <- getTimeCourseSettings()
-tc_settings$duration
+str(getTimeCourseSettings())
+```
 
+**Set task settings**:
+
+```{r}
 setTimeCourseSettings(duration = 100)
 getTimeCourseSettings()$duration
+```
 
-runTimeCourse()
+**Run task**:
+
+Run functions return a list of results.
+Included in this list is an entry `settings` with contains all tasks settings.
+
+```{r}
+str(runTimeCourse())
 ```
 
 # Task settings
 
 Task settings can be set in two ways.
-The set familiy of functions is the preferred way to set task settings.
-The run familiy of functions will generally take the same arguments as the set familiy of functions but will only set them temporarily.
-The get familiy of functions will return a list that can be used as a template for calling functions that expect settings as input.
-A similar list is also given in every output of a run function.
+The `set` familiy of functions is the preferred way to set task settings.
 
 ```{r}
 getTimeCourseSettings()$duration
 setTimeCourseSettings(duration = 10)
-runTimeCourse()$settings$duration
+getTimeCourseSettings()$duration
+```
+
+The `run` familiy of functions will generally take the same arguments as the `set` familiy of functions but will only set them temporarily.
+
+```{r}
+getTimeCourseSettings()$duration
 runTimeCourse(duration = 1)$settings$duration
 getTimeCourseSettings()$duration
 ```
 
+The `get` familiy of functions will return a list that can be used as a template for calling functions that expect settings as input.
+A similar list is also given in every output of a `run` function.
+
+```{r}
+method_settings <- getTimeCourseSettings()$method
+str(method_settings)
+setTimeCourseSettings(method = method_settings)
+```
+
 # Task execution
 
-Executing a task will return a list with all relevant outputs.
+Executing a task will return a list containing all relevant task results.
 
 ```{r}
 str(runTimeCourse())
 str(runSteadyState())
 ```
-
-# Further remarks
-
-Settings from get functions should serve as input for set functions
-
-```{r}
-settings <- getTimeCourseSettings()
-do.call(setTimeCourseSettings, settings)
-```
-

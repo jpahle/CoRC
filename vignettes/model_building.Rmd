@@ -32,8 +32,8 @@ library(CoRC)
 
 ## Quick Model Building
 
-Building a quick Michaelis-Menten reaction using Copasis automatisms.
-Working with reaction schemes automatically creates required entities the same way the GUI does.
+Building a quick Michaelis-Menten reaction using Copasi's automatisms.
+Working with reaction schemes automatically creates required entities the same way the Copasi GUI does.
 
 ```{r}
 newModel()
@@ -50,12 +50,15 @@ unloadModel()
 ## More Detail
 
 Getting more detail in can be helpful.
+Here we create a global quantity "substrate concentration" which applies a fixed value to species "a".
+This is achieved by assigning the `Value` reference of the global quantity to species "a".
 
 ```{r}
 newModel()
 
 subs_quant <- newGlobalQuantity("substrate concentration", initial.value = 10)
 subs_value <- quantity(subs_quant, reference = "Value")
+subs_value
 
 newSpecies("a", type = "assignment", expression = subs_value)
 newReaction("a = b", fun = "Reversible Michaelis-Menten")
@@ -72,6 +75,9 @@ unloadModel()
 
 # Defining Reaction Kinetics Manually
 
+In previous examples, we used the predefined "Reversible Michaelis-Menten" kinetic functions.
+In this example we create an equivalent function manually to achieve the same result.
+
 ```{r}
 newModel()
 
@@ -81,7 +87,7 @@ newSpecies("b")
 newKineticFunction(
   "manual MM",
   "((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)",
-  parameters = c(substrate = "substrate", product = "product")
+  parameters = list(substrate = "substrate", product = "product")
 )
 newReaction(
   "a = b",
@@ -92,7 +98,7 @@ newReaction(
     Vf = 0.1,
     Kms = 0.1,
     Vr = 0.1,
-    Kmp = 0,1
+    Kmp = 0.1
   )
 )
 
@@ -102,6 +108,9 @@ unloadModel()
 ```
 
 # Quantities as Proxy for Time Course Output
+
+The `runTC` function only returns actual defined entities of the model.
+Auxiliarry information like reaction rates can be missing and and need to be added via global quantity assignment.
 
 ```{r}
 newModel()
@@ -114,7 +123,11 @@ newReaction("a = b", fun = "Reversible Michaelis-Menten")
 
 runTC(1000)$result
 
-newGlobalQuantity("reaction rate", type = "assignment", expression = reaction("a = b", reference = "Flux"))
+newGlobalQuantity(
+  "reaction rate",
+  type = "assignment",
+  expression = reaction("a = b", reference = "Flux")
+)
 
 runTC(1000)$result
 

@@ -35,7 +35,8 @@ species()
 ## Identifying entities
 
 There are at the moment 5 different types of model entities supported for identification by string.
-The strings are matched against the available ObjectDisplayNames.
+The strings are matched against the available entity names.
+These functions return an entity `key` when a species is identified.
 
 ```{r}
 species("CheA")
@@ -46,11 +47,9 @@ parameter("4).kR")
 kinfunction("Michaelis-Menten")
 ```
 
-These functions return ObjectDisplayNames when a species is identified.
-
-There are vectorized variants that will always return a vector of identified entities of the same length or throw an error.
-This means the behavior for 'NA' or non-uniquely matching strings is to throw an error.
-This allows to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.
+There are `_strict` variants that will always return a vector of `key`s of the same length as the input or throw an error.
+Accordingly, the behavior for `NA` or non-uniquely matching strings is to throw an error.
+This allows the `_strict` variants to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.
 
 ```{r}
 species("CheY")
@@ -63,14 +62,14 @@ species_strict("failure")
 ```
 
 CoRC makes use of the regex functionality of the stringr package.
-You can therefore wrap any string via \code{regex(string)} to enable regex matching.
+You can therefore wrap any string via `regex(string)` to enable regex matching.
 
 ```{r}
 species(regex("Che.p"))
 ```
 
-In cases, where a key is clear to always expect the same kind of entity, identification can also be handled by the function itself.
-These methods will always use the strict variants to allow reliably matching species.
+In cases, where a function argument `key` is clear to always expect the same kind of entity, identification can also be handled by the function itself.
+These methods will always use the `_strict` variants to reliably match species.
 
 ```{r}
 getSpecies(key = species("CheY"))$name
@@ -84,13 +83,14 @@ getSpecies(species(regex("Che.p")))$name
 ## Using References
 
 The identifying functions can also return value references if specified.
-Such references are needed as input for example to define Parameter Estimations.
+Such references are needed as input for example for expressions, which are needed for example in value assignments and the optimization task.
+Expressions in CoRC appear similar to copasi.
 
 ```{r}
 species("CheY", reference = "InitialConcentration")
 ```
 
-These function however can not give any clues about what references are available.
+These functions however can not give any clues about what references are available.
 
 ```{r}
 species("CheY", reference = "failure")
@@ -123,16 +123,16 @@ getSpecies(5)$name
 # Entity modification
 
 For most kinds of entities there is a finder function (e.g. species), a getter function (e.g. getSpecies) and a setter function (e.g. setSpecies).
-Other ways to access model Values is by evaluating copasi expressions (e.g. getValue).
 
+Other ways to access model Values is by evaluating expressions (e.g. getValue).
 
 ```{r}
 getSpecies("CheYp")$initial.concentration
 
 setSpecies("CheYp", initial.concentration = 1)
-
 getSpecies("CheYp")$initial.concentration
-getValue(species("CheYp", reference = "InitialConcentration"))
-getValue("{[CheYp]_0}")
-```
 
+yp_init_expression <- species("CheYp", reference = "InitialConcentration")
+yp_init_expression
+getValue(yp_init_expression)
+```
