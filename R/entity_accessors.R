@@ -122,7 +122,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   if (is_empty(cl_metabs)) return(invisible())
   
-  c_vals_to_update <- ObjectStdVector()
+  c_model <- c_datamodel$getModel()
   
   # apply names
   if (!is.null(name)) {
@@ -151,26 +151,18 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   if (!is.null(initial.concentration)) {
     walk2(
       cl_metabs, initial.concentration,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialConcentration(.y)
-          c_vals_to_update$push_back(.x$getInitialConcentrationReference())
-        }
-      }
+      ~ if (!is.na(.y)) .x$setInitialConcentration(.y)
     )
+    c_model$updateInitialValues("Concentration")
   }
   
   # apply particlenum
   if (!is.null(initial.number)) {
     walk2(
       cl_metabs, initial.number,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialValue(.y)
-          c_vals_to_update$push_back(.x$getInitialValueReference())
-        }
-      }
+      ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
+    c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply expressions
@@ -188,13 +180,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
     )
   }
   
-  c_model <- c_datamodel$getModel()
-  
-  c_model$updateInitialValues(c_vals_to_update)
-  
   c_model$compileIfNecessary()
-  
-  # model$initializeMetabolites()
   
   invisible()
 }
@@ -305,7 +291,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   
   if (is_empty(c_quants)) return(invisible())
   
-  c_vals_to_update <- ObjectStdVector()
+  c_model <- c_datamodel$getModel()
   
   # apply names
   if (!is.null(name)) {
@@ -327,13 +313,9 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   if (!is.null(initial.value)) {
     walk2(
       cl_quants, initial.value,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialValue(.y)
-          c_vals_to_update$push_back(.x$getInitialValueReference())
-        }
-      }
+      ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
+    c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply expressions
@@ -351,13 +333,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
     )
   }
   
-  c_model <- c_datamodel$getModel()
-  
-  c_model$updateInitialValues(c_vals_to_update)
-  
   c_model$compileIfNecessary()
-  
-  # model$initializeMetabolites()
   
   invisible()
 }
@@ -468,8 +444,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size =
   
   if (is_empty(cl_comps)) return(invisible())
   
-  # apparently I need to give changedObjects because I cant update initial values without
-  c_vals_to_update <- ObjectStdVector()
+  c_model <- c_datamodel$getModel()
   
   # apply names
   if (!is.null(name)) {
@@ -491,13 +466,9 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size =
   if (!is.null(initial.size)) {
     walk2(
       cl_comps, initial.size,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialValue(.y)
-          c_vals_to_update$push_back(.x$getInitialValueReference())
-        }
-      }
+      ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
+    c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply expressions
@@ -515,13 +486,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size =
     )
   }
   
-  c_model <- c_datamodel$getModel()
-  
-  c_model$updateInitialValues(c_vals_to_update)
-  
   c_model$compileIfNecessary()
-  
-  # model$initializeMetabolites()
   
   invisible()
 }
