@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
-## Initial Setup
+# Initial Setup
 
 ```{r setup}
 library(tidyverse)
@@ -32,7 +32,7 @@ loadExamples(2)
 species()
 ```
 
-## Identifying entities
+# Identifying entities
 
 There are at the moment 5 different types of model entities supported for identification by string.
 The strings are matched against the available entity names.
@@ -80,7 +80,7 @@ getSpecies("Che")$name
 getSpecies(species(regex("Che.p")))$name
 ```
 
-## Using References
+# Using References
 
 The identifying functions can also return value references if specified.
 Such references are needed as input for example for expressions, which are needed for example in value assignments and the optimization task.

@@ -23,14 +23,14 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
-## Initial Setup
+# Initial Setup
 
 ```{r setup}
 library(tidyverse)
 library(CoRC)
 ```
 
-## Quick Model Building
+# Quick Model Building
 
 Building a quick Michaelis-Menten reaction using Copasi's automatisms.
 Working with reaction schemes automatically creates required entities the same way the Copasi GUI does.
@@ -47,7 +47,7 @@ getParameters()
 unloadModel()
 ```
 
-## More Detail
+# More Detail
 
 Getting more detail in can be helpful.
 Here we create a global quantity "substrate concentration" which applies a fixed value to species "a".

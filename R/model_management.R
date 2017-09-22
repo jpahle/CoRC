@@ -200,6 +200,8 @@ unloadModel <- function(model = getCurrentModel()) {
   
   discard_unloaded_models()
   pkg_env$c_curr_dm <- NULL
+  
+  invisible()
 }
 
 #' Unload all loaded models
@@ -217,6 +219,8 @@ unloadAllModels <- function() {
   
   pkg_env$cl_loaded_dms <- list()
   pkg_env$c_curr_dm <- NULL
+  
+  invisible()
 }
 
 #' Save the model as a .cps file
@@ -249,8 +253,8 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
     grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite)),
     msg = paste0('Model failed to save at: "', filename, '".')
   )
-
-  invisible(success)
+  
+  invisible()
 }
 
 #' Save the model to string
@@ -312,6 +316,8 @@ compileModel <- function(force = FALSE, model = getCurrentModel()) {
     f <- c_datamodel$getModel()$compileIfNecessary
   
   assert_that(grab_msg(f()), msg = "Compilation of the model failed.")
+  
+  invisible()
 }
 
 #' Apply the model's initial state

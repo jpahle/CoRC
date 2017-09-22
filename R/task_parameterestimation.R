@@ -428,7 +428,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   if (is.null(weight_method)) {
     weight_method <- exp_weight_methods[1]
   } else {
-    weight_method <- lolower(weight_method)
+    weight_method <- tolower(weight_method)
     weight_method <- rlang::arg_match(weight_method, exp_weight_methods)
     weight_method <- toupper(weight_method)
   }

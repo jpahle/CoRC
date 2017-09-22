@@ -22,39 +22,14 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
-## Initial Setup
+# Initial Setup
 
 ```{r setup}
 library(tidyverse)
 library(CoRC)
 ```
 
-## Reliably setting values
-
-I don't understand how to consistently keep the math up to date with the values set in the model.
-
-For reaction parameter, my methods are currently broken.
-I can set the value, but after running a task the value will be restored.
-
-```{r}
-loadExamples(1)
-ts1 <- runTimeCourse()
-getParameters("(R1).k1")$value
-setParameters("(R1).k1", value = 99)
-getParameters("(R1).k1")$value
-ts2 <- runTimeCourse()
-getParameters("(R1).k1")$value
-identical(ts1, ts2)
-unloadModel()
-```
-
-In this example, the approach used for setting species values is probably not the right one:
-
-```{r, eval=FALSE}
-model()$updateInitialValues(changedObjects)
-```
-
-## Checking validity of quantity unit doesn't work
+# Checking validity of quantity unit doesn't work
 
 ```{r}
 CUnit <- CoRC:::CUnit
@@ -105,7 +80,7 @@ mol$isUnitType("length")
 mMol$isUnitType("quantity")
 ```
 
-## Function naming is lacking a cohesive concept 
+# Function naming is lacking a cohesive concept 
 
 Quantity accessors are named:
 
@@ -139,7 +114,7 @@ addParameter()
 Naming so far has been based on the desire to stay as close to the GUI as possible.
 It's probalby time to define a cohesive concept.
 
-## Saving .cps loses experimental data
+# Saving .cps loses experimental data
 
 I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.
 
