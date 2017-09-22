@@ -104,9 +104,10 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # assemble compartments
   if (!is.null(compartment)) {
-    cl_comps <- vector("list", length(key))
     comps_to_write <- !is.na(compartment)
-    cl_comps[comps_to_write] <- compartment_obj(compartment[comps_to_write], c_datamodel)
+    
+    cl_comps_new <- vector("list", length(key))
+    cl_comps_new[comps_to_write] <- compartment_obj(compartment[comps_to_write], c_datamodel)
   }
   
   if (!is.null(type))
@@ -133,10 +134,26 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   }
   
   if (!is.null(compartment)) {
-    walk2(
-      cl_metabs, cl_comps,
-      ~ if (!is.null(.y)) .x$initCompartment(.y)
+    comp_changed <- FALSE
+    pwalk(
+      list(c_metab = cl_metabs, write = comps_to_write, c_comp_new = cl_comps_new),
+      ~ function(c_metab, write, c_comp_new) {
+        if (write && c_metab$getCompartment()$getKey() != c_comp_new$getKey()) {
+          assert_that(
+            c_comp_new$addMetabolite(c_metab),
+            msg = "Failed to move species. Does the new compartment already contain a species of that name?"
+          )
+          # remove from old compartment by name (by pointer function is not exported.)
+          c_comp_old$getMetabolites()$removeByName(c_metab$getObjectName())
+          comp_changed <<- TRUE
+        }
+      }
     )
+    
+    if (comp_changed) {
+      c_model$initializeMetabolites()
+      c_model$setCompileFlag()
+    }
   }
   
   # apply types
