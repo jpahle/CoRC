@@ -48,10 +48,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/handling_model_entities.html">Handling Model Entities</a>
+      <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
       <a href="../articles/issues.html">Issues</a>
+    </li>
+    <li>
+      <a href="../articles/model_building.html">Model Building</a>
+    </li>
+    <li>
+      <a href="../articles/task_management.html">Managing Tasks</a>
     </li>
   </ul>
 </li>
@@ -78,48 +84,21 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-09-06</h4>
+            <h4 class="date">2017-09-22</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="initial-setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#initial-setup" class="anchor"></a>Initial Setup</h2>
+<div id="initial-setup" class="section level1">
+<h1 class="hasAnchor">
+<a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(CoRC)</code></pre></div>
 </div>
-<div id="reliably-setting-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reliably-setting-values" class="anchor"></a>Reliably setting values</h2>
-<p>I don’t understand how to consistently keep the math up to date with the values set in the model.</p>
-<p>For reaction parameter, my methods are currently broken. I can set the value, but after running a task the value will be restored.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A copasi model reference:</span>
-<span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 6</span>
-<span class="co">#&gt; Number of reactions: 4</span>
-ts1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
-<span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>(<span class="st">"(R1).k1"</span>)$value
-<span class="co">#&gt; [1] 1</span>
-<span class="kw"><a href="../reference/setParameters.html">setParameters</a></span>(<span class="st">"(R1).k1"</span>, <span class="dt">value =</span> <span class="dv">99</span>)
-<span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>(<span class="st">"(R1).k1"</span>)$value
-<span class="co">#&gt; [1] 99</span>
-ts2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
-<span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>(<span class="st">"(R1).k1"</span>)$value
-<span class="co">#&gt; [1] 1</span>
-<span class="kw">identical</span>(ts1, ts2)
-<span class="co">#&gt; [1] TRUE</span>
-<span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
-<p>In this example, the approach used for setting species values is probably not the right one:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">model</span>()$<span class="kw">updateInitialValues</span>(changedObjects)</code></pre></div>
-</div>
-<div id="checking-validity-of-quantity-unit-doesnt-work" class="section level2">
-<h2 class="hasAnchor">
-<a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h2>
+<div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
+<h1 class="hasAnchor">
+<a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC:::CUnit</code></pre></div>
 <p>The CUnit class can be used for testing if user specified input is valid</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms"</span>)
@@ -170,9 +149,9 @@ mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
 mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 </div>
-<div id="function-naming-is-lacking-a-cohesive-concept" class="section level2">
-<h2 class="hasAnchor">
-<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h2>
+<div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
+<h1 class="hasAnchor">
+<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h1>
 <p>Quantity accessors are named:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>()
@@ -192,9 +171,9 @@ mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="kw">addParameter</span>()</code></pre></div>
 <p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probalby time to define a cohesive concept.</p>
 </div>
-<div id="saving--cps-loses-experimental-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#saving--cps-loses-experimental-data" class="anchor"></a>Saving .cps loses experimental data</h2>
+<div id="saving--cps-loses-experimental-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#saving--cps-loses-experimental-data" class="anchor"></a>Saving .cps loses experimental data</h1>
 <p>I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load example which has experimental data.</span>
 datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">4</span>)[[<span class="dv">1</span>]]
@@ -216,7 +195,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<s
 filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpU8B2Be/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpxpnmLw/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
@@ -231,7 +210,6 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
-      <li><a href="#reliably-setting-values">Reliably setting values</a></li>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>

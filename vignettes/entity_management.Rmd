@@ -34,7 +34,7 @@ species()
 
 # Identifying entities
 
-There are at the moment 5 different types of model entities supported for identification by string.
+There are at the moment six different types of model entities supported for identification by string.
 The strings are matched against the available entity names.
 These functions return an entity `key` when a species is identified.
 
