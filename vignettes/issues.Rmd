@@ -27,7 +27,57 @@ set.seed(1)
 ```{r setup}
 library(tidyverse)
 library(CoRC)
+loadExamples(1)
 ```
+
+# Function naming is lacking a cohesive concept
+
+Quantity accessors are named:
+
+```{r, eval=FALSE}
+getSpecies()
+setSpecies()
+getGlobalQuantities()
+setGlobalQuantities()
+setParameters()
+```
+
+Task related functions are named:
+
+```{r, eval=FALSE}
+runTimeCourse()
+runSteadyState()
+runParameterEstimation()
+setTimeCourseSettings()
+setSteadyStateSettings()
+setParameterEstimationSettings()
+```
+
+There are further functions which with awkward names:
+
+```{r, eval=FALSE}
+# Adds FitItem to parameter estimation task
+# No relation to setParameters(), which handles reaction parameters
+addParameterEstimationParameter()
+```
+
+Naming so far has been based on the desire to stay as close to the GUI as possible.
+It's probably time to define a cohesive concept.
+
+# Function arguments are lacking a cohesive concept
+
+Function arguments also have mixed concepts for naming things:
+I used camelCase for function arguments but method arguments are renamed according to an R function which replaces illegal characters with ".".
+
+```{r}
+str(getTimeCourseSettings())
+```
+
+# No option to cancel long running tasks
+
+The r-session locks up when waiting for C calls to return.
+I have no idea how I can enable interactive canceling of tasks.
+This seems like it could get frustrating because people probably start endless tasks frequently.
 
 # Checking validity of quantity unit doesn't work
 
@@ -79,40 +129,6 @@ mol$isUnitType("length")
 
 mMol$isUnitType("quantity")
 ```
-
-# Function naming is lacking a cohesive concept 
-
-Quantity accessors are named:
-
-```{r, eval=FALSE}
-getSpecies()
-setSpecies()
-getGlobalQuantities()
-setGlobalQuantities()
-setParameters()
-```
-
-Task related functions are named:
-
-```{r, eval=FALSE}
-runTimeCourse()
-runSteadyState()
-runParamEst()
-setTimeCourseSettings()
-setSteadyStateSettings()
-setParamEstSettings()
-```
-
-There are further functions which with awkward names:
-
-```{r, eval=FALSE}
-# Adds FitItem to parameter estimation task
-# No relation to setParameters(), which handles reaction parameters
-addParameter()
-```
-
-Naming so far has been based on the desire to stay as close to the GUI as possible.
-It's probalby time to define a cohesive concept.
 
 # Saving .cps loses experimental data
 

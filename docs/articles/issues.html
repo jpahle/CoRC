@@ -94,7 +94,64 @@
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(CoRC)</code></pre></div>
+<span class="kw">library</span>(CoRC)
+<span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; Model name: "The Brusselator"</span>
+<span class="co">#&gt; Number of compartments: 1</span>
+<span class="co">#&gt; Number of species: 6</span>
+<span class="co">#&gt; Number of reactions: 4</span></code></pre></div>
+</div>
+<div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
+<h1 class="hasAnchor">
+<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h1>
+<p>Quantity accessors are named:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
+<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>()
+<span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
+<span class="kw"><a href="../reference/setGlobalQuantities.html">setGlobalQuantities</a></span>()
+<span class="kw"><a href="../reference/setParameters.html">setParameters</a></span>()</code></pre></div>
+<p>Task related functions are named:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
+<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>()
+<span class="kw"><a href="../reference/runParameterEstimation.html">runParameterEstimation</a></span>()
+<span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>()
+<span class="kw"><a href="../reference/setSteadyStateSettings.html">setSteadyStateSettings</a></span>()
+<span class="kw"><a href="../reference/setParameterEstimationSettings.html">setParameterEstimationSettings</a></span>()</code></pre></div>
+<p>There are further functions which with awkward names:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Adds FitItem to parameter estimation task</span>
+<span class="co"># No relation to setParameters(), which handles reaction parameters</span>
+<span class="kw"><a href="../reference/addParameterEstimationParameter.html">addParameterEstimationParameter</a></span>()</code></pre></div>
+<p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probably time to define a cohesive concept.</p>
+</div>
+<div id="function-arguments-are-lacking-a-cohesive-concept" class="section level1">
+<h1 class="hasAnchor">
+<a href="#function-arguments-are-lacking-a-cohesive-concept" class="anchor"></a>Function arguments are lacking a cohesive concept</h1>
+<p>Function arguments also have mixed concepts for naming things: I used camelCase for function arguments but method arguments are renamed according to an R function which replaces illegal characters with “.”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>())
+<span class="co">#&gt; List of 10</span>
+<span class="co">#&gt;  $ duration            : num 100</span>
+<span class="co">#&gt;  $ dt                  : num 0.5</span>
+<span class="co">#&gt;  $ intervals           : int 200</span>
+<span class="co">#&gt;  $ suppressOutputBefore: num 0</span>
+<span class="co">#&gt;  $ outputEvents        : logi FALSE</span>
+<span class="co">#&gt;  $ saveResultInMemory  : logi TRUE</span>
+<span class="co">#&gt;  $ startInSteadyState  : logi FALSE</span>
+<span class="co">#&gt;  $ updateModel         : logi FALSE</span>
+<span class="co">#&gt;  $ executable          : logi FALSE</span>
+<span class="co">#&gt;  $ method              :List of 6</span>
+<span class="co">#&gt;   ..$ method                 : chr "deterministic"</span>
+<span class="co">#&gt;   ..$ integrate.reduced.model: logi TRUE</span>
+<span class="co">#&gt;   ..$ relative.tolerance     : num 1e-06</span>
+<span class="co">#&gt;   ..$ absolute.tolerance     : num 1e-12</span>
+<span class="co">#&gt;   ..$ max.internal.steps     : int 10000</span>
+<span class="co">#&gt;   ..$ max.internal.step.size : num 0</span></code></pre></div>
+</div>
+<div id="no-option-to-cancel-long-running-tasks" class="section level1">
+<h1 class="hasAnchor">
+<a href="#no-option-to-cancel-long-running-tasks" class="anchor"></a>No option to cancel long running tasks</h1>
+<p>The r-session locks up when waiting for C calls to return. I have no idea how I can enable interactive canceling of tasks. This seems like it could get frustrating because people probably start endless tasks frequently.</p>
 </div>
 <div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
 <h1 class="hasAnchor">
@@ -149,28 +206,6 @@ mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
 mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 </div>
-<div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
-<h1 class="hasAnchor">
-<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h1>
-<p>Quantity accessors are named:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
-<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>()
-<span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
-<span class="kw"><a href="../reference/setGlobalQuantities.html">setGlobalQuantities</a></span>()
-<span class="kw"><a href="../reference/setParameters.html">setParameters</a></span>()</code></pre></div>
-<p>Task related functions are named:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
-<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>()
-<span class="kw">runParamEst</span>()
-<span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>()
-<span class="kw"><a href="../reference/setSteadyStateSettings.html">setSteadyStateSettings</a></span>()
-<span class="kw">setParamEstSettings</span>()</code></pre></div>
-<p>There are further functions which with awkward names:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Adds FitItem to parameter estimation task</span>
-<span class="co"># No relation to setParameters(), which handles reaction parameters</span>
-<span class="kw">addParameter</span>()</code></pre></div>
-<p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probalby time to define a cohesive concept.</p>
-</div>
 <div id="saving--cps-loses-experimental-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#saving--cps-loses-experimental-data" class="anchor"></a>Saving .cps loses experimental data</h1>
@@ -210,8 +245,10 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
-      <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
+      <li><a href="#function-arguments-are-lacking-a-cohesive-concept">Function arguments are lacking a cohesive concept</a></li>
+      <li><a href="#no-option-to-cancel-long-running-tasks">No option to cancel long running tasks</a></li>
+      <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
       </ul>
 </div>
