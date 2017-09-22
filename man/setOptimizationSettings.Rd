@@ -5,20 +5,26 @@
 \alias{setOpt}
 \title{Set optimization settings}
 \usage{
-setOptimizationSettings(randomizeStartValues = NULL,
-  createParameterSets = NULL, calculateStatistics = NULL,
+setOptimizationSettings(expression = NULL, maximize = NULL,
+  subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL,
   updateModel = NULL, executable = NULL, parameters = NULL,
-  experiments = NULL, method = NULL, model = getCurrentModel())
+  method = NULL, model = getCurrentModel())
 
-setOpt(randomizeStartValues = NULL, createParameterSets = NULL,
-  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
-  parameters = NULL, experiments = NULL, method = NULL,
-  model = getCurrentModel())
+setOpt(expression = NULL, maximize = NULL, subtask = NULL,
+  randomizeStartValues = NULL, calculateStatistics = NULL,
+  updateModel = NULL, executable = NULL, parameters = NULL,
+  method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{randomizeStartValues}{flag}
+\item{expression}{string}
 
-\item{createParameterSets}{flag}
+\item{maximize}{flag}
+
+\item{subtask}{string
+
+Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics}
+
+\item{randomizeStartValues}{flag}
 
 \item{calculateStatistics}{flag}
 
@@ -27,8 +33,6 @@ setOpt(randomizeStartValues = NULL, createParameterSets = NULL,
 \item{executable}{flag}
 
 \item{parameters}{copasi_param or list of copasi_param objects}
-
-\item{experiments}{copasi_exp or list of copasi_exp objects}
 
 \item{method}{string or list
 

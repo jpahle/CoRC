@@ -279,7 +279,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
 #' @family global quantity functions
 #' @export
-setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, c_datamodel = getCurrentModel()) {
+setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)          || is.character(name)        && length(name) == length(key),

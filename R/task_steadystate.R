@@ -155,9 +155,6 @@ ss_assemble_settings <- function(calculateJacobian, performStabilityAnalysis, up
     is.null(executable)               || is.flag(executable)               && noNA(executable)
   )
   
-  if (isTRUE(performStabilityAnalysis) && !isTRUE(calculateJacobian))
-    stop("performStabilityAnalysis can only be set in combination with calculateJacobian.")
-  
   list(
     calculateJacobian = calculateJacobian,
     performStabilityAnalysis = performStabilityAnalysis,
@@ -197,11 +194,24 @@ ss_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
-  if (!is.null(data$calculateJacobian))
-    c_problem$setJacobianRequested(data$calculateJacobian)
+  calculateJacobian <- data$calculateJacobian
+  if (!is.null(calculateJacobian)) {
+    c_problem$setJacobianRequested(calculateJacobian)
+    if (!calculateJacobian)
+      c_problem$setStabilityAnalysisRequested(FALSE)
+  }
   
-  if (!is.null(data$performStabilityAnalysis))
-    c_problem$setStabilityAnalysisRequested(data$performStabilityAnalysis)
+  
+  performStabilityAnalysis <- data$performStabilityAnalysis
+  if (!is.null(performStabilityAnalysis)) {
+    if (performStabilityAnalysis) {
+      assert_that(
+        as.logical(c_problem$isJacobianRequested()),
+        msg = "`performStabilityAnalysis` can only be set to `TRUE` in combination with `calculateJacobian`."
+      )
+    }
+    c_problem$setStabilityAnalysisRequested(performStabilityAnalysis)
+  }
   
   if (!is.null(data$updateModel))
     c_task$setUpdateModel(data$updateModel)

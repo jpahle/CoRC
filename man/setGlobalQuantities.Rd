@@ -6,7 +6,7 @@
 \usage{
 setGlobalQuantities(key = NULL, name = NULL, type = NULL,
   initial.value = NULL, expression = NULL, data = NULL,
-  c_datamodel = getCurrentModel())
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
@@ -19,9 +19,9 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
 
 \item{data}{a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
-\item{initial.volume}{a numeric vector of values to set}
-
 \item{model}{a model object}
+
+\item{initial.volume}{a numeric vector of values to set}
 }
 \description{
 \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.

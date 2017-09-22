@@ -71,10 +71,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/handling_model_entities.html">Handling Model Entities</a>
+      <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
       <a href="../articles/issues.html">Issues</a>
+    </li>
+    <li>
+      <a href="../articles/model_building.html">Model Building</a>
+    </li>
+    <li>
+      <a href="../articles/task_management.html">Managing Tasks</a>
     </li>
   </ul>
 </li>
@@ -105,25 +111,34 @@
     <p><code>setOptimizationSettings</code> sets optimization task settings including parameters, experiments and method options.</p>
     
 
-    <pre class="usage"><span class='fu'>setOptimizationSettings</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>setOptimizationSettings</span>(<span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>subtask</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
-<span class='fu'>setOpt</span>(<span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>createParameterSets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>experiments</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+<span class='fu'>setOpt</span>(<span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>subtask</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>randomizeStartValues</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>calculateStatistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>updateModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>randomizeStartValues</th>
+      <th>expression</th>
+      <td><p>string</p></td>
+    </tr>
+    <tr>
+      <th>maximize</th>
       <td><p>flag</p></td>
     </tr>
     <tr>
-      <th>createParameterSets</th>
+      <th>subtask</th>
+      <td><p>string</p>
+<p>Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics</p></td>
+    </tr>
+    <tr>
+      <th>randomizeStartValues</th>
       <td><p>flag</p></td>
     </tr>
     <tr>
@@ -141,10 +156,6 @@
     <tr>
       <th>parameters</th>
       <td><p>copasi_param or list of copasi_param objects</p></td>
-    </tr>
-    <tr>
-      <th>experiments</th>
-      <td><p>copasi_exp or list of copasi_exp objects</p></td>
     </tr>
     <tr>
       <th>method</th>

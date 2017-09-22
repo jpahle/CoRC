@@ -128,7 +128,8 @@ getCopasi <- function(path = NULL) {
   libsdir <- file.path(system.file(package = getPackageName()), "libs")
   
   # It seems in some cases a x64 folder is needed inside libs but I am unsure when and if it needs to contain files.
-  if (x64folder && version$arch == "x86_64") libsdir <- file.path(libsdir, "x64")
+  if (x64folder && version$arch == "x86_64")
+    libsdir <- file.path(libsdir, "x64")
   
   success <- TRUE
   if (!dir.exists(libsdir))

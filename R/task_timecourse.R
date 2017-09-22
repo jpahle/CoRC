@@ -228,7 +228,7 @@ tc_assemble_settings <- function(duration, dt, intervals, suppressOutputBefore, 
   )
   
   if (!is.null(dt) && !is.null(intervals))
-    stop("Only one of dt and intervals can be given")
+    warning("Both `dt` and `intervals` was given. Applying `intervals` by preferentially.")
   
   list(
     duration = duration,
