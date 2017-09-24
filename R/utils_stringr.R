@@ -1,8 +1,10 @@
 #' String matching engines from stringr
 #'
-#' CoRC makes use of the string matching engines from the stringr package.
+#' CoRC makes use of the string matching engines from the \pkg{stringr} package.
 #' 
-#' By default matching is done with \code{coll}.
+#' The functions are described at \link[stringr]{modifiers}.
+#' By default, matching is done with \code{coll}.
+#' 
 #' @name regex
 NULL
 

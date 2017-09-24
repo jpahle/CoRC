@@ -8,10 +8,11 @@
 \alias{coll}
 \title{String matching engines from stringr}
 \description{
-CoRC makes use of the string matching engines from the stringr package.
+CoRC makes use of the string matching engines from the \pkg{stringr} package.
 }
 \details{
-By default matching is done with \code{coll}.
+The functions are described at \link[stringr]{modifiers}.
+By default, matching is done with \code{coll}.
 }
 \keyword{internal}
 \description{
