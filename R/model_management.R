@@ -383,14 +383,23 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
   )
   
   if (.Platform$OS.type == "windows") {
+    os <- "windows"
+    
     found <- !suppressWarnings(system2("where", args = copasi_loc, stdout = FALSE, stderr = FALSE))
     
-    # where command can't find executables with full paths. Just test if readable for now.
-    if (!found && !missing(copasi_loc)) found <- is.readable(copasi_loc)
+    # 'where' command can't find executables with full paths. Just test if readable for now.
+    if (!found && !missing(copasi_loc))
+      found <- is.readable(copasi_loc)
   } else if (.Platform$OS.type == "unix") {
-    # On darwin, CopasiUI doesn't seem to be in path so try a default location if copasi_loc wasn't given.
-    if (substr(version$os, 1L, 6L) == "darwin" && system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc))
-      copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+    os <- "unix"
+    
+    if (substr(version$os, 1L, 6L) == "darwin") {
+      os <- "darwin"
+      
+      # On darwin, CopasiUI doesn't seem to be in path so try a default location if copasi_loc wasn't given.
+      if (system2("which", args = c("-s", copasi_loc)) && missing(copasi_loc))
+        copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
+    }
     
     found <- !system2("which", args = c("-s", copasi_loc))
   }
@@ -402,13 +411,9 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
   
   c_fittask <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_fitproblem <- as(c_fittask$getProblem(), "_p_CFitProblem")
-  if (
-    readin == FALSE &&
-    (
-      !is_empty(c_fitproblem$getExperimentSet()$getFileNames()) ||
-      !is_empty(c_fitproblem$getCrossValidationSet()$getFileNames())
-    )
-  ) {
+  has_exps <- !is_empty(c_fitproblem$getExperimentSet()$getFileNames()) || !is_empty(c_fitproblem$getCrossValidationSet()$getFileNames())
+  
+  if (readin == FALSE && has_exps) {
     warning(
       "Using readin = TRUE because the model references experimental data which breaks when using the systems temp folder.",
       immediate. = TRUE
@@ -421,9 +426,11 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
     file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(c_datamodel$getReferenceDirectory()), fileext = ".cps")
     grab_msg(c_datamodel$saveModel(file, overwriteFile = TRUE))
     
-    if (.Platform$OS.type == "windows")
+    if (os == "windows")
       system2(copasi_loc, file, wait = TRUE, invisible = FALSE)
-    else
+    else if (os == "darwin")
+      system2("open", c("-W", "-n", "-a", copasi_loc, file))
+    else 
       system2(copasi_loc, file, wait = TRUE)
     
     grab_msg(c_datamodel$loadModel(file))
@@ -434,10 +441,12 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
     file <- tempfile(pattern = "CoRC", fileext = ".cps")
     grab_msg(c_datamodel$saveModel(file, overwriteFile = TRUE))
     
-    if (.Platform$OS.type == "windows")
+    if (os == "windows")
       system2(copasi_loc, file, wait = FALSE, invisible = FALSE)
+    else if (os == "darwin")
+      system2("open", c("-n", "-a", copasi_loc, file))
     else
-      system2(copasi_loc, c(file, "&"))
+      system2(copasi_loc, file, wait = FALSE)
   }
   
   invisible()
