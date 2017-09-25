@@ -137,14 +137,15 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
     comp_changed <- FALSE
     pwalk(
       list(c_metab = cl_metabs, write = comps_to_write, c_comp_new = cl_comps_new),
-      ~ function(c_metab, write, c_comp_new) {
+      function(c_metab, write, c_comp_new) {
         if (write && c_metab$getCompartment()$getKey() != c_comp_new$getKey()) {
           assert_that(
-            c_comp_new$addMetabolite(c_metab),
-            msg = "Failed to move species. Does the new compartment already contain a species of that name?"
+            grab_msg(c_comp_new$addMetabolite(c_metab)),
+            msg = "Failed to move species."
           )
-          # remove from old compartment by name (by pointer function is not exported.)
-          c_comp_old$getMetabolites()$removeByName(c_metab$getObjectName())
+          # remove from old compartment by name (by pointer is not exported by swig.)
+          # looks like there is some method that will remove the metab when adding it to another comp.
+          # c_comp_old$getMetabolites()$removeByName(c_metab$getObjectName())
           comp_changed <<- TRUE
         }
       }
