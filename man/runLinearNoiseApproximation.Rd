@@ -5,14 +5,14 @@
 \alias{runLNA}
 \title{Run linear noise approximation}
 \usage{
-runLinearNoiseApproximation(performSteadyStateAnalysis = NULL,
+runLinearNoiseApproximation(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
-runLNA(performSteadyStateAnalysis = NULL, executable = NULL,
+runLNA(perform_steady_state_analysis = NULL, executable = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{performSteadyStateAnalysis}{flag}
+\item{perform_steady_state_analysis}{flag}
 
 \item{executable}{flag}
 

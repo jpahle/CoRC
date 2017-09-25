@@ -3,15 +3,15 @@
 #' \code{getSpecies} returns species information as a data frame.
 #'
 #' @param key a character vector uniquely identifying species
-#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
+#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with species and associated information
 #' @seealso \code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
 #' @family species functions
 #' @export
-getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
+getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(rawExpressions))
+  assert_that(is.flag(raw_expressions))
   
   if (is_empty(key))
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
@@ -30,8 +30,8 @@ getSpecies <- function(key = NULL, rawExpressions = FALSE, model = getCurrentMod
     "Number"                = map_swig_dbl(cl_metabs, "getValue"),
     "Rate"                  = map_swig_dbl(cl_metabs, "getConcentrationRate"),
     "Number Rate"           = map_swig_dbl(cl_metabs, "getRate"),
-    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
-    "Expression"            = map_chr(cl_metabs, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
+    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
+    "Expression"            = map_chr(cl_metabs, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   ) %>%
     transform_names()
 }
@@ -79,22 +79,22 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param key a character vector uniquely identifying species
 #' @param name a character vector of names to set
 #' @param type a character vector of types ("fixed", "assignment", "reactions", "ode").
-#' @param initial.concentration a numeric vector of concentrations to set
-#' @param initial.number a numeric vector of particle numbers to set
+#' @param initial_concentration a numeric vector of concentrations to set
+#' @param initial_number a numeric vector of particle numbers to set
 #' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
 #' @family species functions
 #' @export
-setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial.concentration = NULL, initial.number = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial_concentration = NULL, initial_number = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)                  || is.character(name)                && length(name) == length(key),
     is.null(type)                  || is.character(type)                && length(type) == length(key),
     is.null(compartment)           || is.character(compartment)         && length(compartment)  == length(key),
-    is.null(initial.concentration) || is.numeric(initial.concentration) && length(initial.concentration) == length(key),
-    is.null(initial.number)        || is.numeric(initial.number)        && length(initial.number) == length(key),
+    is.null(initial_concentration) || is.numeric(initial_concentration) && length(initial_concentration) == length(key),
+    is.null(initial_number)        || is.numeric(initial_number)        && length(initial_number) == length(key),
     is.null(expression)            || is.character(expression)          && length(expression) == length(key),
     is.null(data)                  || is.data.frame(data)
   )
@@ -119,7 +119,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial.concentration", "initial.number", "expression")])
+    do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial_concentration", "initial_number", "expression")])
   
   if (is_empty(cl_metabs)) return(invisible())
   
@@ -133,6 +133,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
     )
   }
   
+  # apply compartments
   if (!is.null(compartment)) {
     comp_changed <- FALSE
     pwalk(
@@ -166,18 +167,18 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   }
   
   # apply concentrations
-  if (!is.null(initial.concentration)) {
+  if (!is.null(initial_concentration)) {
     walk2(
-      cl_metabs, initial.concentration,
+      cl_metabs, initial_concentration,
       ~ if (!is.na(.y)) .x$setInitialConcentration(.y)
     )
     c_model$updateInitialValues("Concentration")
   }
   
   # apply particlenum
-  if (!is.null(initial.number)) {
+  if (!is.null(initial_number)) {
     walk2(
-      cl_metabs, initial.number,
+      cl_metabs, initial_number,
       ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
     c_model$updateInitialValues("ParticleNumbers")
@@ -208,15 +209,15 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
 #' @param key a character vector uniquely identifying global quantities
-#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
+#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with global quantities and associated information
 #' @seealso \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
 #' @family global quantity functions
 #' @export
-getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
+getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(rawExpressions))
+  assert_that(is.flag(raw_expressions))
   
   if (is_empty(key))
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
@@ -229,10 +230,10 @@ getGlobalQuantities <- function(key = NULL, rawExpressions = FALSE, model = getC
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value"      = map_swig_dbl(cl_quants, "getInitialValue"),
-    "Transient Value"    = map_swig_dbl(cl_quants, "getValue"),
+    "Value"              = map_swig_dbl(cl_quants, "getValue"),
     "Rate"               = map_swig_dbl(cl_quants, "getRate"),
-    "Initial Expression" = map_chr(cl_quants, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
-    "Expression"         = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
+    "Initial Expression" = map_chr(cl_quants, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
+    "Expression"         = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   ) %>%
     transform_names()
 }
@@ -261,7 +262,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Transient Value"    = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Value"    = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
     "Initial Expression" = map_chr(cl_quants, iexpr_to_ref_str, c_datamodel = c_datamodel),
     "Expression"         = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
@@ -283,12 +284,12 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
 #' @family global quantity functions
 #' @export
-setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.value = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_value = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)          || is.character(name)        && length(name) == length(key),
     is.null(type)          || is.character(type)        && length(type) == length(key),
-    is.null(initial.value) || is.numeric(initial.value) && length(initial.value) == length(key),
+    is.null(initial_value) || is.numeric(initial_value) && length(initial_value) == length(key),
     is.null(expression)    || is.character(expression)  && length(expression) == length(key),
     is.null(data)          || is.data.frame(data)
   )
@@ -305,7 +306,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial.value", "expression")])
+    do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial_value", "expression")])
   
   if (is_empty(c_quants)) return(invisible())
   
@@ -328,9 +329,9 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
   }
   
   # apply value
-  if (!is.null(initial.value)) {
+  if (!is.null(initial_value)) {
     walk2(
-      cl_quants, initial.value,
+      cl_quants, initial_value,
       ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
     c_model$updateInitialValues("ParticleNumbers")
@@ -361,15 +362,15 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial.va
 #' \code{getCompartments} returns compartments as a data frame.
 #'
 #' @param key a character vector uniquely identifying compartments
-#' @param rawExpressions a flag on whether expressions should be raw (not converted to readable format)
+#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
 #' @param model a model object
 #' @return a data frame with compartments and associated information
 #' @seealso \code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
 #' @family compartment functions
 #' @export
-getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurrentModel()) {
+getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(rawExpressions))
+  assert_that(is.flag(raw_expressions))
   
   if (is_empty(key))
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
@@ -384,8 +385,8 @@ getCompartments <- function(key = NULL, rawExpressions = FALSE, model = getCurre
     "Initial Size"       = map_swig_dbl(cl_comps, "getInitialValue"),
     "Size"               = map_swig_dbl(cl_comps, "getValue"),
     "Rate"               = map_swig_dbl(cl_comps, "getRate"),
-    "Initial Expression" = map_chr(cl_comps, iexpr_to_str, c_datamodel = c_datamodel, raw = rawExpressions),
-    "Expression"         = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = rawExpressions)
+    "Initial Expression" = map_chr(cl_comps, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
+    "Expression"         = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   ) %>%
     transform_names()
 }
@@ -429,19 +430,19 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param key a character vector uniquely identifying compartments
 #' @param name a character vector of names to set
 #' @param type a character vector of species types ("fixed", "assignment", "ode").
-#' @param initial.size a numeric vector of values to set
+#' @param initial_size a numeric vector of values to set
 #' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 #' @family compartment functions
 #' @export
-setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)           || is.character(name)         && length(name) == length(key),
     is.null(type)           || is.character(type)         && length(type) == length(key),
-    is.null(initial.size)   || is.numeric(initial.size)   && length(initial.size) == length(key),
+    is.null(initial_size)   || is.numeric(initial_size)   && length(initial_size) == length(key),
     is.null(expression)     || is.character(expression)   && length(expression) == length(key),
     is.null(data)           || is.data.frame(data)
   )
@@ -458,7 +459,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size =
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial.size", "expression")])
+    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial_size", "expression")])
   
   if (is_empty(cl_comps)) return(invisible())
   
@@ -481,9 +482,9 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial.size =
   }
   
   # apply volume
-  if (!is.null(initial.size)) {
+  if (!is.null(initial_size)) {
     walk2(
-      cl_comps, initial.size,
+      cl_comps, initial_size,
       ~ if (!is.na(.y)) .x$setInitialValue(.y)
     )
     c_model$updateInitialValues("ParticleNumbers")

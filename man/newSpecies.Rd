@@ -5,7 +5,7 @@
 \title{Create a new species}
 \usage{
 newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
-  "assignment", "ode"), initial.concentration = 1, expression = NULL,
+  "assignment", "ode"), initial_concentration = 1, expression = NULL,
   model = getCurrentModel())
 }
 \arguments{
@@ -15,7 +15,7 @@ newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
 
 \item{type}{string}
 
-\item{initial.concentration}{number}
+\item{initial_concentration}{number}
 
 \item{expression}{string}
 

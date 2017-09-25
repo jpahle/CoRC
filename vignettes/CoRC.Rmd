@@ -56,7 +56,7 @@ setTimeCourseSettings(24, intervals = 10000)
 
 timeseries <- list(
   deterministic = runTimeCourse()$result,
-  stochastic = runTimeCourse(method = list(method = "directMethod", use.random.seed = T, random.seed = 1))$result
+  stochastic = runTimeCourse(method = list(method = "directMethod", use_random_seed = T, random_seed = 1))$result
 )
 
 # simplify species names so they are valid R syntax
@@ -96,12 +96,12 @@ timeseries <-
     .prep = quote({
       library(CoRC)
       loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-      setTimeCourseSettings(method = list(method = "directMethod", use.random.seed = T))
+      setTimeCourseSettings(method = list(method = "directMethod", use_random_seed = T))
     }),
     # iteration data (1000 random seeds),
     1:1000,
     # iteration code (formula ~)
-    ~ runTimeCourse(method = list(random.seed = .x))$result
+    ~ runTimeCourse(method = list(random_seed = .x))$result
   )
 
 # Combine all results and reshape the data
@@ -143,7 +143,7 @@ This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
-setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
+setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
 
 # Cartesian product of the input values
 scan <- cross_df(
@@ -158,11 +158,11 @@ scan <-
   mutate(
     # Calculate steady state fluxes for every row
     ss_fluxes = pmap(., function(cysteine, adomed) {
-      setSpecies("Cysteine", initial.concentration = cysteine)
-      setSpecies("adenosyl", initial.concentration = adomed)
+      setSpecies("Cysteine", initial_concentration = cysteine)
+      setSpecies("adenosyl", initial_concentration = adomed)
       ss <- runSteadyState()
       stopifnot(ss$result == "found")
-      ss$reactions$concentration.flux
+      ss$reactions$flux
     }),
     # The second flux is CGS
     CGS = map_dbl(ss_fluxes, 2),
@@ -203,7 +203,7 @@ scan <-
     .prep = quote({
       library(CoRC)
       loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
-      setSteadyStateSettings(calculateJacobian = FALSE, performStabilityAnalysis = FALSE)
+      setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
     }),
     # iteration data (10000 random seeds),
     1:10000,
@@ -214,15 +214,15 @@ scan <-
       adomed <- runif(1L, min = 0, max = 100)
       setSpecies(
         key = c("Cysteine", "adenosyl"),
-        initial.concentration = c(cysteine, adomed)
+        initial_concentration = c(cysteine, adomed)
       )
       ss <- runSteadyState()
       stopifnot(ss$result == "found")
       list(
         cysteine = cysteine,
         adomed = adomed,
-        CGS = ss$reactions$concentration.flux[2],
-        TS = ss$reactions$concentration.flux[3]
+        CGS = ss$reactions$flux[2],
+        TS = ss$reactions$flux[3]
       )
     }
   )
@@ -279,7 +279,7 @@ fit_parameters <-
     parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
     ~ {
       val <- getParameters(.x)$value
-      defineParameterEstimationParameter(parameter(.x, "Value"), lower.bound = val * 0.1, upper.bound = val * 1.9, start.value = val)
+      defineParameterEstimationParameter(parameter(.x, "Value"), lower_bound = val * 0.1, upper_bound = val * 1.9, start_value = val)
     }
   )
 
@@ -288,7 +288,7 @@ result <-
     parameters = fit_parameters,
     experiments = fit_experiments,
     method = "LevenbergMarquardt",
-    updateModel = TRUE
+    update_model = TRUE
   )
 
 # get timeseries for the record
@@ -323,7 +323,7 @@ plots <- list(
 
 unloadModel()
 
-result$fitted.values
+result$fitted_values
 result$parameters
 result$protocol
 

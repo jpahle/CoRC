@@ -4,13 +4,13 @@
 \alias{getCompartments}
 \title{Get compartments}
 \usage{
-getCompartments(key = NULL, rawExpressions = FALSE,
+getCompartments(key = NULL, raw_expressions = FALSE,
   model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying compartments}
 
-\item{rawExpressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
 
 \item{model}{a model object}
 }

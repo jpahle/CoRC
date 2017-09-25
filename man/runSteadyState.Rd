@@ -5,20 +5,20 @@
 \alias{runSS}
 \title{Run to stready state}
 \usage{
-runSteadyState(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, executable = NULL, method = NULL,
+runSteadyState(calculate_jacobian = NULL, perform_stability_analysis = NULL,
+  update_model = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 
-runSS(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, executable = NULL, method = NULL,
+runSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
+  update_model = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{calculateJacobian}{flag}
+\item{calculate_jacobian}{flag}
 
-\item{performStabilityAnalysis}{flag}
+\item{perform_stability_analysis}{flag}
 
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 

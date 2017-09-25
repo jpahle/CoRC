@@ -4,17 +4,17 @@
 \alias{defineOptimizationParameter}
 \title{Define an optimization parameter}
 \usage{
-defineOptimizationParameter(key = NULL, lower.bound = 1e-06,
-  upper.bound = 1e+06, start.value = (lower.bound + upper.bound)/2)
+defineOptimizationParameter(key = NULL, lower_bound = 1e-06,
+  upper_bound = 1e+06, start_value = (lower_bound + upper_bound)/2)
 }
 \arguments{
 \item{key}{entity key}
 
-\item{lower.bound}{lower value bound}
+\item{lower_bound}{lower value bound}
 
-\item{upper.bound}{upper value bound}
+\item{upper_bound}{upper value bound}
 
-\item{start.value}{start value}
+\item{start_value}{start value}
 }
 \value{
 copasi_parm object for input into related functions

@@ -5,9 +5,9 @@
 #' @param expression string
 #' @param maximize flag
 #' @eval rox_param("subtask", "string", task_enum)
-#' @param randomizeStartValues flag
+#' @param randomize_start_values flag
 #' @param calculateStatistics flag
-#' @param updateModel flag
+#' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
@@ -15,18 +15,18 @@
 #' @return a list of results
 #' @family optimization
 #' @export
-runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
+runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomize_start_values = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- opt_assemble_settings(
-    expression           = expression,
-    maximize             = maximize,
-    subtask              = subtask,
-    randomizeStartValues = randomizeStartValues,
-    calculateStatistics  = calculateStatistics,
-    updateModel          = updateModel,
-    executable           = executable
+    expression             = expression,
+    maximize               = maximize,
+    subtask                = subtask,
+    randomize_start_values = randomize_start_values,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
@@ -110,27 +110,27 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #' @param expression string
 #' @param maximize flag
 #' @eval rox_param("subtask", "string", task_enum)
-#' @param randomizeStartValues flag
-#' @param calculateStatistics flag
-#' @param updateModel flag
+#' @param randomize_start_values flag
+#' @param calculate_statistics flag
+#' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @family optimization
 #' @export
-setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
+setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask = NULL, randomize_start_values = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- opt_assemble_settings(
-    expression           = expression,
-    maximize             = maximize,
-    subtask              = subtask,
-    randomizeStartValues = randomizeStartValues,
-    calculateStatistics  = calculateStatistics,
-    updateModel          = updateModel,
-    executable           = executable
+    expression             = expression,
+    maximize               = maximize,
+    subtask                = subtask,
+    randomize_start_values = randomize_start_values,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
@@ -206,7 +206,7 @@ new_copasi_parm <- function(x, lower, upper, start) {
   
   structure(
     list(
-      key = x,
+      key   = x,
       lower = lower,
       upper = upper,
       start = start
@@ -233,21 +233,21 @@ is.copasi_parm <- function(x) {
 }
 
 #' @export
-copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
+copasi_parm <- function(key = NULL, lower_bound = 1e-6, upper_bound = 1e6, start_value = (lower_bound + upper_bound) / 2) {
   new_copasi_parm(
     key,
-    lower = lower.bound,
-    upper = upper.bound,
-    start = start.value
+    lower = lower_bound,
+    upper = upper_bound,
+    start = start_value
   )
 }
 
 #' Define an optimization parameter
 #' 
 #' @param key entity key
-#' @param lower.bound lower value bound
-#' @param upper.bound upper value bound
-#' @param start.value start value
+#' @param lower_bound lower value bound
+#' @param upper_bound upper value bound
+#' @param start_value start value
 #' @return copasi_parm object for input into related functions
 #' @seealso \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 #' @family optimization
@@ -320,15 +320,15 @@ opt_assemble_parameters <- function(parameters, c_problem) {
 
 # does assertions
 # returns a list of settings
-opt_assemble_settings <- function(expression, maximize, subtask, randomizeStartValues, calculateStatistics, updateModel, executable) {
+opt_assemble_settings <- function(expression, maximize, subtask, randomize_start_values, calculate_statistics, update_model, executable) {
   assert_that(
-    is.null(expression)           || is.string(expression)         && noNA(expression),
-    is.null(maximize)             || is.flag(maximize)             && noNA(maximize),
-    is.null(subtask)              || is.string(subtask),
-    is.null(randomizeStartValues) || is.flag(randomizeStartValues) && noNA(randomizeStartValues),
-    is.null(calculateStatistics)  || is.flag(calculateStatistics)  && noNA(calculateStatistics),
-    is.null(updateModel)          || is.flag(updateModel)          && noNA(updateModel),
-    is.null(executable)           || is.flag(executable)           && noNA(executable)
+    is.null(expression)             || is.string(expression)           && noNA(expression),
+    is.null(maximize)               || is.flag(maximize)               && noNA(maximize),
+    is.null(subtask)                || is.string(subtask),
+    is.null(randomize_start_values) || is.flag(randomize_start_values) && noNA(randomize_start_values),
+    is.null(calculate_statistics)   || is.flag(calculate_statistics)   && noNA(calculate_statistics),
+    is.null(update_model)           || is.flag(update_model)           && noNA(update_model),
+    is.null(executable)             || is.flag(executable)             && noNA(executable)
   )
   
   if (!is.null(subtask)) {
@@ -336,13 +336,13 @@ opt_assemble_settings <- function(expression, maximize, subtask, randomizeStartV
   }
   
   list(
-    expression = expression,
-    maximize = maximize,
-    subtask = subtask,
-    randomizeStartValues = randomizeStartValues,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    expression             = expression,
+    maximize               = maximize,
+    subtask                = subtask,
+    randomize_start_values = randomize_start_values,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   ) %>%
     discard(is.null)
 }
@@ -371,13 +371,13 @@ opt_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
   list(
-    expression           = read_expr(c_problem$getObjectiveFunction(), c_datamodel),
-    maximize             = as.logical(c_problem$maximize()),
-    subtask              = c_problem$getSubtaskType(),
-    randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
-    calculateStatistics  = as.logical(c_problem$getCalculateStatistics()),
-    updateModel          = as.logical(c_task$isUpdateModel()),
-    executable           = as.logical(c_task$isScheduled())
+    expression             = read_expr(c_problem$getObjectiveFunction(), c_datamodel),
+    maximize               = as.logical(c_problem$maximize()),
+    subtask                = c_problem$getSubtaskType(),
+    randomize_start_values = as.logical(c_problem$getRandomizeStartValues()),
+    calculate_statistics   = as.logical(c_problem$getCalculateStatistics()),
+    update_model           = as.logical(c_task$isUpdateModel()),
+    executable             = as.logical(c_task$isScheduled())
   )
 }
 
@@ -402,14 +402,14 @@ opt_set_settings <- function(data, c_task) {
   if (!is.null(data$subtask))
     c_problem$setSubtaskType(data$subtask)
   
-  if (!is.null(data$randomizeStartValues))
-    c_problem$setRandomizeStartValues(data$randomizeStartValues)
+  if (!is.null(data$randomize_start_values))
+    c_problem$setRandomizeStartValues(data$randomize_start_values)
   
-  if (!is.null(data$calculateStatistics))
-    c_problem$setCalculateStatistics(data$calculateStatistics)
+  if (!is.null(data$calculate_statistics))
+    c_problem$setCalculateStatistics(data$calculate_statistics)
   
-  if (!is.null(data$updateModel))
-    c_task$setUpdateModel(data$updateModel)
+  if (!is.null(data$update_model))
+    c_task$setUpdateModel(data$update_model)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -427,31 +427,30 @@ opt_get_results <- function(c_task, settings) {
   
   main <-
     list(
-      "Objective Value" = c_problem$getSolutionValue(),
-      "Function Evaluations" = evals,
-      "CPU Time [s]" = evaltime,
+      "Objective Value"          = c_problem$getSolutionValue(),
+      "Function Evaluations"     = evals,
+      "CPU Time [s]"             = evaltime,
       "Evaluations/second [1/s]" = evals / evaltime
     ) %>%
     transform_names()
   
   parameters <-
     tibble::tibble(
-      "Parameter" = map_swig_chr(cl_items, "getObjectDisplayName"),
+      "Parameter"   = map_swig_chr(cl_items, "getObjectDisplayName"),
       "Lower Bound" = map_swig_dbl(cl_items, "getLowerBoundValue"),
       "Start Value" = map_swig_dbl(cl_items, "getStartValue"),
-      "Value" = get_cv(c_problem$getSolutionVariables()),
+      "Value"       = get_cv(c_problem$getSolutionVariables()),
       "Upper Bound" = map_swig_dbl(cl_items, "getUpperBoundValue"),
-      "Gradient" = get_cv(c_problem$getVariableGradients())
+      "Gradient"    = get_cv(c_problem$getVariableGradients())
     ) %>%
     transform_names()
   
   protocol <- c_method$getMethodLog()$getPlainLog()
   
   list(
-    settings = settings,
-    main = main,
+    settings   = settings,
+    main       = main,
     parameters = parameters,
-    protocol = protocol
+    protocol   = protocol
   )
 }
-

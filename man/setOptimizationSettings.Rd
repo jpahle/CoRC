@@ -6,13 +6,13 @@
 \title{Set optimization settings}
 \usage{
 setOptimizationSettings(expression = NULL, maximize = NULL,
-  subtask = NULL, randomizeStartValues = NULL, calculateStatistics = NULL,
-  updateModel = NULL, executable = NULL, parameters = NULL,
-  method = NULL, model = getCurrentModel())
+  subtask = NULL, randomize_start_values = NULL,
+  calculate_statistics = NULL, update_model = NULL, executable = NULL,
+  parameters = NULL, method = NULL, model = getCurrentModel())
 
 setOpt(expression = NULL, maximize = NULL, subtask = NULL,
-  randomizeStartValues = NULL, calculateStatistics = NULL,
-  updateModel = NULL, executable = NULL, parameters = NULL,
+  randomize_start_values = NULL, calculate_statistics = NULL,
+  update_model = NULL, executable = NULL, parameters = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
@@ -24,11 +24,11 @@ setOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics}
 
-\item{randomizeStartValues}{flag}
+\item{randomize_start_values}{flag}
 
-\item{calculateStatistics}{flag}
+\item{calculate_statistics}{flag}
 
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 

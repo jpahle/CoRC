@@ -56,7 +56,7 @@ This is achieved by assigning the `Value` reference of the global quantity to sp
 ```{r}
 newModel()
 
-subs_quant <- newGlobalQuantity("substrate concentration", initial.value = 10)
+subs_quant <- newGlobalQuantity("substrate concentration", initial_value = 10)
 subs_value <- quantity(subs_quant, reference = "Value")
 subs_value
 
@@ -82,7 +82,7 @@ In this example we create an equivalent function manually to achieve the same re
 newModel()
 
 newCompartment("compartment")
-newSpecies("a", type = "fixed", initial.concentration = 10)
+newSpecies("a", type = "fixed", initial_concentration = 10)
 newSpecies("b")
 newKineticFunction(
   "manual MM",
@@ -115,7 +115,7 @@ Auxiliarry information like reaction rates can be missing and and need to be add
 ```{r}
 newModel()
 
-subs_quant <- newGlobalQuantity("substrate concentration", initial.value = 10)
+subs_quant <- newGlobalQuantity("substrate concentration", initial_value = 10)
 subs_value <- quantity(subs_quant, reference = "Value")
 
 newSpecies("a", type = "assignment", expression = subs_value)

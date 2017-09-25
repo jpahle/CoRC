@@ -5,20 +5,20 @@
 \alias{setSS}
 \title{Set steady state settings}
 \usage{
-setSteadyStateSettings(calculateJacobian = NULL,
-  performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL,
-  method = NULL, model = getCurrentModel())
+setSteadyStateSettings(calculate_jacobian = NULL,
+  perform_stability_analysis = NULL, update_model = NULL,
+  executable = NULL, method = NULL, model = getCurrentModel())
 
-setSS(calculateJacobian = NULL, performStabilityAnalysis = NULL,
-  updateModel = NULL, executable = NULL, method = NULL,
+setSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
+  update_model = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{calculateJacobian}{flag}
+\item{calculate_jacobian}{flag}
 
-\item{performStabilityAnalysis}{flag}
+\item{perform_stability_analysis}{flag}
 
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 

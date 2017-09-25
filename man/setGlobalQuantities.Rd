@@ -5,7 +5,7 @@
 \title{Set global quantities}
 \usage{
 setGlobalQuantities(key = NULL, name = NULL, type = NULL,
-  initial.value = NULL, expression = NULL, data = NULL,
+  initial_value = NULL, expression = NULL, data = NULL,
   model = getCurrentModel())
 }
 \arguments{

@@ -5,31 +5,31 @@
 #' @param duration number
 #' @param dt number
 #' @param intervals count
-#' @param suppressOutputBefore flag
-#' @param outputEvents flag
-#' @param saveResultInMemory flag
-#' @param startInSteadyState flag
-#' @param updateModel flag
+#' @param suppress_output_before flag
+#' @param output_events flag
+#' @param save_result_in_memory flag
+#' @param start_in_steady_state flag
+#' @param update_model flag
 #' @param executable flag
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
 #' @return a list of results
 #' @family time course
 #' @export
-runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- tc_assemble_settings(
-    duration = duration,
-    dt = dt,
-    intervals = intervals,
-    suppressOutputBefore = suppressOutputBefore,
-    outputEvents = outputEvents,
-    saveResultInMemory = saveResultInMemory,
-    startInSteadyState = startInSteadyState,
-    updateModel = updateModel,
-    executable = executable
+    duration               = duration,
+    dt                     = dt,
+    intervals              = intervals,
+    suppress_output_before = suppress_output_before,
+    output_events          = output_events,
+    save_result_in_memory  = save_result_in_memory,
+    start_in_steady_state  = start_in_steady_state,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
@@ -103,30 +103,30 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param duration number
 #' @param dt number
 #' @param intervals count
-#' @param suppressOutputBefore flag
-#' @param outputEvents flag
-#' @param saveResultInMemory flag
-#' @param startInSteadyState flag
-#' @param updateModel flag
+#' @param suppress_output_before flag
+#' @param output_events flag
+#' @param save_result_in_memory flag
+#' @param start_in_steady_state flag
+#' @param update_model flag
 #' @param executable flag
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model a model object
 #' @family time course
 #' @export
-setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppressOutputBefore = NULL, outputEvents = NULL, saveResultInMemory = NULL, startInSteadyState = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- tc_assemble_settings(
-    duration = duration,
-    dt = dt,
-    intervals = intervals,
-    suppressOutputBefore = suppressOutputBefore,
-    outputEvents = outputEvents,
-    saveResultInMemory = saveResultInMemory,
-    startInSteadyState = startInSteadyState,
-    updateModel = updateModel,
-    executable = executable
+    duration               = duration,
+    dt                     = dt,
+    intervals              = intervals,
+    suppress_output_before = suppress_output_before,
+    output_events          = output_events,
+    save_result_in_memory  = save_result_in_memory,
+    start_in_steady_state  = start_in_steady_state,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Time-Course"), "_p_CTrajectoryTask")
@@ -214,32 +214,32 @@ is.copasi_ts <- function(x) {
 
 # does assertions
 # returns a list of settings
-tc_assemble_settings <- function(duration, dt, intervals, suppressOutputBefore, outputEvents, saveResultInMemory, startInSteadyState, updateModel, executable) {
+tc_assemble_settings <- function(duration, dt, intervals, suppress_output_before, output_events, save_result_in_memory, start_in_steady_state, update_model, executable) {
   assert_that(
-    is.null(duration)             || is.number(duration)             && noNA(duration) && duration >= 0,
-    is.null(dt)                   || is.number(dt)                   && noNA(dt)       && dt >= 0,
-    is.null(intervals)            || is.count(intervals)             && noNA(intervals),
-    is.null(suppressOutputBefore) || is.number(suppressOutputBefore) && noNA(suppressOutputBefore),
-    is.null(outputEvents)         || is.flag(outputEvents)           && noNA(outputEvents),
-    is.null(saveResultInMemory)   || is.flag(saveResultInMemory)     && noNA(saveResultInMemory),
-    is.null(startInSteadyState)   || is.flag(startInSteadyState)     && noNA(startInSteadyState),
-    is.null(updateModel)          || is.flag(updateModel)            && noNA(updateModel),
-    is.null(executable)           || is.flag(executable)             && noNA(executable)
+    is.null(duration)               || is.number(duration)               && noNA(duration) && duration >= 0,
+    is.null(dt)                     || is.number(dt)                     && noNA(dt)       && dt >= 0,
+    is.null(intervals)              || is.count(intervals)               && noNA(intervals),
+    is.null(suppress_output_before) || is.number(suppress_output_before) && noNA(suppress_output_before),
+    is.null(output_events)          || is.flag(output_events)            && noNA(output_events),
+    is.null(save_result_in_memory)  || is.flag(save_result_in_memory)    && noNA(save_result_in_memory),
+    is.null(start_in_steady_state)  || is.flag(start_in_steady_state)    && noNA(start_in_steady_state),
+    is.null(update_model)           || is.flag(update_model)             && noNA(update_model),
+    is.null(executable)             || is.flag(executable)               && noNA(executable)
   )
   
   if (!is.null(dt) && !is.null(intervals))
     warning("Both `dt` and `intervals` was given. Applying `intervals` by preferentially.")
   
   list(
-    duration = duration,
-    dt = dt,
-    intervals = intervals,
-    suppressOutputBefore = suppressOutputBefore,
-    outputEvents = outputEvents,
-    saveResultInMemory = saveResultInMemory,
-    startInSteadyState = startInSteadyState,
-    updateModel = updateModel,
-    executable = executable
+    duration               = duration,
+    dt                     = dt,
+    intervals              = intervals,
+    suppress_output_before = suppress_output_before,
+    output_events          = output_events,
+    save_result_in_memory  = save_result_in_memory,
+    start_in_steady_state  = start_in_steady_state,
+    update_model           = update_model,
+    executable             = executable
   ) %>%
     discard(is.null)
 }
@@ -267,15 +267,15 @@ tc_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CTrajectoryProblem")
   
   list(
-    duration             = c_problem$getDuration(),
-    dt                   = c_problem$getStepSize(),
-    intervals            = c_problem$getStepNumber(),
-    suppressOutputBefore = c_problem$getOutputStartTime(),
-    outputEvents         = as.logical(c_problem$getOutputEvent()),
-    saveResultInMemory   = as.logical(c_problem$timeSeriesRequested()),
-    startInSteadyState   = as.logical(c_problem$getStartInSteadyState()),
-    updateModel          = as.logical(c_task$isUpdateModel()),
-    executable           = as.logical(c_task$isScheduled())
+    duration               = c_problem$getDuration(),
+    dt                     = c_problem$getStepSize(),
+    intervals              = c_problem$getStepNumber(),
+    suppress_output_before = c_problem$getOutputStartTime(),
+    output_events          = as.logical(c_problem$getOutputEvent()),
+    save_result_in_memory  = as.logical(c_problem$timeSeriesRequested()),
+    start_in_steady_state  = as.logical(c_problem$getStartInSteadyState()),
+    update_model           = as.logical(c_task$isUpdateModel()),
+    executable             = as.logical(c_task$isScheduled())
   )
 }
 
@@ -295,20 +295,20 @@ tc_set_settings <- function(data, c_task) {
   if (!is.null(data$intervals))
     c_problem$setStepNumber(data$intervals)
   
-  if (!is.null(data$suppressOutputBefore))
-    c_problem$setOutputStartTime(data$suppressOutputBefore)
+  if (!is.null(data$suppress_output_before))
+    c_problem$setOutputStartTime(data$suppress_output_before)
   
-  if (!is.null(data$outputEvents))
-    c_problem$setOutputEvent(data$outputEvents)
+  if (!is.null(data$output_events))
+    c_problem$setOutputEvent(data$output_events)
   
-  if (!is.null(data$saveResultInMemory))
-    c_problem$setTimeSeriesRequested(data$saveResultInMemory)
+  if (!is.null(data$save_result_in_memory))
+    c_problem$setTimeSeriesRequested(data$save_result_in_memory)
   
-  if (!is.null(data$startInSteadyState))
-    c_problem$setStartInSteadyState(data$startInSteadyState)
+  if (!is.null(data$start_in_steady_state))
+    c_problem$setStartInSteadyState(data$start_in_steady_state)
   
-  if (!is.null(data$updateModel))
-    c_task$setUpdateModel(data$updateModel)
+  if (!is.null(data$update_model))
+    c_task$setUpdateModel(data$update_model)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -351,9 +351,9 @@ tc_get_results <- function(c_task, settings) {
   }
   
   new_copasi_ts(
-    settings = settings,
+    settings  = settings,
     unit_time = getTimeUnit(c_datamodel),
     unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel)),
-    result = ret
+    result    = ret
   )
 }

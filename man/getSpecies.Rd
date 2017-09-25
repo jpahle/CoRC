@@ -4,12 +4,12 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(key = NULL, rawExpressions = FALSE, model = getCurrentModel())
+getSpecies(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying species}
 
-\item{rawExpressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
 
 \item{model}{a model object}
 }

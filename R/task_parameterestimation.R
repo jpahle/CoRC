@@ -2,10 +2,10 @@
 #'
 #' \code{runParameterEstimation} runs parameter estimation and returns the results in a list.
 #'
-#' @param randomizeStartValues flag
-#' @param createParameterSets flag
-#' @param calculateStatistics flag
-#' @param updateModel flag
+#' @param randomize_start_values flag
+#' @param create_parameter_sets flag
+#' @param calculate_statistics flag
+#' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
@@ -14,16 +14,16 @@
 #' @return a list of results
 #' @family parameter estimation
 #' @export
-runParameterEstimation <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+runParameterEstimation <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- pe_assemble_settings(
-    randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    randomize_start_values = randomize_start_values,
+    create_parameter_sets  = create_parameter_sets,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
@@ -115,10 +115,10 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
 #'
 #' \code{setParameterEstimationSettings} sets parameter estimation task settings including parameters, experiments and method options.
 #'
-#' @param randomizeStartValues flag
-#' @param createParameterSets flag
-#' @param calculateStatistics flag
-#' @param updateModel flag
+#' @param randomize_start_values flag
+#' @param create_parameter_sets flag
+#' @param calculate_statistics flag
+#' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
@@ -126,16 +126,16 @@ runParameterEstimation <- function(randomizeStartValues = NULL, createParameterS
 #' @param model a model object
 #' @family parameter estimation
 #' @export
-setParameterEstimationSettings <- function(randomizeStartValues = NULL, createParameterSets = NULL, calculateStatistics = NULL, updateModel = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+setParameterEstimationSettings <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- pe_assemble_settings(
-    randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    randomize_start_values = randomize_start_values,
+    create_parameter_sets  = create_parameter_sets,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
@@ -259,9 +259,9 @@ getPE <- getParameterEstimationSettings
 #' Define a parameter estimation parameter
 #' 
 #' @param key entity key
-#' @param lower.bound lower value bound
-#' @param upper.bound upper value bound
-#' @param start.value start value
+#' @param lower_bound lower value bound
+#' @param upper_bound upper value bound
+#' @param start_value start value
 #' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
 #' @return copasi_parm object for input into related functions
 #' @export
@@ -618,21 +618,21 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
 
 # does assertions
 # returns a list of settings
-pe_assemble_settings <- function(randomizeStartValues, createParameterSets, calculateStatistics, updateModel, executable) {
+pe_assemble_settings <- function(randomize_start_values, create_parameter_sets, calculate_statistics, update_model, executable) {
   assert_that(
-    is.null(randomizeStartValues) || is.flag(randomizeStartValues) && noNA(randomizeStartValues),
-    is.null(createParameterSets)  || is.flag(createParameterSets)  && noNA(createParameterSets),
-    is.null(calculateStatistics)  || is.flag(calculateStatistics)  && noNA(calculateStatistics),
-    is.null(updateModel)          || is.flag(updateModel)          && noNA(updateModel),
-    is.null(executable)           || is.flag(executable)           && noNA(executable)
+    is.null(randomize_start_values) || is.flag(randomize_start_values) && noNA(randomize_start_values),
+    is.null(create_parameter_sets)  || is.flag(create_parameter_sets)  && noNA(create_parameter_sets),
+    is.null(calculate_statistics)   || is.flag(calculate_statistics)   && noNA(calculate_statistics),
+    is.null(update_model)           || is.flag(update_model)           && noNA(update_model),
+    is.null(executable)             || is.flag(executable)             && noNA(executable)
   )
   
   list(
-    randomizeStartValues = randomizeStartValues,
-    createParameterSets = createParameterSets,
-    calculateStatistics = calculateStatistics,
-    updateModel = updateModel,
-    executable = executable
+    randomize_start_values = randomize_start_values,
+    create_parameter_sets  = create_parameter_sets,
+    calculate_statistics   = calculate_statistics,
+    update_model           = update_model,
+    executable             = executable
   ) %>%
     discard(is.null)
 }
@@ -660,11 +660,11 @@ pe_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
   list(
-    randomizeStartValues = as.logical(c_problem$getRandomizeStartValues()),
-    createParameterSets  = as.logical(c_problem$getCreateParameterSets()),
-    calculateStatistics  = as.logical(c_problem$getCalculateStatistics()),
-    updateModel          = as.logical(c_task$isUpdateModel()),
-    executable           = as.logical(c_task$isScheduled())
+    randomize_start_values = as.logical(c_problem$getRandomizeStartValues()),
+    create_parameter_sets  = as.logical(c_problem$getCreateParameterSets()),
+    calculate_statistics   = as.logical(c_problem$getCalculateStatistics()),
+    update_model           = as.logical(c_task$isUpdateModel()),
+    executable             = as.logical(c_task$isScheduled())
   )
 }
 
@@ -675,17 +675,17 @@ pe_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
-  if (!is.null(data$randomizeStartValues))
-    c_problem$setRandomizeStartValues(data$randomizeStartValues)
+  if (!is.null(data$randomize_start_values))
+    c_problem$setRandomizeStartValues(data$randomize_start_values)
   
-  if (!is.null(data$createParameterSets))
-    c_problem$setCreateParameterSets(data$createParameterSets)
+  if (!is.null(data$create_parameter_sets))
+    c_problem$setCreateParameterSets(data$create_parameter_sets)
   
-  if (!is.null(data$calculateStatistics))
-    c_problem$setCalculateStatistics(data$calculateStatistics)
+  if (!is.null(data$calculate_statistics))
+    c_problem$setCalculateStatistics(data$calculate_statistics)
   
-  if (!is.null(data$updateModel))
-    c_task$setUpdateModel(data$updateModel)
+  if (!is.null(data$update_model))
+    c_task$setUpdateModel(data$update_model)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -708,47 +708,47 @@ pe_get_results <- function(c_task, settings) {
   
   main <-
     list(
-      "Objective Value" = c_problem$getSolutionValue(),
-      "Root Mean Square" = c_problem$getRMS(),
-      "Standard Deviation" = c_problem$getStdDeviation(),
-      "Validation Objective Value" = c_problem$getCrossValidationSolutionValue(),
-      "Validation Root Mean Square" = c_problem$getCrossValidationRMS(),
+      "Objective Value"               = c_problem$getSolutionValue(),
+      "Root Mean Square"              = c_problem$getRMS(),
+      "Standard Deviation"            = c_problem$getStdDeviation(),
+      "Validation Objective Value"    = c_problem$getCrossValidationSolutionValue(),
+      "Validation Root Mean Square"   = c_problem$getCrossValidationRMS(),
       "Validation Standard Deviation" = c_problem$getCrossValidationSD(),
-      "Function Evaluations" = evals,
-      "CPU Time [s]" = evaltime,
-      "Evaluations/second [1/s]" = evals / evaltime
+      "Function Evaluations"          = evals,
+      "CPU Time [s]"                  = evaltime,
+      "Evaluations/second [1/s]"      = evals / evaltime
     ) %>%
     transform_names()
   
   parameters <-
     tibble::tibble(
-      "Parameter" = map_swig_chr(cl_items, "getObjectDisplayName"),
-      "Lower Bound" = map_swig_dbl(cl_items, "getLowerBoundValue"),
-      "Start Value" = map_swig_dbl(cl_items, "getStartValue"),
-      "Value" = get_cv(c_problem$getSolutionVariables()),
-      "Upper Bound" = map_swig_dbl(cl_items, "getUpperBoundValue"),
-      "Std. Deviation" = get_cv(c_problem$getVariableStdDeviations()),
+      "Parameter"               = map_swig_chr(cl_items, "getObjectDisplayName"),
+      "Lower Bound"             = map_swig_dbl(cl_items, "getLowerBoundValue"),
+      "Start Value"             = map_swig_dbl(cl_items, "getStartValue"),
+      "Value"                   = get_cv(c_problem$getSolutionVariables()),
+      "Upper Bound"             = map_swig_dbl(cl_items, "getUpperBoundValue"),
+      "Std. Deviation"          = get_cv(c_problem$getVariableStdDeviations()),
       "Coeff. of Variation [%]" = NaN, # TODO
-      "Gradient" = get_cv(c_problem$getVariableGradients())
+      "Gradient"                = get_cv(c_problem$getVariableGradients())
     ) %>%
     transform_names()
   
   experiments <-
     tibble::tibble(
-      "Experiment" = map_swig_chr(cl_experiments, "getObjectName"),
-      "Objective Value" = map_swig_dbl(cl_experiments, "getObjectiveValue"),
-      "Root Mean Square" = map_swig_dbl(cl_experiments, "getRMS"),
-      "Error Mean" = map_swig_dbl(cl_experiments, "getErrorMean"),
+      "Experiment"                = map_swig_chr(cl_experiments, "getObjectName"),
+      "Objective Value"           = map_swig_dbl(cl_experiments, "getObjectiveValue"),
+      "Root Mean Square"          = map_swig_dbl(cl_experiments, "getRMS"),
+      "Error Mean"                = map_swig_dbl(cl_experiments, "getErrorMean"),
       "Error Mean Std. Deviation" = map_swig_dbl(cl_experiments, "getErrorMeanSD")
     ) %>%
     transform_names()
   
-  fitted.values <-
+  fitted_values <-
     tibble::tibble(
-      "Fitted Value" = map_swig_chr(cl_dependent_obj, "getObjectDisplayName"),
-      "Objective Value" = get_cv(c_experiment_set$getDependentObjectiveValues()),
-      "Root Mean Square" = get_cv(c_experiment_set$getDependentRMS()),
-      "Error Mean" = get_cv(c_experiment_set$getDependentErrorMean()),
+      "Fitted Value"              = map_swig_chr(cl_dependent_obj, "getObjectDisplayName"),
+      "Objective Value"           = get_cv(c_experiment_set$getDependentObjectiveValues()),
+      "Root Mean Square"          = get_cv(c_experiment_set$getDependentRMS()),
+      "Error Mean"                = get_cv(c_experiment_set$getDependentErrorMean()),
       "Error Mean Std. Deviation" = get_cv(c_experiment_set$getDependentErrorMeanSD())
     ) %>%
     transform_names()
@@ -756,12 +756,12 @@ pe_get_results <- function(c_task, settings) {
   correlation <- get_annotated_matrix(c_problem$getCorrelations())
   
   fim <- get_annotated_matrix(c_problem$getFisherInformation())
-  fim.eigenvalues <- get_annotated_matrix(c_problem$getFisherInformationEigenvalues())
-  fim.eigenvectors <- get_annotated_matrix(c_problem$getFisherInformationEigenvectors())
+  fim_eigenvalues <- get_annotated_matrix(c_problem$getFisherInformationEigenvalues())
+  fim_eigenvectors <- get_annotated_matrix(c_problem$getFisherInformationEigenvectors())
   
-  fim.scaled <- get_annotated_matrix(c_problem$getScaledFisherInformation())
-  fim.scaled.eigenvalues <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvalues())
-  fim.scaled.eigenvectors <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvectors())
+  fim_scaled <- get_annotated_matrix(c_problem$getScaledFisherInformation())
+  fim_scaled_eigenvalues <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvalues())
+  fim_scaled_eigenvectors <- get_annotated_matrix(c_problem$getScaledFisherInformationEigenvectors())
   
   protocol <- c_method$getMethodLog()$getPlainLog()
   
@@ -770,15 +770,14 @@ pe_get_results <- function(c_task, settings) {
     main = main,
     parameters = parameters,
     experiments = experiments,
-    fitted.values = fitted.values,
+    fitted_values = fitted_values,
     correlation = correlation,
     fim = fim,
-    fim.eigenvalues = fim.eigenvalues,
-    fim.eigenvectors = fim.eigenvectors,
-    fim.scaled = fim.scaled,
-    fim.scaled.eigenvalues = fim.scaled.eigenvalues,
-    fim.scaled.eigenvectors = fim.scaled.eigenvectors,
+    fim_eigenvalues = fim_eigenvalues,
+    fim_eigenvectors = fim_eigenvectors,
+    fim_scaled = fim_scaled,
+    fim_scaled_eigenvalues = fim_scaled_eigenvalues,
+    fim_scaled_eigenvectors = fim_scaled_eigenvectors,
     protocol = protocol
   )
 }
-

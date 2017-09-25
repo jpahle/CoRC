@@ -6,13 +6,13 @@
 \title{Run optimization}
 \usage{
 runOptimization(expression = NULL, maximize = NULL, subtask = NULL,
-  randomizeStartValues = NULL, calculateStatistics = NULL,
-  updateModel = NULL, executable = NULL, parameters = NULL,
+  randomize_start_values = NULL, calculate_statistics = NULL,
+  update_model = NULL, executable = NULL, parameters = NULL,
   method = NULL, model = getCurrentModel())
 
 runOpt(expression = NULL, maximize = NULL, subtask = NULL,
-  randomizeStartValues = NULL, calculateStatistics = NULL,
-  updateModel = NULL, executable = NULL, parameters = NULL,
+  randomize_start_values = NULL, calculate_statistics = NULL,
+  update_model = NULL, executable = NULL, parameters = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
@@ -24,11 +24,9 @@ runOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics}
 
-\item{randomizeStartValues}{flag}
+\item{randomize_start_values}{flag}
 
-\item{calculateStatistics}{flag}
-
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 
@@ -40,6 +38,8 @@ Set method with a string or a list with the entry `method`. The list may contain
 Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
+
+\item{calculateStatistics}{flag}
 }
 \value{
 a list of results

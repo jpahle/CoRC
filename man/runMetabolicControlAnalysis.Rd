@@ -5,14 +5,14 @@
 \alias{runMCA}
 \title{Run metabolic control analysis}
 \usage{
-runMetabolicControlAnalysis(performSteadyStateAnalysis = NULL,
+runMetabolicControlAnalysis(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
-runMCA(performSteadyStateAnalysis = NULL, executable = NULL,
+runMCA(perform_steady_state_analysis = NULL, executable = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{performSteadyStateAnalysis}{flag}
+\item{perform_steady_state_analysis}{flag}
 
 \item{executable}{flag}
 

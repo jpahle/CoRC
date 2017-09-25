@@ -5,14 +5,14 @@
 \title{Create a new compartment}
 \usage{
 newCompartment(name, type = c("fixed", "assignment", "ode"),
-  initial.volume = 1, expression = NULL, model = getCurrentModel())
+  initial_size = 1, expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
 
 \item{type}{string}
 
-\item{initial.volume}{number}
+\item{initial_size}{number}
 
 \item{expression}{string}
 

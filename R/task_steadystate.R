@@ -2,24 +2,24 @@
 #'
 #' \code{runSteadyState} calculates the steady state and returns the results in a list.
 #'
-#' @param calculateJacobian flag
-#' @param performStabilityAnalysis flag
-#' @param updateModel flag
+#' @param calculate_jacobian flag
+#' @param perform_stability_analysis flag
+#' @param update_model flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @return a list of results
 #' @family steady state
 #' @export
-runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+runSteadyState <- function(calculate_jacobian = NULL, perform_stability_analysis = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- ss_assemble_settings(
-    calculateJacobian = calculateJacobian,
-    performStabilityAnalysis = performStabilityAnalysis,
-    updateModel = updateModel,
-    executable = executable
+    calculate_jacobian         = calculate_jacobian,
+    perform_stability_analysis = perform_stability_analysis,
+    update_model               = update_model,
+    executable                 = executable
   )
   
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
@@ -81,23 +81,23 @@ runSteadyState <- function(calculateJacobian = NULL, performStabilityAnalysis = 
 #'
 #' \code{setSteadyStateSettings} sets steady state task settings including method options.
 #'
-#' @param calculateJacobian flag
-#' @param performStabilityAnalysis flag
-#' @param updateModel flag
+#' @param calculate_jacobian flag
+#' @param perform_stability_analysis flag
+#' @param update_model flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @family steady state
 #' @export
-setSteadyStateSettings <- function(calculateJacobian = NULL, performStabilityAnalysis = NULL, updateModel = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+setSteadyStateSettings <- function(calculate_jacobian = NULL, perform_stability_analysis = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- ss_assemble_settings(
-    calculateJacobian = calculateJacobian,
-    performStabilityAnalysis = performStabilityAnalysis,
-    updateModel = updateModel,
-    executable = executable
+    calculate_jacobian         = calculate_jacobian,
+    perform_stability_analysis = perform_stability_analysis,
+    update_model               = update_model,
+    executable                 = executable
   )
   
   c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
@@ -147,18 +147,18 @@ getSS <- getSteadyStateSettings
 
 # does assertions
 # returns a list of settings
-ss_assemble_settings <- function(calculateJacobian, performStabilityAnalysis, updateModel, executable) {
+ss_assemble_settings <- function(calculate_jacobian, perform_stability_analysis, update_model, executable) {
   assert_that(
-    is.null(calculateJacobian)        || is.flag(calculateJacobian)        && noNA(calculateJacobian),
-    is.null(performStabilityAnalysis) || is.flag(performStabilityAnalysis) && noNA(performStabilityAnalysis),
-    is.null(updateModel)              || is.flag(updateModel)              && noNA(updateModel),
-    is.null(executable)               || is.flag(executable)               && noNA(executable)
+    is.null(calculate_jacobian)         || is.flag(calculate_jacobian)         && noNA(calculate_jacobian),
+    is.null(perform_stability_analysis) || is.flag(perform_stability_analysis) && noNA(perform_stability_analysis),
+    is.null(update_model)               || is.flag(update_model)               && noNA(update_model),
+    is.null(executable)                 || is.flag(executable)                 && noNA(executable)
   )
   
   list(
-    calculateJacobian = calculateJacobian,
-    performStabilityAnalysis = performStabilityAnalysis,
-    updateModel = updateModel,
+    calculate_jacobian = calculate_jacobian,
+    perform_stability_analysis = perform_stability_analysis,
+    update_model = update_model,
     executable = executable
   ) %>%
     discard(is.null)
@@ -180,10 +180,10 @@ ss_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
   list(
-    calculateJacobian        = as.logical(c_problem$isJacobianRequested()),
-    performStabilityAnalysis = as.logical(c_problem$isStabilityAnalysisRequested()),
-    updateModel              = as.logical(c_task$isUpdateModel()),
-    executable               = as.logical(c_task$isScheduled())
+    calculate_jacobian         = as.logical(c_problem$isJacobianRequested()),
+    perform_stability_analysis = as.logical(c_problem$isStabilityAnalysisRequested()),
+    update_model               = as.logical(c_task$isUpdateModel()),
+    executable                 = as.logical(c_task$isScheduled())
   )
 }
 
@@ -194,27 +194,27 @@ ss_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CSteadyStateProblem")
   
-  calculateJacobian <- data$calculateJacobian
-  if (!is.null(calculateJacobian)) {
-    c_problem$setJacobianRequested(calculateJacobian)
-    if (!calculateJacobian)
+  calculate_jacobian <- data$calculate_jacobian
+  if (!is.null(calculate_jacobian)) {
+    c_problem$setJacobianRequested(calculate_jacobian)
+    if (!calculate_jacobian)
       c_problem$setStabilityAnalysisRequested(FALSE)
   }
   
   
-  performStabilityAnalysis <- data$performStabilityAnalysis
-  if (!is.null(performStabilityAnalysis)) {
-    if (performStabilityAnalysis) {
+  perform_stability_analysis <- data$perform_stability_analysis
+  if (!is.null(perform_stability_analysis)) {
+    if (perform_stability_analysis) {
       assert_that(
         as.logical(c_problem$isJacobianRequested()),
-        msg = "`performStabilityAnalysis` can only be set to `TRUE` in combination with `calculateJacobian`."
+        msg = "`perform_stability_analysis` can only be set to `TRUE` in combination with `calculate_jacobian`."
       )
     }
-    c_problem$setStabilityAnalysisRequested(performStabilityAnalysis)
+    c_problem$setStabilityAnalysisRequested(perform_stability_analysis)
   }
   
-  if (!is.null(data$updateModel))
-    c_task$setUpdateModel(data$updateModel)
+  if (!is.null(data$update_model))
+    c_task$setUpdateModel(data$update_model)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -233,43 +233,74 @@ ss_get_results <- function(c_task, settings) {
   
   species <-
     tibble::tibble(
-      key = map_swig_chr(cl_metabs_ss, "getObjectDisplayName"),
-      name = map_swig_chr(cl_metabs_ss, "getObjectName"),
-      type = cl_metabs_ss %>% map_swig_chr("getStatus") %>% tolower(),
-      concentration = map_swig_dbl(cl_metabs_ss, "getConcentration"),
-      concentration.rate = map_swig_dbl(cl_metabs_ss, "getConcentrationRate"),
-      number = map_swig_dbl(cl_metabs_ss, "getValue"),
-      number.rate = map_swig_dbl(cl_metabs_ss, "getRate"),
-      transitiontime = map_swig_dbl(cl_metabs_ss, "getTransitionTime")
-    )
+      key               = map_swig_chr(cl_metabs_ss, "getObjectDisplayName"),
+      "Name"            = map_swig_chr(cl_metabs_ss, "getObjectName"),
+      "Type"            = cl_metabs_ss %>% map_swig_chr("getStatus") %>% tolower(),
+      "Concentration"   = map_swig_dbl(cl_metabs_ss, "getConcentration"),
+      "Number"          = map_swig_dbl(cl_metabs_ss, "getValue"),
+      "Rate"            = map_swig_dbl(cl_metabs_ss, "getConcentrationRate"),
+      "Number Rate"     = map_swig_dbl(cl_metabs_ss, "getRate"),
+      "Transition Time" = map_swig_dbl(cl_metabs_ss, "getTransitionTime")
+    ) %>%
+    transform_names()
+  
+  cl_comps <-
+    get_cdv(c_model$getCompartments()) %>%
+    discard(map_swig_chr(., "getStatus") == "FIXED")
+  
+  compartments <-
+    tibble::tibble(
+      key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+      "Name"               = map_swig_chr(cl_comps, "getObjectName"),
+      "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
+      "Size"               = map_swig_dbl(cl_comps, "getValue"),
+      "Rate"               = map_swig_dbl(cl_comps, "getRate")
+    ) %>%
+    transform_names()
+  
+  cl_quants <- get_cdv(c_model$getModelValues()) %>%
+    discard(map_swig_chr(., "getStatus") == "FIXED")
+  
+  quantities <-
+    tibble::tibble(
+      key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+      "Name"               = map_swig_chr(cl_quants, "getObjectName"),
+      "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
+      "Value"              = map_swig_dbl(cl_quants, "getValue"),
+      "Rate"               = map_swig_dbl(cl_quants, "getRate")
+    ) %>%
+    transform_names()
   
   cl_reacts <- get_cdv(c_model$getReactions())
   
   reactions <-
     tibble::tibble(
-      key = map_swig_chr(cl_reacts, "getObjectDisplayName"),
-      name = map_swig_chr(cl_reacts, "getObjectName"),
-      concentration.flux = map_swig_dbl(cl_reacts, "getFlux"),
-      particlenum.flux = map_swig_dbl(cl_reacts, "getParticleFlux")
-    )
+      key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+      "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
+      "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
+      "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")
+    ) %>%
+    transform_names()
   
-  jacobian.complete <- NULL
-  jacobian.reduced <- NULL
+  jacobian_complete <- NULL
+  jacobian_reduced <- NULL
   
-  if (settings$calculateJacobian) {
-    jacobian.complete <- get_annotated_matrix(c_task$getJacobianAnnotated())
-    jacobian.reduced <- get_annotated_matrix(c_task$getJacobianXAnnotated())
+  if (settings$calculate_jacobian) {
+    jacobian_complete <- get_annotated_matrix(c_task$getJacobianAnnotated())
+    jacobian_reduced <- get_annotated_matrix(c_task$getJacobianXAnnotated())
   }
   
   protocol <- c_method$getMethodLog()
   
   list(
-    settings = settings,
-    result = result,
-    species = species,
-    reactions = reactions,
-    jacobian.complete = jacobian.complete,
-    jacobian.reduced = jacobian.reduced,
-    protocol = protocol
+    settings          = settings,
+    result            = result,
+    species           = species,
+    compartments      = compartments,
+    global_quantities = quantities,
+    reactions         = reactions,
+    jacobian_complete = jacobian_complete,
+    jacobian_reduced  = jacobian_reduced,
+    protocol          = protocol
   )
 }

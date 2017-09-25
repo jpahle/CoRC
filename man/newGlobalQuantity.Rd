@@ -5,14 +5,14 @@
 \title{Create a new global quantity}
 \usage{
 newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
-  initial.value = 1, expression = NULL, model = getCurrentModel())
+  initial_value = 1, expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
 
 \item{type}{string}
 
-\item{initial.value}{number}
+\item{initial_value}{number}
 
 \item{expression}{string}
 

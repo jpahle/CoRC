@@ -5,7 +5,7 @@
 \title{Set species}
 \usage{
 setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
-  initial.concentration = NULL, initial.number = NULL, expression = NULL,
+  initial_concentration = NULL, initial_number = NULL, expression = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{
@@ -15,9 +15,9 @@ setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
 
 \item{type}{a character vector of types ("fixed", "assignment", "reactions", "ode").}
 
-\item{initial.concentration}{a numeric vector of concentrations to set}
+\item{initial_concentration}{a numeric vector of concentrations to set}
 
-\item{initial.number}{a numeric vector of particle numbers to set}
+\item{initial_number}{a numeric vector of particle numbers to set}
 
 \item{expression}{a character vector of expressions to set}
 

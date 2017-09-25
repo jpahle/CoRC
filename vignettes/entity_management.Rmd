@@ -127,10 +127,10 @@ For most kinds of entities there is a finder function (e.g. species), a getter f
 Other ways to access model Values is by evaluating expressions (e.g. getValue).
 
 ```{r}
-getSpecies("CheYp")$initial.concentration
+getSpecies("CheYp")$initial_concentration
 
-setSpecies("CheYp", initial.concentration = 1)
-getSpecies("CheYp")$initial.concentration
+setSpecies("CheYp", initial_concentration = 1)
+getSpecies("CheYp")$initial_concentration
 
 yp_init_expression <- species("CheYp", reference = "InitialConcentration")
 yp_init_expression

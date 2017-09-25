@@ -6,15 +6,15 @@
 \title{Run a time course}
 \usage{
 runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
-  suppressOutputBefore = NULL, outputEvents = NULL,
-  saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, executable = NULL, method = NULL,
+  suppress_output_before = NULL, output_events = NULL,
+  save_result_in_memory = NULL, start_in_steady_state = NULL,
+  update_model = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 
 runTC(duration = NULL, dt = NULL, intervals = NULL,
-  suppressOutputBefore = NULL, outputEvents = NULL,
-  saveResultInMemory = NULL, startInSteadyState = NULL,
-  updateModel = NULL, executable = NULL, method = NULL,
+  suppress_output_before = NULL, output_events = NULL,
+  save_result_in_memory = NULL, start_in_steady_state = NULL,
+  update_model = NULL, executable = NULL, method = NULL,
   model = getCurrentModel())
 }
 \arguments{
@@ -24,15 +24,15 @@ runTC(duration = NULL, dt = NULL, intervals = NULL,
 
 \item{intervals}{count}
 
-\item{suppressOutputBefore}{flag}
+\item{suppress_output_before}{flag}
 
-\item{outputEvents}{flag}
+\item{output_events}{flag}
 
-\item{saveResultInMemory}{flag}
+\item{save_result_in_memory}{flag}
 
-\item{startInSteadyState}{flag}
+\item{start_in_steady_state}{flag}
 
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 

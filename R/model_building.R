@@ -5,18 +5,18 @@
 #' @param name string
 #' @param compartment compartment key
 #' @param type string
-#' @param initial.concentration number
+#' @param initial_concentration number
 #' @param expression string
 #' @param model a model object
 #' @return species key
 #' @family species functions
 #' @export
-newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", "assignment", "ode"), initial.concentration = 1, expression = NULL, model = getCurrentModel()) {
+newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", "assignment", "ode"), initial_concentration = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
     is.null(compartment) || is.string(compartment),
-    is.number(initial.concentration), initial.concentration >= 0,
+    is.number(initial_concentration), initial_concentration >= 0,
     is.null(expression) || is.string(expression)
   )
   
@@ -46,7 +46,7 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
   }
   
-  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial.concentration, toupper(type))
+  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration, toupper(type))
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
@@ -94,17 +94,17 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #'
 #' @param name string
 #' @param type string
-#' @param initial.value number
+#' @param initial_value number
 #' @param expression string
 #' @param model a model object
 #' @return quantity key
 #' @family global quantity functions
 #' @export
-newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial.value = 1, expression = NULL, model = getCurrentModel()) {
+newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial_value = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.number(initial.value),
+    is.number(initial_value),
     is.null(expression) || is.string(expression)
   )
   
@@ -116,7 +116,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   c_model <- c_datamodel$getModel()
   
-  c_quant <- c_model$createModelValue(name, initial.value)
+  c_quant <- c_model$createModelValue(name, initial_value)
   
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
@@ -166,16 +166,16 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 #'
 #' @param name string
 #' @param type string
-#' @param initial.volume number
+#' @param initial_size number
 #' @param expression string
 #' @param model a model object
 #' @family compartment functions
 #' @export
-newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial.volume = 1, expression = NULL, model = getCurrentModel()) {
+newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial_size = 1, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.number(initial.volume), initial.volume >= 0,
+    is.number(initial_size), initial_size >= 0,
     is.null(expression) || is.string(expression)
   )
   
@@ -188,7 +188,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   c_model <- c_datamodel$getModel()
   
   # type is missing
-  c_comp <- c_model$createCompartment(name, initial.volume)
+  c_comp <- c_model$createCompartment(name, initial_size)
   
   assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed.")
   
@@ -323,11 +323,11 @@ function_role_enum <-
 #' @param name string
 #' @param formula string
 #' @eval rox_param("parameters", "named character vector", function_role_enum)
-#' @param function.type string
+#' @param function_type string
 #' @return function key
 #' @family reaction functions
 #' @export
-newKineticFunction <- function(name, formula, parameters, function.type = c("general", "reversible", "irreversible")) {
+newKineticFunction <- function(name, formula, parameters, function_type = c("general", "reversible", "irreversible")) {
   assert_that(
     is.string(name), noNA(name),
     is.string(formula), noNA(formula)
@@ -345,19 +345,19 @@ newKineticFunction <- function(name, formula, parameters, function.type = c("gen
   
   parameters <- map_chr(parameters, function(parameters) rlang::arg_match(parameters, function_role_enum))
   
-  function.type <- rlang::arg_match(function.type)
-  function.type_map <- c(
+  function_type <- rlang::arg_match(function_type)
+  function_type_map <- c(
     general      = "TriUnspecified",
     reversible   = "TriTrue",
     irreversible = "TriFalse"
   )
-  function.type <- function.type_map[[function.type]]
+  function_type <- function_type_map[[function_type]]
   
   c_fun <- avert_gc(CFunction(name))
   tryCatch(
     {
       c_fun$setInfix(formula)
-      c_fun$setReversible(function.type)
+      c_fun$setReversible(function_type)
       c_params <- c_fun$getVariables()
       cl_params <- map_iswig(seq_along_v(c_params), c_params, "getParameter")
       

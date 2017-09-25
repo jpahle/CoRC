@@ -1,12 +1,12 @@
 # By comparing the output of getObjectType with this list, we can safely typecast it seems
 copasi_object_types <-
   c(
-    Model = "_p_CModel",
+    Model       = "_p_CModel",
     Compartment = "_p_CCompartment",
-    Metabolite = "_p_CMetab",
-    ModelValue = "_p_CModelValue",
-    Reaction = "_p_CReaction",
-    Parameter = "_p_CCopasiParameter"
+    Metabolite  = "_p_CMetab",
+    ModelValue  = "_p_CModelValue",
+    Reaction    = "_p_CReaction",
+    Parameter   = "_p_CCopasiParameter"
   )
 
 # automatically cast according to copasi_object_types

@@ -5,24 +5,24 @@
 \alias{setPE}
 \title{Set parameter estimation settings}
 \usage{
-setParameterEstimationSettings(randomizeStartValues = NULL,
-  createParameterSets = NULL, calculateStatistics = NULL,
-  updateModel = NULL, executable = NULL, parameters = NULL,
+setParameterEstimationSettings(randomize_start_values = NULL,
+  create_parameter_sets = NULL, calculate_statistics = NULL,
+  update_model = NULL, executable = NULL, parameters = NULL,
   experiments = NULL, method = NULL, model = getCurrentModel())
 
-setPE(randomizeStartValues = NULL, createParameterSets = NULL,
-  calculateStatistics = NULL, updateModel = NULL, executable = NULL,
+setPE(randomize_start_values = NULL, create_parameter_sets = NULL,
+  calculate_statistics = NULL, update_model = NULL, executable = NULL,
   parameters = NULL, experiments = NULL, method = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{randomizeStartValues}{flag}
+\item{randomize_start_values}{flag}
 
-\item{createParameterSets}{flag}
+\item{create_parameter_sets}{flag}
 
-\item{calculateStatistics}{flag}
+\item{calculate_statistics}{flag}
 
-\item{updateModel}{flag}
+\item{update_model}{flag}
 
 \item{executable}{flag}
 

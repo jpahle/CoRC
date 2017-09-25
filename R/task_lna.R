@@ -2,20 +2,20 @@
 #'
 #' \code{runLinearNoiseApproximation} runs linear noise approximation and returns the results in a list.
 #'
-#' @param performSteadyStateAnalysis flag
+#' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @return a list of results
 #' @family linear noise approximation
 #' @export
-runLinearNoiseApproximation <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- lna_assemble_settings(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   )
   
   c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
@@ -77,19 +77,19 @@ runLinearNoiseApproximation <- function(performSteadyStateAnalysis = NULL, execu
 #'
 #' \code{setLinearNoiseApproximation} sets linear noise approximation task settings including method options.
 #'
-#' @param performSteadyStateAnalysis flag
+#' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @family linear noise approximation
 #' @export
-setLinearNoiseApproximationSettings <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+setLinearNoiseApproximationSettings <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- ss_assemble_settings(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   )
   
   c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
@@ -139,15 +139,15 @@ getLNA <- getLinearNoiseApproximationSettings
 
 # does assertions
 # returns a list of settings
-lna_assemble_settings <- function(performSteadyStateAnalysis, executable) {
+lna_assemble_settings <- function(perform_steady_state_analysis, executable) {
   assert_that(
-    is.null(performSteadyStateAnalysis) || is.flag(performSteadyStateAnalysis) && noNA(performSteadyStateAnalysis),
-    is.null(executable)                 || is.flag(executable)                 && noNA(executable)
+    is.null(perform_steady_state_analysis) || is.flag(perform_steady_state_analysis) && noNA(perform_steady_state_analysis),
+    is.null(executable)                    || is.flag(executable)                    && noNA(executable)
   )
   
   list(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   ) %>%
     discard(is.null)
 }
@@ -168,8 +168,8 @@ lna_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CLNAProblem")
   
   list(
-    performSteadyStateAnalysis = as.logical(c_problem$isSteadyStateRequested()),
-    executable                 = as.logical(c_task$isScheduled())
+    perform_steady_state_analysis = as.logical(c_problem$isSteadyStateRequested()),
+    executable                    = as.logical(c_task$isScheduled())
   )
 }
 
@@ -180,8 +180,8 @@ lna_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CLNAProblem")
   
-  if (!is.null(data$performSteadyStateAnalysis))
-    c_problem$setSteadyStateRequested(data$performSteadyStateAnalysis)
+  if (!is.null(data$perform_steady_state_analysis))
+    c_problem$setSteadyStateRequested(data$perform_steady_state_analysis)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -191,18 +191,18 @@ lna_set_settings <- function(data, c_task) {
 lna_get_results <- function(c_task, settings) {
   c_method <- as(c_task$getMethod(), "_p_CLNAMethod")
   
-  ss.result <- c_method$getSteadyStateStatus()
-  lna.result <- c_method$getEigenValueStatus()
+  ss_result <- c_method$getSteadyStateStatus()
+  lna_result <- c_method$getEigenValueStatus()
   
-  covariance.matrix <- get_annotated_matrix(c_method$getCovarianceMatrixAnn())
-  covariance.matrix.reduced <- get_annotated_matrix(c_method$getCovarianceMatrixReducedAnn())
-  b.matrix.reduced <- get_annotated_matrix(c_method$getBMatrixReducedAnn())
+  covariance_matrix <- get_annotated_matrix(c_method$getCovarianceMatrixAnn())
+  covariance_matrix_reduced <- get_annotated_matrix(c_method$getCovarianceMatrixReducedAnn())
+  b_matrix_reduced <- get_annotated_matrix(c_method$getBMatrixReducedAnn())
 
   list(
-    settings = settings,
-    ss.result = ss.result,
-    covariance.matrix = covariance.matrix,
-    covariance.matrix.reduced = covariance.matrix.reduced,
-    b.matrix.reduced = b.matrix.reduced
+    settings                  = settings,
+    ss_result                 = ss_result,
+    covariance_matrix         = covariance_matrix,
+    covariance_matrix_reduced = covariance_matrix_reduced,
+    b_matrix_reduced          = b_matrix_reduced
   )
 }

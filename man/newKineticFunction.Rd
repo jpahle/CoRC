@@ -4,7 +4,7 @@
 \alias{newKineticFunction}
 \title{Create a new kinetic function}
 \usage{
-newKineticFunction(name, formula, parameters, function.type = c("general",
+newKineticFunction(name, formula, parameters, function_type = c("general",
   "reversible", "irreversible"))
 }
 \arguments{
@@ -16,7 +16,7 @@ newKineticFunction(name, formula, parameters, function.type = c("general",
 
 Allowed values: substrate, product, modifier, parameter, volume, time}
 
-\item{function.type}{string}
+\item{function_type}{string}
 }
 \value{
 function key

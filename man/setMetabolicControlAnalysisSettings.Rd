@@ -5,14 +5,14 @@
 \alias{setMCA}
 \title{Set metabolic control analysis settings}
 \usage{
-setMetabolicControlAnalysisSettings(performSteadyStateAnalysis = NULL,
+setMetabolicControlAnalysisSettings(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
-setMCA(performSteadyStateAnalysis = NULL, executable = NULL,
+setMCA(perform_steady_state_analysis = NULL, executable = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{performSteadyStateAnalysis}{flag}
+\item{perform_steady_state_analysis}{flag}
 
 \item{executable}{flag}
 

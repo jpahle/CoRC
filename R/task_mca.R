@@ -2,20 +2,20 @@
 #'
 #' \code{runMetabolicControlAnalysis} runs metabolic control analysis and returns the results in a list.
 #'
-#' @param performSteadyStateAnalysis flag
+#' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @return a list of results
 #' @family metabolic control analysis
 #' @export
-runMetabolicControlAnalysis <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+runMetabolicControlAnalysis <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- mca_assemble_settings(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   )
   
   c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
@@ -77,19 +77,19 @@ runMetabolicControlAnalysis <- function(performSteadyStateAnalysis = NULL, execu
 #'
 #' \code{setMetabolicControlAnalysis} sets metabolic control analysis task settings including method options.
 #'
-#' @param performSteadyStateAnalysis flag
+#' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
 #' @param model a model object
 #' @family metabolic control analysis
 #' @export
-setMetabolicControlAnalysisSettings <- function(performSteadyStateAnalysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+setMetabolicControlAnalysisSettings <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
   settings <- ss_assemble_settings(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   )
   
   c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
@@ -139,15 +139,15 @@ getMCA <- getMetabolicControlAnalysisSettings
 
 # does assertions
 # returns a list of settings
-mca_assemble_settings <- function(performSteadyStateAnalysis, executable) {
+mca_assemble_settings <- function(perform_steady_state_analysis, executable) {
   assert_that(
-    is.null(performSteadyStateAnalysis) || is.flag(performSteadyStateAnalysis) && noNA(performSteadyStateAnalysis),
-    is.null(executable)                 || is.flag(executable)                 && noNA(executable)
+    is.null(perform_steady_state_analysis) || is.flag(perform_steady_state_analysis) && noNA(perform_steady_state_analysis),
+    is.null(executable)                    || is.flag(executable)                    && noNA(executable)
   )
   
   list(
-    performSteadyStateAnalysis = performSteadyStateAnalysis,
-    executable = executable
+    perform_steady_state_analysis = perform_steady_state_analysis,
+    executable                    = executable
   ) %>%
     discard(is.null)
 }
@@ -168,8 +168,8 @@ mca_get_settings <- function(c_task) {
   c_problem <- as(c_task$getProblem(), "_p_CMCAProblem")
   
   list(
-    performSteadyStateAnalysis = as.logical(c_problem$isSteadyStateRequested()),
-    executable                 = as.logical(c_task$isScheduled())
+    perform_steady_state_analysis = as.logical(c_problem$isSteadyStateRequested()),
+    executable                    = as.logical(c_task$isScheduled())
   )
 }
 
@@ -180,8 +180,8 @@ mca_set_settings <- function(data, c_task) {
   
   c_problem <- as(c_task$getProblem(), "_p_CMCAProblem")
   
-  if (!is.null(data$performSteadyStateAnalysis))
-    c_problem$setSteadyStateRequested(data$performSteadyStateAnalysis)
+  if (!is.null(data$perform_steady_state_analysis))
+    c_problem$setSteadyStateRequested(data$perform_steady_state_analysis)
   
   if (!is.null(data$executable))
     c_task$setScheduled(data$executable)
@@ -191,31 +191,31 @@ mca_set_settings <- function(data, c_task) {
 mca_get_results <- function(c_task, settings) {
   c_method <- as(c_task$getMethod(), "_p_CMCAMethod")
   
-  ss.result <- c_method$getSteadyStateStatus()
+  ss_result <- c_method$getSteadyStateStatus()
   
-  elasticities.scaled <- get_annotated_matrix(c_method$getScaledElasticitiesAnn())
-  elasticities.unscaled <- get_annotated_matrix(c_method$getUnscaledElasticitiesAnn())
+  elasticities_scaled <- get_annotated_matrix(c_method$getScaledElasticitiesAnn())
+  elasticities_unscaled <- get_annotated_matrix(c_method$getUnscaledElasticitiesAnn())
   
-  flux.control.coefficients.scaled <- NULL
-  flux.control.coefficients.unscaled <- NULL
-  concentration.control.coefficients.scaled <- NULL
-  concentration.control.coefficients.unscaled <- NULL
+  flux_control_coefficients_scaled <- NULL
+  flux_control_coefficients_unscaled <- NULL
+  concentration_control_coefficients_scaled <- NULL
+  concentration_control_coefficients_unscaled <- NULL
   
-  if (ss.result != "foundEquilibrium") {
-    flux.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledFluxCCAnn())
-    flux.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledFluxCCAnn())
-    concentration.control.coefficients.scaled <- get_annotated_matrix(c_method$getScaledConcentrationCCAnn())
-    concentration.control.coefficients.unscaled <- get_annotated_matrix(c_method$getUnscaledConcentrationCCAnn())
+  if (ss_result != "foundEquilibrium") {
+    flux_control_coefficients_scaled <- get_annotated_matrix(c_method$getScaledFluxCCAnn())
+    flux_control_coefficients_unscaled <- get_annotated_matrix(c_method$getUnscaledFluxCCAnn())
+    concentration_control_coefficients_scaled <- get_annotated_matrix(c_method$getScaledConcentrationCCAnn())
+    concentration_control_coefficients_unscaled <- get_annotated_matrix(c_method$getUnscaledConcentrationCCAnn())
   }
   
   list(
-    settings = settings,
-    ss.result = ss.result,
-    elasticities.scaled = elasticities.scaled,
-    elasticities.unscaled = elasticities.unscaled,
-    flux.control.coefficients.scaled = flux.control.coefficients.scaled,
-    flux.control.coefficients.unscaled = flux.control.coefficients.unscaled,
-    concentration.control.coefficients.scaled = concentration.control.coefficients.scaled,
-    concentration.control.coefficients.unscaled = concentration.control.coefficients.unscaled
+    settings                                    = settings,
+    ss_result                                   = ss_result,
+    elasticities_scaled                         = elasticities_scaled,
+    elasticities_unscaled                       = elasticities_unscaled,
+    flux_control_coefficients_scaled            = flux_control_coefficients_scaled,
+    flux_control_coefficients_unscaled          = flux_control_coefficients_unscaled,
+    concentration_control_coefficients_scaled   = concentration_control_coefficients_scaled,
+    concentration_control_coefficients_unscaled = concentration_control_coefficients_unscaled
   )
 }

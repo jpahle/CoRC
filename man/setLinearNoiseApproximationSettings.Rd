@@ -5,14 +5,14 @@
 \alias{setLNA}
 \title{Set linear noise approximation settings}
 \usage{
-setLinearNoiseApproximationSettings(performSteadyStateAnalysis = NULL,
+setLinearNoiseApproximationSettings(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
-setLNA(performSteadyStateAnalysis = NULL, executable = NULL,
+setLNA(perform_steady_state_analysis = NULL, executable = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{performSteadyStateAnalysis}{flag}
+\item{perform_steady_state_analysis}{flag}
 
 \item{executable}{flag}
 

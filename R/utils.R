@@ -83,7 +83,8 @@ make_dm_safe <- function(c_datamodel) {
 }
 
 # transforms names from how they appear in the GUI to the preferred format in CoRC
-# e.g. "Initial Concentration" -> "initial.concentration" 
+# e.g. "Initial Concentration" -> "initial_concentration" 
+# e.g. "Rate (1/s)" -> "rate_1_s"
 transform_names <- function(x) {
   set_names(
     x,
@@ -92,7 +93,13 @@ transform_names <- function(x) {
 }
 
 transform_names_worker <- function(x) {
-  x %>% make.names(unique = TRUE) %>% tolower()
+  # x %>% make.names(unique = TRUE) %>% tolower()
+  x %>%
+    make.names() %>%
+    stringr::str_replace_all("\\.+", "_") %>%
+    stringr::str_replace("_+$", "") %>%
+    tolower() %>%
+    make.unique(sep = "_")
 }
 
 # Convert lists that are equivalent to vectors to vectors

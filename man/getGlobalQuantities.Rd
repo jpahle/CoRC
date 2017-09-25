@@ -4,13 +4,13 @@
 \alias{getGlobalQuantities}
 \title{Get global quantities}
 \usage{
-getGlobalQuantities(key = NULL, rawExpressions = FALSE,
+getGlobalQuantities(key = NULL, raw_expressions = FALSE,
   model = getCurrentModel())
 }
 \arguments{
 \item{key}{a character vector uniquely identifying global quantities}
 
-\item{rawExpressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
 
 \item{model}{a model object}
 }
