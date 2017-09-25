@@ -13,6 +13,9 @@ stopifnot(
   file.copy(rfile, file.path("..", "R", "swig_wrapper.R"), overwrite = TRUE)
 )
 
+# apply the wrapper patches
+source("patch-swig-wrapper.R", chdir = TRUE)
+
 libpath <- file.path("..", "inst", "libs")
 
 if (!dir.exists(libpath))

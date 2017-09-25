@@ -163,8 +163,9 @@ grab_msg <- function(x, purge = character(0)) {
 # Check if object@ref pointer is NULL
 # This happens whenever an object is destructed from R (e.g. garbage collection)
 # or when the object has been saved and loaded from file (not supported)
+#' @importFrom isnullptr isnullptr
 has_null_pointer <- function(c_object) {
-  capture.output(c_object@ref) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
+  isnullptr(c_object@ref)
 }
 
 # Hack to allow me to use swig constructors and hand the objects to C

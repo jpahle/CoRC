@@ -8,6 +8,7 @@
 #' @import assertthat
 #' @import methods
 #' @import purrr
+#' @importFrom isnullptr isnullptr
 #' @importFrom rlang .data
 #' @importFrom stringr fixed coll regex
 #' @importFrom utils head tail capture.output
