@@ -359,7 +359,7 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
       c_fun$setInfix(formula)
       c_fun$setReversible(function_type)
       c_params <- c_fun$getVariables()
-      cl_params <- map_iswig(seq_along_v(c_params), c_params, "getParameter")
+      cl_params <- map(seq_along_v(c_params), c_params$getParameter)
       
       param_names <- cl_params %>% map_swig_chr("getObjectName")
       
@@ -420,7 +420,7 @@ deleteKineticFunction <- function(key) {
   
   cl_funs %>%
     map_swig_chr("getKey") %>%
-    walk_iswig(c_fun_db, "removeFunction")
+    walk(c_fun_db$removeFunction)
   
   invisible()
 }
@@ -437,7 +437,7 @@ clearCustomKineticFunctions <- function() {
     get_cdv() %>%
     discard(map_swig_lgl(., "isReadOnly")) %>%
     map_swig_chr("getKey") %>%
-    walk_iswig(c_fun_db, "removeFunction")
+    walk(c_fun_db$removeFunction)
   
   invisible()
 }

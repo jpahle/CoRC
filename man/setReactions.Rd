@@ -20,7 +20,7 @@ setReactions(key = NULL, name = NULL, data = NULL,
 \code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.
 }
 \seealso{
-\code{\link{getReactions}} \code{\link{getReactionReferencess}}
+\code{\link{getReactions}} \code{\link{getReactionReferences}}
 
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},
   \code{\link{deleteKineticFunction}},

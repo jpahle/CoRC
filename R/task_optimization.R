@@ -6,7 +6,7 @@
 #' @param maximize flag
 #' @eval rox_param("subtask", "string", task_enum)
 #' @param randomize_start_values flag
-#' @param calculateStatistics flag
+#' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
@@ -147,7 +147,7 @@ setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask 
   tryCatch(
     walk(parameter_list, addOptimizationParameter, c_datamodel),
     error = function(e) {
-      clearParameters(c_datamodel)
+      clearOptimizationParameters(c_datamodel)
       base::stop(e)
       # stop("Failed when applying parameters.")
     }
@@ -285,7 +285,11 @@ addOptimizationParameter <- function(copasi_parm, model = getCurrentModel()) {
   c_optitem$setStartValue(copasi_parm$start)
 }
 
-#' @seealso \code{\link{addOptimizationParameter}}
+#' Clear all optimization parameters
+#' 
+#' @param model a model object
+#' @seealso \code{\link{addOptimizationParameter}} \code{\link{defineOptimizationParameter}}
+#' @family optimization
 #' @export
 clearOptimizationParameters <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)

@@ -293,12 +293,12 @@ cparameter_set_functions <-
 methodstructure <- function(c_method) {
   struct <-
     tibble::tibble(
-      object = seq_along_v(c_method) %>% map(~ c_method$getParameter(.x)),
-      name = object %>% map_chr(~ .x$getObjectName()) %>% transform_names_worker(),
-      type = object %>% map_chr(~ .x$getType()),
-      control_fun = cparameter_control_functions[type],
-      get_fun = cparameter_get_functions[type],
-      set_fun = cparameter_set_functions[type]
+      object      = map(seq_along_v(c_method), c_method$getParameter),
+      name        = map_swig_chr(.data$object, "getObjectName") %>% transform_names_worker(),
+      type        = map_swig_chr(.data$object, "getType"),
+      control_fun = cparameter_control_functions[.data$type],
+      get_fun     = cparameter_get_functions[.data$type],
+      set_fun     = cparameter_set_functions[.data$type]
     )
   
   if (has_element(struct$control_fun, NULL))
@@ -324,7 +324,8 @@ set_method_settings <- function(values, c_method) {
   # if a parameter "method" is ever created in CoRC, adjust methodstructure() to call it "method_"
   values <- values[names(values) != "method"]
   
-  if (is_empty(values)) return()
+  if (is_empty(values))
+    return()
   
   struct <- methodstructure(c_method) %>% tibble::rowid_to_column()
   
@@ -345,7 +346,7 @@ set_method_settings <- function(values, c_method) {
   
   data <-
     data %>%
-    dplyr::filter(map_lgl(value, negate(is.null))) %>%
+    dplyr::filter(map_lgl(.data$value, negate(is.null))) %>%
     dplyr::left_join(struct, by = "rowid")
   
   skipped <- map_lgl(data$control_fun, is.null)

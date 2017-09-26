@@ -15,13 +15,13 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
 
 \item{type}{a character vector of types ("fixed", "assignment", "ode").}
 
+\item{initial_value}{a numeric vector of values to set}
+
 \item{expression}{a character vector of expressions to set}
 
 \item{data}{a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
-
-\item{initial.volume}{a numeric vector of values to set}
 }
 \description{
 \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.

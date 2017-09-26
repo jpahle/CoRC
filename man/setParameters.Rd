@@ -12,6 +12,10 @@ setParameters(key = NULL, name = NULL, value = NULL, mapping = NULL,
 
 \item{name}{a character vector of names to set}
 
+\item{value}{a numeric vector of values to set}
+
+\item{mapping}{a character vector of global quantity keys}
+
 \item{data}{a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.}
 
 \item{model}{a model object}

@@ -26,7 +26,6 @@ set.seed(1)
 # Initial Setup
 
 ```{r setup}
-library(tidyverse)
 library(CoRC)
 loadExamples(2)
 species()

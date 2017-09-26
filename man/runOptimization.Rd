@@ -26,6 +26,8 @@ Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameter
 
 \item{randomize_start_values}{flag}
 
+\item{calculate_statistics}{flag}
+
 \item{update_model}{flag}
 
 \item{executable}{flag}
@@ -38,8 +40,6 @@ Set method with a string or a list with the entry `method`. The list may contain
 Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
 
 \item{model}{a model object}
-
-\item{calculateStatistics}{flag}
 }
 \value{
 a list of results
@@ -49,6 +49,7 @@ a list of results
 }
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{clearOptimizationParameters}},
   \code{\link{defineOptimizationParameter}},
   \code{\link{getOptimizationSettings}},
   \code{\link{setOptimizationSettings}}

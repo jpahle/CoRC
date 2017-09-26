@@ -78,6 +78,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying species
 #' @param name a character vector of names to set
+#' @param compartment a character vector of compartment keys to set
 #' @param type a character vector of types ("fixed", "assignment", "reactions", "ode").
 #' @param initial_concentration a numeric vector of concentrations to set
 #' @param initial_number a numeric vector of particle numbers to set
@@ -277,7 +278,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param key a character vector uniquely identifying global quantities
 #' @param name a character vector of names to set
 #' @param type a character vector of types ("fixed", "assignment", "ode").
-#' @param initial.volume a numeric vector of values to set
+#' @param initial_value a numeric vector of values to set
 #' @param expression a character vector of expressions to set
 #' @param data a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
 #' @param model a model object
@@ -295,7 +296,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   )
   
   # Do this as assertion before we start changing values
-  c_quants <- quantity_obj(key %||% character(), c_datamodel)
+  cl_quants <- quantity_obj(key %||% character(), c_datamodel)
   
   if (!is.null(type))
     type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
@@ -476,7 +477,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # apply types
   if (!is.null(type)) {
     walk2(
-      cl_quants, toupper(type),
+      cl_comps, toupper(type),
       ~ if (!is.na(.y)) .x$setStatus(.y)
     )
   }
@@ -493,7 +494,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # apply expressions
   if (!is.null(expression)) {
     walk2(
-      cl_quants, expression,
+      cl_comps, expression,
       ~ {
         if (!is.na(.y)) {
           assert_that(
@@ -578,7 +579,7 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param name a character vector of names to set
 #' @param data a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
 #' @param model a model object
-#' @seealso \code{\link{getReactions}} \code{\link{getReactionReferencess}}
+#' @seealso \code{\link{getReactions}} \code{\link{getReactionReferences}}
 #' @family reaction functions
 #' @export
 setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurrentModel()) {
@@ -888,6 +889,7 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
 #' @export
 getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
+  c_keyfactory <- CRootContainer_getKeyFactory()
   
   if (is_empty(key))
     cl_params <-
@@ -915,7 +917,7 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
       val <- get_sv(c_react$getParameterMapping(name))
     
       # For now don't support multiple mappings
-      if (length(val) > 1)
+      if (length(val) > 1L)
         return("<MULTIPLE>")
     
       c_keyfactory$get(val)$getObjectDisplayName()
@@ -939,6 +941,8 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key a character vector uniquely identifying reaction parameters
 #' @param name a character vector of names to set
+#' @param value a numeric vector of values to set
+#' @param mapping a character vector of global quantity keys
 #' @param data a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getParameters}} \code{\link{getParameterReferences}}

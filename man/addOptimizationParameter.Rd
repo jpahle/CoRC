@@ -17,7 +17,8 @@ Add an optimization parameter
 \seealso{
 \code{\link{defineOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 
-Other optimization: \code{\link{defineOptimizationParameter}},
+Other optimization: \code{\link{clearOptimizationParameters}},
+  \code{\link{defineOptimizationParameter}},
   \code{\link{getOptimizationSettings}},
   \code{\link{runOptimization}},
   \code{\link{setOptimizationSettings}}

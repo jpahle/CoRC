@@ -46,6 +46,7 @@ Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, G
 }
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{clearOptimizationParameters}},
   \code{\link{defineOptimizationParameter}},
   \code{\link{getOptimizationSettings}},
   \code{\link{runOptimization}}

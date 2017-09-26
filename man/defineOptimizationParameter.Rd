@@ -26,6 +26,7 @@ Define an optimization parameter
 \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 
 Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{clearOptimizationParameters}},
   \code{\link{getOptimizationSettings}},
   \code{\link{runOptimization}},
   \code{\link{setOptimizationSettings}}

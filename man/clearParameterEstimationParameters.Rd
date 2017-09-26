@@ -13,7 +13,7 @@ clearParameterEstimationParameters(model = getCurrentModel())
 Clear all parameter estimation parameters
 }
 \seealso{
-\code{\link{addParameterEstimationParameter}} \code{\link{defineParameterEstimationParameters}}
+\code{\link{addParameterEstimationParameter}} \code{\link{defineParameterEstimationParameter}}
 
 Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},

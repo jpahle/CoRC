@@ -7,7 +7,7 @@
 addExperiments(copasi_exp, model = getCurrentModel())
 }
 \arguments{
-\item{copasi_exp}{object as returned by \code{\link{defineExperiment}}}
+\item{copasi_exp}{object as returned by \code{\link{defineExperiments}}}
 
 \item{model}{a model object}
 }

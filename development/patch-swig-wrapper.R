@@ -8,13 +8,17 @@ wrapper_con <- file(wrapper_path)
 
 wrapper_lines <- readLines(wrapper_con)
 
-wrapper_lines <-
-  wrapper_lines %>%
-  # replace all checks for null pointers
-  # previously this was done by an awkward workaround and string comparison
-  # now use isnullptr::isnullptr
-  stringr::str_replace_all('capture\\.output\\((\\w+?)\\) %in% c\\("<pointer: 0x0>", "<pointer: \\(nil\\)>"\\)', 'isnullptr(\\1)') %>%
-  stringr::str_replace_all('!\\(isnullptr\\((\\w+?)\\)\\)', '!isnullptr(\\1)')
+# replace all checks for null pointers
+# previously this was done by an awkward workaround and string comparison
+# now use isnullptr::isnullptr
+wrapper_lines <- stringr::str_replace_all(
+  wrapper_lines,
+  'capture\\.output\\((\\w+?)\\) %in% c\\("<pointer: 0x0>", "<pointer: \\(nil\\)>"\\)', 'isnullptr(\\1)'
+)
+wrapper_lines <- stringr::str_replace_all(
+  wrapper_lines,
+  '!\\(isnullptr\\((\\w+?)\\)\\)', '!isnullptr(\\1)'
+)
 
 writeLines(wrapper_lines, wrapper_con)
 

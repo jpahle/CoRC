@@ -87,7 +87,7 @@ setLinearNoiseApproximationSettings <- function(perform_steady_state_analysis = 
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
-  settings <- ss_assemble_settings(
+  settings <- lna_assemble_settings(
     perform_steady_state_analysis = perform_steady_state_analysis,
     executable                    = executable
   )

@@ -13,6 +13,8 @@ setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
 
 \item{name}{a character vector of names to set}
 
+\item{compartment}{a character vector of compartment keys to set}
+
 \item{type}{a character vector of types ("fixed", "assignment", "reactions", "ode").}
 
 \item{initial_concentration}{a numeric vector of concentrations to set}

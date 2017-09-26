@@ -20,6 +20,7 @@ A list of parameter estimation task settings including method options.
 }
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
+  \code{\link{clearOptimizationParameters}},
   \code{\link{defineOptimizationParameter}},
   \code{\link{runOptimization}},
   \code{\link{setOptimizationSettings}}

@@ -101,10 +101,18 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
       clearParameterEstimationParameters()
     if (do_experiments) {
       clearExperiments()
+      
       model_dir <- c_datamodel$getReferenceDirectory()
-      if (model_dir == "") model_dir <- getwd()
+      if (model_dir == "")
+        model_dir <- getwd()
       model_dir <- normalizePathC(model_dir)
-      try(experiment_list %>% map_chr(attr_getter("filename")) %>% file.path(model_dir, .) %>% file.remove())
+      
+      try(
+        experiment_list %>%
+            map_chr(attr_getter("filename")) %>%
+            file.path(model_dir, .) %>%
+            file.remove()
+      )
     }
   })
   
@@ -153,7 +161,7 @@ setParameterEstimationSettings <- function(randomize_start_values = NULL, create
   tryCatch(
     walk(parameter_list, addParameterEstimationParameter, c_datamodel),
     error = function(e) {
-      clearParameters(c_datamodel)
+      clearParameterEstimationParameters(c_datamodel)
       base::stop(e)
       # stop("Failed when applying parameters.")
     }
@@ -303,7 +311,7 @@ addParameterEstimationParameter <- function(copasi_parm, model = getCurrentModel
 #' Clear all parameter estimation parameters
 #' 
 #' @param model a model object
-#' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{defineParameterEstimationParameters}}
+#' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{defineParameterEstimationParameter}}
 #' @family parameter estimation
 #' @export
 clearParameterEstimationParameters <- function(model = getCurrentModel()) {
@@ -472,7 +480,7 @@ defineExperiments <- copasi_exp
 
 #' Add a parameter estimation experiment
 #' 
-#' @param copasi_exp object as returned by \code{\link{defineExperiment}}
+#' @param copasi_exp object as returned by \code{\link{defineExperiments}}
 #' @param model a model object
 #' @seealso \code{\link{defineExperiments}} \code{\link{clearExperiments}}
 #' @family parameter estimation
@@ -519,7 +527,7 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   col_names <- colnames(copasi_exp)
 
   # Set all experiment's settings
-  walk_swig(cl_experiments, "setHeaderRow", 1)
+  walk_swig(cl_experiments, "setHeaderRow", 1L)
   walk_swig(cl_experiments, "setFileName", filename)
   walk_swig(cl_experiments, "setExperimentType", experiment_type)
   walk_swig(cl_experiments, "setNumColumns", col_count)

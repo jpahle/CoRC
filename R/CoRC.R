@@ -10,8 +10,9 @@
 #' @import purrr
 #' @importFrom isnullptr isnullptr
 #' @importFrom rlang .data
+#' @importFrom stats runif na.omit
 #' @importFrom stringr fixed coll regex
-#' @importFrom utils head tail capture.output
+#' @importFrom utils head tail download.file
 "_PACKAGE"
 
 # Output flag for tasks
@@ -101,7 +102,7 @@ getCopasi <- function(path = NULL) {
       
       assert_that(
         platform %in% names(COPASI_BIN_HASHES),
-        msg == "There are currently no binaries available for your platform (", platform, ")."
+        msg = "There are currently no binaries available for your platform (", platform, ")."
       )
     }
     

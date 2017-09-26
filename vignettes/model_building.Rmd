@@ -26,7 +26,7 @@ set.seed(1)
 # Initial Setup
 
 ```{r setup}
-library(tidyverse)
+library(ggplot2)
 library(CoRC)
 ```
 
@@ -68,7 +68,9 @@ getSpecies()
 getReactions()
 getParameters()
 
-runTC(1000) %>% autoplot()
+timecourse <- runTC(1000)
+
+autoplot(timecourse)
 
 unloadModel()
 ```
@@ -102,7 +104,9 @@ newReaction(
   )
 )
 
-runTC(1000) %>% autoplot()
+timecourse <- runTC(1000)
+
+autoplot(timecourse)
 
 unloadModel()
 ```
