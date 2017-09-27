@@ -107,8 +107,8 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the development version from GitHub.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools::<span class="kw">install_github</span>(<span class="st">"jpahle/CoRC"</span>)
-CoRC::<span class="kw"><a href="reference/getCopasi.html">getCopasi</a></span>()</code></pre></div>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jpahle/CoRC"</span>)
+CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/CoRC/topics/getCopasi">getCopasi</a></span>()</code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -121,7 +121,7 @@ CoRC::<span class="kw"><a href="reference/getCopasi.html">getCopasi</a></span>()
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
 <span class="co">#&gt; Number of reactions: 4</span>
-<span class="kw"><a href="reference/runTimeCourse.html">runTimeCourse</a></span>()$result
+<span class="kw"><a href="reference/runTimeCourse.html">runTimeCourse</a></span>()<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 201 x 3</span>
 <span class="co">#&gt;     Time         X         Y</span>
 <span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
