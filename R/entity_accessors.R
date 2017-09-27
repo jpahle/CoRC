@@ -893,43 +893,47 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
   
   if (is_empty(key))
     cl_params <-
-      get_cdv(c_datamodel$getModel()$getReactions()) %>%
-      map_swig("getParameters") %>%
-      map(function(paramgrp) {
-        seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
-      }) %>%
-      flatten()
+    get_cdv(c_datamodel$getModel()$getReactions()) %>%
+    map_swig("getParameters") %>%
+    map(function(paramgrp) {
+      seq_along_v(paramgrp) %>% map(~ paramgrp$getParameter(.x))
+    }) %>%
+    flatten()
   else
-    # no dn_to_object here because it doesnt work for parameters
-    # cl_params <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
     cl_params <- parameter_obj(key, c_datamodel)
   
   cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
   
   names <- map_swig_chr(cl_params, "getObjectName")
   
-  # find out what the parameters are mapped to
-  mappings <- map2_chr(names, cl_reacts,
-    function(name, c_react) {
-      if (c_react$isLocalParameter(name))
-        return(NA_character_)
-    
-      val <- get_sv(c_react$getParameterMapping(name))
-    
-      # For now don't support multiple mappings
-      if (length(val) > 1L)
-        return("<MULTIPLE>")
-    
-      c_keyfactory$get(val)$getObjectDisplayName()
-    }
-  )
+  are_local <- map2_lgl(names, cl_reacts, ~ .y$isLocalParameter(.x))
+  
+  value_refs <- rep(NA_character_, length(cl_params))
+  value_refs[!are_local] <-
+    cl_params[!are_local] %>%
+    map_swig("getValueReference") %>%
+    as_ref(c_datamodel)
+
+  mappings <- rep(NA_character_, length(cl_params))
+  mappings[!are_local] <- 
+    map2_chr(names[!are_local], cl_reacts[!are_local],
+      function(name, c_react) {
+        val <- get_sv(c_react$getParameterMapping(name))
+
+        # For now don't support multiple mappings
+        if (length(val) > 1)
+          return("<MULTIPLE>")
+
+        c_keyfactory$get(val)$getObjectDisplayName()
+      }
+    )
+  
   # assemble output dataframe
   tibble::tibble(
     key        = map_swig_chr(cl_params, "getObjectDisplayName"),
     "Name"     = names,
-    "Reaction" = cl_params %>% map_swig("getObjectParent") %>% map_swig("getObjectParent") %>% map_swig_chr("getObjectName"),
-    "Type"     = cl_params %>% map_swig_chr("getType") %>% tolower(),
-    "Value"    = cl_params %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
+    "Value"    = value_refs,
     "Mapping"  = mappings
   ) %>%
     transform_names()
