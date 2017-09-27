@@ -84,7 +84,7 @@
       <h1>Managing Model Entities</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-09-22</h4>
+            <h4 class="date">2017-09-27</h4>
           </div>
 
     
@@ -93,8 +93,7 @@
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(CoRC)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
 <span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">2</span>)
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
@@ -144,17 +143,17 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>))
 <span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
 <p>In cases, where a function argument <code>key</code> is clear to always expect the same kind of entity, identification can also be handled by the function itself. These methods will always use the <code>_strict</code> variants to reliably match species.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>))$name
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>))<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"  "CheYp"</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"CheY"</span>))$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"CheY"</span>))<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="st">"CheY"</span>)$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="st">"CheY"</span>)<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>)$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>)<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"Che"</span>)$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"Che"</span>)<span class="op">$</span>name
 <span class="co">#&gt; Error: "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>)))$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>)))<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
 </div>
 <div id="using-references" class="section level1">
@@ -173,13 +172,13 @@
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
-<span class="co">#&gt;  $ initial.concentration: num 9.7</span>
-<span class="co">#&gt;  $ initial.number       : num 8178</span>
+<span class="co">#&gt;  $ initial_concentration: num 9.7</span>
+<span class="co">#&gt;  $ initial_number       : num 8178</span>
 <span class="co">#&gt;  $ concentration        : num NaN</span>
 <span class="co">#&gt;  $ number               : num NaN</span>
 <span class="co">#&gt;  $ rate                 : num 0</span>
-<span class="co">#&gt;  $ number.rate          : num 0</span>
-<span class="co">#&gt;  $ initial.expression   : chr NA</span>
+<span class="co">#&gt;  $ number_rate          : num 0</span>
+<span class="co">#&gt;  $ initial_expression   : chr NA</span>
 <span class="co">#&gt;  $ expression           : chr NA</span>
 <span class="kw">str</span>(<span class="kw"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span>(<span class="st">"CheY"</span>))
 <span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  12 variables:</span>
@@ -187,13 +186,13 @@
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
-<span class="co">#&gt;  $ initial.concentration: chr "{[CheY]_0}"</span>
-<span class="co">#&gt;  $ initial.number       : chr "{CheY.InitialParticleNumber}"</span>
+<span class="co">#&gt;  $ initial_concentration: chr "{[CheY]_0}"</span>
+<span class="co">#&gt;  $ initial_number       : chr "{CheY.InitialParticleNumber}"</span>
 <span class="co">#&gt;  $ concentration        : chr "{[CheY]}"</span>
 <span class="co">#&gt;  $ number               : chr "{CheY.ParticleNumber}"</span>
 <span class="co">#&gt;  $ rate                 : chr "{CheY.Rate}"</span>
-<span class="co">#&gt;  $ number.rate          : chr "{CheY.ParticleNumberRate}"</span>
-<span class="co">#&gt;  $ initial.expression   : chr NA</span>
+<span class="co">#&gt;  $ number_rate          : chr "{CheY.ParticleNumberRate}"</span>
+<span class="co">#&gt;  $ initial_expression   : chr NA</span>
 <span class="co">#&gt;  $ expression           : chr NA</span></code></pre></div>
 </div>
 <div id="extension-suggestion" class="section level1">
@@ -202,14 +201,14 @@
 <p>Using numbers for referencing:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>]
 <span class="co">#&gt; [1] "CheY"</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>])$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>])<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span></code></pre></div>
 <p>Maybe I should allow integers to be passed as keys:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="dv">5</span>)
 <span class="co">#&gt; Error: key is not a string (a length one character vector).</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="dv">5</span>)
 <span class="co">#&gt; Error: key is not a character vector</span>
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dv">5</span>)$name
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dv">5</span>)<span class="op">$</span>name
 <span class="co">#&gt; Error: key is not a character vector</span></code></pre></div>
 </div>
 <div id="entity-modification" class="section level1">
@@ -217,11 +216,11 @@
 <a href="#entity-modification" class="anchor"></a>Entity modification</h1>
 <p>For most kinds of entities there is a finder function (e.g. species), a getter function (e.g. getSpecies) and a setter function (e.g. setSpecies).</p>
 <p>Other ways to access model Values is by evaluating expressions (e.g. getValue).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheYp"</span>)$initial.concentration
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheYp"</span>)<span class="op">$</span>initial_concentration
 <span class="co">#&gt; [1] 0</span>
 
-<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"CheYp"</span>, <span class="dt">initial.concentration =</span> <span class="dv">1</span>)
-<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheYp"</span>)$initial.concentration
+<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"CheYp"</span>, <span class="dt">initial_concentration =</span> <span class="dv">1</span>)
+<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheYp"</span>)<span class="op">$</span>initial_concentration
 <span class="co">#&gt; [1] 1</span>
 
 yp_init_expression &lt;-<span class="st"> </span><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheYp"</span>, <span class="dt">reference =</span> <span class="st">"InitialConcentration"</span>)

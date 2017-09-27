@@ -112,7 +112,7 @@
     
 
     <pre class="usage"><span class='fu'>setSpecies</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>compartment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>initial.concentration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>initial.number</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>initial_concentration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>initial_number</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -127,15 +127,19 @@
       <td><p>a character vector of names to set</p></td>
     </tr>
     <tr>
+      <th>compartment</th>
+      <td><p>a character vector of compartment keys to set</p></td>
+    </tr>
+    <tr>
       <th>type</th>
       <td><p>a character vector of types ("fixed", "assignment", "reactions", "ode").</p></td>
     </tr>
     <tr>
-      <th>initial.concentration</th>
+      <th>initial_concentration</th>
       <td><p>a numeric vector of concentrations to set</p></td>
     </tr>
     <tr>
-      <th>initial.number</th>
+      <th>initial_number</th>
       <td><p>a numeric vector of particle numbers to set</p></td>
     </tr>
     <tr>

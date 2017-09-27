@@ -84,7 +84,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-09-22</h4>
+            <h4 class="date">2017-09-27</h4>
           </div>
 
     
@@ -93,8 +93,7 @@
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(CoRC)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
 <span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
@@ -131,22 +130,22 @@
 <p>Function arguments also have mixed concepts for naming things: I used camelCase for function arguments but method arguments are renamed according to an R function which replaces illegal characters with “.”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>())
 <span class="co">#&gt; List of 10</span>
-<span class="co">#&gt;  $ duration            : num 100</span>
-<span class="co">#&gt;  $ dt                  : num 0.5</span>
-<span class="co">#&gt;  $ intervals           : int 200</span>
-<span class="co">#&gt;  $ suppressOutputBefore: num 0</span>
-<span class="co">#&gt;  $ outputEvents        : logi FALSE</span>
-<span class="co">#&gt;  $ saveResultInMemory  : logi TRUE</span>
-<span class="co">#&gt;  $ startInSteadyState  : logi FALSE</span>
-<span class="co">#&gt;  $ updateModel         : logi FALSE</span>
-<span class="co">#&gt;  $ executable          : logi FALSE</span>
-<span class="co">#&gt;  $ method              :List of 6</span>
+<span class="co">#&gt;  $ duration              : num 100</span>
+<span class="co">#&gt;  $ dt                    : num 0.5</span>
+<span class="co">#&gt;  $ intervals             : int 200</span>
+<span class="co">#&gt;  $ suppress_output_before: num 0</span>
+<span class="co">#&gt;  $ output_events         : logi FALSE</span>
+<span class="co">#&gt;  $ save_result_in_memory : logi TRUE</span>
+<span class="co">#&gt;  $ start_in_steady_state : logi FALSE</span>
+<span class="co">#&gt;  $ update_model          : logi FALSE</span>
+<span class="co">#&gt;  $ executable            : logi FALSE</span>
+<span class="co">#&gt;  $ method                :List of 6</span>
 <span class="co">#&gt;   ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   ..$ integrate.reduced.model: logi TRUE</span>
-<span class="co">#&gt;   ..$ relative.tolerance     : num 1e-06</span>
-<span class="co">#&gt;   ..$ absolute.tolerance     : num 1e-12</span>
-<span class="co">#&gt;   ..$ max.internal.steps     : int 10000</span>
-<span class="co">#&gt;   ..$ max.internal.step.size : num 0</span></code></pre></div>
+<span class="co">#&gt;   ..$ integrate_reduced_model: logi TRUE</span>
+<span class="co">#&gt;   ..$ relative_tolerance     : num 1e-06</span>
+<span class="co">#&gt;   ..$ absolute_tolerance     : num 1e-12</span>
+<span class="co">#&gt;   ..$ max_internal_steps     : int 10000</span>
+<span class="co">#&gt;   ..$ max_internal_step_size : num 0</span></code></pre></div>
 </div>
 <div id="no-option-to-cancel-long-running-tasks" class="section level1">
 <h1 class="hasAnchor">
@@ -156,7 +155,7 @@
 <div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
 <h1 class="hasAnchor">
 <a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC:::CUnit</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC<span class="op">:::</span>CUnit</code></pre></div>
 <p>The CUnit class can be used for testing if user specified input is valid</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms"</span>)
 s &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms * 1e3"</span>)
@@ -164,46 +163,46 @@ mmol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st
 mol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol * 1e3"</span>)
 mMol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mMol"</span>)
 
-ms$<span class="kw">buildExpression</span>()
-s$<span class="kw">buildExpression</span>()
-mmol$<span class="kw">buildExpression</span>()
-mol$<span class="kw">buildExpression</span>()
-mMol$<span class="kw">buildExpression</span>()</code></pre></div>
+ms<span class="op">$</span><span class="kw">buildExpression</span>()
+s<span class="op">$</span><span class="kw">buildExpression</span>()
+mmol<span class="op">$</span><span class="kw">buildExpression</span>()
+mol<span class="op">$</span><span class="kw">buildExpression</span>()
+mMol<span class="op">$</span><span class="kw">buildExpression</span>()</code></pre></div>
 <p>CUnit$getExpression() shows what Copasi makes of the input.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">getExpression</span>()
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "ms"</span>
-s$<span class="kw">getExpression</span>()
+s<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "1000*ms"</span>
-mmol$<span class="kw">getExpression</span>()
+mmol<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "mmol"</span>
-mol$<span class="kw">getExpression</span>()
+mol<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "1000*mmol"</span>
-mMol$<span class="kw">getExpression</span>()
+mMol<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "?"</span></code></pre></div>
 <p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
 <span class="co">#&gt; [1] TRUE</span>
 
-s$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+s<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
 <span class="co">#&gt; [1] TRUE</span>
-s$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+s<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 
-mmol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+mmol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 
-mol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"time"</span>)
+mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
 <span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
+mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
 <span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"area"</span>)
+mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"area"</span>)
 <span class="co">#&gt; [1] FALSE</span>
-mol$<span class="kw">isUnitType</span>(<span class="st">"length"</span>)
+mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"length"</span>)
 <span class="co">#&gt; [1] FALSE</span>
 
-mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
+mMol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 </div>
 <div id="saving--cps-loses-experimental-data" class="section level1">
@@ -213,8 +212,8 @@ mMol$<span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load example which has experimental data.</span>
 datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">4</span>)[[<span class="dv">1</span>]]
 
-fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)$<span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
-filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
+fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<span class="op">$</span><span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)<span class="op">$</span><span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
+filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are in the correct folder.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
 <span class="co">#&gt; [1] "/usr/local/lib/R/3.4/site-library/CoRC/extdata/test_paramest_exp_data.txt"</span>
@@ -226,11 +225,11 @@ filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimen
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
 
 datamodel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/loadModel.html">loadModel</a></span>(file)
-fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel$<span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)$<span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
-filenames &lt;-<span class="st"> </span>fitproblem$<span class="kw">getExperimentSet</span>()$<span class="kw">getFileNames</span>()</code></pre></div>
+fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<span class="op">$</span><span class="kw">getTask</span>(<span class="st">"Parameter Estimation"</span>)<span class="op">$</span><span class="kw">getProblem</span>(), <span class="st">"_p_CFitProblem"</span>)
+filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpxpnmLw/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpBdrsOV/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()

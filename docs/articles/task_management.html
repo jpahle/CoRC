@@ -84,7 +84,7 @@
       <h1>Managing Tasks</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-09-22</h4>
+            <h4 class="date">2017-09-27</h4>
           </div>
 
     
@@ -93,8 +93,7 @@
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(CoRC)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
 <span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">2</span>)
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; # A copasi model reference:</span>
@@ -111,47 +110,47 @@
 <p>Get functions return a list of settings in the same format as is expected as input to <code>set</code> functions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>())
 <span class="co">#&gt; List of 10</span>
-<span class="co">#&gt;  $ duration            : num 1000</span>
-<span class="co">#&gt;  $ dt                  : num 0.1</span>
-<span class="co">#&gt;  $ intervals           : int 10000</span>
-<span class="co">#&gt;  $ suppressOutputBefore: num 0</span>
-<span class="co">#&gt;  $ outputEvents        : logi FALSE</span>
-<span class="co">#&gt;  $ saveResultInMemory  : logi TRUE</span>
-<span class="co">#&gt;  $ startInSteadyState  : logi FALSE</span>
-<span class="co">#&gt;  $ updateModel         : logi FALSE</span>
-<span class="co">#&gt;  $ executable          : logi FALSE</span>
-<span class="co">#&gt;  $ method              :List of 6</span>
+<span class="co">#&gt;  $ duration              : num 1000</span>
+<span class="co">#&gt;  $ dt                    : num 0.1</span>
+<span class="co">#&gt;  $ intervals             : int 10000</span>
+<span class="co">#&gt;  $ suppress_output_before: num 0</span>
+<span class="co">#&gt;  $ output_events         : logi FALSE</span>
+<span class="co">#&gt;  $ save_result_in_memory : logi TRUE</span>
+<span class="co">#&gt;  $ start_in_steady_state : logi FALSE</span>
+<span class="co">#&gt;  $ update_model          : logi FALSE</span>
+<span class="co">#&gt;  $ executable            : logi FALSE</span>
+<span class="co">#&gt;  $ method                :List of 6</span>
 <span class="co">#&gt;   ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   ..$ integrate.reduced.model: logi FALSE</span>
-<span class="co">#&gt;   ..$ relative.tolerance     : num 1e-06</span>
-<span class="co">#&gt;   ..$ absolute.tolerance     : num 1e-12</span>
-<span class="co">#&gt;   ..$ max.internal.steps     : int 10000</span>
-<span class="co">#&gt;   ..$ max.internal.step.size : num 0</span></code></pre></div>
+<span class="co">#&gt;   ..$ integrate_reduced_model: logi FALSE</span>
+<span class="co">#&gt;   ..$ relative_tolerance     : num 1e-06</span>
+<span class="co">#&gt;   ..$ absolute_tolerance     : num 1e-12</span>
+<span class="co">#&gt;   ..$ max_internal_steps     : int 10000</span>
+<span class="co">#&gt;   ..$ max_internal_step_size : num 0</span></code></pre></div>
 <p><strong>Set task settings</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>(<span class="dt">duration =</span> <span class="dv">100</span>)
-<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$duration
+<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>duration
 <span class="co">#&gt; [1] 100</span></code></pre></div>
 <p><strong>Run task</strong>:</p>
 <p>Run functions return a list of results. Included in this list is an entry <code>settings</code> with contains all tasks settings.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ settings:List of 10</span>
-<span class="co">#&gt;   ..$ duration            : num 100</span>
-<span class="co">#&gt;   ..$ dt                  : num 0.01</span>
-<span class="co">#&gt;   ..$ intervals           : int 10000</span>
-<span class="co">#&gt;   ..$ suppressOutputBefore: num 0</span>
-<span class="co">#&gt;   ..$ outputEvents        : logi FALSE</span>
-<span class="co">#&gt;   ..$ saveResultInMemory  : logi TRUE</span>
-<span class="co">#&gt;   ..$ startInSteadyState  : logi FALSE</span>
-<span class="co">#&gt;   ..$ updateModel         : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable          : logi FALSE</span>
-<span class="co">#&gt;   ..$ method              :List of 6</span>
+<span class="co">#&gt;   ..$ duration              : num 100</span>
+<span class="co">#&gt;   ..$ dt                    : num 0.01</span>
+<span class="co">#&gt;   ..$ intervals             : int 10000</span>
+<span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
+<span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
+<span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
+<span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span>
+<span class="co">#&gt;   ..$ update_model          : logi FALSE</span>
+<span class="co">#&gt;   ..$ executable            : logi FALSE</span>
+<span class="co">#&gt;   ..$ method                :List of 6</span>
 <span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   .. ..$ integrate.reduced.model: logi FALSE</span>
-<span class="co">#&gt;   .. ..$ relative.tolerance     : num 1e-06</span>
-<span class="co">#&gt;   .. ..$ absolute.tolerance     : num 1e-12</span>
-<span class="co">#&gt;   .. ..$ max.internal.steps     : int 10000</span>
-<span class="co">#&gt;   .. ..$ max.internal.step.size : num 0</span>
+<span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span>
+<span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span>
+<span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span>
+<span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span>
+<span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span>
 <span class="co">#&gt;  $ units   :List of 2</span>
 <span class="co">#&gt;   ..$ time         : chr "s"</span>
 <span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span>
@@ -181,28 +180,28 @@
 <h1 class="hasAnchor">
 <a href="#task-settings" class="anchor"></a>Task settings</h1>
 <p>Task settings can be set in two ways. The <code>set</code> familiy of functions is the preferred way to set task settings.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$duration
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>duration
 <span class="co">#&gt; [1] 100</span>
 <span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>(<span class="dt">duration =</span> <span class="dv">10</span>)
-<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$duration
+<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>duration
 <span class="co">#&gt; [1] 10</span></code></pre></div>
 <p>The <code>run</code> familiy of functions will generally take the same arguments as the <code>set</code> familiy of functions but will only set them temporarily.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$duration
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>duration
 <span class="co">#&gt; [1] 10</span>
-<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dt">duration =</span> <span class="dv">1</span>)$settings$duration
+<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dt">duration =</span> <span class="dv">1</span>)<span class="op">$</span>settings<span class="op">$</span>duration
 <span class="co">#&gt; [1] 1</span>
-<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$duration
+<span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>duration
 <span class="co">#&gt; [1] 10</span></code></pre></div>
 <p>The <code>get</code> familiy of functions will return a list that can be used as a template for calling functions that expect settings as input. A similar list is also given in every output of a <code>run</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">method_settings &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()$method
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">method_settings &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>()<span class="op">$</span>method
 <span class="kw">str</span>(method_settings)
 <span class="co">#&gt; List of 6</span>
 <span class="co">#&gt;  $ method                 : chr "deterministic"</span>
-<span class="co">#&gt;  $ integrate.reduced.model: logi FALSE</span>
-<span class="co">#&gt;  $ relative.tolerance     : num 1e-06</span>
-<span class="co">#&gt;  $ absolute.tolerance     : num 1e-12</span>
-<span class="co">#&gt;  $ max.internal.steps     : int 10000</span>
-<span class="co">#&gt;  $ max.internal.step.size : num 0</span>
+<span class="co">#&gt;  $ integrate_reduced_model: logi FALSE</span>
+<span class="co">#&gt;  $ relative_tolerance     : num 1e-06</span>
+<span class="co">#&gt;  $ absolute_tolerance     : num 1e-12</span>
+<span class="co">#&gt;  $ max_internal_steps     : int 10000</span>
+<span class="co">#&gt;  $ max_internal_step_size : num 0</span>
 <span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>(<span class="dt">method =</span> method_settings)</code></pre></div>
 </div>
 <div id="task-execution" class="section level1">
@@ -212,22 +211,22 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ settings:List of 10</span>
-<span class="co">#&gt;   ..$ duration            : num 10</span>
-<span class="co">#&gt;   ..$ dt                  : num 0.001</span>
-<span class="co">#&gt;   ..$ intervals           : int 10000</span>
-<span class="co">#&gt;   ..$ suppressOutputBefore: num 0</span>
-<span class="co">#&gt;   ..$ outputEvents        : logi FALSE</span>
-<span class="co">#&gt;   ..$ saveResultInMemory  : logi TRUE</span>
-<span class="co">#&gt;   ..$ startInSteadyState  : logi FALSE</span>
-<span class="co">#&gt;   ..$ updateModel         : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable          : logi FALSE</span>
-<span class="co">#&gt;   ..$ method              :List of 6</span>
+<span class="co">#&gt;   ..$ duration              : num 10</span>
+<span class="co">#&gt;   ..$ dt                    : num 0.001</span>
+<span class="co">#&gt;   ..$ intervals             : int 10000</span>
+<span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
+<span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
+<span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
+<span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span>
+<span class="co">#&gt;   ..$ update_model          : logi FALSE</span>
+<span class="co">#&gt;   ..$ executable            : logi FALSE</span>
+<span class="co">#&gt;   ..$ method                :List of 6</span>
 <span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   .. ..$ integrate.reduced.model: logi FALSE</span>
-<span class="co">#&gt;   .. ..$ relative.tolerance     : num 1e-06</span>
-<span class="co">#&gt;   .. ..$ absolute.tolerance     : num 1e-12</span>
-<span class="co">#&gt;   .. ..$ max.internal.steps     : int 10000</span>
-<span class="co">#&gt;   .. ..$ max.internal.step.size : num 0</span>
+<span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span>
+<span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span>
+<span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span>
+<span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span>
+<span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span>
 <span class="co">#&gt;  $ units   :List of 2</span>
 <span class="co">#&gt;   ..$ time         : chr "s"</span>
 <span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span>
@@ -253,42 +252,54 @@
 <span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 ...</span>
 <span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span>
 <span class="kw">str</span>(<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>())
-<span class="co">#&gt; List of 7</span>
+<span class="co">#&gt; List of 9</span>
 <span class="co">#&gt;  $ settings         :List of 5</span>
-<span class="co">#&gt;   ..$ calculateJacobian       : logi TRUE</span>
-<span class="co">#&gt;   ..$ performStabilityAnalysis: logi TRUE</span>
-<span class="co">#&gt;   ..$ updateModel             : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable              : logi FALSE</span>
-<span class="co">#&gt;   ..$ method                  :List of 9</span>
+<span class="co">#&gt;   ..$ calculate_jacobian        : logi TRUE</span>
+<span class="co">#&gt;   ..$ perform_stability_analysis: logi TRUE</span>
+<span class="co">#&gt;   ..$ update_model              : logi FALSE</span>
+<span class="co">#&gt;   ..$ executable                : logi FALSE</span>
+<span class="co">#&gt;   ..$ method                    :List of 9</span>
 <span class="co">#&gt;   .. ..$ resolution                               : num 1e-09</span>
-<span class="co">#&gt;   .. ..$ derivation.factor                        : num 0.001</span>
-<span class="co">#&gt;   .. ..$ use.newton                               : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ use.integration                          : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ use.back.integration                     : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ accept.negative.concentrations           : logi FALSE</span>
-<span class="co">#&gt;   .. ..$ iteration.limit                          : int 50</span>
-<span class="co">#&gt;   .. ..$ maximum.duration.for.forward.integration : num 1e+09</span>
-<span class="co">#&gt;   .. ..$ maximum.duration.for.backward.integration: num 1e+06</span>
+<span class="co">#&gt;   .. ..$ derivation_factor                        : num 0.001</span>
+<span class="co">#&gt;   .. ..$ use_newton                               : logi TRUE</span>
+<span class="co">#&gt;   .. ..$ use_integration                          : logi TRUE</span>
+<span class="co">#&gt;   .. ..$ use_back_integration                     : logi TRUE</span>
+<span class="co">#&gt;   .. ..$ accept_negative_concentrations           : logi FALSE</span>
+<span class="co">#&gt;   .. ..$ iteration_limit                          : int 50</span>
+<span class="co">#&gt;   .. ..$ maximum_duration_for_forward_integration : num 1e+09</span>
+<span class="co">#&gt;   .. ..$ maximum_duration_for_backward_integration: num 1e+06</span>
 <span class="co">#&gt;  $ result           : chr "foundEquilibrium"</span>
 <span class="co">#&gt;  $ species          :Classes 'tbl_df', 'tbl' and 'data.frame':   11 obs. of  8 variables:</span>
-<span class="co">#&gt;   ..$ key               : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
-<span class="co">#&gt;   ..$ name              : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
-<span class="co">#&gt;   ..$ type              : chr [1:11] "reactions" "reactions" "reactions" "reactions" ...</span>
-<span class="co">#&gt;   ..$ concentration     : num [1:11] 5.185 0.115 0.2082 0.0718 8.8118 ...</span>
-<span class="co">#&gt;   ..$ concentration.rate: num [1:11] 3.45e-14 -3.45e-14 -1.85e-16 1.85e-16 -1.90e-13 ...</span>
-<span class="co">#&gt;   ..$ number            : num [1:11] 4371.5 97 175.5 60.6 7429.2 ...</span>
-<span class="co">#&gt;   ..$ number.rate       : num [1:11] 2.91e-11 -2.91e-11 -1.56e-13 1.56e-13 -1.60e-10 ...</span>
-<span class="co">#&gt;   ..$ transitiontime    : num [1:11] 0.05112 0.00113 2.89824 1 0.08695 ...</span>
+<span class="co">#&gt;   ..$ key            : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
+<span class="co">#&gt;   ..$ name           : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
+<span class="co">#&gt;   ..$ type           : chr [1:11] "reactions" "reactions" "reactions" "reactions" ...</span>
+<span class="co">#&gt;   ..$ concentration  : num [1:11] 5.185 0.115 0.2082 0.0718 8.8118 ...</span>
+<span class="co">#&gt;   ..$ number         : num [1:11] 4371.5 97 175.5 60.6 7429.2 ...</span>
+<span class="co">#&gt;   ..$ rate           : num [1:11] 3.45e-14 -3.45e-14 -1.85e-16 1.85e-16 -1.90e-13 ...</span>
+<span class="co">#&gt;   ..$ number_rate    : num [1:11] 2.91e-11 -2.91e-11 -1.56e-13 1.56e-13 -1.60e-10 ...</span>
+<span class="co">#&gt;   ..$ transition_time: num [1:11] 0.05112 0.00113 2.89824 1 0.08695 ...</span>
+<span class="co">#&gt;  $ compartments     :Classes 'tbl_df', 'tbl' and 'data.frame':   0 obs. of  5 variables:</span>
+<span class="co">#&gt;   ..$ key : chr(0) </span>
+<span class="co">#&gt;   ..$ name: chr(0) </span>
+<span class="co">#&gt;   ..$ type: chr(0) </span>
+<span class="co">#&gt;   ..$ size: num(0) </span>
+<span class="co">#&gt;   ..$ rate: num(0) </span>
+<span class="co">#&gt;  $ global_quantities:Classes 'tbl_df', 'tbl' and 'data.frame':   0 obs. of  5 variables:</span>
+<span class="co">#&gt;   ..$ key  : chr(0) </span>
+<span class="co">#&gt;   ..$ name : chr(0) </span>
+<span class="co">#&gt;   ..$ type : chr(0) </span>
+<span class="co">#&gt;   ..$ value: num(0) </span>
+<span class="co">#&gt;   ..$ rate : num(0) </span>
 <span class="co">#&gt;  $ reactions        :Classes 'tbl_df', 'tbl' and 'data.frame':   14 obs. of  4 variables:</span>
-<span class="co">#&gt;   ..$ key               : chr [1:14] "(Che A phosph)" "(Che B phosph)" "(Che Y phosph)" "(Che Y autodephosph)" ...</span>
-<span class="co">#&gt;   ..$ name              : chr [1:14] "Che A phosph" "Che B phosph" "Che Y phosph" "Che Y autodephosph" ...</span>
-<span class="co">#&gt;   ..$ concentration.flux: num [1:14] 1.42e-13 1.01e-16 1.42e-13 1.24e-16 4.75e-17 ...</span>
-<span class="co">#&gt;   ..$ particlenum.flux  : num [1:14] 85505.5 60.6 85445 74.9 28.6 ...</span>
-<span class="co">#&gt;  $ jacobian.complete: num [1:11, 1:11] -3.01e-02 -5.07e-04 0.00 -2.81e+01 8.71e-03 ...</span>
+<span class="co">#&gt;   ..$ key        : chr [1:14] "(Che A phosph)" "(Che B phosph)" "(Che Y phosph)" "(Che Y autodephosph)" ...</span>
+<span class="co">#&gt;   ..$ name       : chr [1:14] "Che A phosph" "Che B phosph" "Che Y phosph" "Che Y autodephosph" ...</span>
+<span class="co">#&gt;   ..$ flux       : num [1:14] 1.42e-13 1.01e-16 1.42e-13 1.24e-16 4.75e-17 ...</span>
+<span class="co">#&gt;   ..$ number_flux: num [1:14] 85505.5 60.6 85445 74.9 28.6 ...</span>
+<span class="co">#&gt;  $ jacobian_complete: num [1:11, 1:11] -3.01e-02 -5.07e-04 0.00 -2.81e+01 8.71e-03 ...</span>
 <span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span>
 <span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;  $ jacobian.reduced : num [1:7, 1:7] -0.0319 -0.1576 0 231.1335 0.0056 ...</span>
+<span class="co">#&gt;  $ jacobian_reduced : num [1:7, 1:7] -0.0319 -0.1576 0 231.1335 0.0056 ...</span>
 <span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>
 <span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>

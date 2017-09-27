@@ -84,7 +84,7 @@
       <h1>Model Building</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-09-22</h4>
+            <h4 class="date">2017-09-27</h4>
           </div>
 
     
@@ -93,7 +93,7 @@
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(CoRC)</code></pre></div>
 </div>
 <div id="quick-model-building" class="section level1">
@@ -112,19 +112,19 @@
 
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;     key  name compartment      type initial.concentration initial.number</span>
+<span class="co">#&gt;     key  name compartment      type initial_concentration initial_number</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
 <span class="co">#&gt; 1     a     a compartment reactions                     1   6.022141e+20</span>
 <span class="co">#&gt; 2     b     b compartment reactions                     1   6.022141e+20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rate &lt;dbl&gt;, number.rate &lt;dbl&gt;, initial.expression &lt;chr&gt;,</span>
+<span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
-<span class="co">#&gt;       key  name reaction                                          rate.law</span>
+<span class="co">#&gt;       key  name reaction                                          rate_law</span>
 <span class="co">#&gt;     &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                             &lt;chr&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b    a = b FunctionDB.Functions[Reversible Michaelis-Menten]</span>
-<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number.flux &lt;dbl&gt;</span>
+<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number_flux &lt;dbl&gt;</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;           key  name reaction value mapping</span>
@@ -147,7 +147,7 @@
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-subs_quant &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="dt">initial.value =</span> <span class="dv">10</span>)
+subs_quant &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="dt">initial_value =</span> <span class="dv">10</span>)
 subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/entity_finders.html">quantity</a></span>(subs_quant, <span class="dt">reference =</span> <span class="st">"Value"</span>)
 subs_value
 <span class="co">#&gt; [1] "{Values[substrate concentration]}"</span>
@@ -163,23 +163,23 @@ subs_value
 <span class="co">#&gt;                               key                    name  type</span>
 <span class="co">#&gt;                             &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;</span>
 <span class="co">#&gt; 1 Values[substrate concentration] substrate concentration fixed</span>
-<span class="co">#&gt; # ... with 5 more variables: initial.value &lt;dbl&gt;, transient.value &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rate &lt;dbl&gt;, initial.expression &lt;chr&gt;, expression &lt;chr&gt;</span>
+<span class="co">#&gt; # ... with 5 more variables: initial_value &lt;dbl&gt;, value &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;     key  name compartment       type initial.concentration initial.number</span>
+<span class="co">#&gt;     key  name compartment       type initial_concentration initial_number</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
 <span class="co">#&gt; 1     a     a compartment assignment                    10   6.022141e+21</span>
 <span class="co">#&gt; 2     b     b compartment  reactions                     1   6.022141e+20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rate &lt;dbl&gt;, number.rate &lt;dbl&gt;, initial.expression &lt;chr&gt;,</span>
+<span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
-<span class="co">#&gt;       key  name reaction                                          rate.law</span>
+<span class="co">#&gt;       key  name reaction                                          rate_law</span>
 <span class="co">#&gt;     &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                             &lt;chr&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b    a = b FunctionDB.Functions[Reversible Michaelis-Menten]</span>
-<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number.flux &lt;dbl&gt;</span>
+<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number_flux &lt;dbl&gt;</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;           key  name reaction value mapping</span>
@@ -189,7 +189,9 @@ subs_value
 <span class="co">#&gt; 3  (a = b).Vf    Vf    a = b   0.1    &lt;NA&gt;</span>
 <span class="co">#&gt; 4  (a = b).Vr    Vr    a = b   0.1    &lt;NA&gt;</span>
 
-<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>) %&gt;%<span class="st"> </span><span class="kw">autoplot</span>()</code></pre></div>
+timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
 <p><img src="model_building_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
@@ -207,7 +209,7 @@ subs_value
 
 <span class="kw"><a href="../reference/newCompartment.html">newCompartment</a></span>(<span class="st">"compartment"</span>)
 <span class="co">#&gt; [1] "Compartments[compartment]"</span>
-<span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"fixed"</span>, <span class="dt">initial.concentration =</span> <span class="dv">10</span>)
+<span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"fixed"</span>, <span class="dt">initial_concentration =</span> <span class="dv">10</span>)
 <span class="co">#&gt; [1] "a"</span>
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"b"</span>)
 <span class="co">#&gt; [1] "b"</span>
@@ -231,7 +233,9 @@ subs_value
 )
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>) %&gt;%<span class="st"> </span><span class="kw">autoplot</span>()</code></pre></div>
+timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
 <p><img src="model_building_files/figure-html/unnamed-chunk-4-1.png" width="100%"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
@@ -247,7 +251,7 @@ subs_value
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-subs_quant &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="dt">initial.value =</span> <span class="dv">10</span>)
+subs_quant &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="dt">initial_value =</span> <span class="dv">10</span>)
 subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/entity_finders.html">quantity</a></span>(subs_quant, <span class="dt">reference =</span> <span class="st">"Value"</span>)
 
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"assignment"</span>, <span class="dt">expression =</span> subs_value)
@@ -256,7 +260,7 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="dt">fun =</span> <span class="st">"Reversible Michaelis-Menten"</span>)
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)$result
+<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 101 x 3</span>
 <span class="co">#&gt;     Time        b     a</span>
 <span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -279,7 +283,7 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 )
 <span class="co">#&gt; [1] "Values[reaction rate]"</span>
 
-<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)$result
+<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 101 x 4</span>
 <span class="co">#&gt;     Time        b     a `Values[reaction rate]`</span>
 <span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
