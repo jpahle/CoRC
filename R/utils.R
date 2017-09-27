@@ -129,6 +129,18 @@ update_model_from_mc <- function(c_mathcontainer) {
   c_mathcontainer$pushAllTransientValues();
 }
 
+# wrapper for getReferenceDirectory
+# if no ref dir is set in Copasi, getReferenceDirectory returns ""
+# in that case, use getwd()
+get_ref_dir <- function(c_datamodel) {
+  dir <- c_datamodel$getReferenceDirectory()
+  
+  if (dir == "")
+    dir <- getwd()
+  
+  dir
+}
+
 # finds copasi messages and helps purge known annoying messages
 # because of lazy evaluation, x will not be evaluated on the function
 # call but be evaluated with force(x) and then messages are checked

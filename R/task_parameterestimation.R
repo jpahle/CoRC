@@ -102,10 +102,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
     if (do_experiments) {
       clearExperiments()
       
-      model_dir <- c_datamodel$getReferenceDirectory()
-      if (model_dir == "")
-        model_dir <- getwd()
-      model_dir <- normalizePathC(model_dir)
+      model_dir <- normalizePathC(get_ref_dir(c_datamodel))
       
       try(
         experiment_list %>%
@@ -501,10 +498,7 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
   c_experiment_set <- c_problem$getExperimentSet()
   
   # Create experiment file
-  model_dir <- c_datamodel$getReferenceDirectory()
-  if (model_dir == "")
-    model_dir <- getwd()
-  model_dir <- normalizePathC(model_dir)
+  model_dir <- normalizePathC(get_ref_dir(c_datamodel))
   filepath <- file.path(model_dir, filename)
   assert_that(
     # If the user has set a manual filename, try to be safe and not overwrite anything

@@ -423,7 +423,7 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
   
   if (readin) {
     # Create a temp file for the model
-    file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(c_datamodel$getReferenceDirectory()), fileext = ".cps")
+    file <- tempfile(pattern = "CoRC", tmpdir = normalizePathC(get_ref_dir(c_datamodel)), fileext = ".cps")
     grab_msg(c_datamodel$saveModel(file, overwriteFile = TRUE))
     
     if (os == "windows")
