@@ -63,15 +63,6 @@ addParameterEstimationParameter()
 Naming so far has been based on the desire to stay as close to the GUI as possible.
 It's probably time to define a cohesive concept.
 
-# Function arguments are lacking a cohesive concept
-
-Function arguments also have mixed concepts for naming things:
-I used camelCase for function arguments but method arguments are renamed according to an R function which replaces illegal characters with ".".
-
-```{r}
-str(getTimeCourseSettings())
-```
-
 # No option to cancel long running tasks
 
 The r-session locks up when waiting for C calls to return.
