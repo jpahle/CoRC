@@ -41,15 +41,28 @@ xcode-select --install
 
 Cosider using homebrew for macOS to install other dependencies:
 
-cmake, swig, gawk, wget, astyle
-
 ```{bash, eval=FALSE}
 brew install cmake swig gawk wget astyle
+```
+
+## ubuntu
+
+The following dependencies exist for compiling the sources:
+
+```{bash, eval=FALSE}
+sudo apt install build-essentials gawk wget astyle
+```
+
+Consider using linuxbrew to install other dependencies:
+
+```{bash, eval=FALSE}
+brew install swig
 ```
 
 ## Windows:
 
 Use chocolatey to install:
+
 ```
 choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable wget
 ```
@@ -68,6 +81,14 @@ cd development/copasi-source/copasi-dependencies/
 cd ../../../
 ```
 
+## ubuntu
+
+```{bash, eval=FALSE}
+cd development/copasi-source/copasi-dependencies/
+./createLinux.sh
+cd ../../../
+```
+
 ## Windows:
 
 run:
@@ -79,7 +100,7 @@ cd ..\..\..\
 
 # Compiling copasi from source
 
-## macOS
+## macOS, ubuntu
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/COPASI/
@@ -123,6 +144,26 @@ cd copasi-dependencies/
 rm -r tmp/ bin/
 git pull
 ./createOSX-qt5.sh
+cd ../COPASI/
+git pull upstream develop
+./gitTools/UpdateCopasiVersion
+cd ../
+mkdir build_copasi_r_bindings
+cd build_copasi_r_bindings/
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+make
+cd ../../../
+```
+
+## ubuntu
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+rm -r build_copasi_r_bindings/
+cd copasi-dependencies/
+rm -r tmp/ bin/
+git pull
+./createLinux.sh
 cd ../COPASI/
 git pull upstream develop
 ./gitTools/UpdateCopasiVersion
