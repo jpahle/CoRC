@@ -71,6 +71,7 @@ pkg_env$cl_loaded_dms <- list()
 #' @export
 getCopasi <- function(path = NULL) {
   assert_that(is.null(path) || is.readable(path))
+  version <- R.Version()
   
   # if no path is given we download the binaries
   if (is.null(path)) {
@@ -91,20 +92,20 @@ getCopasi <- function(path = NULL) {
       platform <- "darwin"
     } else {
       # Gather data about os (created for ubuntu but may work for other unix os)
-      id = character()
-      version = character()
+      id_string <- character()
+      v_string <- character()
       if (file.exists("/etc/os-release")) {
         osfile <- readLines("/etc/os-release")
-        id = na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
-        version = na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
-        if (!is_empty(id)) id <- id[1, 2]
-        if (!is_empty(version)) version <- version[1, c(2,3)]
+        id_string = na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
+        v_string = na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
+        if (!is_empty(id_string)) id_string <- id_string[1, 2]
+        if (!is_empty(v_string)) v_string <- v_string[1, c(2,3)]
       }
-      platform <- paste0(id, "_", paste0(version, collapse = "_"))
+      platform <- paste0(id_string, "_", paste0(v_string, collapse = "_"))
       
       assert_that(
-        platform %in% names(COPASI_BIN_HASHES),
-        msg = "There are currently no binaries available for your platform (", platform, ")."
+        platform %in% names(COPASI_BIN_HASHES[[r_version]]),
+        msg = paste0("There are currently no binaries available for your platform (", platform, ").")
       )
     }
     
@@ -118,9 +119,9 @@ getCopasi <- function(path = NULL) {
     path <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
     # download the binaries
-    success <- download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
+    dlstatus <- download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
     
-    assert_that(success == 0, msg = "Downloading copasi binaries failed.")
+    assert_that(dlstatus == 0, msg = "Downloading copasi binaries failed.")
     
     # Check if the hash matches
     assert_that(
