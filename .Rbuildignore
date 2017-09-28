@@ -5,3 +5,4 @@
 ^README\.Rmd$
 ^docs$
 ^vignettes/CoRC\.Rmd$
+^inst/libs/*$
