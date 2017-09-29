@@ -146,7 +146,8 @@ get_ref_dir <- function(c_datamodel) {
 # call but be evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character(0)) {
   purge_by_default <- c(
-    ": No output file defined for report of task "
+    ": No output file defined for report of task ",
+    "The MIRIAM resource '.*' is unknown to COPASI."
   )
   purge <- c(purge, purge_by_default)
   
