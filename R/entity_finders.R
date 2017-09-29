@@ -91,7 +91,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
   else
     matches <- vector("list", length(key))
   
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     info <- "species"
@@ -103,20 +103,20 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       ns <- cl_metabs %>% map_swig_chr("getObjectName")
       # find full matches to ObjectName
       matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       if (!all(matched)) {
         # then partial matches to ObjectDisplayName
         matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
         assert_matches(matches, key, dns, info)
       
-        matched <- lenghts(matches) == 1L
+        matched <- lengths(matches) == 1L
       
         assert_that(all(matched), msg = paste0(
           "Couldn't match ", info, ' "',
@@ -197,7 +197,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
   else
     matches <- vector("list", length(key))
   
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     info <- "global quantity(s)"
@@ -209,20 +209,20 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       ns <- cl_quants %>% map_swig_chr("getObjectName")
       # find full matches to ObjectName
       matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       if (!all(matched)) {
         # then partial matches to ObjectDisplayName
         matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
         assert_matches(matches, key, dns, info)
         
-        matched <- lenghts(matches) == 1L
+        matched <- lengths(matches) == 1L
         
         assert_that(all(matched), msg = paste0(
           "Couldn't match ", info, ' "',
@@ -303,7 +303,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
   else
     matches <- vector("list", length(key))
   
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     info <- "compartment(s)"
@@ -315,20 +315,20 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       ns <- cl_comps %>% map_swig_chr("getObjectName")
       # find full matches to ObjectName
       matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       if (!all(matched)) {
         # then partial matches to ObjectDisplayName
         matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
         assert_matches(matches, key, dns, info)
         
-        matched <- lenghts(matches) == 1L
+        matched <- lengths(matches) == 1L
         
         assert_that(all(matched), msg = paste0(
           "Couldn't match ", info, ' "',
@@ -409,7 +409,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
   else
     matches <- vector("list", length(key))
   
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     info <- "reaction(s)"
@@ -421,20 +421,20 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       ns <- cl_reacts %>% map_swig_chr("getObjectName")
       # find full matches to ObjectName
       matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       if (!all(matched)) {
         # then partial matches to ObjectDisplayName
         matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
         assert_matches(matches, key, dns, info)
         
-        matched <- lenghts(matches) == 1L
+        matched <- lengths(matches) == 1L
         
         assert_that(all(matched), msg = paste0(
           "Couldn't match ", info, ' "',
@@ -521,7 +521,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
   else
     matches <- vector("list", length(key))
   
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     info <- "parameter(s)"
@@ -539,20 +539,20 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       ns <- cl_params %>% map_swig_chr("getObjectName")
       # find full matches to ObjectName
       matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       if (!all(matched)) {
         # then partial matches to ObjectDisplayName
         matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
         assert_matches(matches, key, dns, info)
         
-        matched <- lenghts(matches) == 1L
+        matched <- lengths(matches) == 1L
         
         assert_that(all(matched), msg = paste0(
           "Couldn't match ", info, ' "',
@@ -632,20 +632,20 @@ kinfunction_obj <- function(key) {
   # find full matches to ObjectDisplayName
   # str_replace as hack to find complete matches
   matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(dns, .x, "") == ""))
-  matched <- lenghts(matches) == 1L
+  matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
     ns <- cl_funs %>% map_swig_chr("getObjectName")
     # find full matches to ObjectName
     matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
-    matched <- lenghts(matches) == 1L
+    matched <- lengths(matches) == 1L
     
     if (!all(matched)) {
       # then partial matches to ObjectDisplayName
       matches[!matched] <- map(key_l[!matched], stringr::str_which, string = dns)
       assert_matches(matches, key, dns, info)
       
-      matched <- lenghts(matches) == 1L
+      matched <- lengths(matches) == 1L
       
       assert_that(all(matched), msg = paste0(
         "Couldn't match ", info, ' "',
