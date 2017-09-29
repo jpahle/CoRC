@@ -4,10 +4,14 @@
 \alias{getCopasi}
 \title{Install copasi binaries}
 \usage{
-getCopasi(path = NULL)
+getCopasi(path = NULL, force = FALSE, silent = FALSE)
 }
 \arguments{
 \item{path}{optional file path to copasi binaries}
+
+\item{force}{optional bool to force overwriting the binaries}
+
+\item{silent}{optional bool to silence messages}
 }
 \description{
 \code{getCopasi} automatically downloads binaries or retrieves them from given path.

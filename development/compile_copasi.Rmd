@@ -68,7 +68,8 @@ choco install -y visualstudio2017community visualstudio2017-workload-nativedeskt
 ```
 
 Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
-Manually get the Rlib (Rlib.lib) files for your current R Version and put it in: development\copasi-source\r-3.4.1-import-lib\x64\
+Manually get the Rlib (Rlib.lib) files for your current R Version and put it in e.g.: development\copasi-source\r-3.4.1-import-lib\x64\
+
 Use the cmd prompt.
 
 # Compiling copasi dependencies
@@ -108,7 +109,7 @@ cd development/copasi-source/COPASI/
 cd ../
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
 cd ../../../
 ```
@@ -129,11 +130,11 @@ cd development\copasi-source\
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings\
 call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" -DSWIG_EXECUTABLE="../swigwin/swig.exe" -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ../COPASI
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" -DSWIG_EXECUTABLE="../swigwin/swig.exe" -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ../COPASI
 ninja
 ```
 
-# (Optionally) Update and rebuild all for release
+# (Optionally) rebuild all for release
 
 ## macOS
 
@@ -142,15 +143,13 @@ cd development/copasi-source/
 rm -r build_copasi_r_bindings/
 cd copasi-dependencies/
 rm -r tmp/ bin/
-git pull
 ./createOSX-qt5.sh
 cd ../COPASI/
-git pull upstream develop
 ./gitTools/UpdateCopasiVersion
 cd ../
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
 cd ../../../
 ```
@@ -162,15 +161,13 @@ cd development/copasi-source/
 rm -r build_copasi_r_bindings/
 cd copasi-dependencies/
 rm -r tmp/ bin/
-git pull
 ./createLinux.sh
 cd ../COPASI/
-git pull upstream develop
 ./gitTools/UpdateCopasiVersion
 cd ../
 mkdir build_copasi_r_bindings
 cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
 make
 cd ../../../
 ```

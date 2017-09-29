@@ -19,26 +19,16 @@
 OUTPUTFLAG <- 119L
 
 #' @export
-COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/48626220afe9a1bad4cb3e16031efe723b1d71fc"
+COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/81c1003bb7aa3839cbde506c4343a115da0e678f"
 
-COPASI_BIN_VERSION <- 5L
-COPASI_BIN_HASHES <-
-  list(
-    "3.3" =
-      c(
-        # darwin = ""
-        # win = "",
-        # ubuntu_16_10 = ""
-      ),
-    "3.4" =
-      c(
-        darwin = "e3a5960f96522562038f41a0914a4b7c942e6b80641716d34ef0ac85014bf0cf",
-        win = "93abbe8eb28f491d61a713e4229733002cdfdf55503a6dc923b47aacbb443cec",
-        ubuntu_16_04 = "ba3cb84e1c50465e5d02a10a8a8c4ddf7d1d7c8b6bcd29b3d0f1ba2d37e64ef0",
-        ubuntu_16_10 = "ba3cb84e1c50465e5d02a10a8a8c4ddf7d1d7c8b6bcd29b3d0f1ba2d37e64ef0",
-        ubuntu_17_04 = "ba3cb84e1c50465e5d02a10a8a8c4ddf7d1d7c8b6bcd29b3d0f1ba2d37e64ef0"
-      )
+COPASI_BIN_VERSION <- 6L
+COPASI_BIN_HASHES <- list(
+  x86_64 = c(
+    windows = "",
+    darwin = "85cd69c8c75835df206f9c5b270bb3b4cf390f5a8f33470c90e2290cb4a7b410",
+    unix = ""
   )
+)
 
 # Package environment for persistent options etc
 pkg_env <- new.env(parent = emptyenv())
@@ -68,86 +58,119 @@ pkg_env$cl_loaded_dms <- list()
 #' To install copasi binaries, you need write access to the packages installation folder.
 #'
 #' @param path optional file path to copasi binaries
+#' @param force optional bool to force overwriting the binaries
+#' @param silent optional bool to silence messages
 #' @export
-getCopasi <- function(path = NULL) {
-  assert_that(is.null(path) || is.readable(path))
-  version <- R.Version()
+getCopasi <- function(path = NULL, force = FALSE, silent = FALSE) {
+  assert_that(
+    is.null(path) || is.readable(path),
+    is.flag(force), noNA(force),
+    is.flag(silent), noNA(silent)
+  )
+  
+  # CHECK OS
+  os <- NULL
+  if (.Platform$OS.type == "windows") {
+    os <- "windows"
+  } else if (.Platform$OS.type == "unix") {
+    if (substr(R.Version()$os, 1L, 6L) == "darwin")
+      os <- "darwin"
+    else
+      os <- "unix"
+    # Gather data about os (created for ubuntu but may work for other unix os)
+    # osfile <- readLines("/etc/os-release")
+    # 
+    # id_string <- na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
+    # v_string <- na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
+    # 
+    # if (!is_empty(id_string)) id_string <- id_string[1, 2]
+    # if (!is_empty(v_string)) v_string <- v_string[1, c(2,3)]
+    # 
+    # os <- paste0(id_string, "_", paste0(v_string, collapse = "_"))
+  }
+  arch <- R.Version()$arch
+  
+  # CHECK CURRENT FILE
+  libsdir <- file.path(system.file(package = getPackageName()), "libs")
+  
+  # Win needs different locations for the .dll files (subfolders).
+  if (os == "windows") {
+    if (version$arch == "x86_64") {
+      libsdir <- file.path(libsdir, "x64")
+      # not sure what $arch actually is for x86
+    } else if (version$arch == "x86") {
+      libsdir <- file.path(libsdir, "i386")
+    }
+  }
+  
+  if (!dir.exists(libsdir)) {
+    assert_that(
+      dir.create(libsdir, recursive = TRUE),
+      msg = "No write access to package directory."
+    )
+  }
+  
+  libfile <- file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext))
   
   # if no path is given we download the binaries
   if (is.null(path)) {
-    dlurl <- "http://juergen.pahle.de/CoRC_libs/"
+    assert_that(
+      !is.null(os),
+      msg = "Unsupported platform. Supply copasi binaries via the `path` argument."
+    )
     
-    r_version <- paste0(version$major, ".", strsplit(version$minor, ".", fixed = TRUE)[[1]][1])
-    assert_that(r_version %in% names(COPASI_BIN_HASHES), msg = paste0("Versions ", r_version, "(.x) of R are not supported."))
+    assert_that(
+      arch %in% names(COPASI_BIN_HASHES),
+      msg = paste0("Architecture `", arch, "` is currently unsupported.")
+    )
     
-    dlurl <- paste0(dlurl, r_version, "/")
+    assert_that(
+      os %in% names(COPASI_BIN_HASHES[[arch]]),
+      msg = paste0("There are currently no binaries available for your platform (", os, "_", arch, ").")
+    )
     
-    dlurl <- paste0(dlurl, "v", COPASI_BIN_VERSION, "/")
-    
-    x64folder <- FALSE
-    if (.Platform$OS.type == "windows") {
-      platform <- "win"
-      x64folder <- TRUE
-    } else if (substr(version$os, 1L, 6L) == "darwin") {
-      platform <- "darwin"
-    } else {
-      # Gather data about os (created for ubuntu but may work for other unix os)
-      id_string <- character()
-      v_string <- character()
-      if (file.exists("/etc/os-release")) {
-        osfile <- readLines("/etc/os-release")
-        id_string = na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
-        v_string = na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
-        if (!is_empty(id_string)) id_string <- id_string[1, 2]
-        if (!is_empty(v_string)) v_string <- v_string[1, c(2,3)]
+    # Don't do anything if the current lib file is good.
+    if (!force && file.exists(libfile)) {
+      current_file_hash <- digest::digest(libfile, algo = "sha256", file = TRUE)
+      if (current_file_hash == COPASI_BIN_HASHES[[arch]][os]) {
+        if (!silent)
+          message("Skipping download because current binaries are up to date and uncorrupted.")
+        return(invisible())
       }
-      platform <- paste0(id_string, "_", paste0(v_string, collapse = "_"))
-      
-      assert_that(
-        platform %in% names(COPASI_BIN_HASHES[[r_version]]),
-        msg = paste0("There are currently no binaries available for your platform (", platform, ").")
-      )
     }
     
-    dlurl <- paste0(dlurl, "COPASI_", platform)
+    dlurl <- paste0(
+      "http://juergen.pahle.de/CoRC_libs/",
+      "v", COPASI_BIN_VERSION, "/",
+      "COPASI_", os,
+      "_", arch,
+      .Platform$dynlib.ext
+    )
     
-    assert_that(version$arch == "x86_64")
-    dlurl <- paste0(dlurl, "_x64")
-    
-    dlurl <- paste0(dlurl, .Platform$dynlib.ext)
-    
-    path <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
+    dlpath <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
     # download the binaries
-    dlstatus <- download.file(url = dlurl, destfile = path, method = "auto", mode = "wb")
+    dlstatus <- download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = silent, mode = "wb")
     
     assert_that(dlstatus == 0, msg = "Downloading copasi binaries failed.")
     
     # Check if the hash matches
     assert_that(
-      digest::digest(path, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[r_version]][[platform]],
+      digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os],
       msg = "Downloaded copasi binaries are corrupted."
     )
   }
   
-  libsdir <- file.path(system.file(package = getPackageName()), "libs")
-  
-  # It seems in some cases a x64 folder is needed inside libs but I am unsure when and if it needs to contain files.
-  if (x64folder && version$arch == "x86_64")
-    libsdir <- file.path(libsdir, "x64")
-  
-  success <- TRUE
-  if (!dir.exists(libsdir))
-    success <- dir.create(libsdir, recursive = TRUE)
-  
   # Try to unload COPASI if loaded so the binaries can be overwritten
+  pkg_env$cl_loaded_dms <- list()
+  pkg_env$c_curr_dm <- NULL
   try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
   
   # Copy file into package folder
-  if (success)
-    success <- file.copy(path, file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
-
-  assert_that(success, msg = "Copying copasi binaries into package folder failed.")
+  assert_that(
+    file.copy(path, libfile, overwrite = TRUE),
+    msg = "Copying copasi binaries into package folder failed."
+  )
   
   # Reload libary
   library.dynam("COPASI", getPackageName(), .libPaths())
