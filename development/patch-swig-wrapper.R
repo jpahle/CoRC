@@ -13,11 +13,20 @@ wrapper_lines <- readLines(wrapper_con)
 # now use isnullptr::isnullptr
 wrapper_lines <- stringr::str_replace_all(
   wrapper_lines,
-  'capture\\.output\\((\\w+?)\\) %in% c\\("<pointer: 0x0>", "<pointer: \\(nil\\)>"\\)', 'isnullptr(\\1)'
+  'capture\\.output\\((\\w+?)\\) %in% c\\("<pointer: 0x0>", "<pointer: \\(nil\\)>"\\)',
+  'isnullptr(\\1)'
 )
 wrapper_lines <- stringr::str_replace_all(
   wrapper_lines,
-  '!\\(isnullptr\\((\\w+?)\\)\\)', '!isnullptr(\\1)'
+  '!\\(isnullptr\\((\\w+?)\\)\\)',
+  '!isnullptr(\\1)'
+)
+
+# remove swig debug info containing personal folder structure
+wrapper_lines <- stringr::str_replace_all(
+  wrapper_lines,
+  '^##.*R.i$',
+  ""
 )
 
 writeLines(wrapper_lines, wrapper_con)
