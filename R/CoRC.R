@@ -61,13 +61,13 @@ pkg_env$cl_loaded_dms <- list()
 #'
 #' @param path optional file path to copasi binaries
 #' @param force optional bool to force overwriting the binaries
-#' @param silent optional bool to silence messages
+#' @param quiet optional bool to silence messages
 #' @export
-getCopasi <- function(path = NULL, force = FALSE, silent = FALSE) {
+getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   assert_that(
     is.null(path) || is.readable(path),
     is.flag(force), noNA(force),
-    is.flag(silent), noNA(silent)
+    is.flag(quiet), noNA(quiet)
   )
   
   # CHECK OS
@@ -135,7 +135,7 @@ getCopasi <- function(path = NULL, force = FALSE, silent = FALSE) {
     if (!force && file.exists(libfile)) {
       current_file_hash <- digest::digest(libfile, algo = "sha256", file = TRUE)
       if (current_file_hash == COPASI_BIN_HASHES[[arch]][os]) {
-        if (!silent)
+        if (!quiet)
           message("Skipping download because current binaries are up to date and uncorrupted.")
         return(invisible())
       }
@@ -152,7 +152,7 @@ getCopasi <- function(path = NULL, force = FALSE, silent = FALSE) {
     dlpath <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
     # download the binaries
-    dlstatus <- download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = silent, mode = "wb")
+    dlstatus <- download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
     
     assert_that(dlstatus == 0, msg = "Downloading copasi binaries failed.")
     
