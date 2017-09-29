@@ -40,9 +40,11 @@ pkg_env$c_curr_dm <- NULL
 pkg_env$cl_loaded_dms <- list()
 
 .onLoad <- function(libname, pkgname) {
-  # hack for load_all() 
-  libname <- .libPaths()
-  
+  # hack for devtools::load_all()
+  # requires for the package to be installed already
+  if (getNamespaceName(environment(library.dynam.unload)) == "devtools")
+    libname <- .libPaths()
+    
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # In this single case only warn instead of stop
   assert_binaries(warning, pkgname)
