@@ -46,6 +46,8 @@ pkg_env$cl_loaded_dms <- list()
     libname <- .libPaths()
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
+  # TODO
+  try(CCopasiMessage_clearDeque(), silent = TRUE)
   # In this single case only warn instead of stop
   assert_binaries(warning, pkgname)
 }
@@ -176,7 +178,12 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   
   # Reload libary
   library.dynam("COPASI", getPackageName(), .libPaths())
-  message(getPackageName(), ": Successfully loaded copasi binaries.")
+  # TODO
+  CCopasiMessage_clearDeque()
+  if (!quiet)
+    message(getPackageName(), ": Successfully loaded copasi binaries.")
+  
+  invisible()
 }
 
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {

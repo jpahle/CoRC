@@ -144,7 +144,7 @@ get_ref_dir <- function(c_datamodel) {
 # finds copasi messages and helps purge known annoying messages
 # because of lazy evaluation, x will not be evaluated on the function
 # call but be evaluated with force(x) and then messages are checked
-grab_msg <- function(x, purge = character(0)) {
+grab_msg <- function(x, purge = character()) {
   purge_by_default <- c(
     ": No output file defined for report of task ",
     "The MIRIAM resource '.*' is unknown to COPASI."
@@ -164,7 +164,7 @@ grab_msg <- function(x, purge = character(0)) {
   force(x)
   
   if (CCopasiMessage_size() > 0L) {
-    messages <- map_chr(1L:CCopasiMessage_size(), ~ CCopasiMessage_getFirstMessage()$getText())
+    messages <- map_chr(seq_len(CCopasiMessage_size()), ~ CCopasiMessage_getFirstMessage()$getText())
     
     # filter all messages that match a purge pattern
     messages <- messages[map_lgl(messages, ~ !any(stringr::str_detect(.x, pattern = purge)))]
