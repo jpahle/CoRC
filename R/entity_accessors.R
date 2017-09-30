@@ -309,7 +309,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   if (!is.null(data))
     do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial_value", "expression")])
   
-  if (is_empty(c_quants)) return(invisible())
+  if (is_empty(cl_quants)) return(invisible())
   
   c_model <- c_datamodel$getModel()
   
