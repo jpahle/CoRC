@@ -172,7 +172,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   
   # Copy file into package folder
   assert_that(
-    file.copy(path, libfile, overwrite = TRUE),
+    file.copy(dlpath, libfile, overwrite = TRUE),
     msg = "Copying copasi binaries into package folder failed."
   )
   
