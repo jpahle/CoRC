@@ -4,12 +4,12 @@
 \alias{autoplot.copasi_ts}
 \title{Autoplot method for copasi timeseries objects.}
 \usage{
-\method{autoplot}{copasi_ts}(object, ...)
+autoplot.copasi_ts(object, ...)
 }
 \arguments{
 \item{object}{A copasi timeseries object}
 
-\item{\dots}{Species names selected for plotting}
+\item{\dots}{Column names selected for plotting}
 }
 \value{
 A ggplot2 plot

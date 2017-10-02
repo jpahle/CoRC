@@ -14,16 +14,15 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
 Depends:
-    R (>= 3.2)
+    R (>= 3.1)
 Imports:
     assertthat (>= 0.2.0),
+    backports (>= 1.1.1),
     digest (>= 0.6.12),
     dplyr (>= 0.7.3),
-    ggplot2 (>= 2.2.1),
     isnullptr (>= 1.0.0),
     methods,
     purrr (>= 0.2.3),
-    readr (>= 1.1.1),
     rlang (>= 0.1.2),
     stats,
     stringr (>= 1.2.0),
@@ -31,11 +30,12 @@ Imports:
     tidyr (>= 0.7.1),
     utils,
 Suggests:
-    testthat,
+    ggplot2,
     knitr,
-    rmarkdown,
     pkgdown,
-    plotly
+    plotly,
+    rmarkdown,
+    testthat,
 Collate: 
     'CoRC.R'
     'entity_accessors.R'

@@ -382,7 +382,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   if (is.data.frame(data))
     data <- list(data)
   assert_that(every(data, is.data.frame))
-  data <- map(data, tibble::as_tibble)
+  data <- map(data, tibble::as_tibble, validate = TRUE)
 
   # get experiment names from names of data or use list position ("Experiment_x")
   experiment_names <- names(data) %||% rep(NA_character_, length(data))
@@ -505,7 +505,8 @@ addExperiments <- function(copasi_exp, model = getCurrentModel()) {
     !file.exists(filepath) || grepl("^CoRC_exp_", filename),
     msg = paste0('Experiment file path "', filepath, '" already exists.')
   )
-  readr::write_tsv(copasi_exp, filepath)
+  write.table(copasi_exp, file = filepath, sep = "\t", row.names = FALSE)
+  # readr::write_tsv(copasi_exp, filepath)
   
   # Construct individual experiments
   cl_experiments <-
@@ -650,7 +651,7 @@ pe_assemble_method <- function(method, c_task) {
   if (is_scalar_character(method))
     method <- list(method = method)
   
-  if (has_name(method, "method"))
+  if (hasName(method, "method"))
     # hack to get nice error message if method string is not accepted.
     method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   

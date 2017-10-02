@@ -255,7 +255,7 @@ tc_assemble_method <- function(method, c_task) {
   if (is_scalar_character(method))
     method <- list(method = method)
   
-  if (has_name(method, "method"))
+  if (hasName(method, "method"))
     # hack to get nice error message if method string is not accepted.
     method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
   

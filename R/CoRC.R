@@ -44,12 +44,14 @@ pkg_env$cl_loaded_dms <- list()
   # requires for the package to be installed already
   if (getNamespaceName(environment(library.dynam.unload)) == "devtools")
     libname <- .libPaths()
+  
+  backports::import(pkgname, c("anyNA", "dir.exists", "hasName", "lengths"))
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO
   try(CCopasiMessage_clearDeque(), silent = TRUE)
   # In this single case only warn instead of stop
-  assert_binaries(warning, pkgname)
+  assert_binaries(partial(warning, immediate. = TRUE), pkgname)
 }
 
 .onUnload <- function(libpath) {

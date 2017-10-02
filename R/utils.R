@@ -214,11 +214,14 @@ normalizePathC <- partial(normalizePath, winslash = .Platform$file.sep)
 #' The plot has a geom_line layer.
 #'
 #' @param object A copasi timeseries object
-#' @param \dots Species names selected for plotting
+#' @param \dots Column names selected for plotting
 #' @return A ggplot2 plot
-#' @importFrom ggplot2 autoplot
-#' @export
-autoplot.copasi_ts <- function(object, ...) {
+# #' @importFrom ggplot2 autoplot
+#' @export autoplot.copasi_ts
+'autoplot.copasi_ts' <- function(object, ...) {
+  # make sure ggplot2 is available
+  loadNamespace("ggplot2")
+  
   validate_copasi_ts(object)
   
   tc <- object$result
@@ -233,7 +236,7 @@ autoplot.copasi_ts <- function(object, ...) {
   
   # only add species selected in ...
   if (!is_empty(selected))
-    tc <- tc %>% dplyr::select(.data$Time, !!!selected)
+    tc <- dplyr::select(tc, .data$Time, !!!selected)
   
   units <- object$units
   
@@ -370,7 +373,7 @@ set_method_settings <- function(values, c_method) {
       warning('Parameter "', data$name[.x], '" was skipped because it is of unsupported type "', data$struct[.x], '".')
     )
   
-  data <- data %>% dplyr::filter(!skipped)
+  data <- dplyr::filter(data, !skipped)
   
   allowed <- map2_lgl(data$control_fun, data$value, ~ .x(.y))
   

@@ -170,7 +170,7 @@ ss_assemble_method <- function(method, c_task) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.list(method), !has_name(method, "method"))
+  assert_that(is.list(method), !hasName(method, "method"))
   
   method
 }
