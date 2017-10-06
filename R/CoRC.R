@@ -61,6 +61,10 @@ pkg_env$cl_loaded_dms <- list()
 #' Install copasi binaries
 #'
 #' \code{getCopasi} automatically downloads binaries or retrieves them from given path.
+#' 
+#' In case of no internet connection, run the function and retrieve the URL from the error message.
+#' Download the file manually, copy it to a local path and give its path via the \code{path} argument.
+#' 
 #' To install copasi binaries, you need write access to the packages installation folder.
 #'
 #' @param path optional file path to copasi binaries
@@ -168,8 +172,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   }
   
   # Try to unload COPASI if loaded so the binaries can be overwritten
-  pkg_env$cl_loaded_dms <- list()
-  pkg_env$c_curr_dm <- NULL
+  try(unloadAllModels(), silent = TRUE)
   try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
   
   # Copy file into package folder
@@ -188,6 +191,9 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   invisible()
 }
 
+# check if copasi lib is loaded.
+# default method for error is stop.
+# .onLoad uses warning instead.
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {
   if (!("COPASI" %in% map_chr(.dynLibs(), "name")))
     method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")

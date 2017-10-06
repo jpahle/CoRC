@@ -4,8 +4,8 @@
 \alias{defineOptimizationParameter}
 \title{Define an optimization parameter}
 \usage{
-defineOptimizationParameter(key = NULL, lower_bound = 1e-06,
-  upper_bound = 1e+06, start_value = (lower_bound + upper_bound)/2)
+defineOptimizationParameter(key, lower_bound = 1e-06, upper_bound = 1e+06,
+  start_value = (lower_bound + upper_bound)/2)
 }
 \arguments{
 \item{key}{entity key}

@@ -115,7 +115,7 @@ to_param_vector <- function(x, type) {
   
   assert_that(
     !is.error(x_val),
-    msg = paste0(deparse(substitute(x)), " can not be converted to vector of type ", type, ".")
+    msg = paste0(deparse(substitute(x)), " cannot be converted to vector of type ", type, ".")
   )
   
   x_val

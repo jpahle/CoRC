@@ -4,10 +4,11 @@
 \alias{addParameterEstimationParameter}
 \title{Add a parameter estimation parameter}
 \usage{
-addParameterEstimationParameter(copasi_parm, model = getCurrentModel())
+addParameterEstimationParameter(..., model = getCurrentModel())
 }
 \arguments{
-\item{copasi_parm}{object as returned by \code{\link{defineParameterEstimationParameter}}}
+\item{...}{objects as returned by \code{\link{defineParameterEstimationParameter}}.
+Alternatively, the same parameters as used by \code{\link{defineParameterEstimationParameter}}.}
 
 \item{model}{a model object}
 }

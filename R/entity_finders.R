@@ -664,6 +664,7 @@ kinfunction_obj <- function(key) {
     )
 }
 
+# Give helpfull error if matches are non-unique
 assert_matches <- function(matches, keys, names, info) {
   iwalk(matches, ~ {
     assert_that(
@@ -677,13 +678,14 @@ assert_matches <- function(matches, keys, names, info) {
   })
 }
 
+# if a reference is requested, convert a list of objects to a list of references
 apply_ref <- function(cl_objs, refs) {
   # If given reference string is scalar we replicate it for all matches
-  if (length(refs) == 1L) refs <- rep(refs, length(cl_objs))
+  if (length(refs) == 1L)
+    refs <- rep(refs, length(cl_objs))
   
   map2(
-    cl_objs,
-    refs,
+    cl_objs, refs,
     ~ {
       c_obj <- .x$getObject(CCommonName(paste0("Reference=", .y)))
       assert_that(!is.null(c_obj), msg = paste0('Failed to gather reference "', .y, '".'))

@@ -9,7 +9,7 @@ setReactionMappings(key, mappings, model = getCurrentModel())
 \arguments{
 \item{key}{reaction key}
 
-\item{mappings}{list}
+\item{mappings}{named list}
 
 \item{model}{a model object}
 }

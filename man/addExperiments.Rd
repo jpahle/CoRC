@@ -4,10 +4,11 @@
 \alias{addExperiments}
 \title{Add a parameter estimation experiment}
 \usage{
-addExperiments(copasi_exp, model = getCurrentModel())
+addExperiments(..., model = getCurrentModel())
 }
 \arguments{
-\item{copasi_exp}{object as returned by \code{\link{defineExperiments}}}
+\item{...}{objects as returned by \code{\link{defineExperiments}}.
+Alternatively, the same parameters as used by \code{\link{defineExperiments}}.}
 
 \item{model}{a model object}
 }

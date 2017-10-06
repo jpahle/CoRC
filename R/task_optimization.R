@@ -66,7 +66,7 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
     if (do_method)
       set_method_settings(method_settings, c_method)
     if (do_parameters)
-      walk(parameter_list, addOptimizationParameter, c_datamodel)
+      addOptimizationParameter(parameter_list, model = c_datamodel)
     
     # initialize task
     assert_that(
@@ -145,7 +145,7 @@ setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask 
 
   # parameters get rolled back when not setting them properly
   tryCatch(
-    walk(parameter_list, addOptimizationParameter, c_datamodel),
+    addOptimizationParameter(parameter_list, model = c_datamodel),
     error = function(e) {
       clearOptimizationParameters(c_datamodel)
       base::stop(e)
@@ -233,7 +233,7 @@ is.copasi_parm <- function(x) {
 }
 
 #' @export
-copasi_parm <- function(key = NULL, lower_bound = 1e-6, upper_bound = 1e6, start_value = (lower_bound + upper_bound) / 2) {
+copasi_parm <- function(key, lower_bound = 1e-6, upper_bound = 1e6, start_value = (lower_bound + upper_bound) / 2) {
   new_copasi_parm(
     key,
     lower = lower_bound,
@@ -256,33 +256,51 @@ defineOptimizationParameter <- copasi_parm
 
 #' Add an optimization parameter
 #' 
-#' @param copasi_parm object as returned by \code{\link{defineOptimizationParameter}}
+#' @param ... objects as returned by \code{\link{defineOptimizationParameter}}.
+#' Alternatively, the same parameters as used by \code{\link{defineOptimizationParameter}}.
 #' @param model a model object
 #' @seealso \code{\link{defineOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 #' @family optimization
 #' @export
-addOptimizationParameter <- function(copasi_parm, model = getCurrentModel()) {
+addOptimizationParameter <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(
-    is.copasi_parm(copasi_parm)
-  )
-  validate_copasi_parm(copasi_parm)
   
-  c_obj <- xn_to_object(copasi_parm$key, c_datamodel)
-  # Test if the key is valid
+  # flatten all args into a single list
+  # this list can be used to check if the user gave only copasi_parm
+  arglist_compact <- rlang::squash(unname(list(...)))
+  
+  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
+  if (!every(arglist_compact, is.copasi_parm))
+    arglist_compact <- list(defineOptimizationParameter(...))
+  
+  walk(arglist_compact, validate_copasi_parm)
+  
+  cl_obj <-
+    map_chr(arglist_compact, "key") %>%
+    map(xn_to_object, c_datamodel = c_datamodel)
+  
+  # Test if all keys are valid
   # This can probably be a more elaborate and safe test (by using dn_to_object(accepted_types))
+  invalid_keys <- map_lgl(cl_obj, is.null)
   assert_that(
-    !is.null(c_obj),
-    msg = "The given parameter is invalid for this model"
+    !any(invalid_keys),
+    msg = paste0("Given parameter(s) ", paste0(which(invalid_keys), collapse = ", "), " are invalid for this model.")
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
-  c_optitem <- c_problem$addOptItem(c_obj$getCN())
-  c_optitem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
-  c_optitem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
-  c_optitem$setStartValue(copasi_parm$start)
+  walk2(
+    arglist_compact, cl_obj,
+    ~ {
+      c_optitem <- c_problem$addOptItem(.y$getCN())
+      c_optitem$setLowerBound(CCommonName(as.character(.x$lower)))
+      c_optitem$setUpperBound(CCommonName(as.character(.x$upper)))
+      c_optitem$setStartValue(.x$start)
+    }
+  )
+  
+  invisible()
 }
 
 #' Clear all optimization parameters
@@ -297,7 +315,10 @@ clearOptimizationParameters <- function(model = getCurrentModel()) {
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
   c_problem <- as(c_task$getProblem(), "_p_COptProblem")
   
-  seq_len_0(c_problem$getOptItemSize()) %>% walk(~ c_problem$removeOptItem(0))
+  walk(
+    seq_len_0(c_problem$getOptItemSize()),
+    ~ c_problem$removeOptItem(0L)
+  )
 }
 
 opt_assemble_parameters <- function(parameters, c_problem) {

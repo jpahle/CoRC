@@ -65,9 +65,9 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
     if (do_method)
       set_method_settings(method_settings, c_method)
     if (do_parameters)
-      walk(parameter_list, addParameterEstimationParameter, c_datamodel)
+      addParameterEstimationParameter(parameter_list, model = c_datamodel)
     if (do_experiments)
-      walk(experiment_list, addExperiments, c_datamodel)
+      addExperiments(experiment_list, model = c_datamodel)
     
     # initialize task
     assert_that(
@@ -156,7 +156,7 @@ setParameterEstimationSettings <- function(randomize_start_values = NULL, create
   
   # experiments and parameters get rolled back when not setting them properly
   tryCatch(
-    walk(parameter_list, addParameterEstimationParameter, c_datamodel),
+    addParameterEstimationParameter(parameter_list, model = c_datamodel),
     error = function(e) {
       clearParameterEstimationParameters(c_datamodel)
       base::stop(e)
@@ -164,7 +164,7 @@ setParameterEstimationSettings <- function(randomize_start_values = NULL, create
     }
   )
   tryCatch(
-    walk(experiment_list, addExperiments, c_datamodel),
+    addExperiments(experiment_list, model = c_datamodel),
     error = function(e) {
       clearExperiments(c_datamodel)
       base::stop(e)
@@ -252,7 +252,7 @@ getPE <- getParameterEstimationSettings
 # }
 
 # #' @export
-# copasi_parm <- function(key = NULL, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
+# copasi_parm <- function(key, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
 #   new_copasi_parm(
 #     key,
 #     lower = lower.bound,
@@ -274,33 +274,49 @@ defineParameterEstimationParameter <- copasi_parm
 
 #' Add a parameter estimation parameter
 #' 
-#' @param copasi_parm object as returned by \code{\link{defineParameterEstimationParameter}}
+#' @param ... objects as returned by \code{\link{defineParameterEstimationParameter}}.
+#' Alternatively, the same parameters as used by \code{\link{defineParameterEstimationParameter}}.
 #' @param model a model object
 #' @family parameter estimation
 #' @seealso \code{\link{defineParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
 #' @export
-addParameterEstimationParameter <- function(copasi_parm, model = getCurrentModel()) {
+addParameterEstimationParameter <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(
-    is.copasi_parm(copasi_parm)
-  )
-  validate_copasi_parm(copasi_parm)
   
-  c_obj <- xn_to_object(copasi_parm$key, c_datamodel)
-  # Test if the key is valid
+  # flatten all args into a single list
+  # this list can be used to check if the user gave only copasi_parm
+  arglist_compact <- rlang::squash(unname(list(...)))
+  
+  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
+  if (!every(arglist_compact, is.copasi_parm))
+    arglist_compact <- list(defineParameterEstimationParameter(...))
+  
+  walk(arglist_compact, validate_copasi_parm)
+  
+  cl_obj <-
+    map_chr(arglist_compact, "key") %>%
+    map(xn_to_object, c_datamodel = c_datamodel)
+  
+  # Test if all keys are valid
   # This can probably be a more elaborate and safe test (by using dn_to_object(accepted_types))
+  invalid_keys <- map_lgl(cl_obj, is.null)
   assert_that(
-    !is.null(c_obj),
-    msg = "The given parameter is invalid for this model"
+    !any(invalid_keys),
+    msg = paste0("Given parameter(s) ", paste0(which(invalid_keys), collapse = ", "), " are invalid for this model.")
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
-  c_fititem <- c_problem$addFitItem(c_obj$getCN())
-  c_fititem$setLowerBound(CCommonName(as.character(copasi_parm$lower)))
-  c_fititem$setUpperBound(CCommonName(as.character(copasi_parm$upper)))
-  c_fititem$setStartValue(copasi_parm$start)
+  walk2(
+    arglist_compact, cl_obj,
+    ~ {
+      c_fititem <- c_problem$addFitItem(.y$getCN())
+      c_fititem$setLowerBound(CCommonName(as.character(.x$lower)))
+      c_fititem$setUpperBound(CCommonName(as.character(.x$upper)))
+      c_fititem$setStartValue(.x$start)
+    }
+  )
   
   invisible()
 }
@@ -317,7 +333,10 @@ clearParameterEstimationParameters <- function(model = getCurrentModel()) {
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
-  seq_len_0(c_problem$getOptItemSize()) %>% walk(~ c_problem$removeOptItem(0))
+  walk(
+    seq_len_0(c_problem$getOptItemSize()),
+    ~ c_problem$removeOptItem(0L)
+  )
   
   invisible()
 }
@@ -374,6 +393,9 @@ exp_weight_methods <- tolower(names(.__E___CExperiment__WeightMethod))
 
 #' @export
 copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+  types <- to_param_vector(types, "character")
+  mappings <- to_param_vector(mappings, "character")
+  
   # experiment_type
   experiment_type <- rlang::arg_match(experiment_type)
   experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
@@ -420,7 +442,6 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   # mappings
   mappings <- mappings %||% data_cols
   assert_that(
-    is.character(mappings),
     is.null(names(mappings)) && length(mappings) == length(data_cols) ||
     all(names(mappings) %in% data_cols)
   )
@@ -477,81 +498,101 @@ defineExperiments <- copasi_exp
 
 #' Add a parameter estimation experiment
 #' 
-#' @param copasi_exp object as returned by \code{\link{defineExperiments}}
+#' @param ... objects as returned by \code{\link{defineExperiments}}.
+#' Alternatively, the same parameters as used by \code{\link{defineExperiments}}.
 #' @param model a model object
 #' @seealso \code{\link{defineExperiments}} \code{\link{clearExperiments}}
 #' @family parameter estimation
 #' @export
-addExperiments <- function(copasi_exp, model = getCurrentModel()) {
+addExperiments <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.copasi_exp(copasi_exp))
   
-  experiment_type <- copasi_exp %@% "experiment_type"
-  experiments <- copasi_exp %@% "experiments"
-  types <- copasi_exp %@% "types"
-  mappings <- copasi_exp %@% "mappings"
-  weight_method <- copasi_exp %@% "weight_method"
-  filename <- copasi_exp %@% "filename"
+  # flatten all args into a single list
+  # this list can be used to check if the user gave only copasi_parm
+  arglist_compact <- rlang::squash(unname(list(...)))
+  
+  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
+  if (!every(arglist_compact, is.copasi_exp))
+    arglist_compact <- list(defineExperiments(...))
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
   
-  # Create experiment file
-  model_dir <- normalizePathC(get_ref_dir(c_datamodel))
-  filepath <- file.path(model_dir, filename)
-  assert_that(
-    # If the user has set a manual filename, try to be safe and not overwrite anything
-    !file.exists(filepath) || grepl("^CoRC_exp_", filename),
-    msg = paste0('Experiment file path "', filepath, '" already exists.')
+  map(
+    arglist_compact,
+    ~ {
+      experiment_type <- .x %@% "experiment_type"
+      experiments <- .x %@% "experiments"
+      types <- .x %@% "types"
+      mappings <- .x %@% "mappings"
+      weight_method <- .x %@% "weight_method"
+      filename <- .x %@% "filename"
+      
+      # Create experiment file
+      model_dir <- normalizePathC(get_ref_dir(c_datamodel))
+      filepath <- file.path(model_dir, filename)
+      assert_that(
+        # If the user has set a manual filename, try to be safe and not overwrite anything
+        !file.exists(filepath) || grepl("^CoRC_exp_", filename),
+        msg = paste0('Experiment file path "', filepath, '" already exists.')
+      )
+      write.table(.x, file = filepath, sep = "\t", row.names = FALSE)
+      # readr::write_tsv(.x, filepath)
+      
+      # make sure the file gets deleted on error
+      tryCatch({
+        # Construct individual experiments
+        cl_experiments <-
+          experiments %>%
+          pmap(function(name, first_row, last_row, ...) {
+            exp <- avert_gc(CExperiment(c_experiment_set, name))
+            exp$setFirstRow(first_row)
+            exp$setLastRow(last_row)
+            exp
+          })
+        
+        col_count <- ncol(.x)
+        col_names <- colnames(.x)
+        
+        # Set all experiment's settings
+        walk_swig(cl_experiments, "setHeaderRow", 1L)
+        walk_swig(cl_experiments, "setFileName", filename)
+        walk_swig(cl_experiments, "setExperimentType", experiment_type)
+        walk_swig(cl_experiments, "setNumColumns", col_count)
+        walk_swig(cl_experiments, "setWeightMethod", weight_method)
+        # walk_swig(cl_experiments, "readColumnNames")
+        
+        # Get the object maps and assign roles and mappings
+        cl_object_maps <- map_swig(cl_experiments, "getObjectMap")
+        walk_swig(cl_object_maps, "setNumCols", col_count)
+        
+        # Transfer values from named vectors to a full representation of all data columns
+        types_ordered <- rep("ignore", col_count)
+        types_ordered[match(names(types), col_names)] <- types
+        mappings_ordered <- rep("", col_count)
+        mappings_ordered[match(names(mappings), col_names)] <-
+          map(mappings, xn_to_object, c_datamodel) %>%
+          map_chr(get_cn) %>%
+          replace(is.na(.), "")
+        
+        # We have a list of object_maps and all need the same types and mappings
+        types_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setRole", .y - 1L, .x))
+        mappings_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setObjectCN", .y - 1L, .x))
+        
+        # Add all experiments to copasi
+        cl_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
+        
+        # possibly compile
+        # c_experiment_set$compile(problem$getMathContainer())
+      },
+      error = function(e) {
+        file.remove(filepath)
+        base::stop(e)
+      })
+    }
   )
-  write.table(copasi_exp, file = filepath, sep = "\t", row.names = FALSE)
-  # readr::write_tsv(copasi_exp, filepath)
-  
-  # Construct individual experiments
-  cl_experiments <-
-    experiments %>%
-    pmap(function(name, first_row, last_row, ...) {
-      exp <- avert_gc(CExperiment(c_experiment_set, name))
-      exp$setFirstRow(first_row)
-      exp$setLastRow(last_row)
-      exp
-    })
-  
-  col_count <- ncol(copasi_exp)
-  col_names <- colnames(copasi_exp)
 
-  # Set all experiment's settings
-  walk_swig(cl_experiments, "setHeaderRow", 1L)
-  walk_swig(cl_experiments, "setFileName", filename)
-  walk_swig(cl_experiments, "setExperimentType", experiment_type)
-  walk_swig(cl_experiments, "setNumColumns", col_count)
-  walk_swig(cl_experiments, "setWeightMethod", weight_method)
-  # walk_swig(cl_experiments, "readColumnNames")
-  
-  # Get the object maps and assign roles and mappings
-  cl_object_maps <- map_swig(cl_experiments, "getObjectMap")
-  walk_swig(cl_object_maps, "setNumCols", col_count)
-  
-  # Transfer values from named vectors to a full representation of all data columns
-  types_ordered <- rep("ignore", col_count)
-  types_ordered[match(names(types), col_names)] <- types
-  mappings_ordered <- rep("", col_count)
-  mappings_ordered[match(names(mappings), col_names)] <-
-    map(mappings, xn_to_object, c_datamodel) %>%
-    map_chr(get_cn) %>%
-    replace(is.na(.), "")
-  
-  # We have a list of object_maps and all need the same types and mappings
-  types_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setRole", .y - 1L, .x))
-  mappings_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setObjectCN", .y - 1L, .x))
-  
-  # Add all experiments to copasi
-  cl_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
-  
-  # possibly compile
-  # c_experiment_set$compile(problem$getMathContainer())
-  
   invisible()
 }
 
@@ -568,7 +609,12 @@ clearExperiments <- function(model = getCurrentModel()) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
   
-  seq_len_0(c_experiment_set$getExperimentCount()) %>% walk(~ c_experiment_set$removeExperiment(0))
+  walk(
+    seq_len_0(c_experiment_set$getExperimentCount()),
+    ~ c_experiment_set$removeExperiment(0L)
+  )
+
+  invisible()
 }
 
 pe_assemble_parameters <- function(parameters, c_problem) {

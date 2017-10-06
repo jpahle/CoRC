@@ -15,5 +15,10 @@ getCopasi(path = NULL, force = FALSE, quiet = FALSE)
 }
 \description{
 \code{getCopasi} automatically downloads binaries or retrieves them from given path.
+}
+\details{
+In case of no internet connection, run the function and retrieve the URL from the error message.
+Download the file manually, copy it to a local path and give its path via the \code{path} argument.
+
 To install copasi binaries, you need write access to the packages installation folder.
 }

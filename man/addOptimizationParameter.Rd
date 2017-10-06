@@ -4,10 +4,11 @@
 \alias{addOptimizationParameter}
 \title{Add an optimization parameter}
 \usage{
-addOptimizationParameter(copasi_parm, model = getCurrentModel())
+addOptimizationParameter(..., model = getCurrentModel())
 }
 \arguments{
-\item{copasi_parm}{object as returned by \code{\link{defineOptimizationParameter}}}
+\item{...}{objects as returned by \code{\link{defineOptimizationParameter}}.
+Alternatively, the same parameters as used by \code{\link{defineOptimizationParameter}}.}
 
 \item{model}{a model object}
 }

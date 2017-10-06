@@ -11,7 +11,7 @@ setReactionFunction(key, fun, mappings = NULL, model = getCurrentModel())
 
 \item{fun}{string}
 
-\item{mappings}{list}
+\item{mappings}{named list}
 
 \item{model}{a model object}
 }

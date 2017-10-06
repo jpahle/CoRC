@@ -646,7 +646,7 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
 #' 
 #' @param key reaction key
 #' @param fun string
-#' @param mappings list
+#' @param mappings named list
 #' @param model a model object
 #' @seealso \code{\link{getValidReactionFunctions}}
 #' @family reaction functions
@@ -725,7 +725,7 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
 #' Set reaction parameter mappings
 #' 
 #' @param key reaction key
-#' @param mappings list
+#' @param mappings named list
 #' @param model a model object
 #' @seealso \code{\link{getReactionMappings}}
 #' @family reaction functions
