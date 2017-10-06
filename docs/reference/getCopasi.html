@@ -108,11 +108,10 @@
     </div>
 
     
-    <p><code>getCopasi</code> automatically downloads binaries or retrieves them from given path.
-To install copasi binaries, you need write access to the packages installation folder.</p>
+    <p><code>getCopasi</code> automatically downloads binaries or retrieves them from given path.</p>
     
 
-    <pre class="usage"><span class='fu'>getCopasi</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>getCopasi</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -121,7 +120,21 @@ To install copasi binaries, you need write access to the packages installation f
       <th>path</th>
       <td><p>optional file path to copasi binaries</p></td>
     </tr>
+    <tr>
+      <th>force</th>
+      <td><p>optional bool to force overwriting the binaries</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>optional bool to silence messages</p></td>
+    </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>In case of no internet connection, run the function and retrieve the URL from the error message.
+Download the file manually, copy it to a local path and give its path via the <code>path</code> argument.</p>
+<p>To install copasi binaries, you need write access to the packages installation folder.</p>
     
 
   </div>
@@ -129,7 +142,9 @@ To install copasi binaries, you need write access to the packages installation f
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>
