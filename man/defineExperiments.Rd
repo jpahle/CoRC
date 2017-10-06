@@ -13,11 +13,19 @@ defineExperiments(experiment_type = c("Time Course", "Steady State"),
 
 \item{data}{list of tidy data frames}
 
-\item{types}{character vector}
+\item{types}{data column types as character vector
 
-\item{mappings}{character vector}
+Allowed types of columns are: 'time', 'independent', 'dependent', 'ignore'.
 
-\item{weight_method}{string}
+Type 'time' is only allowed for time course experiments.}
+
+\item{mappings}{data column mappings as character vector
+
+Expects entity references.}
+
+\item{weight_method}{string
+
+Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.}
 
 \item{filename}{string}
 }

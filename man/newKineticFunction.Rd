@@ -14,7 +14,7 @@ newKineticFunction(name, formula, parameters, function_type = c("general",
 
 \item{parameters}{named character vector
 
-Allowed values: substrate, product, modifier, parameter, volume, time}
+Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time'.}
 
 \item{function_type}{string}
 }

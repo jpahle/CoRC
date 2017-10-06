@@ -4,7 +4,9 @@
 #' 
 #' @param expression string
 #' @param maximize flag
-#' @eval rox_param("subtask", "string", task_enum)
+#' @eval paste0("@param subtask string
+#' 
+#' Availables tasks: ", rox_print_v(task_enum), ".")
 #' @param randomize_start_values flag
 #' @param calculate_statistics flag
 #' @param update_model flag
@@ -109,7 +111,9 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #'
 #' @param expression string
 #' @param maximize flag
-#' @eval rox_param("subtask", "string", task_enum)
+#' @eval paste0("@param subtask string
+#' 
+#' Availables tasks: ", rox_print_v(task_enum), ".")
 #' @param randomize_start_values flag
 #' @param calculate_statistics flag
 #' @param update_model flag

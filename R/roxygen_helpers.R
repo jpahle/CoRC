@@ -1,11 +1,6 @@
-# Create an @param line for roxygen documentation
-# The line lists allowed values given by vec
-rox_param <- function(name, type, vec) {
-  c(
-    paste0("@param ", name, " ", type),
-    "",
-    paste0("Allowed values: ", paste0(vec, collapse = ", "))
-  )
+# Format vector for roxygen documentation
+rox_print_v <- function(vec) {
+  paste0("'", paste0(vec, collapse = "', '"), "'")
 }
 
 # Create an @param line for roxygen documentation
@@ -21,9 +16,12 @@ rox_method_param <- function(task, class) {
   delete(c_datamodel)
   
   c(
-    paste0("@param method string or list"),
+    "@param method string or list",
     "",
-    "Set method with a string or a list with the entry `method`. The list may contain further method args and their values.",
-    paste0("Allowed methods: ", paste0(values, collapse = ", "))
+    "Set the method directly with a string or with a list containing the entry named `method`.",
+    "",
+    "The list may contain further method args and their values.",
+    "",
+    paste0("Allowed methods: ", rox_print_v(values), ".")
   )
 }

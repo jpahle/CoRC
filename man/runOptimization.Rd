@@ -22,7 +22,7 @@ runOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 \item{subtask}{string
 
-Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameterFitting, mca, lyap, tssAnalysis, sens, moieties, crosssection, lna, analytics}
+Availables tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
 
 \item{randomize_start_values}{flag}
 
@@ -36,8 +36,11 @@ Allowed values: steadyState, timeCourse, scan, fluxMode, optimization, parameter
 
 \item{method}{string or list
 
-Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
-Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
+Set the method directly with a string or with a list containing the entry named `method`.
+
+The list may contain further method args and their values.
+
+Allowed methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
 
 \item{model}{a model object}
 }

@@ -32,8 +32,11 @@ runPE(randomize_start_values = NULL, create_parameter_sets = NULL,
 
 \item{method}{string or list
 
-Set method with a string or a list with the entry `method`. The list may contain further method args and their values.
-Allowed methods: Statistics, DifferentialEvolution, SRES, EvolutionaryProgram, GeneticAlgorithm, GeneticAlgorithmSR, HookeJeeves, LevenbergMarquardt, NelderMead, ParticleSwarm, Praxis, RandomSearch, ScatterSearch, SimulatedAnnealing, SteepestDescent, TruncatedNewton}
+Set the method directly with a string or with a list containing the entry named `method`.
+
+The list may contain further method args and their values.
+
+Allowed methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
 
 \item{model}{a model object}
 }

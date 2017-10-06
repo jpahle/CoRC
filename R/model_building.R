@@ -322,7 +322,9 @@ function_role_enum <-
 #' 
 #' @param name string
 #' @param formula string
-#' @eval rox_param("parameters", "named character vector", function_role_enum)
+#' @eval paste0("@param parameters named character vector
+#' 
+#' Allowed values: ", rox_print_v(function_role_enum), ".")
 #' @param function_type string
 #' @return function key
 #' @family reaction functions

@@ -390,6 +390,7 @@ format.copasi_exp <- function (x, ...) {
 }
 
 exp_weight_methods <- tolower(names(.__E___CExperiment__WeightMethod))
+exp_allowed_types <- c("time", "independent", "dependent", "ignore")
 
 #' @export
 copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
@@ -427,7 +428,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   
   types <- tolower(types)
   names(types) <- names(types) %||% data_cols
-  types <- map_chr(types, function(types) rlang::arg_match(types, c("time", "independent", "dependent", "ignore")))
+  types <- map_chr(types, function(types) rlang::arg_match(types, exp_allowed_types))
   types <- types[types != "ignore"]
   
   assert_that(
@@ -486,9 +487,17 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
 #' 
 #' @param experiment_type string
 #' @param data list of tidy data frames
-#' @param types character vector
-#' @param mappings character vector
-#' @param weight_method string
+#' @eval paste0("@param types data column types as character vector
+#' 
+#' Allowed types of columns are: ", rox_print_v(exp_allowed_types), ".
+#' 
+#' Type 'time' is only allowed for time course experiments.")
+#' @param mappings data column mappings as character vector
+#' 
+#' Expects entity references.
+#' @eval paste0("@param weight_method string
+#' 
+#' Allowed methods: ", rox_print_v(exp_weight_methods), ".")
 #' @param filename string
 #' @return copasi_exp object for input into related functions
 #' @seealso \code{\link{addExperiments}} \code{\link{clearExperiments}}
