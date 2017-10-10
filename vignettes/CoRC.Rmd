@@ -279,7 +279,7 @@ fit_parameters <-
     parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
     ~ {
       val <- getParameters(.x)$value
-      defineParameterEstimationParameter(parameter(.x, "Value"), lower_bound = val * 0.1, upper_bound = val * 1.9, start_value = val)
+      defineParameterEstimationParameter(parameter(.x, "Value"), start_value = val, lower_bound = val * 0.1, upper_bound = val * 1.9)
     }
   )
 

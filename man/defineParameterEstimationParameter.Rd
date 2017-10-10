@@ -4,17 +4,17 @@
 \alias{defineParameterEstimationParameter}
 \title{Define a parameter estimation parameter}
 \usage{
-defineParameterEstimationParameter(key, lower_bound = 1e-06,
-  upper_bound = 1e+06, start_value = (lower_bound + upper_bound)/2)
+defineParameterEstimationParameter(key, start_value = (lower_bound +
+  upper_bound)/2, lower_bound = 1e-06, upper_bound = 1e+06)
 }
 \arguments{
 \item{key}{entity key}
 
+\item{start_value}{start value}
+
 \item{lower_bound}{lower value bound}
 
 \item{upper_bound}{upper value bound}
-
-\item{start_value}{start value}
 }
 \value{
 copasi_parm object for input into related functions

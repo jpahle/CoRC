@@ -106,9 +106,10 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
       
       try(
         experiment_list %>%
-            map_chr(attr_getter("filename")) %>%
-            file.path(model_dir, .) %>%
-            file.remove()
+          map_chr(attr_getter("filename")) %>%
+          file.path(model_dir, .) %>%
+          file.remove(),
+        silent = TRUE
       )
     }
   })
@@ -264,9 +265,9 @@ getPE <- getParameterEstimationSettings
 #' Define a parameter estimation parameter
 #' 
 #' @param key entity key
+#' @param start_value start value
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
-#' @param start_value start value
 #' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
 #' @return copasi_parm object for input into related functions
 #' @export
@@ -312,9 +313,9 @@ addParameterEstimationParameter <- function(..., model = getCurrentModel()) {
     arglist_compact, cl_obj,
     ~ {
       c_fititem <- c_problem$addFitItem(.y$getCN())
-      c_fititem$setLowerBound(CCommonName(as.character(.x$lower)))
-      c_fititem$setUpperBound(CCommonName(as.character(.x$upper)))
       c_fititem$setStartValue(.x$start)
+      c_fititem$setLowerBound(CCommonName(tolower(as.character(.x$lower))))
+      c_fititem$setUpperBound(CCommonName(tolower(as.character(.x$upper))))
     }
   )
   

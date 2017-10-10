@@ -198,37 +198,40 @@ setOpt<- setOptimizationSettings
 #' @export
 getOpt <- getOptimizationSettings
 
-new_copasi_parm <- function(x, lower, upper, start) {
-  assert_that(
-    is.string(x),
-    is.number(lower),
-    is.number(upper),
-    is.number(start),
-    lower <= start,
-    start <= upper
-  )
-  
-  structure(
+new_copasi_parm <- function(x, start, lower, upper) {
+  ret <- structure(
     list(
       key   = x,
+      start = start,
       lower = lower,
-      upper = upper,
-      start = start
+      upper = upper
     ),
     class = "copasi_parm"
   )
+  
+  validate_copasi_parm(ret)
+  
+  ret
 }
 
 #' @export
 validate_copasi_parm <- function(x) {
   assert_that(
-    is.string(x$key),
-    is.number(x$lower),
-    is.number(x$upper),
-    is.number(x$start),
-    x$lower <= x$start,
-    x$start <= x$upper
+    all(hasName(x, c("key", "start", "lower", "upper")))
   )
+  
+  with(x, {
+    assert_that(
+      is.string(key),   noNA(key),
+      is.number(start), noNA(start),
+      is.number(lower), noNA(lower),
+      is.number(upper), noNA(upper),
+      start < Inf,
+      start > -Inf,
+      lower <= start,
+      start <= upper
+    )
+  })
 }
 
 #' @export
@@ -237,21 +240,21 @@ is.copasi_parm <- function(x) {
 }
 
 #' @export
-copasi_parm <- function(key, lower_bound = 1e-6, upper_bound = 1e6, start_value = (lower_bound + upper_bound) / 2) {
+copasi_parm <- function(key, start_value = (lower_bound + upper_bound) / 2, lower_bound = 1e-6, upper_bound = 1e6) {
   new_copasi_parm(
     key,
+    start = start_value,
     lower = lower_bound,
-    upper = upper_bound,
-    start = start_value
+    upper = upper_bound
   )
 }
 
 #' Define an optimization parameter
 #' 
 #' @param key entity key
+#' @param start_value start value
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
-#' @param start_value start value
 #' @return copasi_parm object for input into related functions
 #' @seealso \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 #' @family optimization
@@ -298,9 +301,9 @@ addOptimizationParameter <- function(..., model = getCurrentModel()) {
     arglist_compact, cl_obj,
     ~ {
       c_optitem <- c_problem$addOptItem(.y$getCN())
-      c_optitem$setLowerBound(CCommonName(as.character(.x$lower)))
-      c_optitem$setUpperBound(CCommonName(as.character(.x$upper)))
       c_optitem$setStartValue(.x$start)
+      c_optitem$setLowerBound(CCommonName(tolower(as.character(.x$lower))))
+      c_optitem$setUpperBound(CCommonName(tolower(as.character(.x$upper))))
     }
   )
   
