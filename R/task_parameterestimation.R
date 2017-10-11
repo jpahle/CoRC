@@ -102,12 +102,11 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
     if (do_experiments) {
       clearExperiments()
       
-      model_dir <- normalizePathC(get_ref_dir(c_datamodel))
-      
+      # delete all experiment files
+      # pe_assemble_experiments makes sure the are all tempfiles
       try(
         experiment_list %>%
           map_chr(attr_getter("filename")) %>%
-          file.path(model_dir, .) %>%
           file.remove(),
         silent = TRUE
       )
@@ -465,7 +464,7 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
   assert_that(is.null(filename) || is.string(filename) && noNA(filename))
   if (is.null(filename))
     # if no filename given, just use random one.
-    filename <- paste0("CoRC_exp_", digest::digest(runif(1)))
+    filename <- stringr::str_sub(tempfile("CoRC_exp_", ""), 2L)
   if (!has_extension(filename, ".txt"))
     filename <- paste0(filename, ".txt")
   
@@ -540,14 +539,13 @@ addExperiments <- function(..., model = getCurrentModel()) {
       filename <- .x %@% "filename"
       
       # Create experiment file
-      model_dir <- normalizePathC(get_ref_dir(c_datamodel))
-      filepath <- file.path(model_dir, filename)
       assert_that(
         # If the user has set a manual filename, try to be safe and not overwrite anything
-        !file.exists(filepath) || grepl("^CoRC_exp_", filename),
-        msg = paste0('Experiment file path "', filepath, '" already exists.')
+        !file.exists(filename) || grepl("CoRC_exp_[0-9a-f]+\\.txt$", filename),
+        msg = paste0('Experiment file "', filename, '" already exists.')
       )
-      write.table(.x, file = filepath, sep = "\t", row.names = FALSE)
+      assert_that(file.create(filename))
+      write.table(.x, file = filename, sep = "\t", row.names = FALSE)
       # readr::write_tsv(.x, filepath)
       
       # make sure the file gets deleted on error
@@ -567,7 +565,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         
         # Set all experiment's settings
         walk_swig(cl_experiments, "setHeaderRow", 1L)
-        walk_swig(cl_experiments, "setFileName", filename)
+        walk_swig(cl_experiments, "setFileName", normalizePathC(filename))
         walk_swig(cl_experiments, "setExperimentType", experiment_type)
         walk_swig(cl_experiments, "setNumColumns", col_count)
         walk_swig(cl_experiments, "setWeightMethod", weight_method)
@@ -665,7 +663,8 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
     experiments <-
       experiments %>%
       map(~ {
-        attr(.x, "filename") <- paste0("CoRC_exp_", digest::digest(runif(1)), ".txt")
+        attr(.x, "filename") <- tempfile("CoRC_exp_", fileext = ".txt")
+        # attr(.x, "filename") <- stringr::str_sub(tempfile("CoRC_exp_", "", ".txt"), 2L)
         .x
       })
   
