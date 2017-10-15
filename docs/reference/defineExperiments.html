@@ -108,10 +108,10 @@
     </div>
 
     
-    <p>Define a parameter estimation experiment</p>
+    <p><code>defineExperiments</code> defines a set of experiments given as tidy data frame to the given model.</p>
     
 
-    <pre class="usage"><span class='fu'>defineExperiments</span>(<span class='kw'>experiment_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Time Course"</span>, <span class='st'>"Steady State"</span>),
+    <pre class="usage"><span class='fu'>defineExperiments</span>(<span class='kw'>experiment_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"time_course"</span>, <span class='st'>"steady_state"</span>),
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mappings</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weight_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
@@ -135,7 +135,8 @@
     <tr>
       <th>mappings</th>
       <td><p>data column mappings as character vector</p>
-<p>Expects entity references.</p></td>
+<p>Expects entity references.</p>
+<p>If no mappings are given, column names can serve as mappings.</p></td>
     </tr>
     <tr>
       <th>weight_method</th>
@@ -144,13 +145,22 @@
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>string</p></td>
+      <td><p>optional string</p>
+<p>When adding the experiments to a copasi model, this filename will be used.
+In use cases, where experiments are only used temporarily, the filename is ignored.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>copasi_exp object for input into related functions</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
+For help on data import and tidying see: <code><a href='https://cran.rstudio.com/web/packages/tidyr/vignettes/tidy-data.html'>vignette("tidy-data", "tidyr")</a></code>.
+This function adds required metadata to experimental data for use with CoRC.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -171,6 +181,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

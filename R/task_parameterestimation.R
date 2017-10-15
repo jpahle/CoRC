@@ -393,13 +393,13 @@ exp_weight_methods <- tolower(names(.__E___CExperiment__WeightMethod))
 exp_allowed_types <- c("time", "independent", "dependent", "ignore")
 
 #' @export
-copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
   types <- to_param_vector(types, "character")
   mappings <- to_param_vector(mappings, "character")
   
   # experiment_type
   experiment_type <- rlang::arg_match(experiment_type)
-  experiment_type <- c("Steady State" = "steadyState", "Time Course" = "timeCourse")[experiment_type]
+  experiment_type <- c("time_course" = "timeCourse", "steady_state" = "steadyState")[experiment_type]
   
   # data
   if (is.data.frame(data))
@@ -485,6 +485,13 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
 
 #' Define a parameter estimation experiment
 #' 
+#' \code{defineExperiments} defines a set of experiments given as tidy data frame to the given model.
+#' 
+#' CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+#' To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
+#' For help on data import and tidying see: \code{vignette("tidy-data", "tidyr")}.
+#' This function adds required metadata to experimental data for use with CoRC.
+#' 
 #' @param experiment_type string
 #' @param data list of tidy data frames
 #' @eval paste0("@param types data column types as character vector
@@ -495,10 +502,15 @@ copasi_exp <- function(experiment_type = c("Time Course", "Steady State"), data 
 #' @param mappings data column mappings as character vector
 #' 
 #' Expects entity references.
+#' 
+#' If no mappings are given, column names can serve as mappings.
 #' @eval paste0("@param weight_method string
 #' 
 #' Allowed methods: ", rox_print_v(exp_weight_methods), ".")
-#' @param filename string
+#' @param filename optional string
+#' 
+#' When adding the experiments to a copasi model, this filename will be used.
+#' In use cases, where experiments are only used temporarily, the filename is ignored.
 #' @return copasi_exp object for input into related functions
 #' @seealso \code{\link{addExperiments}} \code{\link{clearExperiments}}
 #' @family parameter estimation

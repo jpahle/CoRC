@@ -111,8 +111,8 @@
     <p>Define a parameter estimation parameter</p>
     
 
-    <pre class="usage"><span class='fu'>defineParameterEstimationParameter</span>(<span class='no'>key</span>, <span class='kw'>lower_bound</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>,
-  <span class='kw'>upper_bound</span> <span class='kw'>=</span> <span class='fl'>1e+06</span>, <span class='kw'>start_value</span> <span class='kw'>=</span> (<span class='no'>lower_bound</span> + <span class='no'>upper_bound</span>)/<span class='fl'>2</span>)</pre>
+    <pre class="usage"><span class='fu'>defineParameterEstimationParameter</span>(<span class='no'>key</span>, <span class='kw'>start_value</span> <span class='kw'>=</span> (<span class='no'>lower_bound</span> +
+  <span class='no'>upper_bound</span>)/<span class='fl'>2</span>, <span class='kw'>lower_bound</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>upper_bound</span> <span class='kw'>=</span> <span class='fl'>1e+06</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -122,16 +122,16 @@
       <td><p>entity key</p></td>
     </tr>
     <tr>
+      <th>start_value</th>
+      <td><p>start value</p></td>
+    </tr>
+    <tr>
       <th>lower_bound</th>
       <td><p>lower value bound</p></td>
     </tr>
     <tr>
       <th>upper_bound</th>
       <td><p>upper value bound</p></td>
-    </tr>
-    <tr>
-      <th>start_value</th>
-      <td><p>start value</p></td>
     </tr>
     </table>
     

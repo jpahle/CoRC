@@ -4,7 +4,7 @@
 \alias{defineExperiments}
 \title{Define a parameter estimation experiment}
 \usage{
-defineExperiments(experiment_type = c("Time Course", "Steady State"),
+defineExperiments(experiment_type = c("time_course", "steady_state"),
   data = NULL, types = NULL, mappings = NULL, weight_method = NULL,
   filename = NULL)
 }
@@ -21,19 +21,30 @@ Type 'time' is only allowed for time course experiments.}
 
 \item{mappings}{data column mappings as character vector
 
-Expects entity references.}
+Expects entity references.
+
+If no mappings are given, column names can serve as mappings.}
 
 \item{weight_method}{string
 
 Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.}
 
-\item{filename}{string}
+\item{filename}{optional string
+
+When adding the experiments to a copasi model, this filename will be used.
+In use cases, where experiments are only used temporarily, the filename is ignored.}
 }
 \value{
 copasi_exp object for input into related functions
 }
 \description{
-Define a parameter estimation experiment
+\code{defineExperiments} defines a set of experiments given as tidy data frame to the given model.
+}
+\details{
+CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
+For help on data import and tidying see: \code{vignette("tidy-data", "tidyr")}.
+This function adds required metadata to experimental data for use with CoRC.
 }
 \seealso{
 \code{\link{addExperiments}} \code{\link{clearExperiments}}
