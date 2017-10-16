@@ -1,5 +1,5 @@
 ---
-title: "CoRC Case-Studies and Workflows"
+title: "Case-Studies and Workflows"
 author: "Jonas Förster & Jürgen Pahle"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

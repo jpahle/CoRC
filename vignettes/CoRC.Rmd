@@ -115,4 +115,4 @@ unloadAllModels()
 
 ## Examples
 
-More sophisticated examples can be found in the [examples article](https://jpahle.github.io/CoRC/articles/examples.html) on the [CoRC website](https://jpahle.github.io/CoRC).
+Examples and case-studies can be found in the [examples article](https://jpahle.github.io/CoRC/articles/examples.html) on the CoRC website.
