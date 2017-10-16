@@ -4,5 +4,5 @@
 ^documentation$
 ^README\.Rmd$
 ^docs$
-^vignettes/CoRC\.Rmd$
+^vignettes/examples\.Rmd$
 ^inst/libs/*$

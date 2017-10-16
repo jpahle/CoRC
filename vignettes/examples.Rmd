@@ -1,10 +1,10 @@
 ---
-title: "Introduction to CoRC"
+title: "CoRC Case-Studies and Workflows"
 author: "Jonas Förster & Jürgen Pahle"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{CoRC}
+  %\VignetteIndexEntry{Examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,11 +21,8 @@ knitr::opts_chunk$set(
 )
 set.seed(1)
 ```
-<img src="figures/logo.svg" alt="CoRC logo" width="200" align="right"/>
 
-# Case-studies and Workflows
-
-## Initial Setup
+# Initial Setup
 
 ```{r setup, results="hide"}
 library(tidyverse)
@@ -42,7 +39,7 @@ mapInParallel <- function(data, fun, ..., .prep = {}) {
 }
 ```
 
-## 3D Trajectory Plot of a Calcium Model
+# 3D Trajectory Plot of a Calcium Model
 
 This example loads the ([Kummer2000 - Oscillations in Calcium Signalling](https://www.ebi.ac.uk/biomodels-main/Biomd0000000329)) model.
 The model has 3 species which oscillate.
@@ -80,7 +77,7 @@ plots$deterministic
 plots$stochastic
 ```
 
-## Statistics of Repeated Stochastic Simulations
+# Statistics of Repeated Stochastic Simulations
 
 This implements an example from the ([Condor-COPASI paper](https://doi.org/10.1186/1752-0509-6-91)).
 The example illustrates advantages of parallel processing.
@@ -135,9 +132,9 @@ unloadModel()
 plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 ```
 
-## Parameter Scan
+# Parameter Scan
 
-### 2D Scan Over the Cartesian Product of Two Species Concentration Vectors
+## 2D Scan Over the Cartesian Product of Two Species Concentration Vectors
 
 This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
 
@@ -187,7 +184,7 @@ unloadModel()
 plotly::ggplotly(plot)
 ```
 
-### 2D Scan over Random Concentrations of Two Species
+## 2D Scan over Random Concentrations of Two Species
 
 This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
 It is in many ways similar to the previous example but is written to run parallelized.
@@ -247,7 +244,7 @@ unloadModel()
 plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 ```
 
-## Parameter Estimation
+# Parameter Estimation
 
 This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
 
