@@ -44,5 +44,6 @@ CoRC::getCopasi()
 ```{r example}
 library(CoRC)
 loadExamples(1)
+
 runTimeCourse()$result
 ```

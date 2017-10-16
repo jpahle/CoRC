@@ -82,8 +82,11 @@ getSpecies(species(regex("Che.p")))$name
 # Using References
 
 The identifying functions can also return value references if specified.
-Such references are needed as input for example for expressions, which are needed for example in value assignments and the optimization task.
-Expressions in CoRC appear similar to copasi.
+Such references identify specific values, of which most copasi entities can have multiple.
+This allows to differentiate for example between 'Concentration' and 'Initial Concentration' of a species.
+References are needed e.g. for definition of optimization task parameters.
+They also allow for building expressions, which are needed e.g. in value assignments and the optimization task.
+Expressions in CoRC behave similar to how they work in Copasi.
 
 ```{r}
 species("CheY", reference = "InitialConcentration")
@@ -100,6 +103,17 @@ To help with this, functions implemented to get model values have similar functi
 ```{r}
 str(getSpecies("CheY"))
 str(getSpeciesReferences("CheY"))
+```
+
+# Building expressions
+
+Any expression can easily be built as a string.
+`getValue` calculates an expression value.
+
+```{r}
+expression <- paste0(species(regex("^T[0-4]"), reference = "InitialConcentration"), collapse = " + ")
+expression
+getValue(expression)
 ```
 
 # Extension suggestion
@@ -121,9 +135,9 @@ getSpecies(5)$name
 
 # Entity modification
 
-For most kinds of entities there is a finder function (e.g. species), a getter function (e.g. getSpecies) and a setter function (e.g. setSpecies).
+For most kinds of entities there is a finder function (e.g. `species`), a getter function (e.g. `getSpecies`) and a setter function (e.g. `setSpecies`).
 
-Other ways to access model Values is by evaluating expressions (e.g. getValue).
+Other ways to access model values is by evaluating expressions (e.g. `getValue`).
 
 ```{r}
 getSpecies("CheYp")$initial_concentration

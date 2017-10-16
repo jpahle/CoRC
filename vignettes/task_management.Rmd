@@ -84,6 +84,7 @@ A similar list is also given in every output of a `run` function.
 ```{r}
 method_settings <- getTimeCourseSettings()$method
 str(method_settings)
+
 setTimeCourseSettings(method = method_settings)
 ```
 
@@ -93,5 +94,6 @@ Executing a task will return a list containing all relevant task results.
 
 ```{r}
 str(runTimeCourse())
+
 str(runSteadyState())
 ```

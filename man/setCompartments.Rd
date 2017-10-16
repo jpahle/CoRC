@@ -9,22 +9,27 @@ setCompartments(key = NULL, name = NULL, type = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying compartments}
+\item{key}{string uniquely identifying compartment}
 
-\item{name}{a character vector of names to set}
+\item{name}{string giving name to set}
 
-\item{type}{a character vector of species types ("fixed", "assignment", "ode").}
+\item{type}{string giving type ("fixed", "assignment", "ode") to set}
 
-\item{initial_size}{a numeric vector of values to set}
+\item{initial_size}{number giving initial size to set}
 
-\item{expression}{a character vector of expressions to set}
+\item{expression}{string giving expression to set}
 
 \item{data}{a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
-\code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.
+\code{setCompartments} applies given values to compartments of the model depending on the \code{key} argument.
+}
+\details{
+Use the \code{key} argument to specify which compartment to modify and any of the other arguments to specify the value to set.
+The function is fully vectorized.
+If a \code{NA} value is supplied, the model value is kept unchanged.
 }
 \seealso{
 \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}

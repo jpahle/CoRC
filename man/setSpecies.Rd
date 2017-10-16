@@ -9,26 +9,31 @@ setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying species}
+\item{key}{string uniquely identifying species}
 
-\item{name}{a character vector of names to set}
+\item{name}{string giving name to set}
 
-\item{compartment}{a character vector of compartment keys to set}
+\item{compartment}{string giving key of new compartment to set}
 
-\item{type}{a character vector of types ("fixed", "assignment", "reactions", "ode").}
+\item{type}{string giving type ("fixed", "assignment", "reactions", "ode") to set}
 
-\item{initial_concentration}{a numeric vector of concentrations to set}
+\item{initial_concentration}{number giving initial concentration to set}
 
-\item{initial_number}{a numeric vector of particle numbers to set}
+\item{initial_number}{number giving initial particle number to set}
 
-\item{expression}{a character vector of expressions to set}
+\item{expression}{string giving expression to set}
 
 \item{data}{a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
-\code{setSpecies} applies given values to species of the model depending on the 'key' parameter.
+\code{setSpecies} applies given values to species of the model depending on the \code{key} argument.
+}
+\details{
+Use the \code{key} argument to specify which species to modify and any of the other arguments to specify the value to set.
+The function is fully vectorized.
+If a \code{NA} value is supplied, the model value is kept unchanged.
 }
 \seealso{
 \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}

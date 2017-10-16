@@ -51,7 +51,7 @@
       <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
-      <a href="../articles/examples.html">CoRC Case-Studies and Workflows</a>
+      <a href="../articles/examples.html">Case-Studies and Workflows</a>
     </li>
     <li>
       <a href="../articles/issues.html">Issues</a>
@@ -102,6 +102,7 @@
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h2>
 <p>To start, load the library.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
+<span class="co"># optionally use this at the start of any script to verify CoRC is ready.</span>
 <span class="kw"><a href="../reference/getCopasi.html">getCopasi</a></span>(<span class="dt">quiet =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>From this point on, CoRC keeps an instance of Copasi running in the background. This instance can load up as many models as desired.</p>
 </div>
@@ -111,7 +112,7 @@
 <p>Initially, no model is loaded.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
 <span class="co">#&gt; Error: No model currently in use.</span></code></pre></div>
-<p>You can load a model by using on of the model management commands.</p>
+<p>You can load a model by using one of the model management commands.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
 <span class="kw"><a href="../reference/loadModel.html">loadModel</a></span>(path)
 <span class="kw"><a href="../reference/loadModelFromString.html">loadModelFromString</a></span>(model_string)
@@ -167,7 +168,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="co">#&gt;  9     8  8.034008 15.6429364 0.40083429</span>
 <span class="co">#&gt; 10     9  5.744733 13.5712106 0.16743927</span>
 <span class="co">#&gt; # ... with 91 more rows</span></code></pre></div>
-<p>It is encouraged to use the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2 package</a> for generating publication ready plots from CoRC data. The helper function <code>autoplot</code> can be used to quickly print timecourse data.</p>
+<p>It is encouraged to use the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2 package</a> for generating publication-ready plots from CoRC data. The helper function <code>autoplot</code> can be used to quickly print timecourse data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
 <p><img src="CoRC_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
@@ -186,7 +187,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<p>More sophisticated examples can be found in the <a href="https://jpahle.github.io/CoRC/articles/examples.html">examples article</a> on the <a href="https://jpahle.github.io/CoRC">CoRC website</a>.</p>
+<p>Examples and case-studies can be found in the <a href="https://jpahle.github.io/CoRC/articles/examples.html">examples article</a> on the CoRC website.</p>
 </div>
 </div>
 </div>

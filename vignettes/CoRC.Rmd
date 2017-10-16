@@ -32,6 +32,7 @@ To start, load the library.
 
 ```{r setup, results="hide"}
 library(CoRC)
+# optionally use this at the start of any script to verify CoRC is ready.
 getCopasi(quiet = TRUE)
 ```
 
@@ -46,7 +47,7 @@ Initially, no model is loaded.
 runTimeCourse()
 ```
 
-You can load a model by using on of the model management commands.
+You can load a model by using one of the model management commands.
 
 ```{r, eval=FALSE}
 newModel()
@@ -88,7 +89,7 @@ Data frames are wrapped in an equivalent structure called a [`tibble`](https://c
 timecourse$result
 ```
 
-It is encouraged to use the [ggplot2 package](https://cran.r-project.org/web/packages/ggplot2/index.html) for generating publication ready plots from CoRC data.
+It is encouraged to use the [ggplot2 package](https://cran.r-project.org/web/packages/ggplot2/index.html) for generating publication-ready plots from CoRC data.
 The helper function `autoplot` can be used to quickly print timecourse data.
 
 ```{r}

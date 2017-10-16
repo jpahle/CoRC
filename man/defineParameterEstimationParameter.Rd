@@ -4,11 +4,11 @@
 \alias{defineParameterEstimationParameter}
 \title{Define a parameter estimation parameter}
 \usage{
-defineParameterEstimationParameter(key, start_value = (lower_bound +
+defineParameterEstimationParameter(ref, start_value = (lower_bound +
   upper_bound)/2, lower_bound = 1e-06, upper_bound = 1e+06)
 }
 \arguments{
-\item{key}{entity key}
+\item{ref}{value reference}
 
 \item{start_value}{start value}
 

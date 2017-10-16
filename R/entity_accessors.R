@@ -74,15 +74,19 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set species
 #'
-#' \code{setSpecies} applies given values to species of the model depending on the 'key' parameter.
+#' \code{setSpecies} applies given values to species of the model depending on the \code{key} argument.
+#' 
+#' Use the \code{key} argument to specify which species to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
 #'
-#' @param key a character vector uniquely identifying species
-#' @param name a character vector of names to set
-#' @param compartment a character vector of compartment keys to set
-#' @param type a character vector of types ("fixed", "assignment", "reactions", "ode").
-#' @param initial_concentration a numeric vector of concentrations to set
-#' @param initial_number a numeric vector of particle numbers to set
-#' @param expression a character vector of expressions to set
+#' @param key string uniquely identifying species
+#' @param name string giving name to set
+#' @param compartment string giving key of new compartment to set
+#' @param type string giving type ("fixed", "assignment", "reactions", "ode") to set
+#' @param initial_concentration number giving initial concentration to set
+#' @param initial_number number giving initial particle number to set
+#' @param expression string giving expression to set
 #' @param data a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
@@ -273,13 +277,17 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set global quantities
 #'
-#' \code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.
+#' \code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument
 #'
-#' @param key a character vector uniquely identifying global quantities
-#' @param name a character vector of names to set
-#' @param type a character vector of types ("fixed", "assignment", "ode").
-#' @param initial_value a numeric vector of values to set
-#' @param expression a character vector of expressions to set
+#' Use the \code{key} argument to specify which global quantity to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' @param key string uniquely identifying global quantity
+#' @param name string giving name to set
+#' @param type string giving type ("fixed", "assignment", "ode") to set
+#' @param initial_value number giving initial value to set
+#' @param expression string giving expression to set
 #' @param data a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
@@ -426,13 +434,17 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set compartments
 #'
-#' \code{setCompartments} applies given values to compartments of the model depending on the 'key' parameter.
+#' \code{setCompartments} applies given values to compartments of the model depending on the \code{key} argument.
 #'
-#' @param key a character vector uniquely identifying compartments
-#' @param name a character vector of names to set
-#' @param type a character vector of species types ("fixed", "assignment", "ode").
-#' @param initial_size a numeric vector of values to set
-#' @param expression a character vector of expressions to set
+#' Use the \code{key} argument to specify which compartment to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' @param key string uniquely identifying compartment
+#' @param name string giving name to set
+#' @param type string giving type ("fixed", "assignment", "ode") to set
+#' @param initial_size number giving initial size to set
+#' @param expression string giving expression to set
 #' @param data a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
@@ -573,10 +585,14 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set reactions
 #'
-#' \code{setReactions} applies given values to reactions of the model depending on the 'key' parameter.
+#' \code{setReactions} applies given values to reactions of the model depending on the \code{key} argument.
 #'
-#' @param key a character vector uniquely identifying reactions
-#' @param name a character vector of names to set
+#' Use the \code{key} argument to specify which reaction to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' @param key string uniquely identifying reaction
+#' @param name string giving name to set
 #' @param data a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getReactions}} \code{\link{getReactionReferences}}
@@ -941,12 +957,16 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set reaction parameters
 #'
-#' \code{setParameters} applies given values to reaction parameters of the model depending on the 'key' parameter.
+#' \code{setParameters} applies given values to reaction parameters of the model depending on the \code{key} argument.
 #'
-#' @param key a character vector uniquely identifying reaction parameters
-#' @param name a character vector of names to set
-#' @param value a numeric vector of values to set
-#' @param mapping a character vector of global quantity keys
+#' Use the \code{key} argument to specify which reaction parameter to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' @param key string uniquely identifying reaction parameter
+#' @param name string giving name to set
+#' @param value number giving value to set
+#' @param mapping string giving key of global quantity to map to.
 #' @param data a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.
 #' @param model a model object
 #' @seealso \code{\link{getParameters}} \code{\link{getParameterReferences}}

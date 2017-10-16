@@ -52,7 +52,7 @@ xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
   # All references should be wrapped either <CN> or {DN} 
   assert_that(
     stringr::str_detect(xn, "^\\{.*\\}$"),
-    msg = paste0("Internal: Couldn't resove ref \"", xn, '" in xn_to_object.')
+    msg = paste0("`", xn, "` could not be interpreted as value reference.")
   )
   
   xn <- unescape_ref(xn)

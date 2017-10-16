@@ -74,7 +74,7 @@
       <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
-      <a href="../articles/examples.html">CoRC Case-Studies and Workflows</a>
+      <a href="../articles/examples.html">Case-Studies and Workflows</a>
     </li>
     <li>
       <a href="../articles/issues.html">Issues</a>
@@ -111,7 +111,7 @@
     </div>
 
     
-    <p><code>setParameters</code> applies given values to reaction parameters of the model depending on the 'key' parameter.</p>
+    <p><code>setParameters</code> applies given values to reaction parameters of the model depending on the <code>key</code> argument.</p>
     
 
     <pre class="usage"><span class='fu'>setParameters</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -122,19 +122,19 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>a character vector uniquely identifying reaction parameters</p></td>
+      <td><p>string uniquely identifying reaction parameter</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>a character vector of names to set</p></td>
+      <td><p>string giving name to set</p></td>
     </tr>
     <tr>
       <th>value</th>
-      <td><p>a numeric vector of values to set</p></td>
+      <td><p>number giving value to set</p></td>
     </tr>
     <tr>
       <th>mapping</th>
-      <td><p>a character vector of global quantity keys</p></td>
+      <td><p>string giving key of global quantity to map to.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -145,6 +145,12 @@
       <td><p>a model object</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Use the <code>key</code> argument to specify which reaction parameter to modify and any of the other arguments to specify the value to set.
+The function is fully vectorized.
+If a <code>NA</code> value is supplied, the model value is kept unchanged.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -172,6 +178,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
           </ul>
 

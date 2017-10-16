@@ -8,20 +8,25 @@ setParameters(key = NULL, name = NULL, value = NULL, mapping = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying reaction parameters}
+\item{key}{string uniquely identifying reaction parameter}
 
-\item{name}{a character vector of names to set}
+\item{name}{string giving name to set}
 
-\item{value}{a numeric vector of values to set}
+\item{value}{number giving value to set}
 
-\item{mapping}{a character vector of global quantity keys}
+\item{mapping}{string giving key of global quantity to map to.}
 
 \item{data}{a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
-\code{setParameters} applies given values to reaction parameters of the model depending on the 'key' parameter.
+\code{setParameters} applies given values to reaction parameters of the model depending on the \code{key} argument.
+}
+\details{
+Use the \code{key} argument to specify which reaction parameter to modify and any of the other arguments to specify the value to set.
+The function is fully vectorized.
+If a \code{NA} value is supplied, the model value is kept unchanged.
 }
 \seealso{
 \code{\link{getParameters}} \code{\link{getParameterReferences}}

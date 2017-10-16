@@ -201,7 +201,7 @@ getOpt <- getOptimizationSettings
 new_copasi_parm <- function(x, start, lower, upper) {
   ret <- structure(
     list(
-      key   = x,
+      ref   = x,
       start = start,
       lower = lower,
       upper = upper
@@ -217,12 +217,12 @@ new_copasi_parm <- function(x, start, lower, upper) {
 #' @export
 validate_copasi_parm <- function(x) {
   assert_that(
-    all(hasName(x, c("key", "start", "lower", "upper")))
+    all(hasName(x, c("ref", "start", "lower", "upper")))
   )
   
   with(x, {
     assert_that(
-      is.string(key),   noNA(key),
+      is.string(ref),   noNA(ref),
       is.number(start), noNA(start),
       is.number(lower), noNA(lower),
       is.number(upper), noNA(upper),
@@ -240,9 +240,9 @@ is.copasi_parm <- function(x) {
 }
 
 #' @export
-copasi_parm <- function(key, start_value = (lower_bound + upper_bound) / 2, lower_bound = 1e-6, upper_bound = 1e6) {
+copasi_parm <- function(ref, start_value = (lower_bound + upper_bound) / 2, lower_bound = 1e-6, upper_bound = 1e6) {
   new_copasi_parm(
-    key,
+    ref,
     start = start_value,
     lower = lower_bound,
     upper = upper_bound
@@ -251,7 +251,7 @@ copasi_parm <- function(key, start_value = (lower_bound + upper_bound) / 2, lowe
 
 #' Define an optimization parameter
 #' 
-#' @param key entity key
+#' @param ref value reference
 #' @param start_value start value
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
@@ -283,15 +283,15 @@ addOptimizationParameter <- function(..., model = getCurrentModel()) {
   walk(arglist_compact, validate_copasi_parm)
   
   cl_obj <-
-    map_chr(arglist_compact, "key") %>%
+    map_chr(arglist_compact, "ref") %>%
     map(xn_to_object, c_datamodel = c_datamodel)
   
-  # Test if all keys are valid
+  # Test if all refs are valid
   # This can probably be a more elaborate and safe test (by using dn_to_object(accepted_types))
-  invalid_keys <- map_lgl(cl_obj, is.null)
+  invalid_refs <- map_lgl(cl_obj, is.null)
   assert_that(
-    !any(invalid_keys),
-    msg = paste0("Given parameter(s) ", paste0(which(invalid_keys), collapse = ", "), " are invalid for this model.")
+    !any(invalid_refs),
+    msg = paste0("Given reference(s) ", paste0(which(invalid_refs), collapse = ", "), " are invalid for this model.")
   )
   
   c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")

@@ -43,6 +43,7 @@ loadExamples(1)
 #> Number of compartments: 1
 #> Number of species: 6
 #> Number of reactions: 4
+
 runTimeCourse()$result
 #> # A tibble: 201 x 3
 #>     Time         X         Y

@@ -9,22 +9,27 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying global quantities}
+\item{key}{string uniquely identifying global quantity}
 
-\item{name}{a character vector of names to set}
+\item{name}{string giving name to set}
 
-\item{type}{a character vector of types ("fixed", "assignment", "ode").}
+\item{type}{string giving type ("fixed", "assignment", "ode") to set}
 
-\item{initial_value}{a numeric vector of values to set}
+\item{initial_value}{number giving initial value to set}
 
-\item{expression}{a character vector of expressions to set}
+\item{expression}{string giving expression to set}
 
 \item{data}{a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
 \item{model}{a model object}
 }
 \description{
-\code{setGlobalQuantities} applies given values to global quantities of the model depending on the 'key' parameter.
+\code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument
+}
+\details{
+Use the \code{key} argument to specify which global quantity to modify and any of the other arguments to specify the value to set.
+The function is fully vectorized.
+If a \code{NA} value is supplied, the model value is kept unchanged.
 }
 \seealso{
 \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}

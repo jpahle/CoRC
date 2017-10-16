@@ -213,57 +213,9 @@ setPE<- setParameterEstimationSettings
 #' @export
 getPE <- getParameterEstimationSettings
 
-# new_copasi_parm <- function(x, lower, upper, start) {
-#   assert_that(
-#     is.string(x),
-#     is.number(lower),
-#     is.number(upper),
-#     is.number(start),
-#     lower <= start,
-#     start <= upper
-#   )
-#   
-#   structure(
-#     list(
-#       key = x,
-#       lower = lower,
-#       upper = upper,
-#       start = start
-#     ),
-#     class = "copasi_parm"
-#   )
-# }
-
-# #' @export
-# validate_copasi_parm <- function(x) {
-#   assert_that(
-#     is.string(x$key),
-#     is.number(x$lower),
-#     is.number(x$upper),
-#     is.number(x$start),
-#     x$lower <= x$start,
-#     x$start <= x$upper
-#   )
-# }
-
-# #' @export
-# is.copasi_parm <- function(x) {
-#   inherits(x, "copasi_parm")
-# }
-
-# #' @export
-# copasi_parm <- function(key, lower.bound = 1e-6, upper.bound = 1e6, start.value = (lower.bound + upper.bound) / 2) {
-#   new_copasi_parm(
-#     key,
-#     lower = lower.bound,
-#     upper = upper.bound,
-#     start = start.value
-#   )
-# }
-
 #' Define a parameter estimation parameter
 #' 
-#' @param key entity key
+#' @param ref value reference
 #' @param start_value start value
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
@@ -294,15 +246,15 @@ addParameterEstimationParameter <- function(..., model = getCurrentModel()) {
   walk(arglist_compact, validate_copasi_parm)
   
   cl_obj <-
-    map_chr(arglist_compact, "key") %>%
+    map_chr(arglist_compact, "ref") %>%
     map(xn_to_object, c_datamodel = c_datamodel)
   
-  # Test if all keys are valid
+  # Test if all refs are valid
   # This can probably be a more elaborate and safe test (by using dn_to_object(accepted_types))
-  invalid_keys <- map_lgl(cl_obj, is.null)
+  invalid_refs <- map_lgl(cl_obj, is.null)
   assert_that(
-    !any(invalid_keys),
-    msg = paste0("Given parameter(s) ", paste0(which(invalid_keys), collapse = ", "), " are invalid for this model.")
+    !any(invalid_refs),
+    msg = paste0("Given reference(s) ", paste0(which(invalid_refs), collapse = ", "), " are invalid for this model.")
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
