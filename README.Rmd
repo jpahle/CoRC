@@ -22,9 +22,10 @@ CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copas
 CoRC features:
 
 * high-level API for Copasi in the R language
+* define reproducible workflows using Copasi's powerful modelling tools
+* easy parallization of embarassingly parallel Copasi tasks
+* enables straight forward publication-ready plotting with an abundance of R packages
 * ...
-
-You can get more information or download CoRC from <https://github.com/jpahle/CoRC/>.
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
 
