@@ -29,6 +29,19 @@ library(CoRC)
 loadExamples(1)
 ```
 
+# Quicklist
+
+* openCopasi not tested for unix (& process dependencies)
+* Rsession doesn't let go of CopasiUI (check unix)
+* getwd() and copasi$getReferenceDirectory() are not in sync
+* some S3 classes should have reconstruct functions (hadley/sloop)
+* getListOfPossibleFunctions only returns bare pointer
+* Crash in time course using stochastic algorithms? http://tracker.copasi.org/show_bug.cgi?id=2495
+* Are tasks always there?
+* Can't abort running tasks
+* Check if installation can be as easy as with stringi package
+* See if I can switch to stictly verbose species keys ('A{comp}' instead of 'A')
+
 # Function naming is lacking a cohesive concept
 
 Quantity accessors are named:
