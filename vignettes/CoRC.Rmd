@@ -102,7 +102,7 @@ Finally, a model can be saved via several model management commands.
 
 ```{r, eval=FALSE}
 saveModel(filename)
-saveModelFromString()
+saveModelToString()
 saveSBML(path)
 ```
 
