@@ -405,12 +405,12 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
         copasi_loc <- "/Applications/COPASI/CopasiUI.app/Contents/MacOS/CopasiUI"
     }
     
-    found <- !system2("which", args = c("-s", copasi_loc))
+    found <- !system2("which", args = c(copasi_loc), stdout = NULL)
   }
   
   assert_that(
     found,
-    msg = "Could not find CopasiUI."
+    msg = "Could not find CopasiUI. Consider specifying the `copasi_loc` argument or adding `CopasiUI` to PATH."
   )
   
   c_fittask <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")

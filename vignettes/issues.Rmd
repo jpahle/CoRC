@@ -31,8 +31,6 @@ loadExamples(1)
 
 # Quicklist
 
-* openCopasi not tested for unix (& process dependencies)
-* Rsession doesn't let go of CopasiUI (check unix)
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
 * getListOfPossibleFunctions only returns bare pointer
