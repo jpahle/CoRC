@@ -51,6 +51,9 @@
       <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
+      <a href="../articles/examples.html">CoRC Case-Studies and Workflows</a>
+    </li>
+    <li>
       <a href="../articles/issues.html">Issues</a>
     </li>
     <li>
@@ -84,7 +87,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-10-06</h4>
+            <h4 class="date">2017-10-16</h4>
           </div>
 
     
@@ -206,7 +209,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<sp
 filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpBdrsOV/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/Rtmp51rGUQ/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()

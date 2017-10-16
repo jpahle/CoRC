@@ -41,7 +41,7 @@ mapInParallel <- function(data, fun, ..., .prep = {}) {
 
 # 3D Trajectory Plot of a Calcium Model
 
-This example loads the ([Kummer2000 - Oscillations in Calcium Signalling](https://www.ebi.ac.uk/biomodels-main/Biomd0000000329)) model.
+This example loads the [Kummer2000 - Oscillations in Calcium Signalling](https://www.ebi.ac.uk/biomodels-main/Biomd0000000329) model.
 The model has 3 species which oscillate.
 These oscialltions can be visualized as a trajectory through a 3D space.
 The example does this once in a deterministic and once in a stochatic fashion.
@@ -79,7 +79,7 @@ plots$stochastic
 
 # Statistics of Repeated Stochastic Simulations
 
-This implements an example from the ([Condor-COPASI paper](https://doi.org/10.1186/1752-0509-6-91)).
+This implements an example from the [Condor-COPASI paper](https://doi.org/10.1186/1752-0509-6-91).
 The example illustrates advantages of parallel processing.
 
 ```{r}
@@ -136,7 +136,7 @@ plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 
 ## 2D Scan Over the Cartesian Product of Two Species Concentration Vectors
 
-This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
@@ -186,7 +186,7 @@ plotly::ggplotly(plot)
 
 ## 2D Scan over Random Concentrations of Two Species
 
-This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 It is in many ways similar to the previous example but is written to run parallelized.
 
 ```{r}
@@ -246,7 +246,7 @@ plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 
 # Parameter Estimation
 
-This implements an example from the ([Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2)) on COPASI use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
