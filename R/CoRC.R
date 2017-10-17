@@ -25,8 +25,8 @@ COPASI_BIN_VERSION <- 7L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
     windows = "77c5511766f90a0526f2d3f00c02801ce2c0c5177093d0053f74f6d819a6c9f7",
-    darwin = "638e5b726fc6be7446edefadca047c84d0e5719afa0455942ee48d37bda0bf56"
-    # unix = ""
+    darwin = "638e5b726fc6be7446edefadca047c84d0e5719afa0455942ee48d37bda0bf56",
+    unix = "f1d520dca7e5ee10eb79eb2180e505a25f2246c69833576d45f3de7ab858eb1f"
   )
 )
 
