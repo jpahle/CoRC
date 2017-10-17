@@ -150,11 +150,16 @@ model
 timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dt">duration =</span> <span class="dv">100</span>)</code></pre></div>
 <p>This enables quick definition of loops, for example to scan through various concentration values of a species.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ga_concentrations &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>
+
 <span class="cf">for</span> (ga_conc <span class="cf">in</span> ga_concentrations) {
   <span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"G-alpha"</span>, <span class="dt">initial_concentration =</span> ga_conc)
-  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">"Current concentration:"</span>, <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"G-alpha"</span>)<span class="op">$</span>initial_concentration))
-  <span class="co"># eg.</span>
-  <span class="co"># runTimecourse() or</span>
+  
+  <span class="kw">print</span>(<span class="kw">paste</span>(
+    <span class="st">"Current concentration:"</span>, <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"G-alpha"</span>)<span class="op">$</span>initial_concentration
+  ))
+  
+  <span class="co"># further commands e.g.:</span>
+  <span class="co"># runTimecourse()</span>
   <span class="co"># saveModel(paste0("ga", ga_value, ".cps"))</span>
 }
 <span class="co">#&gt; [1] "Current concentration: 1"</span>

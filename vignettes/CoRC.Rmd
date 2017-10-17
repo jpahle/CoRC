@@ -84,11 +84,16 @@ This enables quick definition of loops, for example to scan through various conc
 
 ```{r}
 ga_concentrations <- 1:5
+
 for (ga_conc in ga_concentrations) {
   setSpecies("G-alpha", initial_concentration = ga_conc)
-  print(paste("Current concentration:", getSpecies("G-alpha")$initial_concentration))
-  # eg.
-  # runTimecourse() or
+  
+  print(paste(
+    "Current concentration:", getSpecies("G-alpha")$initial_concentration
+  ))
+  
+  # further commands e.g.:
+  # runTimecourse()
   # saveModel(paste0("ga", ga_value, ".cps"))
 }
 ```
