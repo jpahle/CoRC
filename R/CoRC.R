@@ -19,7 +19,7 @@
 OUTPUTFLAG <- 119L
 
 #' @export
-COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/81c1003bb7aa3839cbde506c4343a115da0e678f"
+COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/e985a842bb7df5368ad484168e24e3803c2d455a"
 
 COPASI_BIN_VERSION <- 7L
 COPASI_BIN_HASHES <- list(
