@@ -9,19 +9,20 @@ setCompartments(key = NULL, name = NULL, type = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{string uniquely identifying compartment}
+\item{key}{Identify which compartment to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one compartment.}
 
-\item{name}{string giving name to set}
+\item{name}{Name to set, as string.}
 
-\item{type}{string giving type ("fixed", "assignment", "ode") to set}
+\item{type}{Type ("fixed", "assignment", "ode") to set, as string.}
 
-\item{initial_size}{number giving initial size to set}
+\item{initial_size}{Initial size to set, as string.}
 
-\item{expression}{string giving expression to set}
+\item{expression}{Expression to set, as string.}
 
-\item{data}{a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
+\item{data}{A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setCompartments} applies given values to compartments of the model depending on the \code{key} argument.

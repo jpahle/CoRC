@@ -8,17 +8,19 @@ setParameters(key = NULL, name = NULL, value = NULL, mapping = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{string uniquely identifying reaction parameter}
+\item{key}{Identify which reaction parameter to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one reaction parameter.}
 
-\item{name}{string giving name to set}
+\item{name}{Name to set, as string.}
 
-\item{value}{number giving value to set}
+\item{value}{Value to set, as numeric.}
 
-\item{mapping}{string giving key of global quantity to map to.}
+\item{mapping}{Key of global quantity to map to, as string.
+Also supports fragments of keys, if uniquely matching one global quantity.}
 
-\item{data}{a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.}
+\item{data}{A data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setParameters} applies given values to reaction parameters of the model depending on the \code{key} argument.

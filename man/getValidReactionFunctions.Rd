@@ -7,12 +7,13 @@
 getValidReactionFunctions(key, model = getCurrentModel())
 }
 \arguments{
-\item{key}{reaction key}
+\item{key}{Identify which reaction to read by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one reaction.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-vector of function names
+Function names, as character vector.
 }
 \description{
 Get valid function names for reaction

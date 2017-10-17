@@ -8,13 +8,14 @@ setReactions(key = NULL, name = NULL, data = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{string uniquely identifying reaction}
+\item{key}{Identify which reaction to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one reaction.}
 
-\item{name}{string giving name to set}
+\item{name}{Name to set, as string.}
 
-\item{data}{a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.}
+\item{data}{A data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setReactions} applies given values to reactions of the model depending on the \code{key} argument.

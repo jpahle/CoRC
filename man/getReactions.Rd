@@ -7,12 +7,12 @@
 getReactions(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying reactions}
+\item{key}{Optionally, a character vector specifying which reactions to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with reactions and associated information
+Reactions and associated information, as data frame.
 }
 \description{
 \code{getReactions} returns reactions as a data frame.

@@ -7,11 +7,12 @@
 setReactionMappings(key, mappings, model = getCurrentModel())
 }
 \arguments{
-\item{key}{reaction key}
+\item{key}{Identify which reaction to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one reaction.}
 
-\item{mappings}{named list}
+\item{mappings}{New parameter mappings, as named list.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 Set reaction parameter mappings

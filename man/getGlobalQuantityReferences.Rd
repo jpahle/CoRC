@@ -7,12 +7,12 @@
 getGlobalQuantityReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying global quantities}
+\item{key}{Optionally, a character vector specifying which global quantities to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with global quantities and associated references
+Global quantities and associated references, as data frame.
 }
 \description{
 \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.

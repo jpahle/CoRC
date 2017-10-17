@@ -7,12 +7,12 @@
 getCompartmentReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying compartments}
+\item{key}{Optionally, a character vector specifying which compartments to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with compartments and associated references
+Compartments and associated references, as data frame.
 }
 \description{
 \code{getCompartmentReferences} returns compartment attribute references as a data frame.

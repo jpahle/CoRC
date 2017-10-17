@@ -148,6 +148,20 @@ model
 <span class="co">#&gt;  $ expression           : chr  NA NA NA</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"G-alpha"</span>, <span class="dt">initial_concentration =</span> <span class="fl">0.02</span>)
 timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dt">duration =</span> <span class="dv">100</span>)</code></pre></div>
+<p>This enables quick definition of loops, for example to scan through various concentration values of a species.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ga_concentrations &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>
+<span class="cf">for</span> (ga_conc <span class="cf">in</span> ga_concentrations) {
+  <span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"G-alpha"</span>, <span class="dt">initial_concentration =</span> ga_conc)
+  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">"Current concentration:"</span>, <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"G-alpha"</span>)<span class="op">$</span>initial_concentration))
+  <span class="co"># eg.</span>
+  <span class="co"># runTimecourse() or</span>
+  <span class="co"># saveModel(paste0("ga", ga_value, ".cps"))</span>
+}
+<span class="co">#&gt; [1] "Current concentration: 1"</span>
+<span class="co">#&gt; [1] "Current concentration: 2"</span>
+<span class="co">#&gt; [1] "Current concentration: 3"</span>
+<span class="co">#&gt; [1] "Current concentration: 4"</span>
+<span class="co">#&gt; [1] "Current concentration: 5"</span></code></pre></div>
 </div>
 <div id="corc-data" class="section level2">
 <h2 class="hasAnchor">
@@ -171,7 +185,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p>It is encouraged to use the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2 package</a> for generating publication-ready plots from CoRC data. The helper function <code>autoplot</code> can be used to quickly print timecourse data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
-<p><img src="CoRC_files/figure-html/unnamed-chunk-8-1.png" width="100%"></p>
+<p><img src="CoRC_files/figure-html/unnamed-chunk-9-1.png" width="100%"></p>
 </div>
 <div id="final-steps" class="section level2">
 <h2 class="hasAnchor">
@@ -179,7 +193,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p>Finally, a model can be saved via several model management commands.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/saveModel.html">saveModel</a></span>(filename)
 <span class="kw"><a href="../reference/saveModelToString.html">saveModelToString</a></span>()
-<span class="kw">saveSBML</span>(path)</code></pre></div>
+<span class="kw"><a href="../reference/saveSBML.html">saveSBML</a></span>(path, <span class="dt">level =</span> <span class="dv">3</span>, <span class="dt">version =</span> <span class="dv">1</span>)</code></pre></div>
 <p>To free up memory, unload any loaded models or restart R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>(model)
 <span class="kw"><a href="../reference/unloadAllModels.html">unloadAllModels</a></span>()</code></pre></div>

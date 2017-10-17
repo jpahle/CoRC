@@ -7,12 +7,12 @@
 getSpeciesReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying species}
+\item{key}{Optionally, a character vector specifying which species to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with species and associated references
+Species and associated references, as data frame.
 }
 \description{
 \code{getSpeciesReferences} returns species attribute references as a data frame.

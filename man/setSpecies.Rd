@@ -9,23 +9,24 @@ setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
   data = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{string uniquely identifying species}
+\item{key}{Identify which species to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one species.}
 
-\item{name}{string giving name to set}
+\item{name}{Name to set, as string.}
 
-\item{compartment}{string giving key of new compartment to set}
+\item{compartment}{Key of new compartment to set, as string.}
 
-\item{type}{string giving type ("fixed", "assignment", "reactions", "ode") to set}
+\item{type}{Type ("fixed", "assignment", "reactions", "ode") to set, as string.}
 
-\item{initial_concentration}{number giving initial concentration to set}
+\item{initial_concentration}{Initial concentration to set, as numeric.}
 
-\item{initial_number}{number giving initial particle number to set}
+\item{initial_number}{Initial particle number to set, as numeric.}
 
-\item{expression}{string giving expression to set}
+\item{expression}{Expression to set, as string.}
 
-\item{data}{a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.}
+\item{data}{A data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setSpecies} applies given values to species of the model depending on the \code{key} argument.

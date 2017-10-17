@@ -7,14 +7,14 @@
 getSpecies(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying species}
+\item{key}{Optionally, a character vector specifying which species to get.}
 
-\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{Whether expressions should be raw (not converted to readable format), as flag.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with species and associated information
+Species and associated information, as data frame.
 }
 \description{
 \code{getSpecies} returns species information as a data frame.

@@ -7,12 +7,12 @@
 getReactionReferences(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying reactions}
+\item{key}{Optionally, a character vector specifying which reactions to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with reactions and associated references
+Reactions and associated references, as data frame.
 }
 \description{
 \code{getReactions} returns reactions attribute references as a data frame.

@@ -7,12 +7,12 @@
 getParameters(key = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying reactions parameters}
+\item{key}{Optionally, a character vector specifying which reaction parameters to get.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with reaction parameters and associated information
+Reaction parameters and associated information, as data frame.
 }
 \description{
 \code{getParameters} returns reaction parameters as a data frame.

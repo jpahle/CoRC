@@ -39,6 +39,7 @@ loadExamples(1)
 * Can't abort running tasks
 * Check if installation can be as easy as with stringi package
 * See if I can switch to stictly verbose species keys ('A{comp}' instead of 'A')
+* Do I force file extensions when saving models?
 
 # Function naming is lacking a cohesive concept
 

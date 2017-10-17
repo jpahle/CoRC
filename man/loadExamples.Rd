@@ -19,7 +19,7 @@ a list of model objects
 Other model loading: \code{\link{loadModelFromString}},
   \code{\link{loadModel}}, \code{\link{loadSBML}},
   \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveModel}}, \code{\link{unloadAllModels}},
-  \code{\link{unloadModel}}
+  \code{\link{saveModel}}, \code{\link{saveSBML}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
 }
 \concept{model loading}

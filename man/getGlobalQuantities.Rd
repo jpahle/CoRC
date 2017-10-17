@@ -8,14 +8,14 @@ getGlobalQuantities(key = NULL, raw_expressions = FALSE,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying global quantities}
+\item{key}{Optionally, a character vector specifying which global quantities to get.}
 
-\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{Whether expressions should be raw (not converted to readable format), as flag.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with global quantities and associated information
+Global quantities and associated information, as data frame.
 }
 \description{
 \code{getGlobalQuantities} returns global quantities as a data frame.

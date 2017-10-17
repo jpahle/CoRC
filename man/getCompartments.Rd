@@ -8,14 +8,14 @@ getCompartments(key = NULL, raw_expressions = FALSE,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{a character vector uniquely identifying compartments}
+\item{key}{Optionally, a character vector specifying which compartments to get.}
 
-\item{raw_expressions}{a flag on whether expressions should be raw (not converted to readable format)}
+\item{raw_expressions}{Whether expressions should be raw (not converted to readable format), as flag.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a data frame with compartments and associated information
+Compartments and associated information, as data frame.
 }
 \description{
 \code{getCompartments} returns compartments as a data frame.

@@ -9,19 +9,20 @@ setGlobalQuantities(key = NULL, name = NULL, type = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{key}{string uniquely identifying global quantity}
+\item{key}{Identify which global quantity to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one global quantity.}
 
-\item{name}{string giving name to set}
+\item{name}{Name to set, as string.}
 
-\item{type}{string giving type ("fixed", "assignment", "ode") to set}
+\item{type}{Type ("fixed", "assignment", "ode") to set, as string.}
 
-\item{initial_value}{number giving initial value to set}
+\item{initial_value}{Initial value to set, as numeric.}
 
-\item{expression}{string giving expression to set}
+\item{expression}{Expression to set, as numeric.}
 
-\item{data}{a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
+\item{data}{A data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument

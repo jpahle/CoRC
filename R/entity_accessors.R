@@ -2,10 +2,10 @@
 #'
 #' \code{getSpecies} returns species information as a data frame.
 #'
-#' @param key a character vector uniquely identifying species
-#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
-#' @param model a model object
-#' @return a data frame with species and associated information
+#' @param key Optionally, a character vector specifying which species to get.
+#' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
+#' @param model A model object.
+#' @return Species and associated information, as data frame.
 #' @seealso \code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
 #' @family species functions
 #' @export
@@ -40,9 +40,9 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
 #'
 #' \code{getSpeciesReferences} returns species attribute references as a data frame.
 #'
-#' @param key a character vector uniquely identifying species
-#' @param model a model object
-#' @return a data frame with species and associated references
+#' @param key Optionally, a character vector specifying which species to get.
+#' @param model A model object.
+#' @return Species and associated references, as data frame.
 #' @seealso \code{\link{getSpecies}} \code{\link{setSpecies}}
 #' @family species functions
 #' @export
@@ -80,15 +80,16 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #'
-#' @param key string uniquely identifying species
-#' @param name string giving name to set
-#' @param compartment string giving key of new compartment to set
-#' @param type string giving type ("fixed", "assignment", "reactions", "ode") to set
-#' @param initial_concentration number giving initial concentration to set
-#' @param initial_number number giving initial particle number to set
-#' @param expression string giving expression to set
-#' @param data a data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
-#' @param model a model object
+#' @param key Identify which species to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one species.
+#' @param name Name to set, as string.
+#' @param compartment Key of new compartment to set, as string.
+#' @param type Type ("fixed", "assignment", "reactions", "ode") to set, as string.
+#' @param initial_concentration Initial concentration to set, as numeric.
+#' @param initial_number Initial particle number to set, as numeric.
+#' @param expression Expression to set, as string.
+#' @param data A data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
+#' @param model A model object.
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
 #' @family species functions
 #' @export
@@ -213,10 +214,10 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
 #'
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
 #'
-#' @param key a character vector uniquely identifying global quantities
-#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
-#' @param model a model object
-#' @return a data frame with global quantities and associated information
+#' @param key Optionally, a character vector specifying which global quantities to get.
+#' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
+#' @param model A model object.
+#' @return Global quantities and associated information, as data frame.
 #' @seealso \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
 #' @family global quantity functions
 #' @export
@@ -247,9 +248,9 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
 #'
 #' \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.
 #'
-#' @param key a character vector uniquely identifying global quantities
-#' @param model a model object
-#' @return a data frame with global quantities and associated references
+#' @param key Optionally, a character vector specifying which global quantities to get.
+#' @param model A model object.
+#' @return Global quantities and associated references, as data frame.
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{setGlobalQuantities}}
 #' @family global quantity functions
 #' @export
@@ -283,13 +284,14 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
-#' @param key string uniquely identifying global quantity
-#' @param name string giving name to set
-#' @param type string giving type ("fixed", "assignment", "ode") to set
-#' @param initial_value number giving initial value to set
-#' @param expression string giving expression to set
-#' @param data a data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
-#' @param model a model object
+#' @param key Identify which global quantity to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one global quantity.
+#' @param name Name to set, as string.
+#' @param type Type ("fixed", "assignment", "ode") to set, as string.
+#' @param initial_value Initial value to set, as numeric.
+#' @param expression Expression to set, as numeric.
+#' @param data A data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
+#' @param model A model object.
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
 #' @family global quantity functions
 #' @export
@@ -370,10 +372,10 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
 #'
 #' \code{getCompartments} returns compartments as a data frame.
 #'
-#' @param key a character vector uniquely identifying compartments
-#' @param raw_expressions a flag on whether expressions should be raw (not converted to readable format)
-#' @param model a model object
-#' @return a data frame with compartments and associated information
+#' @param key Optionally, a character vector specifying which compartments to get.
+#' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
+#' @param model A model object.
+#' @return Compartments and associated information, as data frame.
 #' @seealso \code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
 #' @family compartment functions
 #' @export
@@ -404,9 +406,9 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
 #'
 #' \code{getCompartmentReferences} returns compartment attribute references as a data frame.
 #'
-#' @param key a character vector uniquely identifying compartments
-#' @param model a model object
-#' @return a data frame with compartments and associated references
+#' @param key Optionally, a character vector specifying which compartments to get.
+#' @param model A model object.
+#' @return Compartments and associated references, as data frame.
 #' @seealso \code{\link{getCompartments}} \code{\link{setCompartments}}
 #' @family compartment functions
 #' @export
@@ -440,13 +442,14 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
-#' @param key string uniquely identifying compartment
-#' @param name string giving name to set
-#' @param type string giving type ("fixed", "assignment", "ode") to set
-#' @param initial_size number giving initial size to set
-#' @param expression string giving expression to set
-#' @param data a data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
-#' @param model a model object
+#' @param key Identify which compartment to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one compartment.
+#' @param name Name to set, as string.
+#' @param type Type ("fixed", "assignment", "ode") to set, as string.
+#' @param initial_size Initial size to set, as string.
+#' @param expression Expression to set, as string.
+#' @param data A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
+#' @param model A model object.
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 #' @family compartment functions
 #' @export
@@ -527,9 +530,9 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
 #'
 #' \code{getReactions} returns reactions as a data frame.
 #'
-#' @param key a character vector uniquely identifying reactions
-#' @param model a model object
-#' @return a data frame with reactions and associated information
+#' @param key Optionally, a character vector specifying which reactions to get.
+#' @param model A model object.
+#' @return Reactions and associated information, as data frame.
 #' @seealso \code{\link{getReactionReferences}} \code{\link{setReactions}}
 #' @family reaction functions
 #' @export
@@ -557,9 +560,9 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' \code{getReactions} returns reactions attribute references as a data frame.
 #'
-#' @param key a character vector uniquely identifying reactions
-#' @param model a model object
-#' @return a data frame with reactions and associated references
+#' @param key Optionally, a character vector specifying which reactions to get.
+#' @param model A model object.
+#' @return Reactions and associated references, as data frame.
 #' @seealso \code{\link{getReactions}} \code{\link{setReactions}}
 #' @family reaction functions
 #' @export
@@ -591,10 +594,11 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
-#' @param key string uniquely identifying reaction
-#' @param name string giving name to set
-#' @param data a data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
-#' @param model a model object
+#' @param key Identify which reaction to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction.
+#' @param name Name to set, as string.
+#' @param data A data frame as given by \code{\link{getReactions}} which will be applied before the other arguments.
+#' @param model A model object.
 #' @seealso \code{\link{getReactions}} \code{\link{getReactionReferences}}
 #' @family reaction functions
 #' @export
@@ -628,9 +632,10 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
 
 #' Get valid function names for reaction
 #' 
-#' @param key reaction key
-#' @param model a model object
-#' @return vector of function names
+#' @param key Identify which reaction to read by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction.
+#' @param model A model object.
+#' @return Function names, as character vector.
 #' @seealso \code{\link{setReactionFunction}}
 #' @family reaction functions
 #' @export
@@ -660,10 +665,12 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
 
 #' Set a reaction function
 #' 
-#' @param key reaction key
-#' @param fun string
-#' @param mappings named list
-#' @param model a model object
+#' @param key Identify which reaction to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction.
+#' @param fun Key of new kinetic function to set, as string.
+#' Also supports fragments of keys, if uniquely matching one kinetic function.
+#' @param mappings New parameter mappings, as named list.
+#' @param model A model object.
 #' @seealso \code{\link{getValidReactionFunctions}}
 #' @family reaction functions
 #' @export
@@ -706,9 +713,10 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
 
 #' Get reaction parameter mappings
 #' 
-#' @param key reaction key
-#' @param model a model object
-#' @return list of parameter mappings
+#' @param key Identify which reaction to read by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction.
+#' @param model A model object.
+#' @return Reaction parameter mappings, as list.
 #' @seealso \code{\link{setReactionMappings}}
 #' @family reaction functions
 #' @export
@@ -740,9 +748,10 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
 
 #' Set reaction parameter mappings
 #' 
-#' @param key reaction key
-#' @param mappings named list
-#' @param model a model object
+#' @param key Identify which reaction to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction.
+#' @param mappings New parameter mappings, as named list.
+#' @param model A model object.
 #' @seealso \code{\link{getReactionMappings}}
 #' @family reaction functions
 #' @export
@@ -836,9 +845,9 @@ set_rparam_mapping <- function(c_datamodel, c_reacti, i, value) {
 #'
 #' \code{getParameters} returns reaction parameters as a data frame.
 #'
-#' @param key a character vector uniquely identifying reactions parameters
-#' @param model a model object
-#' @return a data frame with reaction parameters and associated information
+#' @param key Optionally, a character vector specifying which reaction parameters to get.
+#' @param model A model object.
+#' @return Reaction parameters and associated information, as data frame.
 #' @seealso \code{\link{getParameterReferences}} \code{\link{setParameters}}
 #' @family reaction functions
 #' @export
@@ -897,9 +906,9 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' \code{getParameterReferences} returns reaction parameters as a data frame.
 #'
-#' @param key a character vector uniquely identifying reactions parameters
-#' @param model a model object
-#' @return a data frame with reaction parameters and associated references
+#' @param key Optionally, a character vector specifying which reaction parameters to get.
+#' @param model A model object.
+#' @return Reaction parameters and associated references, as data frame.
 #' @seealso \code{\link{getParameters}} \code{\link{setParameters}}
 #' @family reaction functions
 #' @export
@@ -963,12 +972,14 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
-#' @param key string uniquely identifying reaction parameter
-#' @param name string giving name to set
-#' @param value number giving value to set
-#' @param mapping string giving key of global quantity to map to.
-#' @param data a data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.
-#' @param model a model object
+#' @param key Identify which reaction parameter to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one reaction parameter.
+#' @param name Name to set, as string.
+#' @param value Value to set, as numeric.
+#' @param mapping Key of global quantity to map to, as string.
+#' Also supports fragments of keys, if uniquely matching one global quantity.
+#' @param data A data frame as given by \code{\link{getParameters}} which will be applied before the other arguments.
+#' @param model A model object.
 #' @seealso \code{\link{getParameters}} \code{\link{getParameterReferences}}
 #' @family reaction functions
 #' @export

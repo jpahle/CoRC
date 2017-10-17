@@ -17,6 +17,7 @@ Other model loading: \code{\link{loadExamples}},
   \code{\link{loadModelFromString}},
   \code{\link{loadModel}}, \code{\link{loadSBML}},
   \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveModel}}, \code{\link{unloadAllModels}}
+  \code{\link{saveModel}}, \code{\link{saveSBML}},
+  \code{\link{unloadAllModels}}
 }
 \concept{model loading}

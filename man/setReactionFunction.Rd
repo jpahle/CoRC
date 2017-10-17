@@ -7,13 +7,15 @@
 setReactionFunction(key, fun, mappings = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{key}{reaction key}
+\item{key}{Identify which reaction to edit by specifying it's key, as string.
+Also supports fragments of keys, if uniquely matching one reaction.}
 
-\item{fun}{string}
+\item{fun}{Key of new kinetic function to set, as string.
+Also supports fragments of keys, if uniquely matching one kinetic function.}
 
-\item{mappings}{named list}
+\item{mappings}{New parameter mappings, as named list.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 Set a reaction function
