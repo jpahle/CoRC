@@ -246,7 +246,7 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
   if (file.exists(filename)) {
     assert_that(
       overwrite,
-      msg = paste0('File: \"', filename, '\" already exists and overwrite is set to FALSE.')
+      msg = paste0("File `", filename, "` already exists and overwrite is set to FALSE.")
     )
     filepath <- normalizePathC(filename)
   } else {
@@ -255,7 +255,7 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
   
   assert_that(
     grab_msg(c_datamodel$saveModel(filepath, overwriteFile = overwrite)),
-    msg = paste0('Model failed to save at: "', filename, '".')
+    msg = paste0("Model failed to save at `", filename, "`.")
   )
   
   invisible()
@@ -272,6 +272,46 @@ saveModelToString <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   grab_msg(c_datamodel$saveModelToString())
+}
+
+#' Save the model as a SBML file
+#'
+#' \code{saveSBML} exports the given model as a SBML .xml file
+#'
+#' @param filename a path to save to
+#' @param level numeric sbml level
+#' @param version numeric sbml version
+#' @param overwrite is overwriting existing files allowed?
+#' @param model a model object
+#' @family model loading
+#' @export
+saveSBML <- function(filename = model$getFileName(), level, version, overwrite = FALSE, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.string(filename),
+    is.count(level), noNA(level),
+    is.count(version), noNA(version)
+  )
+  
+  if (!has_extension(filename, "xml"))
+    filename <- paste0(filename, ".xml")
+  
+  if (file.exists(filename)) {
+    assert_that(
+      overwrite,
+      msg = paste0("File `", filename, "` already exists and overwrite is set to FALSE.")
+    )
+    filepath <- normalizePathC(filename)
+  } else {
+    filepath <- file.path(normalizePathC(dirname(filename)), basename(filename))
+  }
+  
+  assert_that(
+    isTRUE(grab_msg(c_datamodel$exportSBML(filepath, overwriteFile = overwrite, sbmlLevel = level, sbmlVersion = version))),
+    msg = paste0("Model failed to save at `", filename, "`.")
+  )
+  
+  invisible()
 }
 
 #' Load example models
