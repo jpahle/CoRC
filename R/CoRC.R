@@ -21,12 +21,12 @@ OUTPUTFLAG <- 119L
 #' @export
 COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/81c1003bb7aa3839cbde506c4343a115da0e678f"
 
-COPASI_BIN_VERSION <- 6L
+COPASI_BIN_VERSION <- 7L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    windows = "46470a156040aeb7cfd60aabed70d544ab3fb0b67ae855962fb9b60e528337ab",
-    darwin = "85cd69c8c75835df206f9c5b270bb3b4cf390f5a8f33470c90e2290cb4a7b410",
-    unix = "4d15f4af2133ba9a9d359864ba4d07524d1a71fc234bbe8beab682968dcec11b"
+    # windows = "",
+    darwin = "638e5b726fc6be7446edefadca047c84d0e5719afa0455942ee48d37bda0bf56"
+    # unix = ""
   )
 )
 
