@@ -360,7 +360,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   data <- map(data, tibble::as_tibble, validate = TRUE)
 
   # get experiment names from names of data or use list position ("Experiment_x")
-  experiment_names <- names(data) %||% rep(NA_character_, length(data))
+  experiment_names <- names(data) %||% rep_along(data, NA_character_)
   missing_names <- which(is.na(experiment_names))
   experiment_names[missing_names] <- paste0("Experiment_", missing_names)
   
@@ -744,7 +744,7 @@ pe_get_results <- function(c_task, settings) {
   
   parameters <-
     tibble::tibble(
-      "Parameter"               = map_swig_chr(cl_items, "getObjectDisplayName"),
+      "Parameter"               = get_key(cl_items),
       "Lower Bound"             = map_swig_dbl(cl_items, "getLowerBoundValue"),
       "Start Value"             = map_swig_dbl(cl_items, "getStartValue"),
       "Value"                   = get_cv(c_problem$getSolutionVariables()),
@@ -767,7 +767,7 @@ pe_get_results <- function(c_task, settings) {
   
   fitted_values <-
     tibble::tibble(
-      "Fitted Value"              = map_swig_chr(cl_dependent_obj, "getObjectDisplayName"),
+      "Fitted Value"              = get_key(cl_dependent_obj),
       "Objective Value"           = get_cv(c_experiment_set$getDependentObjectiveValues()),
       "Root Mean Square"          = get_cv(c_experiment_set$getDependentRMS()),
       "Error Mean"                = get_cv(c_experiment_set$getDependentErrorMean()),

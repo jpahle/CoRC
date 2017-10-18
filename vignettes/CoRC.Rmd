@@ -77,7 +77,7 @@ str(getSpecies())
 
 ```{r}
 setSpecies("G-alpha", initial_concentration = 0.02)
-timecourse <- runTimeCourse(duration = 100)
+timecourse <- runTimeCourse(duration = 100, intervals = 10000)
 ```
 
 This enables quick definition of loops, for example to scan through various concentration values of a species.

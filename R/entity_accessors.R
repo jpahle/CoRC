@@ -20,7 +20,7 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   
   # assemble output dataframe
   tibble::tibble(
-    key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
+    key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
     "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
@@ -56,7 +56,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key                     = map_swig_chr(cl_metabs, "getObjectDisplayName"),
+    key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
     "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
@@ -232,7 +232,7 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
 
   # assemble output dataframe
   tibble::tibble(
-    key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value"      = map_swig_dbl(cl_quants, "getInitialValue"),
@@ -264,7 +264,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+    key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
@@ -390,7 +390,7 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
   
   # assemble output dataframe
   tibble::tibble(
-    key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
     "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Size"       = map_swig_dbl(cl_comps, "getInitialValue"),
@@ -422,7 +422,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+    key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
     "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Size"       = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
@@ -546,10 +546,10 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+    key           = get_key(cl_reacts),
     "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
     "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
-    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName"),
+    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% get_key(),
     "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
     "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")
   ) %>%
@@ -576,10 +576,10 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
   
   # assemble output dataframe
   tibble::tibble(
-    key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+    key           = get_key(cl_reacts),
     "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
     "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
-    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% map_swig_chr("getObjectDisplayName"),
+    "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% get_key(),
     "Flux"        = cl_reacts %>% map_swig("getFluxReference") %>% as_ref(c_datamodel),
     "Number Flux" = cl_reacts %>% map_swig("getParticleFluxReference") %>% as_ref(c_datamodel)
   ) %>%
@@ -816,7 +816,7 @@ set_rparam_mapping <- function(c_datamodel, c_reacti, i, value) {
     valid_vals <- compartment(model = c_datamodel)
     
     assert_that(
-      c_comp$getObjectDisplayName() %in% valid_vals,
+      get_key(c_comp) %in% valid_vals,
       msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '".')
     )
     
@@ -830,7 +830,7 @@ set_rparam_mapping <- function(c_datamodel, c_reacti, i, value) {
       valid_vals <- quantity(model = c_datamodel)
       
       assert_that(
-        c_quant$getObjectDisplayName() %in% valid_vals,
+        get_key(c_quant) %in% valid_vals,
         msg = paste0("Parameter `", c_reacti$getParameterName(i), '` should be one of: "', paste0(valid_vals, collapse = '", '), '" or a number.')
       )
       
@@ -872,12 +872,12 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
   
   are_local <- map2_lgl(names, cl_reacts, ~ .y$isLocalParameter(.x))
   
-  values <- rep(NA_real_, length(cl_params))
+  values <- rep_along(cl_params, NA_real_)
   values[are_local] <-
     cl_params[are_local] %>%
     map_swig_dbl("getDblValue")
   
-  mappings <- rep(NA_character_, length(cl_params))
+  mappings <- rep_along(cl_params, NA_character_)
   mappings[!are_local] <- 
     map2_chr(names[!are_local], cl_reacts[!are_local],
       function(name, c_react) {
@@ -887,13 +887,13 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
         if (length(val) > 1)
           return("<MULTIPLE>")
   
-        c_keyfactory$get(val)$getObjectDisplayName()
+        get_key(c_keyfactory$get(val))
       }
     )
   
   # assemble output dataframe
   tibble::tibble(
-    key        = map_swig_chr(cl_params, "getObjectDisplayName"),
+    key        = get_key(cl_params),
     "Name"     = names,
     "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
     "Value"    = values,
@@ -933,13 +933,13 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
   
   are_local <- map2_lgl(names, cl_reacts, ~ .y$isLocalParameter(.x))
   
-  value_refs <- rep(NA_character_, length(cl_params))
+  value_refs <- rep_along(cl_params, NA_character_)
   value_refs[!are_local] <-
     cl_params[!are_local] %>%
     map_swig("getValueReference") %>%
     as_ref(c_datamodel)
 
-  mappings <- rep(NA_character_, length(cl_params))
+  mappings <- rep_along(cl_params, NA_character_)
   mappings[!are_local] <- 
     map2_chr(names[!are_local], cl_reacts[!are_local],
       function(name, c_react) {
@@ -949,13 +949,13 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
         if (length(val) > 1)
           return("<MULTIPLE>")
 
-        c_keyfactory$get(val)$getObjectDisplayName()
+        get_key(c_keyfactory$get(val))
       }
     )
   
   # assemble output dataframe
   tibble::tibble(
-    key        = map_swig_chr(cl_params, "getObjectDisplayName"),
+    key        = get_key(cl_params),
     "Name"     = names,
     "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
     "Value"    = value_refs,

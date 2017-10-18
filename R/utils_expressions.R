@@ -101,7 +101,7 @@ read_expr <- function(x, c_datamodel) {
       c_obj <- cn_to_object(x, c_datamodel)
       assert_that(!is.null(c_obj), msg = paste0("Failure in expression readout"))
       
-      escape_ref(c_obj$getObjectDisplayName())
+      escape_ref(get_key(c_obj))
     }
   )
 }

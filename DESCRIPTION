@@ -30,8 +30,7 @@ Imports:
     tidyr (>= 0.7.1),
     utils,
 Suggests:
-    ggplot2,
-    knitr,
+    tidyverse,
     pkgdown,
     plotly,
     rmarkdown,
@@ -57,4 +56,5 @@ Collate:
     'utils_copasi_vector.R'
     'utils_expressions.R'
     'utils_stringr.R'
+    'utils_tasks.R'
 VignetteBuilder: knitr

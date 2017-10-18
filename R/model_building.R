@@ -65,7 +65,7 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
   
   c_model$compileIfNecessary()
   
-  c_metab$getObjectDisplayName()
+  get_key(c_metab, is_species = TRUE)
 }
 
 #' Delete a species
@@ -137,7 +137,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   c_model$compileIfNecessary()
   
-  c_quant$getObjectDisplayName()
+  get_key(c_quant)
 }
 
 #' Delete a global quantity
@@ -209,7 +209,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   
   c_model$compileIfNecessary()
   
-  c_comp$getObjectDisplayName()
+  get_key(c_comp)
 }
 
 #' Delete a compartment
@@ -261,7 +261,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
     msg = "Reaction scheme invalid"
   )
   
-  dn <- c_react$getObjectDisplayName()
+  dn <- get_key(c_react)
   
   # apply fun and mapping via successive functions
   tryCatch(
@@ -381,7 +381,7 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
         # Fill all missing names with "parameter"
         parameters <-
           replace(
-            rep("parameter", length(cl_params)),
+            rep_along(cl_params, "parameter"),
             i,
             parameters
           )
@@ -398,7 +398,7 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
   
   c_fun_db$addAndAdopt(c_fun)
   
-  c_fun$getObjectDisplayName()
+  get_key(c_fun)
 }
 
 #' Delete a function
@@ -417,7 +417,7 @@ deleteKineticFunction <- function(key) {
   
   assert_that(
     is.na(any_read_only),
-    msg = paste0("Function `", cl_funs[[any_read_only]]$getObjectDisplayName(), " is read-only.")
+    msg = paste0("Function `", get_key(cl_funs[[any_read_only]]), " is read-only.")
   )
   
   cl_funs %>%

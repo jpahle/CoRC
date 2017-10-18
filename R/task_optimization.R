@@ -468,7 +468,7 @@ opt_get_results <- function(c_task, settings) {
   
   parameters <-
     tibble::tibble(
-      "Parameter"   = map_swig_chr(cl_items, "getObjectDisplayName"),
+      "Parameter"   = get_key(cl_items),
       "Lower Bound" = map_swig_dbl(cl_items, "getLowerBoundValue"),
       "Start Value" = map_swig_dbl(cl_items, "getStartValue"),
       "Value"       = get_cv(c_problem$getSolutionVariables()),

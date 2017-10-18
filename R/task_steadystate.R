@@ -233,7 +233,7 @@ ss_get_results <- function(c_task, settings) {
   
   species <-
     tibble::tibble(
-      key               = map_swig_chr(cl_metabs_ss, "getObjectDisplayName"),
+      key               = get_key(cl_metabs_ss, is_species = TRUE),
       "Name"            = map_swig_chr(cl_metabs_ss, "getObjectName"),
       "Type"            = cl_metabs_ss %>% map_swig_chr("getStatus") %>% tolower(),
       "Concentration"   = map_swig_dbl(cl_metabs_ss, "getConcentration"),
@@ -250,7 +250,7 @@ ss_get_results <- function(c_task, settings) {
   
   compartments <-
     tibble::tibble(
-      key                  = map_swig_chr(cl_comps, "getObjectDisplayName"),
+      key                  = get_key(cl_comps),
       "Name"               = map_swig_chr(cl_comps, "getObjectName"),
       "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
       "Size"               = map_swig_dbl(cl_comps, "getValue"),
@@ -263,7 +263,7 @@ ss_get_results <- function(c_task, settings) {
   
   quantities <-
     tibble::tibble(
-      key                  = map_swig_chr(cl_quants, "getObjectDisplayName"),
+      key                  = get_key(cl_quants),
       "Name"               = map_swig_chr(cl_quants, "getObjectName"),
       "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
       "Value"              = map_swig_dbl(cl_quants, "getValue"),
@@ -275,7 +275,7 @@ ss_get_results <- function(c_task, settings) {
   
   reactions <-
     tibble::tibble(
-      key           = map_swig_chr(cl_reacts, "getObjectDisplayName"),
+      key           = get_key(cl_reacts),
       "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
       "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
       "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")

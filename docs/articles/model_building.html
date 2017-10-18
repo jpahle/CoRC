@@ -87,7 +87,7 @@
       <h1>Model Building</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-10-16</h4>
+            <h4 class="date">2017-10-18</h4>
           </div>
 
     
@@ -115,12 +115,12 @@
 
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;     key  name compartment      type initial_concentration initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     a     a compartment reactions                     1   6.022141e+20</span>
-<span class="co">#&gt; 2     b     b compartment reactions                     1   6.022141e+20</span>
-<span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
+<span class="co">#&gt;              key  name compartment      type initial_concentration</span>
+<span class="co">#&gt;            &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartment}     a compartment reactions                     1</span>
+<span class="co">#&gt; 2 b{compartment}     b compartment reactions                     1</span>
+<span class="co">#&gt; # ... with 7 more variables: initial_number &lt;dbl&gt;, concentration &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   number &lt;dbl&gt;, rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
@@ -157,7 +157,7 @@ subs_value
 
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"assignment"</span>, <span class="dt">expression =</span> subs_value)
 <span class="co">#&gt; Warning: No compartment exists. Created default compartment.</span>
-<span class="co">#&gt; [1] "a"</span>
+<span class="co">#&gt; [1] "a{compartment}"</span>
 <span class="kw"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="dt">fun =</span> <span class="st">"Reversible Michaelis-Menten"</span>)
 <span class="co">#&gt; [1] "(a = b)"</span>
 
@@ -170,12 +170,12 @@ subs_value
 <span class="co">#&gt; #   initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;     key  name compartment       type initial_concentration initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     a     a compartment assignment                    10   6.022141e+21</span>
-<span class="co">#&gt; 2     b     b compartment  reactions                     1   6.022141e+20</span>
-<span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
+<span class="co">#&gt;              key  name compartment       type initial_concentration</span>
+<span class="co">#&gt;            &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartment}     a compartment assignment                    10</span>
+<span class="co">#&gt; 2 b{compartment}     b compartment  reactions                     1</span>
+<span class="co">#&gt; # ... with 7 more variables: initial_number &lt;dbl&gt;, concentration &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   number &lt;dbl&gt;, rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
@@ -213,9 +213,9 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw"><a href="../reference/newCompartment.html">newCompartment</a></span>(<span class="st">"compartment"</span>)
 <span class="co">#&gt; [1] "Compartments[compartment]"</span>
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"fixed"</span>, <span class="dt">initial_concentration =</span> <span class="dv">10</span>)
-<span class="co">#&gt; [1] "a"</span>
+<span class="co">#&gt; [1] "a{compartment}"</span>
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"b"</span>)
-<span class="co">#&gt; [1] "b"</span>
+<span class="co">#&gt; [1] "b{compartment}"</span>
 <span class="kw"><a href="../reference/newKineticFunction.html">newKineticFunction</a></span>(
   <span class="st">"manual MM"</span>,
   <span class="st">"((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)"</span>,
@@ -259,7 +259,7 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 
 <span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"assignment"</span>, <span class="dt">expression =</span> subs_value)
 <span class="co">#&gt; Warning: No compartment exists. Created default compartment.</span>
-<span class="co">#&gt; [1] "a"</span>
+<span class="co">#&gt; [1] "a{compartment}"</span>
 <span class="kw"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="dt">fun =</span> <span class="st">"Reversible Michaelis-Menten"</span>)
 <span class="co">#&gt; [1] "(a = b)"</span>
 

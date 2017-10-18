@@ -87,7 +87,7 @@
       <h1>Managing Model Entities</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-10-16</h4>
+            <h4 class="date">2017-10-18</h4>
           </div>
 
     
@@ -105,17 +105,24 @@
 <span class="co">#&gt; Number of species: 21</span>
 <span class="co">#&gt; Number of reactions: 14</span>
 <span class="kw"><a href="../reference/entity_finders.html">species</a></span>()
-<span class="co">#&gt;  [1] "CheA"     "CheAp"    "CheB"     "CheBp"    "CheY"     "CheYp"   </span>
-<span class="co">#&gt;  [7] "CheR"     "Tactive"  "CheZ"     "T0"       "T1"       "T2"      </span>
-<span class="co">#&gt; [13] "T3"       "T4"       "L"        "Tactive0" "Tactive1" "Tactive2"</span>
-<span class="co">#&gt; [19] "Tactive3" "Tactive4" "Ttotal"</span></code></pre></div>
+<span class="co">#&gt;  [1] "CheA{compartment}"     "CheAp{compartment}"   </span>
+<span class="co">#&gt;  [3] "CheB{compartment}"     "CheBp{compartment}"   </span>
+<span class="co">#&gt;  [5] "CheY{compartment}"     "CheYp{compartment}"   </span>
+<span class="co">#&gt;  [7] "CheR{compartment}"     "Tactive{compartment}" </span>
+<span class="co">#&gt;  [9] "CheZ{compartment}"     "T0{compartment}"      </span>
+<span class="co">#&gt; [11] "T1{compartment}"       "T2{compartment}"      </span>
+<span class="co">#&gt; [13] "T3{compartment}"       "T4{compartment}"      </span>
+<span class="co">#&gt; [15] "L{compartment}"        "Tactive0{compartment}"</span>
+<span class="co">#&gt; [17] "Tactive1{compartment}" "Tactive2{compartment}"</span>
+<span class="co">#&gt; [19] "Tactive3{compartment}" "Tactive4{compartment}"</span>
+<span class="co">#&gt; [21] "Ttotal{compartment}"</span></code></pre></div>
 </div>
 <div id="identifying-entities" class="section level1">
 <h1 class="hasAnchor">
 <a href="#identifying-entities" class="anchor"></a>Identifying entities</h1>
 <p>There are at the moment six different types of model entities supported for identification by string. The strings are matched against the available entity names. These functions return an entity <code>key</code> when a species is identified.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheA"</span>)
-<span class="co">#&gt; [1] "CheA"  "CheAp"</span>
+<span class="co">#&gt; [1] "CheA{compartment}"  "CheAp{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">compartment</a></span>(<span class="st">"comp"</span>)
 <span class="co">#&gt; [1] "Compartments[compartment]"</span>
 <span class="kw"><a href="../reference/entity_finders.html">quantity</a></span>(<span class="st">"a"</span>)
@@ -129,22 +136,22 @@
 <span class="co">#&gt; [2] "FunctionDB.Functions[Reversible Michaelis-Menten]"</span></code></pre></div>
 <p>There are <code>_strict</code> variants that will always return a vector of <code>key</code>s of the same length as the input or throw an error. Accordingly, the behavior for <code>NA</code> or non-uniquely matching strings is to throw an error. This allows the <code>_strict</code> variants to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>)
-<span class="co">#&gt; [1] "CheY"  "CheYp"</span>
+<span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"CheY"</span>)
-<span class="co">#&gt; [1] "CheY"</span>
+<span class="co">#&gt; [1] "CheY{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"CheYp"</span>)
-<span class="co">#&gt; [1] "CheYp"</span>
+<span class="co">#&gt; [1] "CheYp{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="kw">c</span>(<span class="st">"CheY"</span>, <span class="st">"CheYp"</span>))
-<span class="co">#&gt; [1] "CheY"  "CheYp"</span>
+<span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"Che"</span>)
-<span class="co">#&gt; Error: "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
+<span class="co">#&gt; Error: "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="kw">c</span>(<span class="ot">NA</span>, <span class="st">"CheY"</span>))
 <span class="co">#&gt; Error: key contains 1 missing values</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"failure"</span>)
 <span class="co">#&gt; Error: Couldn't match species "failure".</span></code></pre></div>
 <p>CoRC makes use of the regex functionality of the stringr package. You can therefore wrap any string via <code><a href="../reference/regex.html">regex(string)</a></code> to enable regex matching.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>))
-<span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
+<span class="co">#&gt; [1] "CheAp{compartment}" "CheBp{compartment}" "CheYp{compartment}"</span></code></pre></div>
 <p>In cases, where a function argument <code>key</code> is clear to always expect the same kind of entity, identification can also be handled by the function itself. These methods will always use the <code>_strict</code> variants to reliably match species.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="dt">key =</span> <span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>))<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"  "CheYp"</span>
@@ -155,7 +162,7 @@
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>)<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"Che"</span>)<span class="op">$</span>name
-<span class="co">#&gt; Error: "Che" matches species "CheA", "CheAp", "CheB", "CheBp", "CheY", "CheYp", "CheR", "CheZ".</span>
+<span class="co">#&gt; Error: "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>)))<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
 </div>
@@ -171,7 +178,7 @@
 <p>To help with this, functions implemented to get model values have similar functions that return references instead of values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(<span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheY"</span>))
 <span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  12 variables:</span>
-<span class="co">#&gt;  $ key                  : chr "CheY"</span>
+<span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
@@ -185,7 +192,7 @@
 <span class="co">#&gt;  $ expression           : chr NA</span>
 <span class="kw">str</span>(<span class="kw"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span>(<span class="st">"CheY"</span>))
 <span class="co">#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  12 variables:</span>
-<span class="co">#&gt;  $ key                  : chr "CheY"</span>
+<span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
 <span class="co">#&gt;  $ type                 : chr "reactions"</span>
@@ -213,7 +220,7 @@ expression
 <a href="#extension-suggestion" class="anchor"></a>Extension suggestion</h1>
 <p>Using numbers for referencing:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>]
-<span class="co">#&gt; [1] "CheY"</span>
+<span class="co">#&gt; [1] "CheY{compartment}"</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>])<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span></code></pre></div>
 <p>Maybe I should allow integers to be passed as keys:</p>

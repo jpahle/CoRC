@@ -175,19 +175,26 @@ setTC <- setTimeCourseSettings
 #' @export
 getTC <- getTimeCourseSettings
 
-new_copasi_ts <- function(settings, unit_time, unit_conc, result) {
+new_copasi_ts <- function(settings, column_keys, unit_time, unit_conc, result, result_number) {
   assert_that(
     is.list(settings),
+    is.character(column_keys),
     is.string(unit_time),
     is.string(unit_conc),
-    is.data.frame(result)
+    is.data.frame(result),
+    is.data.frame(result_number)
   )
   
   structure(
     list(
-      settings = settings,
-      units = list(time = unit_time, concentration = unit_conc),
-      result = result
+      settings      = settings,
+      column_keys   = column_keys,
+      units         = list(
+        time          = unit_time,
+        concentration = unit_conc
+      ),
+      result        = result,
+      result_number = result_number
     ),
     class = "copasi_ts"
   )
@@ -197,10 +204,12 @@ new_copasi_ts <- function(settings, unit_time, unit_conc, result) {
 validate_copasi_ts <- function(x) {
   assert_that(
     is.list(x$settings),
+    is.character(x$column_keys),
     is.list(x$units),
     is.string(x$units$time),
     is.string(x$units$concentration),
-    is.data.frame(x$result)
+    is.data.frame(x$result),
+    is.data.frame(x$result_number)
   )
 }
 
@@ -318,42 +327,83 @@ tc_set_settings <- function(data, c_task) {
 tc_get_results <- function(c_task, settings) {
   # c_datamodel is used in exported functions so make sure its safe
   c_datamodel <- make_dm_safe(c_task$getObjectDataModel())
+  c_keyfactory <- CRootContainer_getKeyFactory()
   c_timeseries <- c_task$getTimeSeries()
-  recordedSteps <- c_timeseries$getRecordedSteps()
   
-  if (recordedSteps) {
-    # Timecritical step optimization
-    timeSeries_ref <- c_timeseries@ref
-    R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
-    
-    # assemble output dataframe
-    # Iterates over all species/variables and all timepoints/steps
-    # Inner loops creates numeric() wrapped in a named list
-    # Outer loop creates list of columns for binding to data frame
-    ret <-
-      seq_len_0(c_timeseries$getNumVariables()) %>%
-      map(function(i_var) {
-        seq_len_0(recordedSteps) %>%
-          map_dbl(function(i_step) {
+  col_count <- c_timeseries$getNumVariables()
+  row_count <- c_timeseries$getRecordedSteps()
+  
+  cl_col_objects <-
+    seq_len_0(col_count) %>%
+    map_chr(c_timeseries$getKey) %>%
+    map(c_keyfactory$get)
+  
+  col_types <- map_swig_chr(cl_col_objects, "getObjectType")
+  
+  are_time_col <- col_types == "Model"
+  are_metab_col <- col_types == "Metabolite"
+  are_other_col <- !(are_time_col | are_metab_col)
+  
+  col_names <- map_chr(seq_len_0(col_count), c_timeseries$getTitle)
+  
+  col_keys <- character(col_count)
+  col_keys[are_time_col] <- map_chr(which(are_time_col) - 1L, c_timeseries$getTitle)
+  col_keys[are_metab_col] <- get_key(cl_col_objects[are_metab_col], is_species = TRUE)
+  col_keys[are_other_col] <- get_key(cl_col_objects[are_other_col])
+  
+  # Timecritical step optimization
+  timeSeries_ref <- c_timeseries@ref
+  R_swig_CTimeSeries_getData <- getNativeSymbolInfo("R_swig_CTimeSeries_getData", "COPASI")[["address"]]
+  R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
+  
+  # read out all values
+  data_val <-
+    map(
+      seq_len_0(col_count),
+      function(i_col) {
+        map_dbl(
+          seq_len_0(row_count),
+          function(i_row) {
             # Timecritical step optimization
-            # timeSeries$getConcentrationData(i_step, i_var)
-            # CTimeSeries_getConcentrationData(timeSeries, i_step, i_var)
+            # timeSeries$getData(i_row, i_col)
+            # CTimeSeries_getData(timeSeries, i_row, i_col)
             # args: self@ref, int, int, bool
-            .Call(R_swig_CTimeSeries_getConcentrationData, timeSeries_ref, i_step, i_var, FALSE)
-          }) %>%
-          list() %>%
-          # set_names(timeSeries$getTitle(i_var))
-          set_names(CTimeSeries_getTitle(c_timeseries, i_var))
-      }) %>%
-      dplyr::bind_cols()
-  } else {
-    ret <- tibble::tibble()
-  }
+            .Call(R_swig_CTimeSeries_getData, timeSeries_ref, i_row, i_col, FALSE)
+          }
+        )
+      }
+    )
+  
+  # read out all concentration data seperately
+  data_conc_subset <-
+    map(
+      which(are_metab_col) - 1L,
+      function(i_col) {
+        map_dbl(
+          seq_len_0(row_count),
+          function(i_row) {
+            # Timecritical step optimization
+            # timeSeries$getConcentrationData(i_row, i_col)
+            # CTimeSeries_getConcentrationData(timeSeries, i_row, i_col)
+            # args: self@ref, int, int, bool
+            .Call(R_swig_CTimeSeries_getConcentrationData, timeSeries_ref, i_row, i_col, FALSE)
+          }
+        )
+      }
+    )
+    
+  names(data_val) <- col_names
+  
+  data_val <- dplyr::bind_cols(data_val)
+
+  data_conc <- replace(data_val, are_metab_col, data_conc_subset)
   
   new_copasi_ts(
-    settings  = settings,
-    unit_time = getTimeUnit(c_datamodel),
-    unit_conc = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel)),
-    result    = ret
+    settings      = settings,
+    column_keys   = col_keys,
+    unit_time     = getTimeUnit(c_datamodel),
+    unit_conc     = paste0(getQuantityUnit(c_datamodel), " / ", getVolumeUnit(c_datamodel)),
+    result        = data_conc,
+    result_number = data_val
   )
 }
