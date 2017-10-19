@@ -34,11 +34,9 @@ loadExamples(1)
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
 * getListOfPossibleFunctions only returns bare pointer
-* Crash in time course using stochastic algorithms? http://tracker.copasi.org/show_bug.cgi?id=2495
 * Are tasks always there?
 * Can't abort running tasks
 * Check if installation can be as easy as with stringi package
-* example 4 crashes on stoch sim
 
 # Function naming is lacking a cohesive concept
 
