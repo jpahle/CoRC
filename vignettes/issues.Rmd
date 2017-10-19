@@ -38,8 +38,7 @@ loadExamples(1)
 * Are tasks always there?
 * Can't abort running tasks
 * Check if installation can be as easy as with stringi package
-* See if I can switch to stictly verbose species keys ('A{comp}' instead of 'A')
-* Do I force file extensions when saving models?
+* example 4 crashes on stoch sim
 
 # Function naming is lacking a cohesive concept
 
