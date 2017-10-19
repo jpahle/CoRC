@@ -27,9 +27,12 @@ stopifnot(
 )
 
 libpath <- file.path("..", "inst", "libs", "x64")
+libpath_fake <- file.path("..", "inst", "libs", "i386")
 
 if (!dir.exists(libpath))
   dir.create(libpath, recursive = TRUE)
+if (!dir.exists(libpath_fake))
+  dir.create(libpath_fake, recursive = TRUE)
 
 # Copy the binaries (COPASI.xx)
 stopifnot(

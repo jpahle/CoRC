@@ -113,13 +113,6 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     }
   }
   
-  if (!dir.exists(libsdir)) {
-    assert_that(
-      dir.create(libsdir, recursive = TRUE),
-      msg = "No write access to package directory."
-    )
-  }
-  
   libfile <- file.path(libsdir, paste0("COPASI", .Platform$dynlib.ext))
   
   # if no path is given we download the binaries
@@ -169,11 +162,21 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os],
       msg = "Downloaded copasi binaries are corrupted."
     )
+  } else {
+    dlpath <- path
   }
   
   # Try to unload COPASI if loaded so the binaries can be overwritten
   try(unloadAllModels(), silent = TRUE)
   try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
+  
+  # Create folder
+  if (!dir.exists(libsdir)) {
+    assert_that(
+      dir.create(libsdir, recursive = TRUE),
+      msg = "No write access to package directory."
+    )
+  }
   
   # Copy file into package folder
   assert_that(
