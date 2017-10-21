@@ -22,6 +22,7 @@ Imports:
     dplyr (>= 0.7.3),
     isnullptr (>= 1.0.0),
     methods,
+    parallel,
     purrr (>= 0.2.4),
     rlang (>= 0.1.2),
     stats,
@@ -49,6 +50,7 @@ Collate:
     'task_mca.R'
     'task_optimization.R'
     'task_parameterestimation.R'
+    'task_sigmapoint.R'
     'task_steadystate.R'
     'task_timecourse.R'
     'utils.R'
