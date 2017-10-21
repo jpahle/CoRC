@@ -21,7 +21,7 @@ Type 'time' is only allowed for time course experiments.}
 
 \item{mappings}{data column mappings as character vector
 
-Expects entity references.
+Expects value references.
 
 If no mappings are given, column names can serve as mappings.}
 

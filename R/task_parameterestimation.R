@@ -383,14 +383,10 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   types <- map_chr(types, function(types) rlang::arg_match(types, exp_allowed_types))
   types <- types[types != "ignore"]
   
-  assert_that(
-    !(experiment_type == "timeCourse" && sum(types == "time") != 1L),
-    msg = 'Time course experiements need exactly one "time" mapping.'
-  )
-  assert_that(
-    !(experiment_type == "steadyState" && any(types == "time")),
-    msg = 'Steady state experiements cannot have a "time" mapping.'
-  )
+  if (experiment_type == "timeCourse")
+    assert_that(sum(types == "time") == 1L, msg = 'Time course experiements need exactly one "time" mapping.')
+  else if (experiment_type == "steadyState")
+    assert_that(!any(types == "time"), msg = 'Steady state experiements cannot have a "time" mapping.')
   
   # mappings
   mappings <- mappings %||% data_cols
@@ -453,7 +449,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
 #' Type 'time' is only allowed for time course experiments.")
 #' @param mappings data column mappings as character vector
 #' 
-#' Expects entity references.
+#' Expects value references.
 #' 
 #' If no mappings are given, column names can serve as mappings.
 #' @eval paste0("@param weight_method string
@@ -544,7 +540,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         types_ordered[match(names(types), col_names)] <- types
         mappings_ordered <- rep("", col_count)
         mappings_ordered[match(names(mappings), col_names)] <-
-          map(mappings, xn_to_object, c_datamodel) %>%
+          map(mappings, xn_to_object, c_datamodel = c_datamodel) %>%
           map_chr(get_cn) %>%
           replace(is.na(.), "")
         
@@ -567,7 +563,6 @@ addExperiments <- function(..., model = getCurrentModel()) {
 
   invisible()
 }
-
 
 #' Clear all parameter estimation experiments
 #' 

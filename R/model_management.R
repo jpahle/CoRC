@@ -333,7 +333,7 @@ loadExamples <- function(indices = NULL) {
       "test_paramest.cps"
     )
   
-  assert_that(is.null(indices) || all(indices %in% seq_along(models)), msg = "Invalid indices.")
+  assert_that(is.null(indices) || is.numeric(indices) && all(indices %in% seq_along(models)), msg = "Invalid indices.")
   
   if (!is.null(indices))
     models <- models[indices]
