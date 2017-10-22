@@ -48,6 +48,8 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   exp_rows <- pmap(experiments, function(first_row, last_row, ...) first_row:last_row)
   exp_count <- nrow(experiments)
   
+    assert_that(every(data_dep, is.numeric), msg = "All experiment variables of type `dependent` have to be numeric.")
+  
   if (exp_count > 1L) {
     assert_that(is.null(var), msg = "Argument `var` can only be supplied with a single set of experimental data.")
     
@@ -104,20 +106,17 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   data_dep_matrix <-
     data_dep_split %>%
     map(flatten_dbl) %>%
-    flatten_dbl() %>%
-    matrix(ncol = exp_count) %>%
-    t()
+    do.call(what = rbind)
   
   datapoint_count <- ncol(data_dep_matrix)
   
+  data_dep_mean <- colMeans(data_dep_matrix)
   # generate cov matrix (Cy)
   if (exp_count > 1L) {
-    data_dep_stats <- calc_cov_from_data(data_dep_matrix)
+    data_dep_cov <- calc_cov_from_data(data_dep_matrix)
   } else {
-    data_dep_stats <- calc_cov_from_var(data_dep_matrix, dep_col_count, var)
+    data_dep_cov <- calc_cov_from_var(data_dep_matrix, dep_col_count, var)
   }
-  data_dep_mean <- data_dep_stats$mean
-  data_dep_cov <- data_dep_stats$cov
   
   lambd <- alpha ^ 2 * (datapoint_count + kappa) - datapoint_count
   lambdterm <- sqrt(datapoint_count + lambd)
@@ -283,23 +282,12 @@ calc_cov_from_var <- function(data_dep_matrix, dep_col_count, var) {
     cov_matrix <- diag(var)
   }
   
-  mean_vector <- as.vector(data_dep_matrix)
-  
-  list(
-    mean = mean_vector,
-    cov = cov_matrix
-  )
+  cov_matrix
 }
 
-# take list of exp dependent data and calc means and cov matrix from data
+# take list of exp dependent data and calc cov matrix from data
 calc_cov_from_data <- function(data_dep_matrix) {
-  mean_vector <- apply(data_dep_matrix, 2L, mean)
-  cov_matrix <- cov(data_dep_matrix)
-  
-  list(
-    mean = mean_vector,
-    cov = cov_matrix
-  )
+  cov(data_dep_matrix)
 }
 
 gen_sigma_points <- function(means, cov_m, lambdterm) {
