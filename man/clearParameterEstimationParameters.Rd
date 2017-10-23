@@ -18,6 +18,7 @@ Clear all parameter estimation parameters
 Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},
   \code{\link{clearExperiments}},
+  \code{\link{clearValidations}},
   \code{\link{defineExperiments}},
   \code{\link{getParameterEstimationSettings}},
   \code{\link{runParameterEstimation}},

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Define a parameter estimation experiment — defineExperiments • CoRC</title>
+<title>Run sigma point method — runSigmaPoint • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -107,75 +107,70 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Define a parameter estimation experiment</h1>
+    <h1>Run sigma point method</h1>
     </div>
 
     
-    <p><code>defineExperiments</code> defines a set of experiments given as tidy data frame to the given model.</p>
+    <p><code>runSigmaPoint</code> runs parallel parameter estimations via the sigma point method and returns the results in a list.</p>
     
 
-    <pre class="usage"><span class='fu'>defineExperiments</span>(<span class='kw'>experiment_type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"time_course"</span>, <span class='st'>"steady_state"</span>),
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>types</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mappings</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>weight_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>runSigmaPoint</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>kappa</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>experiments</span>,
+  <span class='kw'>mean_fit_as_basis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+
+<span class='fu'>runSP</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>kappa</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>experiments</span>,
+  <span class='kw'>mean_fit_as_basis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>experiment_type</th>
-      <td><p>string</p></td>
+      <th>alpha</th>
+      <td><p>number</p></td>
     </tr>
     <tr>
-      <th>data</th>
-      <td><p>list of tidy data frames</p></td>
+      <th>beta</th>
+      <td><p>number</p></td>
     </tr>
     <tr>
-      <th>types</th>
-      <td><p>data column types as character vector</p>
-<p>Allowed types of columns are: 'time', 'independent', 'dependent', 'ignore'.</p>
-<p>Type 'time' is only allowed for time course experiments.</p></td>
+      <th>kappa</th>
+      <td><p>count</p></td>
     </tr>
     <tr>
-      <th>mappings</th>
-      <td><p>data column mappings as character vector</p>
-<p>Expects value references.</p>
-<p>If no mappings are given, column names can serve as mappings.</p></td>
+      <th>var</th>
+      <td><p>Measurement variance, as numeric.
+Can be a scalar value for variance on all measurements.
+A vector for variance per dependent experimental column or all measurements individually.
+A matrix for full covariance matrix.</p></td>
     </tr>
     <tr>
-      <th>weight_method</th>
-      <td><p>string</p>
-<p>Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.</p></td>
+      <th>experiments</th>
+      <td><p>Object of type copasi_exp as returned by <code><a href='defineExperiments.html'>defineExperiments</a></code>.
+If it contains a single experiment, the values are understood to be mean values.
+If it contains multiple experiments, the experiments have to have identical independent columns.</p></td>
     </tr>
     <tr>
-      <th>filename</th>
-      <td><p>optional string</p>
-<p>When adding the experiments to a copasi model, this filename will be used.
-In use cases, where experiments are only used temporarily, the filename is ignored.</p></td>
+      <th>mean_fit_as_basis</th>
+      <td><p>Whether to initially fit to the mean experimental data and set those fitted parameter values as starting values.
+Given as flag.</p></td>
+    </tr>
+    <tr>
+      <th>cl</th>
+      <td><p>Either object of type 'cluster' as used in the parallel package, or a count of threads to use, or <code>NULL</code> to automatically use all cores on current machine.</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>A model object.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>copasi_exp object for input into related functions</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>CoRC uses it's own methodology for defining experimental data for use with a copasi model.
-To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
-For help on data import and tidying see: <code><a href='https://cran.rstudio.com/web/packages/tidyr/vignettes/tidy-data.html'>vignette("tidy-data", "tidyr")</a></code>.
-This function adds required metadata to experimental data for use with CoRC.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='addExperiments.html'>addExperiments</a></code> <code><a href='clearExperiments.html'>clearExperiments</a></code></p>
-<p>Other parameter estimation: <code><a href='addExperiments.html'>addExperiments</a></code>,
-  <code><a href='addParameterEstimationParameter.html'>addParameterEstimationParameter</a></code>,
-  <code><a href='clearExperiments.html'>clearExperiments</a></code>,
-  <code><a href='clearParameterEstimationParameters.html'>clearParameterEstimationParameters</a></code>,
-  <code><a href='clearValidations.html'>clearValidations</a></code>,
-  <code><a href='getParameterEstimationSettings.html'>getParameterEstimationSettings</a></code>,
-  <code><a href='runParameterEstimation.html'>runParameterEstimation</a></code>,
-  <code><a href='setParameterEstimationSettings.html'>setParameterEstimationSettings</a></code></p>
+    <p>A list of results.
+<code>$fit_task_results</code> is a list of all parameter estimation results gathered in this assay.
+<code>$sp_means</code> is the result of term (28).
+<code>$sp_cov_matrix</code> is the result of term (29).
+<code>$param_bias</code> is the result of term (33).
+<code>$param_cov_matrix</code> is the result of term (34).</p>
     
 
   </div>
@@ -185,10 +180,6 @@ This function adds required metadata to experimental data for use with CoRC.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

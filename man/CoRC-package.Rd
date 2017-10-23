@@ -6,7 +6,21 @@
 \alias{CoRC-package}
 \title{CoRC: Copasi R Console.}
 \description{
-Run timecourses and stuff
+CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI to R.
+It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi.
+This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
+These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations.
+}
+\details{
+CoRC features:
+  
+* high-level API for Copasi
+* define reproducible workflows using Copasi's powerful modelling tools
+* easy parallization of Copasi tasks
+* enables straight forward publication-ready plotting with the R ecosystem
+* ...
+
+It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
 }
 \section{quantity accessors}{
 

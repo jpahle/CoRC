@@ -17,15 +17,20 @@ set.seed(1)
 
 Development Stage: **ALPHA**
 
-CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or send to cluster or cloud facilities for more demanding calculations.
+CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)).
+It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface.
+This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
+These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.
 
 CoRC features:
 
 * high-level API for Copasi in the R language
 * define reproducible workflows using Copasi's powerful modelling tools
-* easy parallization of embarassingly parallel Copasi tasks
-* enables straight forward publication-ready plotting with an abundance of R packages
+* easy parallization of Copasi tasks
+* enables straight forward publication-ready plotting with the R ecosystem
 * ...
+
+It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
 

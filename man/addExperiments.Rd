@@ -21,6 +21,7 @@ Add a parameter estimation experiment
 Other parameter estimation: \code{\link{addParameterEstimationParameter}},
   \code{\link{clearExperiments}},
   \code{\link{clearParameterEstimationParameters}},
+  \code{\link{clearValidations}},
   \code{\link{defineExperiments}},
   \code{\link{getParameterEstimationSettings}},
   \code{\link{runParameterEstimation}},

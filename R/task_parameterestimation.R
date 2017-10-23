@@ -576,11 +576,30 @@ clearExperiments <- function(model = getCurrentModel()) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
   
-  walk(
-    seq_len_0(c_experiment_set$getExperimentCount()),
-    ~ c_experiment_set$removeExperiment(0L)
+  replicate(
+    n = c_experiment_set$getExperimentCount(),
+    expr = c_experiment_set$removeExperiment(0L)
   )
+  
+  invisible()
+}
 
+#' Clear all parameter estimation validation data.
+#' 
+#' @param model a model object
+#' @family parameter estimation
+#' @export
+clearValidations <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
+  c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
+  c_crossvalidation_set <- c_problem$getCrossValidationSet()
+  
+  replicate(
+    n = c_crossvalidation_set$getExperimentCount(),
+    expr = c_crossvalidation_set$removeExperiment(0L)
+  )
+  
   invisible()
 }
 

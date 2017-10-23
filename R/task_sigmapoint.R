@@ -48,7 +48,8 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   exp_rows <- pmap(experiments, function(first_row, last_row, ...) first_row:last_row)
   exp_count <- nrow(experiments)
   
-    assert_that(every(data_dep, is.numeric), msg = "All experiment variables of type `dependent` have to be numeric.")
+  assert_that(every(data_dep, is.numeric), msg = "All experiment variables of type `dependent` must be numeric.")
+  assert_that(noNA(data_dep), msg = "Experiment variables of type `dependent` must not contain <NA> values.")
   
   if (exp_count > 1L) {
     assert_that(is.null(var), msg = "Argument `var` can only be supplied with a single set of experimental data.")
@@ -92,10 +93,10 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   
   # clean up model for the task
   # use temporary model for that
-  orig_model <- saveModelToString(model = c_datamodel)
-  c_temp_datamodel <- loadModelFromString(orig_model)
+  # -> clean_model string
+  c_temp_datamodel <- loadModelFromString(saveModelToString(model = c_datamodel))
   clearExperiments(model = c_temp_datamodel)
-  # CoRC::clearCrossValidationExperiments(model = c_temp_datamodel)
+  clearValidations(model = c_temp_datamodel)
   setParameterEstimationSettings(update_model = FALSE, executable = FALSE, model = c_temp_datamodel)
   clean_model <- saveModelToString(model = c_temp_datamodel)
   unloadModel(model = c_temp_datamodel)
@@ -130,6 +131,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   data_list <- perturb_data(data, dep_cols, sigma_points_matrix)
 
   # set up base for fitting
+  # -> base_model string
   if (mean_fit_as_basis) {
     c_temp_datamodel <- loadModelFromString(clean_model)
     runParameterEstimation(update_model = TRUE, experiments = data_list[[1L]], model = c_temp_datamodel)
@@ -139,6 +141,12 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   } else {
     base_model <- clean_model
   }
+  
+  # see if CoRC is ready on cluster
+  tryCatch(
+    parallel::clusterEvalQ(cl = cl, CoRC:::assert_binaries()),
+    error = function(e) stop("Can't load ", getPackageName(), " on cluster instances.")
+  )
   
   # load model on all clusters
   parallel::clusterCall(

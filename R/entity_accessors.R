@@ -127,7 +127,8 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   if (!is.null(data))
     do.call(setSpecies, data[names(data) %in% c("key", "name", "type", "initial_concentration", "initial_number", "expression")])
   
-  if (is_empty(cl_metabs)) return(invisible())
+  if (is_empty(cl_metabs))
+    return(invisible())
   
   c_model <- c_datamodel$getModel()
   
@@ -268,7 +269,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
     "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
-    "Value"    = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
+    "Value"              = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
     "Initial Expression" = map_chr(cl_quants, iexpr_to_ref_str, c_datamodel = c_datamodel),
     "Expression"         = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
@@ -319,7 +320,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   if (!is.null(data))
     do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial_value", "expression")])
   
-  if (is_empty(cl_quants)) return(invisible())
+  if (is_empty(cl_quants))
+    return(invisible())
   
   c_model <- c_datamodel$getModel()
   
@@ -477,7 +479,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   if (!is.null(data))
     do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial_size", "expression")])
   
-  if (is_empty(cl_comps)) return(invisible())
+  if (is_empty(cl_comps))
+    return(invisible())
   
   c_model <- c_datamodel$getModel()
   
@@ -617,7 +620,8 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   if (!is.null(data))
     do.call(setReactions, data[names(data) %in% c("key", "name")])
   
-  if (is_empty(cl_reacts)) return(invisible())
+  if (is_empty(cl_reacts))
+    return(invisible())
   
   # apply names
   if (!is.null(name)) {
@@ -1009,7 +1013,8 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   if (!is.null(data))
     do.call(setParameters, data[names(data) %in% c("key", "name", "value", "mapping")])
   
-  if (is_empty(cl_params)) return(invisible())
+  if (is_empty(cl_params))
+    return(invisible())
   
   # apply names
   if (!is.null(name)) {

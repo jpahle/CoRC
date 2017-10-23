@@ -53,6 +53,7 @@ Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},
   \code{\link{clearExperiments}},
   \code{\link{clearParameterEstimationParameters}},
+  \code{\link{clearValidations}},
   \code{\link{getParameterEstimationSettings}},
   \code{\link{runParameterEstimation}},
   \code{\link{setParameterEstimationSettings}}
