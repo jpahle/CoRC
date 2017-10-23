@@ -18,20 +18,32 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   else
     cl_metabs <- species_obj(key, c_datamodel)
   
+  types <- map_swig_chr(cl_metabs, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_metabs, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_metabs[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
+  expressions <- rep_along(cl_metabs, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_metabs[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
   # assemble output dataframe
   tibble::tibble(
     key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"                  = tolower(types),
     "Initial Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
     "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
     "Concentration"         = map_swig_dbl(cl_metabs, "getConcentration"),
     "Number"                = map_swig_dbl(cl_metabs, "getValue"),
     "Rate"                  = map_swig_dbl(cl_metabs, "getConcentrationRate"),
     "Number Rate"           = map_swig_dbl(cl_metabs, "getRate"),
-    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
-    "Expression"            = map_chr(cl_metabs, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+    "Initial Expression"    = initial_expressions,
+    "Expression"            = expressions
   ) %>%
     transform_names()
 }
@@ -54,20 +66,32 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   else
     cl_metabs <- species_obj(key, c_datamodel)
   
+  types <- map_swig_chr(cl_metabs, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_metabs, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_metabs[has_init_expression], iexpr_to_ref_str, c_datamodel = c_datamodel)
+  
+  expressions <- rep_along(cl_metabs, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_metabs[has_expression], expr_to_ref_str, c_datamodel = c_datamodel)
+  
   # assemble output dataframe
   tibble::tibble(
     key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
     "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
-    "Type"                  = cl_metabs %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"                  = tolower(types),
     "Initial Concentration" = cl_metabs %>% map_swig("getInitialConcentrationReference") %>% as_ref(c_datamodel),
     "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
     "Number"                = cl_metabs %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"                  = cl_metabs %>% map_swig("getConcentrationRateReference") %>% as_ref(c_datamodel),
     "Number Rate"           = cl_metabs %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
-    "Initial Expression"    = map_chr(cl_metabs, iexpr_to_ref_str, c_datamodel = c_datamodel),
-    "Expression"            = map_chr(cl_metabs, expr_to_ref_str, c_datamodel = c_datamodel)
+    "Initial Expression"    = initial_expressions,
+    "Expression"            = expressions
   ) %>%
     transform_names()
 }
@@ -230,17 +254,29 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
   else
     cl_quants <- quantity_obj(key, c_datamodel)
-
+  
+  types <- map_swig_chr(cl_quants, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_quants, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_quants[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
+  expressions <- rep_along(cl_quants, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_quants[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
   # assemble output dataframe
   tibble::tibble(
     key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"               = tolower(types),
     "Initial Value"      = map_swig_dbl(cl_quants, "getInitialValue"),
     "Value"              = map_swig_dbl(cl_quants, "getValue"),
     "Rate"               = map_swig_dbl(cl_quants, "getRate"),
-    "Initial Expression" = map_chr(cl_quants, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
-    "Expression"         = map_chr(cl_quants, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+    "Initial Expression" = initial_expressions,
+    "Expression"         = expressions
   ) %>%
     transform_names()
 }
@@ -263,16 +299,28 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   else
     cl_quants <- quantity_obj(key, c_datamodel)
   
+  types <- map_swig_chr(cl_quants, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_quants, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_quants[has_init_expression], iexpr_to_ref_str, c_datamodel = c_datamodel)
+  
+  expressions <- rep_along(cl_quants, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_quants[has_expression], expr_to_ref_str, c_datamodel = c_datamodel)
+  
   # assemble output dataframe
   tibble::tibble(
     key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
-    "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"               = tolower(types),
     "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Value"              = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
-    "Initial Expression" = map_chr(cl_quants, iexpr_to_ref_str, c_datamodel = c_datamodel),
-    "Expression"         = map_chr(cl_quants, expr_to_ref_str, c_datamodel = c_datamodel)
+    "Initial Expression" = initial_expressions,
+    "Expression"         = expressions
   ) %>%
     transform_names()
 }
@@ -390,16 +438,28 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
   else
     cl_comps <- compartment_obj(key, c_datamodel)
   
+  types <- map_swig_chr(cl_comps, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_comps, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_comps[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
+  expressions <- rep_along(cl_comps, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_comps[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+  
   # assemble output dataframe
   tibble::tibble(
     key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"               = tolower(types),
     "Initial Size"       = map_swig_dbl(cl_comps, "getInitialValue"),
     "Size"               = map_swig_dbl(cl_comps, "getValue"),
     "Rate"               = map_swig_dbl(cl_comps, "getRate"),
-    "Initial Expression" = map_chr(cl_comps, iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions),
-    "Expression"         = map_chr(cl_comps, expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
+    "Initial Expression" = initial_expressions,
+    "Expression"         = expressions
   ) %>%
     transform_names()
 }
@@ -422,16 +482,28 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   else
     cl_comps <- compartment_obj(key, c_datamodel)
   
+  types <- map_swig_chr(cl_comps, "getStatus")
+  has_init_expression <- types != "ASSIGNMENT"
+  has_expression <- !has_init_expression || (types == "ODE")
+  
+  initial_expressions <- rep_along(cl_comps, NA_character_)
+  initial_expressions[has_init_expression] <-
+    map_chr(cl_comps[has_init_expression], iexpr_to_ref_str, c_datamodel = c_datamodel)
+  
+  expressions <- rep_along(cl_comps, NA_character_)
+  expressions[has_expression] <-
+    map_chr(cl_comps[has_expression], expr_to_ref_str, c_datamodel = c_datamodel)
+  
   # assemble output dataframe
   tibble::tibble(
     key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
-    "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
+    "Type"               = tolower(types),
     "Initial Size"       = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Size"               = cl_comps %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_comps %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
-    "Initial Expression" = map_chr(cl_comps, iexpr_to_ref_str, c_datamodel = c_datamodel),
-    "Expression"         = map_chr(cl_comps, expr_to_ref_str, c_datamodel = c_datamodel)
+    "Initial Expression" = initial_expressions,
+    "Expression"         = expressions
   ) %>%
     transform_names()
 }
