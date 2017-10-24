@@ -54,10 +54,8 @@ map_swig <- function(x, fun, ..., .mapfun = map) {
   if (is_empty(x))
     return(.mapfun(logical(), force))
   
-  fun <- eval(fun)
-  x1 <- x[[1]]
   # Find the actual function and strip its class attribute
-  f <- unclass(environment(eval(substitute(x1$fun)))$f)
+  f <- unclass(environment(eval(call("$", x[[1L]], fun)))$f)
   
   .mapfun(x, f, ...)
 }

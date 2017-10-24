@@ -81,12 +81,6 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     stop("Argument `cl` has to a number of threads or a parallel cluster as created with the parallel package.")
   }
   
-  # cluster helper function
-  mapInParallel <- function(data, fun, ...) {
-    ret <- parallel::clusterApplyLB(cl = cl, x = parallel:::splitList(data, length(data)), fun = lapply, as_mapper(fun), ...)
-    flatten(ret)
-  }
-  
   if (c_problem$getExperimentSet()$getExperimentCount() != 0L) {
     warnings("Experimental data present in Copasi. Ignoring it for this task.")
   }
@@ -174,9 +168,10 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   
   # do the full assay
   results <-
-    mapInParallel(
-      data = data_list,
-      fun = ~ CoRC::runParameterEstimation(experiments = .x)
+    map_parallel(
+      cl = cl,
+      .x = data_list,
+      .f = ~ CoRC::runParameterEstimation(experiments = .x)
     )
   
   if (close_cl) {

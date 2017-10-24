@@ -17,6 +17,7 @@ reset_copasi <- function() {
 
 ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
 
+# inspect swig functions and objects
 inspect <- function(object) {
   if (is.function(object)) {
     funtext <- object %>% environment() %>% .$f %>% format()

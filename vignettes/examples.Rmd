@@ -33,7 +33,7 @@ library(CoRC)
 mapInParallel <- function(data, fun, ..., .prep = {}) {
   cl <- makeCluster(detectCores())
   clusterCall(cl = cl, fun = eval, .prep, env = .GlobalEnv)
-  ret <- clusterApplyLB(cl = cl, x = parallel:::splitList(data, length(data)), fun = lapply, as_mapper(fun), ...)
+  ret <- clusterApplyLB(cl = cl, x = imap(data, ~ set_names(list(.x), .y)), fun = lapply, as_mapper(fun), ...)
   stopCluster(cl)
   flatten(ret)
 }
