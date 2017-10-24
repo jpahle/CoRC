@@ -5,8 +5,9 @@
 \title{Set species}
 \usage{
 setSpecies(key = NULL, name = NULL, compartment = NULL, type = NULL,
-  initial_concentration = NULL, initial_number = NULL, expression = NULL,
-  data = NULL, model = getCurrentModel())
+  initial_concentration = NULL, initial_number = NULL,
+  initial_expression = NULL, expression = NULL, data = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which species to edit by specifying it's key, as string.
@@ -21,6 +22,8 @@ Also supports fragments of keys, if uniquely matching one species.}
 \item{initial_concentration}{Initial concentration to set, as numeric.}
 
 \item{initial_number}{Initial particle number to set, as numeric.}
+
+\item{initial_expression}{Initial expression to set, as string.}
 
 \item{expression}{Expression to set, as string.}
 

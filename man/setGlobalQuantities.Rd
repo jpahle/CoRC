@@ -5,8 +5,8 @@
 \title{Set global quantities}
 \usage{
 setGlobalQuantities(key = NULL, name = NULL, type = NULL,
-  initial_value = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+  initial_value = NULL, initial_expression = NULL, expression = NULL,
+  data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which global quantity to edit by specifying it's key, as string.
@@ -17,6 +17,8 @@ Also supports fragments of keys, if uniquely matching one global quantity.}
 \item{type}{Type ("fixed", "assignment", "ode") to set, as string.}
 
 \item{initial_value}{Initial value to set, as numeric.}
+
+\item{initial_expression}{Initial expression to set, as string.}
 
 \item{expression}{Expression to set, as numeric.}
 

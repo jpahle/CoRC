@@ -5,7 +5,8 @@
 \title{Create a new compartment}
 \usage{
 newCompartment(name, type = c("fixed", "assignment", "ode"),
-  initial_size = 1, expression = NULL, model = getCurrentModel())
+  initial_size = NULL, initial_expression = NULL, expression = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
@@ -14,12 +15,18 @@ newCompartment(name, type = c("fixed", "assignment", "ode"),
 
 \item{initial_size}{number}
 
+\item{initial_expression}{string}
+
 \item{expression}{string}
 
 \item{model}{a model object}
 }
 \description{
-Create a new compartment
+\code{newCompartment} creates a new compartment.
+}
+\details{
+Default initial size is 1.
+Arguments priority from lowest to highest is \code{initial_size}, \code{initial_expression}.
 }
 \seealso{
 Other compartment functions: \code{\link{deleteCompartment}},

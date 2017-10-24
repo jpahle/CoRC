@@ -5,7 +5,8 @@
 \title{Create a new global quantity}
 \usage{
 newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
-  initial_value = 1, expression = NULL, model = getCurrentModel())
+  initial_value = NULL, initial_expression = NULL, expression = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
@@ -13,6 +14,8 @@ newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
 \item{type}{string}
 
 \item{initial_value}{number}
+
+\item{initial_expression}{string}
 
 \item{expression}{string}
 
@@ -22,7 +25,11 @@ newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
 quantity key
 }
 \description{
-Create a new global quantity
+\code{newGlobalQuantity} creates a new global quantity.
+}
+\details{
+Default initial value is 1.
+Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
 }
 \seealso{
 Other global quantity functions: \code{\link{deleteGlobalQuantity}},

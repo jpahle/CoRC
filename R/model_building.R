@@ -1,27 +1,37 @@
 #' Create a new species
 #'
 #' \code{newSpecies} creates a new species.
+#' 
+#' Default initial concentration is 1.
+#' Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
 #'
 #' @param name string
 #' @param compartment compartment key
 #' @param type string
 #' @param initial_concentration number
+#' @param initial_number number
+#' @param initial_expression string
 #' @param expression string
 #' @param model a model object
 #' @return species key
 #' @family species functions
 #' @export
-newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", "assignment", "ode"), initial_concentration = 1, expression = NULL, model = getCurrentModel()) {
+newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", "assignment", "ode"), initial_concentration = NULL, initial_number = NULL, initial_expression = NULL, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.null(compartment) || is.string(compartment),
-    is.number(initial_concentration), initial_concentration >= 0,
-    is.null(expression) || is.string(expression)
+    is.null(compartment)           || is.string(compartment),
+    is.null(initial_concentration) || is.number(initial_concentration),
+    is.null(initial_number)        || is.number(initial_number),
+    is.null(initial_expression)    || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
+    is.null(expression)            || is.string(expression)         && noNA(expression)         && expression != ""
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
+  
+  if (!is.null(initial_expression))
+    initial_expression <- write_expr(initial_expression, c_datamodel)
   
   if (!is.null(expression))
     expression <- write_expr(expression, c_datamodel)
@@ -46,11 +56,21 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
   }
   
-  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration, toupper(type))
+  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration %||% 1, toupper(type))
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
+  if (!is.null(initial_number))
+    c_metab$setInitialValue(initial_number)
+  
   tryCatch({
+    if (!is.null(initial_expression)) {
+      assert_that(
+        grab_msg(c_metab$setInitialExpression(initial_expression)$isSuccess()),
+        msg = "Species creation failed when applying the initial expression."
+      )
+    }
+    
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_metab$setExpression(expression)$isSuccess()),
@@ -91,38 +111,58 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 }
 
 #' Create a new global quantity
+#' 
+#' \code{newGlobalQuantity} creates a new global quantity.
+#' 
+#' Default initial value is 1.
+#' Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
 #'
 #' @param name string
 #' @param type string
 #' @param initial_value number
+#' @param initial_expression string
 #' @param expression string
 #' @param model a model object
 #' @return quantity key
 #' @family global quantity functions
 #' @export
-newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial_value = 1, expression = NULL, model = getCurrentModel()) {
+newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial_value = NULL, initial_expression = NULL, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.number(initial_value),
-    is.null(expression) || is.string(expression)
+    is.null(initial_value)      || is.number(initial_value),
+    is.null(initial_expression) || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
+    is.null(expression)         || is.string(expression)         && noNA(expression)         && expression != ""
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
+  
+  if (!is.null(initial_expression))
+    initial_expression <- write_expr(initial_expression, c_datamodel)
   
   if (!is.null(expression))
     expression <- write_expr(expression, c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
-  c_quant <- c_model$createModelValue(name, initial_value)
+  c_quant <- c_model$createModelValue(name, initial_value %||% 1)
   
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
   c_quant$setStatus(toupper(type))
   
+  if (!is.null(initial_value))
+    c_quant$setInitialValue(initial_value)
+  
   tryCatch({
+    if (!is.null(initial_expression)) {
+      assert_that(
+        grab_msg(c_quant$setInitialExpression(initial_expression)$isSuccess()),
+        msg = "Global quantity failed when applying the initial expression."
+      )
+    }
+    
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_quant$setExpression(expression)$isSuccess()),
@@ -163,24 +203,34 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 }
 
 #' Create a new compartment
+#' 
+#' \code{newCompartment} creates a new compartment.
+#' 
+#' Default initial size is 1.
+#' Arguments priority from lowest to highest is \code{initial_size}, \code{initial_expression}.
 #'
 #' @param name string
 #' @param type string
 #' @param initial_size number
+#' @param initial_expression string
 #' @param expression string
 #' @param model a model object
 #' @family compartment functions
 #' @export
-newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial_size = 1, expression = NULL, model = getCurrentModel()) {
+newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial_size = NULL, initial_expression= NULL, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.number(initial_size), initial_size >= 0,
-    is.null(expression) || is.string(expression)
+    is.null(initial_size)       || is.number(initial_size),
+    is.null(initial_expression) || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
+    is.null(expression)         || is.string(expression)         && noNA(expression)         && expression != ""
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
+  
+  if (!is.null(initial_expression))
+    initial_expression <- write_expr(initial_expression, c_datamodel)
   
   if (!is.null(expression))
     expression <- write_expr(expression, c_datamodel)
@@ -188,13 +238,20 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   c_model <- c_datamodel$getModel()
   
   # type is missing
-  c_comp <- c_model$createCompartment(name, initial_size)
+  c_comp <- c_model$createCompartment(name, initial_size %||% 1)
   
   assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed.")
   
   c_comp$setStatus(toupper(type))
   
   tryCatch({
+    if (!is.null(initial_expression)) {
+      assert_that(
+        grab_msg(c_comp$setInitialExpression(initial_expression)$isSuccess()),
+        msg = "Compartment creation failed when applying the expression."
+      )
+    }
+    
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_comp$setExpression(expression)$isSuccess()),

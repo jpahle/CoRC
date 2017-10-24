@@ -5,8 +5,8 @@
 \title{Set compartments}
 \usage{
 setCompartments(key = NULL, name = NULL, type = NULL,
-  initial_size = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+  initial_size = NULL, initial_expression = NULL, expression = NULL,
+  data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which compartment to edit by specifying it's key, as string.
@@ -17,6 +17,8 @@ Also supports fragments of keys, if uniquely matching one compartment.}
 \item{type}{Type ("fixed", "assignment", "ode") to set, as string.}
 
 \item{initial_size}{Initial size to set, as string.}
+
+\item{initial_expression}{Initial expression to set, as string.}
 
 \item{expression}{Expression to set, as string.}
 

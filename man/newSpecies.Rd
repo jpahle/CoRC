@@ -5,8 +5,8 @@
 \title{Create a new species}
 \usage{
 newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
-  "assignment", "ode"), initial_concentration = 1, expression = NULL,
-  model = getCurrentModel())
+  "assignment", "ode"), initial_concentration = NULL, initial_number = NULL,
+  initial_expression = NULL, expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
@@ -17,6 +17,10 @@ newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
 
 \item{initial_concentration}{number}
 
+\item{initial_number}{number}
+
+\item{initial_expression}{string}
+
 \item{expression}{string}
 
 \item{model}{a model object}
@@ -26,6 +30,10 @@ species key
 }
 \description{
 \code{newSpecies} creates a new species.
+}
+\details{
+Default initial concentration is 1.
+Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
 }
 \seealso{
 Other species functions: \code{\link{deleteSpecies}},
