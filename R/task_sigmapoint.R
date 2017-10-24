@@ -239,29 +239,29 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
 runSP <- runSigmaPoint
 
 # as in condor copasi but not really anymore
-calc_cov_hoops <- function(data_dep_matrix, measurement_error) {
-  # Noise added to the data will be assumed to normally distributed within the measurement error with 95% confidence.
-  generate_noise_factor <- function() {
-    # noise_factor <- Inf
-    # Ensures that the generated data is not negative
-    # while (noise_factor > 1)
-      # noise_factor <- lambdterm * abs(rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error)
-      (rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error) ^ 2
-    
-    # noise_factor
-  }
-  
-  datapoint_count <- ncol(data_dep_matrix)
-  
-  noise_matrix <-
-    matrix(
-      replicate(
-        datapoint_count ^ 2,
-        generate_noise_factor()
-      ),
-      nrow = datapoint_count
-    )
-}
+# calc_cov_hoops <- function(data_dep_matrix, measurement_error) {
+#   # Noise added to the data will be assumed to normally distributed within the measurement error with 95% confidence.
+#   generate_noise_factor <- function() {
+#     # noise_factor <- Inf
+#     # Ensures that the generated data is not negative
+#     # while (noise_factor > 1)
+#       # noise_factor <- lambdterm * abs(rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error)
+#       (stats::rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error) ^ 2
+#     
+#     # noise_factor
+#   }
+#   
+#   datapoint_count <- ncol(data_dep_matrix)
+#   
+#   noise_matrix <-
+#     matrix(
+#       replicate(
+#         datapoint_count ^ 2,
+#         generate_noise_factor()
+#       ),
+#       nrow = datapoint_count
+#     )
+# }
 
 # calc cov matrix form var arg
 calc_cov_from_var <- function(data_dep_matrix, dep_col_count, var) {
@@ -298,7 +298,7 @@ calc_cov_from_var <- function(data_dep_matrix, dep_col_count, var) {
 
 # take list of exp dependent data and calc cov matrix from data
 calc_cov_from_data <- function(data_dep_matrix) {
-  cov(data_dep_matrix)
+  stats::cov(data_dep_matrix)
 }
 
 gen_sigma_points <- function(means, cov_m, lambdterm) {

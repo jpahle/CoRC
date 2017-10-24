@@ -31,11 +31,12 @@ Imports:
     tidyr (>= 0.7.2),
     utils,
 Suggests:
-    tidyverse,
+    knitr,
     pkgdown,
     plotly,
     rmarkdown,
     testthat,
+    tidyverse,
 Collate: 
     'CoRC.R'
     'entity_accessors.R'

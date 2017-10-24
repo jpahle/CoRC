@@ -23,9 +23,8 @@
 #' @import purrr
 #' @importFrom isnullptr isnullptr
 #' @importFrom rlang .data
-#' @importFrom stats runif na.omit
 #' @importFrom stringr fixed coll regex
-#' @importFrom utils head tail download.file
+#' @importFrom utils hasName head tail
 "_PACKAGE"
 
 # Output flag for tasks
@@ -103,8 +102,8 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     # Gather data about os (created for ubuntu but may work for other unix os)
     # osfile <- readLines("/etc/os-release")
     # 
-    # id_string <- na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
-    # v_string <- na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
+    # id_string <- stats::na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
+    # v_string <- stats::na.omit(stringr::str_match(osfile, "^VERSION_ID=\\\"(\\d+)\\.(\\d+)\\\"$"))
     # 
     # if (!is_empty(id_string)) id_string <- id_string[1, 2]
     # if (!is_empty(v_string)) v_string <- v_string[1, c(2,3)]
@@ -166,7 +165,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     dlpath <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
     # download the binaries
-    dlstatus <- download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
+    dlstatus <- utils::download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
     
     assert_that(dlstatus == 0, msg = "Downloading copasi binaries failed.")
     
