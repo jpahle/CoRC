@@ -44,5 +44,6 @@ A list of results.
 }
 \description{
 \code{runSigmaPoint} runs parallel parameter estimations via the sigma point method and returns the results in a list.
+WARNING: TODO: This implementation of the sigma point method is almost completely untested.
 }
 \concept{sigma point method}

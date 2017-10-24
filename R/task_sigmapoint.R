@@ -1,6 +1,7 @@
 #' Run sigma point method
 #'
 #' \code{runSigmaPoint} runs parallel parameter estimations via the sigma point method and returns the results in a list.
+#' WARNING: TODO: This implementation of the sigma point method is almost completely untested.
 #'
 #' @param alpha number
 #' @param beta number
@@ -25,6 +26,8 @@
 #' @family sigma point method
 #' @export
 runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experiments, mean_fit_as_basis = TRUE, cl = NULL, model = getCurrentModel()) {
+  # TODO
+  warning("This implementation of the sigma point method is almost completely untested.")
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.number(alpha),
