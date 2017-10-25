@@ -31,12 +31,24 @@ loadExamples(1)
 
 # Quicklist
 
+Todo:
+
+* Better way to remove initialExpressions
+* Events
+* Compile in a way that it can run on cluster
+* More tasks
+* Possibly parallel helper function (saveModelToString, load on cluster)
+* Code marked with 'TODO'
+* Add test set
+* Check if installation can be as easy as with stringi package
+
+Issues:
+
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
 * getListOfPossibleFunctions only returns bare pointer
 * Are tasks always there?
 * Can't abort running tasks
-* Check if installation can be as easy as with stringi package
 
 # Function naming is lacking a cohesive concept
 
