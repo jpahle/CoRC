@@ -1201,12 +1201,11 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
     return(invisible())
   
   # apply names
-  if (!is.null(name)) {
+  if (!is.null(name))
     walk2(
       cl_params, name,
       ~ if (!is.na(.y)) .x$setObjectName(.y)
     )
-  }
   
   # Parameters are only those of type "PARAMETER I think.
   # So I can safely set a value and make them local or set a mapping
@@ -1214,30 +1213,39 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   # Changing the parameters directly seems to be unsafe.
   # The safe method seems to be to go back to the reaction and do manipulations from there.
   
+  # gather a vector of what to actually do work on
+  do_value <- ifelse(is.null(value), rep_along(cl_params, FALSE), !is.na(value))
+  do_mapping <- ifelse(is.null(mapping), rep_along(cl_params, FALSE), !is.na(mapping))
+  do_param <- do_value | do_mapping
+  
   # apply values
-  if (!is.null(value) || !is.null(mapping)) {
-    cl_reacts <- map_swig(cl_params, "getObjectAncestor", "Reaction") %>% map(as, "_p_CReaction")
-    names <- map_swig_chr(cl_params, "getObjectName")
+  if (any(do_param)) {
+    cl_reacts <- vector("list", length(cl_params))
+    cl_reacts[do_param] <-
+      cl_params[do_param] %>%
+      map_swig("getObjectAncestor", "Reaction") %>%
+      map(as, "_p_CReaction")
     
-    if (!is.null(value))
+    names <- rep_along(cl_params, NA_character_)
+    names[do_param] <- map_swig_chr(cl_params[do_param], "getObjectName")
+    
+    if (any(do_value))
       pwalk(
-        list(cl_reacts, names, value),
-        function(c_react, name, value) {
-          if (!is.na(value))
-            c_react$setParameterValue(name, value)
+        list(cl_reacts[do_value], names[do_value], value[do_value]),
+        function(c_react, name, val) {
+            c_react$setParameterValue(name, val)
         }
       )
     
-    if (!is.null(mapping))
+    if (any(do_mapping))
       pwalk(
-        list(cl_reacts, names, mapping),
-        function(c_react, name, value) {
-          if (!is.na(value))
-            c_react$setParameterMapping(name, value)
+        list(cl_reacts[do_mapping], names[do_mapping], mapping[do_mapping]),
+        function(c_react, name, val) {
+            c_react$setParameterMapping(name, val)
         }
       )
     
-    cl_reacts %>%
+    cl_reacts[do_param] %>%
       unique() %>%
       walk_swig("compile")
   }
