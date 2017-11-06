@@ -90,6 +90,8 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     is.flag(quiet), noNA(quiet)
   )
   
+  pkgpath <- system.file(package = "CoRC")
+  
   # CHECK OS
   os <- NULL
   if (.Platform$OS.type == "windows") {
@@ -113,7 +115,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   arch <- R.Version()$arch
   
   # CHECK CURRENT FILE
-  libsdir <- file.path(system.file(package = getPackageName()), "libs")
+  libsdir <- file.path(pkgpath, "libs")
   
   # Win needs different locations for the .dll files (subfolders).
   if (os == "windows") {
@@ -180,7 +182,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   
   # Try to unload COPASI if loaded so the binaries can be overwritten
   try(unloadAllModels(), silent = TRUE)
-  try(library.dynam.unload("COPASI", system.file(package = getPackageName())), silent = TRUE)
+  try(library.dynam.unload("COPASI", pkgpath), silent = TRUE)
   
   # Create folder
   if (!dir.exists(libsdir)) {
@@ -197,7 +199,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   )
   
   # Reload libary
-  library.dynam("COPASI", getPackageName(), .libPaths())
+  library.dynam("COPASI", getPackageName(), file.path(pkgpath, ".."))
   # TODO
   CCopasiMessage_clearDeque()
   if (!quiet)
