@@ -1,3 +1,8 @@
+# backport of utils::hasName because backports package is broken with that function
+hasName <- function (x, name) {
+  match(name, names(x), nomatch = 0L) > 0L
+}
+
 # Format function for the CDataModel class which is used as a basis for the print method
 #' @include swig_wrapper.R
 #' @export
