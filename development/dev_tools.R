@@ -3,6 +3,7 @@ reset_copasi <- function() {
   gc()
   
   if (exists("unloadAllModels")) unloadAllModels()
+  if (exists("clearCustomKineticFunctions")) clearCustomKineticFunctions()
   
   devtools::load_all(reset = FALSE)
   
