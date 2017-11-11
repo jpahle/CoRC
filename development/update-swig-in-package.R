@@ -1,8 +1,8 @@
 # Use this if you recompile Copasi.
 # It takes the swig files from the build dir and deletes the copasi cache file.
 
-buildpath <- file.path("copasi-source", "build_copasi_r_bindings", "copasi", "bindings", "R")
-rfile <- file.path(buildpath, "COPASI.R")
+buildpath <- file.path("copasi-source", "libs")
+rfile <- file.path(buildpath, "swig_wrapper.R")
 binfile <- file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext))
 
 if (!dir.exists(buildpath))

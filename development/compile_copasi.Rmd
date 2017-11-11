@@ -27,9 +27,9 @@ git submodule update --init --recursive
 
 This step makes sure the Copasi sources are cloned.
 
-# Dependencies for compilation of the copasi sources
+# macOS
 
-## macOS
+## Dependencies for compilation of the copasi sources
 
 The following dependencies exist for compiling the sources:
 
@@ -42,139 +42,77 @@ xcode-select --install
 Cosider using homebrew for macOS to install other dependencies:
 
 ```{bash, eval=FALSE}
-brew install cmake swig gawk wget astyle
+brew install cmake swig
 ```
 
-## ubuntu
-
-The following dependencies exist for compiling the sources:
-
-```{bash, eval=FALSE}
-sudo apt install build-essentials gawk wget astyle
-```
-
-Consider using linuxbrew to install other dependencies:
-
-```{bash, eval=FALSE}
-brew install swig
-```
-
-## Windows:
-
-Use chocolatey to install:
-
-```
-choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable wget
-```
-
-Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
-Manually get the Rlib (Rlib.lib) files for your current R Version and put it in e.g.: development\copasi-source\r-3.4.1-import-lib\x64\
-
-Use the cmd prompt.
-
-# Compiling copasi dependencies
-
-## macOS
+## Compiling copasi dependencies
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
+rm -rf bin/ tmp/ bin_darwin_x64/
 ./createOSX-qt5.sh
+mv bin/ bin_darwin_x64/
 cd ../../../
 ```
 
-## ubuntu
-
-```{bash, eval=FALSE}
-cd development/copasi-source/copasi-dependencies/
-./createLinux.sh
-cd ../../../
-```
-
-## Windows:
-
-run:
-```
-cd development\copasi-source\copasi-dependencies\
-.\createX86_vs15_x64_release.bat
-cd ..\..\..\
-```
-
-# Compiling copasi from source
-
-## macOS, ubuntu
-
-```{bash, eval=FALSE}
-cd development/copasi-source/COPASI/
-./gitTools/UpdateCopasiVersion
-cd ../
-mkdir build_copasi_r_bindings
-cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
-make
-cd ../../../
-```
-
-## Windows
-
-to update Copasi Version, use git bash for example:
-
-```
-cd development/copasi-source/COPASI/
-./gitTools/UpdateCopasiVersion
-cd ../../..
-```
-
-run:
-```
-cd development\copasi-source\
-mkdir build_copasi_r_bindings
-cd build_copasi_r_bindings\
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" -DSWIG_EXECUTABLE="../swigwin/swig.exe" -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ../COPASI
-ninja
-```
-
-# (Optionally) rebuild all for release
-
-## macOS
+## Compiling copasi from source
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-rm -r build_copasi_r_bindings/
-cd copasi-dependencies/
-rm -r tmp/ bin/
-./createOSX-qt5.sh
-cd ../COPASI/
-./gitTools/UpdateCopasiVersion
-cd ../
-mkdir build_copasi_r_bindings
-cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+cp CopasiVersion.h COPASI/copasi/
+mkdir -p corc_darwin_x64/
+cd corc_darwin_x64/
+cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_GUI=OFF \
+  -DBUILD_SE=OFF \
+  -DENABLE_R=ON \
+  -DR_USE_DYNAMIC_LOOKUP=ON \
+  -DENABLE_NEW_PARSER=OFF \
+  -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
+  ../COPASI/
 make
-cd ../../../
+
+cd ../
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x64.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
+cd ../../
 ```
 
-## ubuntu
+## (Optionally) rebuild all for release
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-rm -r build_copasi_r_bindings/
+
 cd copasi-dependencies/
-rm -r tmp/ bin/
-./createLinux.sh
-cd ../COPASI/
-./gitTools/UpdateCopasiVersion
-cd ../
-mkdir build_copasi_r_bindings
-cd build_copasi_r_bindings/
-cmake -DBUILD_GUI=OFF -DBUILD_SE=OFF -DENABLE_R=ON -DR_USE_DYNAMIC_LOOKUP=ON -DENABLE_NEW_PARSER=OFF -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin ../COPASI
+rm -rf bin/ tmp/ bin_darwin_x64/
+./createOSX-qt5.sh
+mv bin/ bin_darwin_x64/
+
+cp CopasiVersion.h COPASI/copasi/
+rm -rf corc_darwin_x64/
+mkdir corc_darwin_x64/
+cd corc_darwin_x64/
+cmake \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_GUI=OFF \
+  -DBUILD_SE=OFF \
+  -DENABLE_R=ON \
+  -DR_USE_DYNAMIC_LOOKUP=ON \
+  -DENABLE_NEW_PARSER=OFF \
+  -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
+  ../COPASI/
 make
-cd ../../../
+
+cd ../
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x64.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
+cd ../../
 ```
 
-# (Optionally) Build GUI
-
-## macOS
+## (Optionally) Build GUI
 
 Instructions build on top of already compiled R bindings.
 
@@ -189,18 +127,95 @@ Build dependencies:
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
 export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
+rm -rf bin/ tmp/ bin_darwin_x64/
 ./createOSX-qt5.sh
+mv bin/ bin_darwin_x64/
 cd ../../../
 ```
 
 Build GUI:
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/build_copasi_r_bindings/
+cd development/copasi-source/build_copasi_r_binding/
 export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
-cmake -DBUILD_GUI=ON -DSELECT_QT=Qt5 -DQT5_USE_WEBENGINE=ON .
+cmake \
+  -DBUILD_GUI=ON \
+  -DSELECT_QT=Qt5 \
+  -DQT5_USE_WEBENGINE=ON \
+  .
 make
 cd ../../../
+```
+
+# Windows
+
+## Dependencies for compilation of the copasi sources
+
+Use chocolatey to install:
+
+```
+choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable wget
+```
+
+Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
+Manually get the Rlib (Rlib.lib) files for your current R Version and put it in e.g.: development\copasi-source\r-3.4.1-import-lib\x64\
+
+Use the cmd prompt.
+
+## Compiling copasi dependencies
+
+run:
+```
+cd development\copasi-source\copasi-dependencies\
+.\createX86_vs15_x64_release.bat
+cd ..\..\..\
+```
+
+## Compiling copasi from source
+
+run:
+```
+cd development\copasi-source\
+cp CopasiVersion.h COPASI/copasi/
+mkdir -p corc_windows_x64
+cd corc_windows_x64\
+call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+cmake \
+  -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=cl \
+  -DCMAKE_CXX_COMPILER=cl \
+  -DBUILD_GUI=OFF \
+  -DBUILD_SE=OFF \
+  -DENABLE_R=ON \
+  -DENABLE_NEW_PARSER=OFF \
+  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" \
+  -DSWIG_EXECUTABLE="../swigwin/swig.exe" \
+  -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" \
+  -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" \
+  -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" \
+  ../COPASI
+ninja
+```
+
+# linux
+
+Install docker CE and get docker permissions for your user.
+
+## Full
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+./build_linux_clean.sh
+cd ../../
+```
+
+## Quick
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+./build_linux_x64_clean.sh
+cd ../../
 ```
 
 # Copying the relevant file into the package repository
@@ -218,6 +233,7 @@ devtools::install("..")
 # Getting the current hash for the binary (update it in CoRC.R)
 
 ```{r, eval=FALSE}
-digest::digest(paste0("copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext), algo = "sha256", file = TRUE)
+for (file in list.files("copasi-source/libs", full.names = T))
+  cat(file, "\t", digest::digest(file, algo = "sha256", file = TRUE), "\n")
 ```
 

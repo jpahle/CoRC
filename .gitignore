@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 *.DS_Store
-development/copasi-source/build_copasi_r_bindings/
+development/copasi-source/corc_*_*/
+development/copasi-source/compilers/corc_compiler_*_*
+development/copasi-source/libs/
 development/*.nb.html
 inst/doc
