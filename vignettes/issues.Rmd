@@ -33,14 +33,13 @@ loadExamples(1)
 
 Todo:
 
-* Fix copasi version
 * Add model events
-* Compile in a way that it can run on bioquant cluster
 * Add more copasi tasks
 * Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)
 * (Internal) Code marked with 'TODO' for minor problems
 * Add test set with testthat
 * Check if installation can be as easy as with stringi package
+* Consider only ever using setcompileflag instead of compiling
 
 Issues:
 
