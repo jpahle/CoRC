@@ -15,7 +15,7 @@ set.seed(1)
 
 ## Overview
 
-Development Stage: **ALPHA**
+Development Stage: **Internal Beta**
 
 CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)).
 It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface.
