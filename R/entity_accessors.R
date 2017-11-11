@@ -134,32 +134,37 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   # Do this as assertion before we start changing values
   cl_metabs <- species_obj(key %||% character(), c_datamodel)
   
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_metabs, FALSE)
+  do_name                  <- ifelse(is.null(name),                  false_vec, !is.na(name))
+  do_type                  <- ifelse(is.null(type),                  false_vec, !is.na(type))
+  do_compartment           <- ifelse(is.null(compartment),           false_vec, !is.na(compartment))
+  do_initial_concentration <- ifelse(is.null(initial_concentration), false_vec, !is.na(initial_concentration))
+  do_initial_number        <- ifelse(is.null(initial_number),        false_vec, !is.na(initial_number))
+  do_initial_expression    <- ifelse(is.null(initial_expression),    false_vec, !is.na(initial_expression))
+  do_expression            <- ifelse(is.null(expression),            false_vec, !is.na(expression))
+
+  # cut pointless actions
+  do_initial_concentration <- do_initial_concentration & !do_initial_number & !do_initial_expression
+  do_initial_number        <- do_initial_number & !do_initial_expression
+  
   # assemble compartments
-  if (!is.null(compartment)) {
-    comps_to_write <- !is.na(compartment)
-    
-    cl_comps_new <- vector("list", length(key))
-    cl_comps_new[comps_to_write] <- compartment_obj(compartment[comps_to_write], c_datamodel)
+  if (any(do_compartment)) {
+    cl_comps_new <- list_along(cl_metabs)
+    cl_comps_new[do_compartment] <- compartment_obj(compartment[do_compartment], c_datamodel)
   }
   
-  if (!is.null(type))
-    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode")))
+  if (any(do_type))
+    type <-
+      type %>%
+      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode"))) %>%
+      toupper()
   
-  if (!is.null(initial_expression)) {
-    do_iexpr <- !is.na(initial_expression)
-    initial_expression[do_iexpr] <- write_expr(initial_expression[do_iexpr], c_datamodel)
-    # TODO
-    # don't set initial values if they are supposed to have an initial_expression
-    if (!is.null(initial_concentration))
-      initial_concentration[do_iexpr] <- NA_real_
-    if (!is.null(initial_number))
-      initial_number[do_iexpr] <- NA_real_
-  }
+  if (any(do_initial_expression))
+    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
   
-  if (!is.null(expression)) {
-    do_expr <- !is.na(expression)
-    expression[do_expr] <- write_expr(expression[do_expr], c_datamodel)
-  }
+  if (any(do_expression))
+    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -172,107 +177,79 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   c_model <- c_datamodel$getModel()
   
   # apply names
-  if (!is.null(name)) {
-    walk2(
-      cl_metabs, name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
-  }
+  for (i in which(do_name))
+    cl_metabs[[i]]$setObjectName(name[i])
   
   # apply compartments
-  if (!is.null(compartment)) {
-    comp_changed <- FALSE
-    pwalk(
-      list(c_metab = cl_metabs, write = comps_to_write, c_comp_new = cl_comps_new),
-      function(c_metab, write, c_comp_new) {
-        if (write && c_metab$getCompartment()$getKey() != c_comp_new$getKey()) {
-          assert_that(
-            grab_msg(c_comp_new$addMetabolite(c_metab)),
-            msg = "Failed to move species."
-          )
-          # remove from old compartment by name (by pointer is not exported by swig.)
-          # looks like there is some method that will remove the metab when adding it to another comp.
-          # c_comp_old$getMetabolites()$removeByName(c_metab$getObjectName())
-          comp_changed <<- TRUE
-        }
-      }
-    )
+  if (any(do_compartment)) {
+    comp_old_key <-
+      cl_metabs[do_compartment] %>%
+      map_swig("getCompartment") %>%
+      map_swig_chr("getKey")
     
-    if (comp_changed) {
+    comp_new_key <-
+      cl_comps_new[do_compartment] %>%
+      map_swig_chr("getKey")
+    
+    comp_changed <- rep_along(cl_metabs, FALSE)
+    comp_changed[do_compartment] <- comp_old_key != comp_new_key
+    
+    if (any(comp_changed)) {
+      for (i in which(comp_changed))
+        assert_that(
+          grab_msg(cl_comps_new[[i]]$addMetabolite(cl_metabs[[i]])),
+          msg = "Failed to move species."
+        )
+        # remove from old compartment by name (by pointer is not exported by swig.)
+        # looks like there is some method that will remove the metab when adding it to another comp.
+        # cl_comps_old[[i]]$getMetabolites()$removeByName(cl_metabs[[i]]$getObjectName())
+      
       c_model$initializeMetabolites()
       c_model$setCompileFlag()
     }
   }
   
   # apply types
-  if (!is.null(type)) {
-    walk2(
-      cl_metabs, toupper(type),
-      ~ if (!is.na(.y)) .x$setStatus(.y)
-    )
-  }
+  for (i in which(do_type))
+    cl_metabs[[i]]$setStatus(type[i])
   
-  # apply concentrations
-  if (!is.null(initial_concentration)) {
-    # # TODO
+  # apply initial concentrations
+  if (any(do_initial_concentration)) {
     # clear initial expression because they are in the way
-    walk2(
-      cl_metabs, initial_concentration,
-      ~ if (!is.na(.y)) .x$setInitialExpression("")
-    )
+    walk_swig(cl_metabs[do_initial_concentration], "setInitialExpression", "")
     c_model$updateInitialValues("Concentration")
-    walk2(
-      cl_metabs, initial_concentration,
-      ~ if (!is.na(.y)) .x$setInitialConcentration(.y)
-    )
+    
+    for (i in which(do_initial_concentration))
+      cl_metabs[[i]]$setInitialConcentration(initial_concentration[i])
+    
     c_model$updateInitialValues("Concentration")
   }
   
-  # apply particlenum
-  if (!is.null(initial_number)) {
-    # # TODO
+  # apply initial particlenum
+  if (any(do_initial_number)) {
     # clear initial expression because they are in the way
-    walk2(
-      cl_metabs, initial_number,
-      ~ if (!is.na(.y)) .x$setInitialExpression("")
-    )
+    walk_swig(cl_metabs[do_initial_number], "setInitialExpression", "")
     c_model$updateInitialValues("ParticleNumbers")
-    walk2(
-      cl_metabs, initial_number,
-      ~ if (!is.na(.y)) .x$setInitialValue(.y)
-    )
+    
+    for (i in which(do_initial_number))
+      cl_metabs[[i]]$setInitialValue(initial_number[i])
+    
     c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply initial expressions
-  if (!is.null(initial_expression)) {
-    walk2(
-      cl_metabs, initial_expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setInitialExpression(.y)$isSuccess()),
-            msg = "Failed when applying an initial expression."
-          )
-        }
-      }
+  for (i in which(do_initial_expression))
+    assert_that(
+      grab_msg(cl_metabs[[i]]$setInitialExpression(initial_expression[i])$isSuccess()),
+      msg = "Failed when applying an initial expression."
     )
-  }
   
   # apply expressions
-  if (!is.null(expression)) {
-    walk2(
-      cl_metabs, expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setExpression(.y)$isSuccess()),
-            msg = "Failed when applying an expression."
-          )
-        }
-      }
+  for (i in which(do_expression))
+    assert_that(
+      grab_msg(cl_metabs[[i]]$setExpression(expression[i])$isSuccess()),
+      msg = "Failed when applying an expression."
     )
-  }
   
   c_model$compileIfNecessary()
   
@@ -403,22 +380,28 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   # Do this as assertion before we start changing values
   cl_quants <- quantity_obj(key %||% character(), c_datamodel)
   
-  if (!is.null(type))
-    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_quants, FALSE)
+  do_name               <- ifelse(is.null(name),               false_vec, !is.na(name))
+  do_type               <- ifelse(is.null(type),               false_vec, !is.na(type))
+  do_initial_value      <- ifelse(is.null(initial_value),      false_vec, !is.na(initial_value))
+  do_initial_expression <- ifelse(is.null(initial_expression), false_vec, !is.na(initial_expression))
+  do_expression         <- ifelse(is.null(expression),         false_vec, !is.na(expression))
   
-  if (!is.null(initial_expression)) {
-    do_iexpr <- !is.na(initial_expression)
-    initial_expression[do_iexpr] <- write_expr(initial_expression[do_iexpr], c_datamodel)
-    # TODO
-    # don't set initial values if they are supposed to have an initial_expression
-    if (!is.null(initial_value))
-      initial_value[do_iexpr] <- NA_real_
-  }
+  # cut pointless actions
+  do_initial_value <- do_initial_value & !do_initial_expression
   
-  if (!is.null(expression)) {
-    do_expr <- !is.na(expression)
-    expression[do_expr] <- write_expr(expression[do_expr], c_datamodel)
-  }
+  if (any(type))
+    type <-
+      type %>%
+      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
+      toupper()
+  
+  if (any(do_initial_expression))
+    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
+  
+  if (any(do_expression))
+    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -431,66 +414,37 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   c_model <- c_datamodel$getModel()
   
   # apply names
-  if (!is.null(name)) {
-    walk2(
-      cl_quants, name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
-  }
+  for (i in which(do_name))
+    cl_quants[[i]]$setObjectName(name[i])
   
   # apply types
-  if (!is.null(type)) {
-    walk2(
-      cl_quants, toupper(type),
-      ~ if (!is.na(.y)) .x$setStatus(.y)
-    )
-  }
+  for (i in which(do_type))
+    cl_quants[[i]]$setStatus(type[i])
   
-  # apply value
-  if (!is.null(initial_value)) {
-    # # TODO
+  # apply initial value
+  if (any(do_initial_value)) {
     # clear initial expression because they are in the way
-    walk2(
-      cl_quants, initial_value,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialExpression("")
-          .x$setInitialValue(.y)
-        }
-      }
-    )
+    walk_swig(cl_quants[do_initial_value], "setInitialExpression", "")
+    
+    for (i in which(do_initial_value))
+      cl_quants[[i]]$setInitialValue(initial_value[i])
+    
     c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply initial expressions
-  if (!is.null(initial_expression)) {
-    walk2(
-      cl_quants, initial_expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setInitialExpression(.y)$isSuccess()),
-            msg = "Failed when applying an initial expression."
-          )
-        }
-      }
+  for (i in which(do_initial_expression))
+    assert_that(
+      grab_msg(cl_quants[[i]]$setInitialExpression(initial_expression[i])$isSuccess()),
+      msg = "Failed when applying an initial expression."
     )
-  }
   
   # apply expressions
-  if (!is.null(expression)) {
-    walk2(
-      cl_quants, expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setExpression(.y)$isSuccess()),
-            msg = "Failed when applying an expression."
-          )
-        }
-      }
+  for (i in which(do_expression))
+    assert_that(
+      grab_msg(cl_quants[[i]]$setExpression(expression[i])$isSuccess()),
+      msg = "Failed when applying an expression."
     )
-  }
   
   c_model$compileIfNecessary()
   
@@ -621,22 +575,28 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # Do this as assertion before we start changing values
   cl_comps <- compartment_obj(key %||% character(), c_datamodel)
   
-  if (!is.null(type))
-    type <- map_chr(type, function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode")))
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_comps, FALSE)
+  do_name               <- ifelse(is.null(name),               false_vec, !is.na(name))
+  do_type               <- ifelse(is.null(type),               false_vec, !is.na(type))
+  do_initial_size       <- ifelse(is.null(initial_size),       false_vec, !is.na(initial_size))
+  do_initial_expression <- ifelse(is.null(initial_expression), false_vec, !is.na(initial_expression))
+  do_expression         <- ifelse(is.null(expression),         false_vec, !is.na(expression))
   
-  if (!is.null(initial_expression)) {
-    do_iexpr <- !is.na(initial_expression)
-    initial_expression[do_iexpr] <- write_expr(initial_expression[do_iexpr], c_datamodel)
-    # TODO
-    # don't set initial values if they are supposed to have an initial_expression
-    if (!is.null(initial_size))
-      initial_size[do_iexpr] <- NA_real_
-  }
+  # cut pointless actions
+  do_initial_size <- do_initial_size & !do_initial_expression
   
-  if (!is.null(expression)) {
-    do_expr <- !is.na(expression)
-    expression[do_expr] <- write_expr(expression[do_expr], c_datamodel)
-  }
+  if (any(type))
+    type <-
+      type %>%
+      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
+      toupper()
+  
+  if (any(do_initial_expression))
+    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
+  
+  if (any(do_expression))
+    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -649,64 +609,37 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   c_model <- c_datamodel$getModel()
   
   # apply names
-  if (!is.null(name)) {
-    walk2(
-      cl_comps, name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
-  }
+  for (i in which(do_name))
+    cl_comps[[i]]$setObjectName(name[i])
   
   # apply types
-  if (!is.null(type)) {
-    walk2(
-      cl_comps, toupper(type),
-      ~ if (!is.na(.y)) .x$setStatus(.y)
-    )
-  }
+  for (i in which(do_type))
+    cl_comps[[i]]$setStatus(type[i])
   
-  # apply volume
-  if (!is.null(initial_size)) {
-    walk2(
-      cl_comps, initial_size,
-      ~ {
-        if (!is.na(.y)) {
-          .x$setInitialExpression("")
-          .x$setInitialValue(.y)
-        }
-      }
-    )
+  # apply initial size
+  if (any(do_initial_size)) {
+    # clear initial expression because they are in the way
+    walk_swig(cl_comps[do_initial_size], "setInitialExpression", "")
+    
+    for (i in which(do_initial_size))
+      cl_comps[[i]]$setInitialValue(initial_size[i])
+    
     c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply initial expressions
-  if (!is.null(initial_expression)) {
-    walk2(
-      cl_comps, initial_expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setInitialExpression(.y)$isSuccess()),
-            msg = "Failed when applying an initial expression."
-          )
-        }
-      }
+  for (i in which(do_initial_expression))
+    assert_that(
+      grab_msg(cl_comps[[i]]$setInitialExpression(initial_expression[i])$isSuccess()),
+      msg = "Failed when applying an initial expression."
     )
-  }
   
   # apply expressions
-  if (!is.null(expression)) {
-    walk2(
-      cl_comps, expression,
-      ~ {
-        if (!is.na(.y)) {
-          assert_that(
-            grab_msg(.x$setExpression(.y)$isSuccess()),
-            msg = "Failed when applying an expression."
-          )
-        }
-      }
+  for (i in which(do_expression))
+    assert_that(
+      grab_msg(cl_comps[[i]]$setExpression(expression[i])$isSuccess()),
+      msg = "Failed when applying an expression."
     )
-  }
   
   c_model$compileIfNecessary()
   
@@ -799,6 +732,10 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   # Do this as assertion before we start changing values
   cl_reacts <- reaction_obj(key %||% character(), c_datamodel)
   
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_reacts, FALSE)
+  do_name <- ifelse(is.null(name), false_vec, !is.na(name))
+
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
@@ -808,12 +745,8 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
     return(invisible())
   
   # apply names
-  if (!is.null(name)) {
-    walk2(
-      cl_reacts, name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
-  }
+  for (i in which(do_name))
+    cl_reacts[[i]]$setObjectName(name[i])
   
   invisible()
 }
@@ -1183,14 +1116,23 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   # Do this as assertion before we start changing values
   cl_params <- parameter_obj(key %||% character(), c_datamodel)
   
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_params, FALSE)
+  do_name    <- ifelse(is.null(name),    false_vec, !is.na(name))
+  do_value   <- ifelse(is.null(value),   false_vec, !is.na(value))
+  do_mapping <- ifelse(is.null(mapping), false_vec, !is.na(mapping))
+
+  # cut pointless actions
+  do_value <- do_value & !do_mapping
+  do_param <- do_value | do_mapping
+
   # Do this as assertion before we start changing values
   # Makes sure mapping is either NA or a copasi key
-  if (!is.null(mapping)) {
-    mapping[!is.na(mapping)] <-
-      mapping[!is.na(mapping)] %>%
+  if (any(do_mapping))
+    mapping[do_mapping] <-
+      mapping[do_mapping] %>%
       quantity_obj(c_datamodel) %>%
       map_swig_chr("getKey")
-  }
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -1200,27 +1142,21 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   if (is_empty(cl_params))
     return(invisible())
   
-  # apply names
-  if (!is.null(name))
-    walk2(
-      cl_params, name,
-      ~ if (!is.na(.y)) .x$setObjectName(.y)
-    )
+  c_model <- c_datamodel$getModel()
   
-  # Parameters are only those of type "PARAMETER I think.
+  # apply names
+  for (i in which(do_name))
+    cl_params[[i]]$setObjectName(name[i])
+  
+  # Parameters are only those of type PARAMETER I think.
   # So I can safely set a value and make them local or set a mapping
   # as long as that mapping is a global quantity.
   # Changing the parameters directly seems to be unsafe.
   # The safe method seems to be to go back to the reaction and do manipulations from there.
   
-  # gather a vector of what to actually do work on
-  do_value <- ifelse(is.null(value), rep_along(cl_params, FALSE), !is.na(value))
-  do_mapping <- ifelse(is.null(mapping), rep_along(cl_params, FALSE), !is.na(mapping))
-  do_param <- do_value | do_mapping
-  
   # apply values
   if (any(do_param)) {
-    cl_reacts <- vector("list", length(cl_params))
+    cl_reacts <- list_along(cl_params)
     cl_reacts[do_param] <-
       cl_params[do_param] %>%
       map_swig("getObjectAncestor", "Reaction") %>%
@@ -1229,28 +1165,20 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
     names <- rep_along(cl_params, NA_character_)
     names[do_param] <- map_swig_chr(cl_params[do_param], "getObjectName")
     
-    if (any(do_value))
-      pwalk(
-        list(cl_reacts[do_value], names[do_value], value[do_value]),
-        function(c_react, name, val) {
-            c_react$setParameterValue(name, val)
-        }
-      )
+    for (i in which(do_value))
+      cl_reacts[[i]]$setParameterValue(names[i], value[i])
     
-    if (any(do_mapping))
-      pwalk(
-        list(cl_reacts[do_mapping], names[do_mapping], mapping[do_mapping]),
-        function(c_react, name, val) {
-            c_react$setParameterMapping(name, val)
-        }
-      )
+    for (i in which(do_mapping))
+      cl_reacts[[i]]$setParameterMapping(names[i], mapping[i])
     
     cl_reacts[do_param] %>%
       unique() %>%
       walk_swig("compile")
+    
+    c_model$setCompileFlag()
   }
   
-  c_datamodel$getModel()$compileIfNecessary()
+  c_model$compileIfNecessary()
   
   invisible()
 }

@@ -33,8 +33,7 @@ loadExamples(1)
 
 Todo:
 
-* (Internal) Remove workaround for removal of initialExpressions
-* Fix setParameter
+* Fix copasi version
 * Add model events
 * Compile in a way that it can run on bioquant cluster
 * Add more copasi tasks
@@ -42,7 +41,6 @@ Todo:
 * (Internal) Code marked with 'TODO' for minor problems
 * Add test set with testthat
 * Check if installation can be as easy as with stringi package
-* (Internal) Are tasks always there?
 
 Issues:
 
@@ -50,14 +48,6 @@ Issues:
 * some S3 classes should have reconstruct functions (hadley/sloop)
 * getListOfPossibleFunctions only returns bare pointer
 * Can't abort running tasks
-
-# Errors when loading repeatedly
-
-```{r}
-loadModel("data/ERKModel5.cps")
-unloadAllModels()
-loadModel("data/ERKModel5.cps")
-```
 
 # Function naming is lacking a cohesive concept
 

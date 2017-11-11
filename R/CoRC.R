@@ -24,7 +24,7 @@
 #' @importFrom isnullptr isnullptr
 #' @importFrom rlang .data
 #' @importFrom stringr fixed coll regex
-#' @importFrom utils hasName head tail
+#' @importFrom utils head tail
 "_PACKAGE"
 
 # Output flag for tasks
@@ -57,7 +57,7 @@ pkg_env$cl_loaded_dms <- list()
   if (getNamespaceName(environment(library.dynam.unload)) == "devtools")
     libname <- .libPaths()
   
-  backports::import(pkgname, c("anyNA", "dir.exists", "hasName", "lengths"))
+  backports::import(pkgname, c("anyNA", "dir.exists", "lengths"))
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO

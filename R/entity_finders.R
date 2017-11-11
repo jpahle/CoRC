@@ -89,7 +89,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
   if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
   else
-    matches <- vector("list", length(key))
+    matches <- list_along(key)
   
   matched <- lengths(matches) == 1L
   
@@ -195,7 +195,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
   if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
   else
-    matches <- vector("list", length(key))
+    matches <- list_along(key)
   
   matched <- lengths(matches) == 1L
   
@@ -301,7 +301,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
   if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
   else
-    matches <- vector("list", length(key))
+    matches <- list_along(key)
   
   matched <- lengths(matches) == 1L
   
@@ -407,7 +407,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
   if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
   else
-    matches <- vector("list", length(key))
+    matches <- list_along(key)
   
   matched <- lengths(matches) == 1L
   
@@ -519,7 +519,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
   if (!inherits(key, "regex"))
     matches <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
   else
-    matches <- vector("list", length(key))
+    matches <- list_along(key)
   
   matched <- lengths(matches) == 1L
   
@@ -619,10 +619,6 @@ kinfunction_obj <- function(key) {
   
   c_fun_db <- CRootContainer_getFunctionList()
   
-  matches <- vector("list", length(key))
-  
-  matched <- rep_along(key, FALSE)
-  
   info <- "functions(s)"
   cl_funs <- c_fun_db$loadedFunctions() %>% get_cdv()
   keys_model <- get_key(cl_funs)
@@ -631,7 +627,7 @@ kinfunction_obj <- function(key) {
   
   # find full matches to ObjectDisplayName
   # str_replace as hack to find complete matches
-  matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(keys_model, .x, "") == ""))
+  matches <- map(key_l, ~ which(stringr::str_replace(keys_model, .x, "") == ""))
   matched <- lengths(matches) == 1L
   
   if (!all(matched)) {
