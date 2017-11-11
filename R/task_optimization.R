@@ -46,6 +46,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
   do_method <- !is_empty(method_settings)
   do_parameters <- !is_empty(parameter_list)
   
+  c_model <- c_datamodel$getModel()
+  
   tryCatch({
     # save all previous settings
     if (do_settings)
@@ -69,6 +71,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
       set_method_settings(method_settings, c_method)
     if (do_parameters)
       addOptimizationParameter(parameter_list, model = c_datamodel)
+    
+    c_model$compileIfNecessary()
     
     # initialize task
     assert_that(

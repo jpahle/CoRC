@@ -27,6 +27,7 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   
+  c_model <- c_datamodel$getModel()
   c_method <- as(c_task$getMethod(), "_p_CLNAMethod")
   
   # save all previous settings
@@ -41,6 +42,8 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
       lna_set_settings(settings, c_task)
     if (do_method)
       set_method_settings(method_settings, c_method)
+    
+    c_model$compileIfNecessary()
     
     # initialize task
     assert_that(

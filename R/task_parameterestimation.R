@@ -43,6 +43,8 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
   do_parameters <- !is_empty(parameter_list)
   do_experiments <- !is_empty(experiment_list)
   
+  c_model <- c_datamodel$getModel()
+  
   tryCatch({
     # save all previous settings
     if (do_settings)
@@ -68,6 +70,8 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
       addParameterEstimationParameter(parameter_list, model = c_datamodel)
     if (do_experiments)
       addExperiments(experiment_list, model = c_datamodel)
+    
+    c_model$compileIfNecessary()
     
     # initialize task
     assert_that(

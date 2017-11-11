@@ -136,17 +136,17 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_metabs, FALSE)
-  do_name                  <- ifelse(is.null(name),                  false_vec, !is.na(name))
-  do_type                  <- ifelse(is.null(type),                  false_vec, !is.na(type))
-  do_compartment           <- ifelse(is.null(compartment),           false_vec, !is.na(compartment))
-  do_initial_concentration <- ifelse(is.null(initial_concentration), false_vec, !is.na(initial_concentration))
-  do_initial_number        <- ifelse(is.null(initial_number),        false_vec, !is.na(initial_number))
-  do_initial_expression    <- ifelse(is.null(initial_expression),    false_vec, !is.na(initial_expression))
-  do_expression            <- ifelse(is.null(expression),            false_vec, !is.na(expression))
+  if (is.null(name))                  do_name                  <- false_vec else do_name                  <- !is.na(name)
+  if (is.null(type))                  do_type                  <- false_vec else do_type                  <- !is.na(type)
+  if (is.null(compartment))           do_compartment           <- false_vec else do_compartment           <- !is.na(compartment)
+  if (is.null(initial_concentration)) do_initial_concentration <- false_vec else do_initial_concentration <- !is.na(initial_concentration)
+  if (is.null(initial_number))        do_initial_number        <- false_vec else do_initial_number        <- !is.na(initial_number)
+  if (is.null(initial_expression))    do_initial_expression    <- false_vec else do_initial_expression    <- !is.na(initial_expression)
+  if (is.null(expression))            do_expression            <- false_vec else do_expression            <- !is.na(expression)
 
   # cut pointless actions
-  do_initial_concentration <- do_initial_concentration & !do_initial_number & !do_initial_expression
-  do_initial_number        <- do_initial_number & !do_initial_expression
+  do_initial_concentration <- do_initial_concentration & !do_initial_number     & !do_initial_expression
+  do_initial_number        <- do_initial_number        & !do_initial_expression
   
   # assemble compartments
   if (any(do_compartment)) {
@@ -382,11 +382,11 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_quants, FALSE)
-  do_name               <- ifelse(is.null(name),               false_vec, !is.na(name))
-  do_type               <- ifelse(is.null(type),               false_vec, !is.na(type))
-  do_initial_value      <- ifelse(is.null(initial_value),      false_vec, !is.na(initial_value))
-  do_initial_expression <- ifelse(is.null(initial_expression), false_vec, !is.na(initial_expression))
-  do_expression         <- ifelse(is.null(expression),         false_vec, !is.na(expression))
+  if (is.null(name))                  do_name               <- false_vec else do_name               <- !is.na(name)
+  if (is.null(type))                  do_type               <- false_vec else do_type               <- !is.na(type)
+  if (is.null(initial_value))         do_initial_value      <- false_vec else do_initial_value      <- !is.na(initial_value)
+  if (is.null(initial_expression))    do_initial_expression <- false_vec else do_initial_expression <- !is.na(initial_expression)
+  if (is.null(expression))            do_expression         <- false_vec else do_expression         <- !is.na(expression)
   
   # cut pointless actions
   do_initial_value <- do_initial_value & !do_initial_expression
@@ -577,11 +577,11 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_comps, FALSE)
-  do_name               <- ifelse(is.null(name),               false_vec, !is.na(name))
-  do_type               <- ifelse(is.null(type),               false_vec, !is.na(type))
-  do_initial_size       <- ifelse(is.null(initial_size),       false_vec, !is.na(initial_size))
-  do_initial_expression <- ifelse(is.null(initial_expression), false_vec, !is.na(initial_expression))
-  do_expression         <- ifelse(is.null(expression),         false_vec, !is.na(expression))
+  if (is.null(name))                  do_name               <- false_vec else do_name               <- !is.na(name)
+  if (is.null(type))                  do_type               <- false_vec else do_type               <- !is.na(type)
+  if (is.null(initial_size))          do_initial_size       <- false_vec else do_initial_size       <- !is.na(initial_size)
+  if (is.null(initial_expression))    do_initial_expression <- false_vec else do_initial_expression <- !is.na(initial_expression)
+  if (is.null(expression))            do_expression         <- false_vec else do_expression         <- !is.na(expression)
   
   # cut pointless actions
   do_initial_size <- do_initial_size & !do_initial_expression
@@ -734,7 +734,7 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_reacts, FALSE)
-  do_name <- ifelse(is.null(name), false_vec, !is.na(name))
+  if (is.null(name))                  do_name                  <- false_vec else do_name                  <- !is.na(name)
 
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -1118,10 +1118,10 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_params, FALSE)
-  do_name    <- ifelse(is.null(name),    false_vec, !is.na(name))
-  do_value   <- ifelse(is.null(value),   false_vec, !is.na(value))
-  do_mapping <- ifelse(is.null(mapping), false_vec, !is.na(mapping))
-
+  if (is.null(name))    do_name    <- false_vec else do_name    <- !is.na(name)
+  if (is.null(value))   do_value   <- false_vec else do_value   <- !is.na(value)
+  if (is.null(mapping)) do_mapping <- false_vec else do_mapping <- !is.na(mapping)
+  
   # cut pointless actions
   do_value <- do_value & !do_mapping
   do_param <- do_value | do_mapping

@@ -41,6 +41,8 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   
+  c_model <- c_datamodel$getModel()
+  
   tryCatch({
     # save all previous settings
     if (do_settings)
@@ -62,6 +64,8 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
       tc_set_settings(settings, c_task)
     if (do_method)
       set_method_settings(method_settings, c_method)
+    
+    c_model$compileIfNecessary()
     
     # initialize task
     assert_that(
