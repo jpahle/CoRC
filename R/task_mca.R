@@ -43,7 +43,7 @@ runMetabolicControlAnalysis <- function(perform_steady_state_analysis = NULL, ex
     if (do_method)
       set_method_settings(method_settings, c_method)
     
-    c_model$compileIfNecessary()
+    grab_msg(c_model$compileIfNecessary())
     
     # initialize task
     assert_that(

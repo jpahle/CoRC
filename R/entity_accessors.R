@@ -251,7 +251,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
       msg = "Failed when applying an expression."
     )
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -446,7 +446,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
       msg = "Failed when applying an expression."
     )
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -641,7 +641,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
       msg = "Failed when applying an expression."
     )
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -827,7 +827,7 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
   
   c_reacti$writeBackToReaction(c_react)
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -891,7 +891,7 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   
   c_reacti$writeBackToReaction(c_react)
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -1178,7 +1178,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
     c_model$setCompileFlag()
   }
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }

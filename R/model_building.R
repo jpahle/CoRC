@@ -83,7 +83,7 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     base::stop(e)
   })
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   get_key(c_metab, is_species = TRUE)
 }
@@ -105,7 +105,7 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeMetabolite(.x))
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -175,7 +175,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
     base::stop(e)
   })
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   get_key(c_quant)
 }
@@ -197,7 +197,7 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeModelValue(.x))
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -264,7 +264,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
     base::stop(e)
   })
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   get_key(c_comp)
 }
@@ -286,7 +286,7 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeCompartment(.x))
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }
@@ -342,7 +342,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
     }
   )
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   dn
 }
@@ -364,7 +364,7 @@ deleteReaction <- function(key, model = getCurrentModel()) {
     unique() %>%
     walk(~ c_model$removeReaction(.x))
   
-  c_model$compileIfNecessary()
+  grab_msg(c_model$compileIfNecessary())
   
   invisible()
 }

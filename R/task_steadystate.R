@@ -47,7 +47,7 @@ runSteadyState <- function(calculate_jacobian = NULL, perform_stability_analysis
     if (do_method)
       set_method_settings(method_settings, c_method)
     
-    c_model$compileIfNecessary()
+    grab_msg(c_model$compileIfNecessary())
     
     # initialize task
     assert_that(
