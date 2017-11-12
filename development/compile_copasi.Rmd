@@ -179,26 +179,32 @@ cd ..\..\..\
 run:
 ```
 cd development\copasi-source\
-cp CopasiVersion.h COPASI/copasi/
-mkdir -p corc_windows_x64
+cp CopasiVersion.h COPASI\copasi\
+mkdir corc_windows_x64\
 cd corc_windows_x64\
 call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-cmake \
-  -G Ninja \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=cl \
-  -DCMAKE_CXX_COMPILER=cl \
-  -DBUILD_GUI=OFF \
-  -DBUILD_SE=OFF \
-  -DENABLE_R=ON \
-  -DENABLE_NEW_PARSER=OFF \
-  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release" \
-  -DSWIG_EXECUTABLE="../swigwin/swig.exe" \
-  -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.1/include" \
-  -DR_INTERPRETER="C:/Program Files/R/R-3.4.1/bin/R.exe" \
-  -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" \
-  ../COPASI
+cmake -G Ninja ^
+  -DCMAKE_BUILD_TYPE=Release ^
+  -DCMAKE_C_COMPILER=cl ^
+  -DCMAKE_CXX_COMPILER=cl ^
+  -DBUILD_GUI=OFF ^
+  -DBUILD_SE=OFF ^
+  -DENABLE_R=ON ^
+  -DENABLE_NEW_PARSER=OFF ^
+  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
+  -DSWIG_EXECUTABLE="../swigwin/swig.exe" ^
+  -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.2/include/" ^
+  -DR_INTERPRETER="C:/Program Files/R/R-3.4.2/bin/R.exe" ^
+  -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ^
+  ../COPASI/
 ninja
+
+cd ..\
+mkdir libs\
+cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x64.dll
+cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI.dll
+cp corc_windows_x64\copasi\bindings\R\COPASI.R libs\swig_wrapper.R
+cd ..\..\
 ```
 
 # linux
@@ -215,9 +221,11 @@ cd ../../
 
 ## Quick
 
+Requires copasi-dependencies to be compiled already.
+
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-./build_linux_x64_clean.sh
+./build_linux_x64_quick.sh
 cd ../../
 ```
 

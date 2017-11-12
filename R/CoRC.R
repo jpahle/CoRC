@@ -36,7 +36,7 @@ COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/1fa65656d534568b9d03e
 COPASI_BIN_VERSION <- 8L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    windows = "7dd534d7b5e4b9fbb63e96d093dc51a694ad811c5009f935983399ba9f0123f5",
+    windows = "343d69a8211abde42605bb1641f6b3b90d129e2f15cef978d9cfb838cc9c9ab2",
     darwin = "001128cbb60494513f6ef72de3912d1e248654dac046f1879e4a61b9bfdc7c8b",
     unix = "f465bf6ea2016c2e8b33019de05d868095bf61944296dc1be07b26919614e252"
   )
