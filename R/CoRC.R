@@ -156,11 +156,14 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       }
     }
     
+    # TODO
+    archfix <- arch
+    if (archfix == "x86_64") archfix <- "x64"
     dlurl <- paste0(
       "http://juergen.pahle.de/CoRC_libs/",
       "v", COPASI_BIN_VERSION, "/",
       "COPASI_", os,
-      "_", arch,
+      "_", archfix,
       .Platform$dynlib.ext
     )
     
