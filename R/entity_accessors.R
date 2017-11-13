@@ -20,7 +20,7 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   
   types <- map_swig_chr(cl_metabs, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_metabs, NA_character_)
   initial_expressions[has_init_expression] <-
@@ -68,7 +68,7 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   
   types <- map_swig_chr(cl_metabs, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_metabs, NA_character_)
   initial_expressions[has_init_expression] <-
@@ -278,7 +278,7 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
   
   types <- map_swig_chr(cl_quants, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_quants, NA_character_)
   initial_expressions[has_init_expression] <-
@@ -322,7 +322,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
   
   types <- map_swig_chr(cl_quants, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_quants, NA_character_)
   initial_expressions[has_init_expression] <-
@@ -473,7 +473,7 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
   
   types <- map_swig_chr(cl_comps, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_comps, NA_character_)
   initial_expressions[has_init_expression] <-
@@ -517,7 +517,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   
   types <- map_swig_chr(cl_comps, "getStatus")
   has_init_expression <- types != "ASSIGNMENT"
-  has_expression <- !has_init_expression || (types == "ODE")
+  has_expression <- !has_init_expression | (types == "ODE")
   
   initial_expressions <- rep_along(cl_comps, NA_character_)
   initial_expressions[has_init_expression] <-
