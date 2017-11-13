@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.19 (Build 140) (http://www.copasi.org) at 2017-07-25 10:58:05 UTC -->
+<!-- generated with COPASI 4.22 (Build 170) (http://www.copasi.org) at 2017-11-13 13:10:56 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
-<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="19" versionDevel="140" copasiSourcesModified="0">
+<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="22" versionDevel="170" copasiSourcesModified="0">
   <ListOfFunctions>
     <Function key="Function_6" name="Constant flux (irreversible)" type="PreDefined" reversible="false">
       <Expression>
@@ -36,12 +36,12 @@ Reaction scheme where the products are created from the reactants and the change
       </ListOfParameterDescriptions>
     </Function>
   </ListOfFunctions>
-  <Model key="Model_3" name="Simple test with non-unique object names." simulationType="time" timeUnit="s" volumeUnit="ml" areaUnit="m²" lengthUnit="m" quantityUnit="mmol" type="deterministic" avogadroConstant="6.022140857e+23">
+  <Model key="Model_1" name="Simple test with non-unique object names." simulationType="time" timeUnit="s" volumeUnit="ml" areaUnit="m²" lengthUnit="m" quantityUnit="mmol" type="deterministic" avogadroConstant="6.0221408570000002e+23">
     <MiriamAnnotation>
 <rdf:RDF
    xmlns:dcterms="http://purl.org/dc/terms/"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Model_3">
+  <rdf:Description rdf:about="#Model_1">
     <dcterms:created>
       <rdf:Description>
         <dcterms:W3CDTF>2017-06-28T11:17:53Z</dcterms:W3CDTF>
@@ -52,16 +52,22 @@ Reaction scheme where the products are created from the reactants and the change
 
     </MiriamAnnotation>
     <ListOfCompartments>
-      <Compartment key="Compartment_1" name="Ca" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_0" name="Ca" simulationType="fixed" dimensionality="3">
       </Compartment>
-      <Compartment key="Compartment_3" name="inside" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_1" name="inside" simulationType="fixed" dimensionality="3">
+      </Compartment>
+      <Compartment key="Compartment_2" name="Ca1" simulationType="fixed" dimensionality="3">
+      </Compartment>
+      <Compartment key="Compartment_3" name="1" simulationType="fixed" dimensionality="3">
+      </Compartment>
+      <Compartment key="Compartment_4" name="2.5" simulationType="fixed" dimensionality="3">
       </Compartment>
     </ListOfCompartments>
     <ListOfMetabolites>
-      <Metabolite key="Metabolite_1" name="Ca" simulationType="reactions" compartment="Compartment_1">
+      <Metabolite key="Metabolite_0" name="Ca" simulationType="reactions" compartment="Compartment_0">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Metabolite_1">
+  <rdf:Description rdf:about="#Metabolite_0">
     <dcterms:created>
       <rdf:Description>
         <dcterms:W3CDTF>2017-06-28T11:20:58Z</dcterms:W3CDTF>
@@ -71,10 +77,10 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
       </Metabolite>
-      <Metabolite key="Metabolite_3" name="Ca" simulationType="reactions" compartment="Compartment_3">
+      <Metabolite key="Metabolite_1" name="Ca" simulationType="reactions" compartment="Compartment_1">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <rdf:Description rdf:about="#Metabolite_3">
+  <rdf:Description rdf:about="#Metabolite_1">
     <dcterms:created>
       <rdf:Description>
         <dcterms:W3CDTF>2017-06-28T11:20:59Z</dcterms:W3CDTF>
@@ -83,6 +89,14 @@ Reaction scheme where the products are created from the reactants and the change
   </rdf:Description>
 </rdf:RDF>
         </MiriamAnnotation>
+      </Metabolite>
+      <Metabolite key="Metabolite_2" name="1" simulationType="reactions" compartment="Compartment_0">
+      </Metabolite>
+      <Metabolite key="Metabolite_3" name="2.5" simulationType="reactions" compartment="Compartment_0">
+      </Metabolite>
+      <Metabolite key="Metabolite_4" name="Ca{}" simulationType="reactions" compartment="Compartment_0">
+      </Metabolite>
+      <Metabolite key="Metabolite_5" name="Ca1" simulationType="reactions" compartment="Compartment_0">
       </Metabolite>
     </ListOfMetabolites>
     <ListOfModelValues>
@@ -99,6 +113,12 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
       </ModelValue>
+      <ModelValue key="ModelValue_1" name="1" simulationType="fixed">
+      </ModelValue>
+      <ModelValue key="ModelValue_2" name="2.5" simulationType="fixed">
+      </ModelValue>
+      <ModelValue key="ModelValue_3" name="Ca1" simulationType="fixed">
+      </ModelValue>
     </ListOfModelValues>
     <ListOfReactions>
       <Reaction key="Reaction_0" name="Ca{inside} -> Ca" reversible="false" fast="false">
@@ -114,13 +134,13 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
         <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_3" stoichiometry="1"/>
+          <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfProducts>
-          <Product metabolite="Metabolite_1" stoichiometry="1"/>
+          <Product metabolite="Metabolite_0" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4463" name="k1" value="1"/>
+          <Constant key="Parameter_5005" name="k1" value="1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca]">
           <ListOfCallParameters>
@@ -128,7 +148,7 @@ Reaction scheme where the products are created from the reactants and the change
               <SourceParameter reference="ModelValue_0"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
-              <SourceParameter reference="Metabolite_3"/>
+              <SourceParameter reference="Metabolite_1"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
@@ -146,15 +166,15 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
         <ListOfProducts>
-          <Product metabolite="Metabolite_3" stoichiometry="1"/>
+          <Product metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_4462" name="v" value="0.1"/>
+          <Constant key="Parameter_5004" name="v" value="0.1"/>
         </ListOfConstants>
         <KineticLaw function="Function_6" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_49">
-              <SourceParameter reference="Parameter_4462"/>
+              <SourceParameter reference="Parameter_5004"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
@@ -172,21 +192,27 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
         <ListOfSubstrates>
-          <Substrate metabolite="Metabolite_1" stoichiometry="1"/>
+          <Substrate metabolite="Metabolite_0" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfConstants>
-          <Constant key="Parameter_4461" name="k1" value="0.1"/>
+          <Constant key="Parameter_5003" name="k1" value="0.1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_4461"/>
+              <SourceParameter reference="Parameter_5003"/>
             </CallParameter>
             <CallParameter functionParameter="FunctionParameter_79">
-              <SourceParameter reference="Metabolite_1"/>
+              <SourceParameter reference="Metabolite_0"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
+      </Reaction>
+      <Reaction key="Reaction_3" name="1" reversible="false" fast="false">
+      </Reaction>
+      <Reaction key="Reaction_4" name="2.5" reversible="false" fast="false">
+      </Reaction>
+      <Reaction key="Reaction_5" name="Ca1" reversible="false" fast="false">
       </Reaction>
     </ListOfReactions>
     <ListOfModelParameterSets activeSet="ModelParameterSet_1">
@@ -197,13 +223,23 @@ Reaction scheme where the products are created from the reactants and the change
         <ModelParameterGroup cn="String=Initial Compartment Sizes" type="Group">
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca]" value="1" type="Compartment" simulationType="fixed"/>
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside]" value="0.5" type="Compartment" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca1]" value="1" type="Compartment" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[1]" value="1" type="Compartment" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[2.5]" value="1" type="Compartment" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
-          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca]" value="6.022140856999986e+20" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca]" value="6.0221408569999858e+20" type="Species" simulationType="reactions"/>
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside],Vector=Metabolites[Ca]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[1]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[2.5]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca{}]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca1]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Global Quantities" type="Group">
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Values[Ca]" value="1" type="ModelValue" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Values[1]" value="0" type="ModelValue" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Values[2.5]" value="0" type="ModelValue" simulationType="fixed"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Values[Ca1]" value="0" type="ModelValue" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Kinetic Parameters" type="Group">
           <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[Ca{inside} -\> Ca]" type="Reaction">
@@ -214,24 +250,40 @@ Reaction scheme where the products are created from the reactants and the change
             </ModelParameter>
           </ModelParameterGroup>
           <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[-\> Ca{inside}]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[-\> Ca{inside}],ParameterGroup=Parameters,Parameter=v" value="0.1" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[-\> Ca{inside}],ParameterGroup=Parameters,Parameter=v" value="0.10000000000000001" type="ReactionParameter" simulationType="fixed"/>
           </ModelParameterGroup>
           <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[Ca]" type="Reaction">
-            <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[Ca],ParameterGroup=Parameters,Parameter=k1" value="0.1" type="ReactionParameter" simulationType="fixed"/>
+            <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[Ca],ParameterGroup=Parameters,Parameter=k1" value="0.10000000000000001" type="ReactionParameter" simulationType="fixed"/>
+          </ModelParameterGroup>
+          <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[1]" type="Reaction">
+          </ModelParameterGroup>
+          <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[2.5]" type="Reaction">
+          </ModelParameterGroup>
+          <ModelParameterGroup cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Reactions[Ca1]" type="Reaction">
           </ModelParameterGroup>
         </ModelParameterGroup>
       </ModelParameterSet>
     </ListOfModelParameterSets>
     <StateTemplate>
-      <StateTemplateVariable objectReference="Model_3"/>
+      <StateTemplateVariable objectReference="Model_1"/>
+      <StateTemplateVariable objectReference="Metabolite_0"/>
       <StateTemplateVariable objectReference="Metabolite_1"/>
+      <StateTemplateVariable objectReference="Metabolite_2"/>
       <StateTemplateVariable objectReference="Metabolite_3"/>
+      <StateTemplateVariable objectReference="Metabolite_4"/>
+      <StateTemplateVariable objectReference="Metabolite_5"/>
+      <StateTemplateVariable objectReference="Compartment_0"/>
       <StateTemplateVariable objectReference="Compartment_1"/>
+      <StateTemplateVariable objectReference="Compartment_2"/>
       <StateTemplateVariable objectReference="Compartment_3"/>
+      <StateTemplateVariable objectReference="Compartment_4"/>
       <StateTemplateVariable objectReference="ModelValue_0"/>
+      <StateTemplateVariable objectReference="ModelValue_1"/>
+      <StateTemplateVariable objectReference="ModelValue_2"/>
+      <StateTemplateVariable objectReference="ModelValue_3"/>
     </StateTemplate>
     <InitialState type="initialState">
-      0 6.022140856999986e+20 0 1 0.5 1 
+      0 6.0221408569999858e+20 0 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 1 0.5 1 1 1 1 0 0 0 
     </InitialState>
   </Model>
   <ListOfTasks>
@@ -242,7 +294,7 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="StabilityAnalysisRequested" type="bool" value="1"/>
       </Problem>
       <Method name="Enhanced Newton" type="EnhancedNewton">
-        <Parameter name="Resolution" type="unsignedFloat" value="1e-09"/>
+        <Parameter name="Resolution" type="unsignedFloat" value="1.0000000000000001e-09"/>
         <Parameter name="Derivation Factor" type="unsignedFloat" value="0.001"/>
         <Parameter name="Use Newton" type="bool" value="1"/>
         <Parameter name="Use Integration" type="bool" value="1"/>
@@ -266,8 +318,8 @@ Reaction scheme where the products are created from the reactants and the change
       </Problem>
       <Method name="Deterministic (LSODA)" type="Deterministic(LSODA)">
         <Parameter name="Integrate Reduced Model" type="bool" value="0"/>
-        <Parameter name="Relative Tolerance" type="unsignedFloat" value="1e-06"/>
-        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="1e-12"/>
+        <Parameter name="Relative Tolerance" type="unsignedFloat" value="9.9999999999999995e-07"/>
+        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="9.9999999999999998e-13"/>
         <Parameter name="Max Internal Steps" type="unsignedInteger" value="10000"/>
         <Parameter name="Max Internal Step Size" type="unsignedFloat" value="0"/>
       </Method>
@@ -344,7 +396,7 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="Steady-State" type="key" value="Task_14"/>
       </Problem>
       <Method name="MCA Method (Reder)" type="MCAMethod(Reder)">
-        <Parameter name="Modulation Factor" type="unsignedFloat" value="1e-09"/>
+        <Parameter name="Modulation Factor" type="unsignedFloat" value="1.0000000000000001e-09"/>
         <Parameter name="Use Reder" type="bool" value="1"/>
         <Parameter name="Use Smallbone" type="bool" value="1"/>
       </Method>
@@ -359,8 +411,8 @@ Reaction scheme where the products are created from the reactants and the change
       <Method name="Wolf Method" type="WolfMethod">
         <Parameter name="Orthonormalization Interval" type="unsignedFloat" value="1"/>
         <Parameter name="Overall time" type="unsignedFloat" value="1000"/>
-        <Parameter name="Relative Tolerance" type="unsignedFloat" value="1e-06"/>
-        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="1e-12"/>
+        <Parameter name="Relative Tolerance" type="unsignedFloat" value="9.9999999999999995e-07"/>
+        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="9.9999999999999998e-13"/>
         <Parameter name="Max Internal Steps" type="unsignedInteger" value="10000"/>
       </Method>
     </Task>
@@ -374,7 +426,7 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="OutputStartTime" type="float" value="0"/>
       </Problem>
       <Method name="ILDM (LSODA,Deuflhard)" type="TimeScaleSeparation(ILDM,Deuflhard)">
-        <Parameter name="Deuflhard Tolerance" type="unsignedFloat" value="1e-06"/>
+        <Parameter name="Deuflhard Tolerance" type="unsignedFloat" value="9.9999999999999995e-07"/>
       </Method>
     </Task>
     <Task key="Task_23" name="Sensitivities" type="sensitivities" scheduled="false" updateModel="false">
@@ -398,7 +450,7 @@ Reaction scheme where the products are created from the reactants and the change
       </Problem>
       <Method name="Sensitivities Method" type="SensitivitiesMethod">
         <Parameter name="Delta factor" type="unsignedFloat" value="0.001"/>
-        <Parameter name="Delta minimum" type="unsignedFloat" value="1e-12"/>
+        <Parameter name="Delta minimum" type="unsignedFloat" value="9.9999999999999998e-13"/>
       </Method>
     </Task>
     <Task key="Task_24" name="Moieties" type="moieties" scheduled="false" updateModel="false">
@@ -424,10 +476,10 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="PositiveDirection" type="bool" value="1"/>
         <Parameter name="NumOutCrossingsLimit" type="unsignedInteger" value="0"/>
         <Parameter name="LimitUntilConvergence" type="bool" value="0"/>
-        <Parameter name="ConvergenceTolerance" type="float" value="1e-06"/>
+        <Parameter name="ConvergenceTolerance" type="float" value="9.9999999999999995e-07"/>
         <Parameter name="Threshold" type="float" value="0"/>
         <Parameter name="DelayOutputUntilConvergence" type="bool" value="0"/>
-        <Parameter name="OutputConvergenceTolerance" type="float" value="1e-06"/>
+        <Parameter name="OutputConvergenceTolerance" type="float" value="9.9999999999999995e-07"/>
         <ParameterText name="TriggerExpression" type="expression">
           
         </ParameterText>
@@ -435,8 +487,8 @@ Reaction scheme where the products are created from the reactants and the change
       </Problem>
       <Method name="Deterministic (LSODA)" type="Deterministic(LSODA)">
         <Parameter name="Integrate Reduced Model" type="bool" value="0"/>
-        <Parameter name="Relative Tolerance" type="unsignedFloat" value="1e-06"/>
-        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="1e-12"/>
+        <Parameter name="Relative Tolerance" type="unsignedFloat" value="9.9999999999999995e-07"/>
+        <Parameter name="Absolute Tolerance" type="unsignedFloat" value="9.9999999999999998e-13"/>
         <Parameter name="Max Internal Steps" type="unsignedInteger" value="10000"/>
         <Parameter name="Max Internal Step Size" type="unsignedFloat" value="0"/>
       </Method>
