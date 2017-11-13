@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -39,6 +39,9 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../articles/examples.html">Examples</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -51,16 +54,13 @@
       <a href="../articles/entity_management.html">Managing Model Entities</a>
     </li>
     <li>
-      <a href="../articles/examples.html">Case-Studies and Workflows</a>
-    </li>
-    <li>
-      <a href="../articles/issues.html">Issues</a>
+      <a href="../articles/task_management.html">Managing Tasks</a>
     </li>
     <li>
       <a href="../articles/model_building.html">Model Building</a>
     </li>
     <li>
-      <a href="../articles/task_management.html">Managing Tasks</a>
+      <a href="../articles/issues.html">Issues</a>
     </li>
   </ul>
 </li>
@@ -87,7 +87,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-10-18</h4>
+            <h4 class="date">2017-11-13</h4>
           </div>
 
     
@@ -110,15 +110,13 @@
 <a href="#quicklist" class="anchor"></a>Quicklist</h1>
 <p>Todo:</p>
 <ul>
-<li>(Internal) Remove workaround for removal of initialExpressions</li>
 <li>Add model events</li>
-<li>Compile in a way that it can run on bioquant cluster</li>
 <li>Add more copasi tasks</li>
 <li>Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)</li>
 <li>(Internal) Code marked with ‘TODO’ for minor problems</li>
 <li>Add test set with testthat</li>
 <li>Check if installation can be as easy as with stringi package</li>
-<li>(Internal) Are tasks always there?</li>
+<li>Consider only ever using setcompileflag instead of compiling</li>
 </ul>
 <p>Issues:</p>
 <ul>
@@ -127,6 +125,119 @@
 <li>getListOfPossibleFunctions only returns bare pointer</li>
 <li>Can’t abort running tasks</li>
 </ul>
+</div>
+<div id="timecourse-looks-different-in-gui" class="section level1">
+<h1 class="hasAnchor">
+<a href="#timecourse-looks-different-in-gui" class="anchor"></a>Timecourse looks different in GUI</h1>
+<p>GUI: a, b = 1 CoRC: a, b = 6.022141e+20</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
+<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; Model name: "New Model"</span>
+<span class="co">#&gt; Number of compartments: 0</span>
+<span class="co">#&gt; Number of species: 0</span>
+<span class="co">#&gt; Number of reactions: 0</span>
+<span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>)
+<span class="co">#&gt; [1] "a{compartment}"</span>
+<span class="kw"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"b"</span>, <span class="dt">type =</span> <span class="st">"assignment"</span>, <span class="dt">expression =</span> <span class="st">"{[a]}"</span>)
+<span class="co">#&gt; [1] "b{compartment}"</span>
+<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>(<span class="st">"a"</span>, <span class="dt">type =</span> <span class="st">"assignment"</span>, <span class="dt">expression =</span> <span class="st">"{[b]} + 1"</span>)
+<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dt">duration =</span> <span class="dv">1</span>, <span class="dt">intervals =</span> <span class="dv">100</span>)
+<span class="co">#&gt; $settings</span>
+<span class="co">#&gt; $settings$duration</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$dt</span>
+<span class="co">#&gt; [1] 0.01</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$intervals</span>
+<span class="co">#&gt; [1] 100</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$suppress_output_before</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$output_events</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$save_result_in_memory</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$start_in_steady_state</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$update_model</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$executable</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method</span>
+<span class="co">#&gt; $settings$method$method</span>
+<span class="co">#&gt; [1] "deterministic"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method$integrate_reduced_model</span>
+<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method$relative_tolerance</span>
+<span class="co">#&gt; [1] 1e-06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method$absolute_tolerance</span>
+<span class="co">#&gt; [1] 1e-12</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method$max_internal_steps</span>
+<span class="co">#&gt; [1] 10000</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $settings$method$max_internal_step_size</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $column_keys</span>
+<span class="co">#&gt; [1] "Time"           "a{compartment}" "b{compartment}"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $units</span>
+<span class="co">#&gt; $units$time</span>
+<span class="co">#&gt; [1] "s"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $units$concentration</span>
+<span class="co">#&gt; [1] "mmol / ml"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $result</span>
+<span class="co">#&gt; # A tibble: 101 x 3</span>
+<span class="co">#&gt;     Time     a     b</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  0.00     1     1</span>
+<span class="co">#&gt;  2  0.01     1     1</span>
+<span class="co">#&gt;  3  0.02     1     1</span>
+<span class="co">#&gt;  4  0.03     1     1</span>
+<span class="co">#&gt;  5  0.04     1     1</span>
+<span class="co">#&gt;  6  0.05     1     1</span>
+<span class="co">#&gt;  7  0.06     1     1</span>
+<span class="co">#&gt;  8  0.07     1     1</span>
+<span class="co">#&gt;  9  0.08     1     1</span>
+<span class="co">#&gt; 10  0.09     1     1</span>
+<span class="co">#&gt; # ... with 91 more rows</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $result_number</span>
+<span class="co">#&gt; # A tibble: 101 x 3</span>
+<span class="co">#&gt;     Time            a            b</span>
+<span class="co">#&gt;    &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  0.00 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  2  0.01 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  3  0.02 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  4  0.03 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  5  0.04 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  6  0.05 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  7  0.06 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  8  0.07 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt;  9  0.08 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt; 10  0.09 6.022141e+20 6.022141e+20</span>
+<span class="co">#&gt; # ... with 91 more rows</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"class")</span>
+<span class="co">#&gt; [1] "copasi_ts"</span>
+<span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
+<span class="kw"><a href="../reference/setCurrentModel.html">setCurrentModel</a></span>(<span class="kw"><a href="../reference/getLoadedModels.html">getLoadedModels</a></span>()[[<span class="dv">1</span>]])</code></pre></div>
 </div>
 <div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
 <h1 class="hasAnchor">
@@ -232,7 +343,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<sp
 filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/Rtmp7qLz3I/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/4b/hp0s7q1x1dg62t1m8nn8y3mw0000gn/T/RtmpHUmPog/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
@@ -248,6 +359,7 @@ filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
       <li><a href="#quicklist">Quicklist</a></li>
+      <li><a href="#timecourse-looks-different-in-gui">Timecourse looks different in GUI</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
       <li><a href="#no-option-to-cancel-long-running-tasks">No option to cancel long running tasks</a></li>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>

@@ -1,0 +1,20 @@
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Get Started"
+      href: articles/CoRC.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Examples"
+      href: articles/examples.html
+    - text: "Articles"
+      menu:
+      - text: "Managing Model Entities"
+        href: articles/entity_management.html
+      - text: "Managing Tasks"
+        href: articles/task_management.html
+      - text: "Model Building"
+        href: articles/model_building.html
+      - text: "Issues"
+        href: articles/issues.html

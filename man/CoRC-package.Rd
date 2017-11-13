@@ -22,11 +22,6 @@ CoRC features:
 
 It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
 }
-\section{quantity accessors}{
-
-Use dataframes to manipulate species and quantities and stuff
-}
-
 \seealso{
 Useful links:
 \itemize{
