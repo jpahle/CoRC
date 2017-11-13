@@ -37,31 +37,15 @@ Todo:
 * Add more copasi tasks
 * Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)
 * (Internal) Code marked with 'TODO' for minor problems
-* Add test set with testthat
 * Check if installation can be as easy as with stringi package
 * Consider only ever using setcompileflag instead of compiling
+* getListOfPossibleFunctions only returns bare pointer
 
 Issues:
 
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
-* getListOfPossibleFunctions only returns bare pointer
 * Can't abort running tasks
-
-# Timecourse looks different in GUI
-
-GUI: a, b = 1
-CoRC: a, b = 6.022141e+20
-
-```{r}
-newModel()
-newSpecies("a")
-newSpecies("b", type = "assignment", expression = "{[a]}")
-setSpecies("a", type = "assignment", expression = "{[b]} + 1")
-runTC(duration = 1, intervals = 100)
-unloadModel()
-setCurrentModel(getLoadedModels()[[1]])
-```
 
 # Function naming is lacking a cohesive concept
 

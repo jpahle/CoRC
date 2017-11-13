@@ -6,15 +6,15 @@
 #' @param maximize flag
 #' @eval paste0("@param subtask string
 #' 
-#' Availables tasks: ", rox_print_v(task_enum), ".")
+#' Available tasks: ", rox_print_v(task_enum), ".")
 #' @param randomize_start_values flag
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters copasi_param or list of copasi_param objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @return A list of results.
 #' @family optimization
 #' @export
 runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomize_start_values = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
@@ -389,14 +389,19 @@ opt_assemble_method <- function(method, c_task) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.string(method) || is.list(method))
+  assert_that(
+    is.string(method) || is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a string (a length one character vector) or a named list."
+  )
   
   if (is_scalar_character(method))
     method <- list(method = method)
   
-  if (hasName(method, "method"))
+  if (hasName(method, "method")) {
+    valid_methods <- names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]
     # hack to get nice error message if method string is not accepted.
-    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+    method$method <- (function(method) rlang::arg_match(method, valid_methods))(method$method)
+  }
   
   method
 }

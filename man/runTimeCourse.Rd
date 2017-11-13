@@ -44,10 +44,10 @@ The list may contain further method args and their values.
 
 Allowed methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45'.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
 }
 \description{
 \code{runTimeCourse} runs a time course and returns the results in a list.

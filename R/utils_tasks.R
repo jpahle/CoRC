@@ -169,7 +169,7 @@ set_method_settings <- function(values, c_method) {
   if (is_empty(values))
     return()
   
-  struct <- methodstructure(c_method) %>% tibble::rowid_to_column()
+  struct <- tibble::rowid_to_column(methodstructure(c_method))
   
   data <-
     tibble::tibble(value = values) %>%

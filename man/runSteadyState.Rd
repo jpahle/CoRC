@@ -24,10 +24,13 @@ runSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
 
 \item{method}{list}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
+\itemize{
+  \item \code{$result} can be one of 'notFound', 'found', 'foundEquilibrium', 'foundNegative'.
+}
 }
 \description{
 \code{runSteadyState} calculates the steady state and returns the results in a list.

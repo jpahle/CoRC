@@ -215,6 +215,8 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # apply initial concentrations
   if (any(do_initial_concentration)) {
+    # TODO
+    # this is a hacky solution
     # clear initial expression because they are in the way
     walk_swig(cl_metabs[do_initial_concentration], "setInitialExpression", "")
     c_model$updateInitialValues("Concentration")
@@ -227,6 +229,8 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # apply initial particlenum
   if (any(do_initial_number)) {
+    # TODO
+    # this is a hacky solution
     # clear initial expression because they are in the way
     walk_swig(cl_metabs[do_initial_number], "setInitialExpression", "")
     c_model$updateInitialValues("ParticleNumbers")
@@ -423,6 +427,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   
   # apply initial value
   if (any(do_initial_value)) {
+    # TODO
+    # this is a hacky solution
     # clear initial expression because they are in the way
     walk_swig(cl_quants[do_initial_value], "setInitialExpression", "")
     
@@ -618,6 +624,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   
   # apply initial size
   if (any(do_initial_size)) {
+    # TODO
+    # this is a hacky solution
     # clear initial expression because they are in the way
     walk_swig(cl_comps[do_initial_size], "setInitialExpression", "")
     

@@ -304,8 +304,8 @@ plots <- list(
     geom_line(data = data_after, aes(color = "after")) +
     scale_color_manual(values = c(before = "red", after = "green", experimental = "black")) +
     labs(
-      x = paste0("Erk2-P (", getQuantityUnit(), ")"),
-      y = paste0("Time (", getTimeUnit(), ")"),
+      x = paste0("Time (", getTimeUnit(), ")"),
+      y = paste0("Erk2-P (", getQuantityUnit(), ")"),
       color = "Series"
     ),
   Mos.P =
@@ -315,8 +315,8 @@ plots <- list(
     geom_line(data = data_after, aes(color = "after")) +
     scale_color_manual(values = c(before = "red", after = "green", experimental = "black")) +
     labs(
-      x = paste0("Mos-P (", getQuantityUnit(), ")"),
-      y = paste0("Time (", getTimeUnit(), ")"),
+      x = paste0("Time (", getTimeUnit(), ")"),
+      y = paste0("Mos-P (", getQuantityUnit(), ")"),
       color = "Series"
     )
 )

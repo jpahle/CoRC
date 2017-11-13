@@ -5,8 +5,11 @@
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @eval paste0("@return A list of results.
+#' \\itemize{
+#'   \\item \\code{$result_ss} can be one of ", rox_print_v(names(.__E___CSteadyStateMethod__ReturnCode)), ".
+#' }")
 #' @family metabolic control analysis
 #' @export
 runMetabolicControlAnalysis <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
@@ -18,16 +21,15 @@ runMetabolicControlAnalysis <- function(perform_steady_state_analysis = NULL, ex
     executable                    = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
-  
   # does assertions
-  method_settings <- mca_assemble_method(method, c_task)
+  method_settings <- mca_assemble_method(method)
   
   # try to avoid doing changes for performance reasons
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   
   c_model <- c_datamodel$getModel()
+  c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
   c_method <- as(c_task$getMethod(), "_p_CMCAMethod")
   
   # save all previous settings
@@ -95,11 +97,10 @@ setMetabolicControlAnalysisSettings <- function(perform_steady_state_analysis = 
     executable                    = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
-  
   # does assertions
-  method_settings <- mca_assemble_method(method, c_task)
+  method_settings <- mca_assemble_method(method)
   
+  c_task <- as(c_datamodel$getTask("Metabolic Control Analysis"), "_p_CMCATask")
   c_method <- as(c_task$getMethod(), "_p_CMCAMethod")
   
   mca_set_settings(settings, c_task)
@@ -157,11 +158,15 @@ mca_assemble_settings <- function(perform_steady_state_analysis, executable) {
 
 # does assertions
 # returns a list of method settings
-mca_assemble_method <- function(method, c_task) {
+mca_assemble_method <- function(method) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.list(method), !hasName(method, "method"))
+  assert_that(
+    is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a named list."
+  )
+  assert_that(!hasName(method, "method"))
   
   method
 }
@@ -213,7 +218,7 @@ mca_get_results <- function(c_task, settings) {
   
   list(
     settings                                    = settings,
-    ss_result                                   = ss_result,
+    result_ss                                   = ss_result,
     elasticities_scaled                         = elasticities_scaled,
     elasticities_unscaled                       = elasticities_unscaled,
     flux_control_coefficients_scaled            = flux_control_coefficients_scaled,

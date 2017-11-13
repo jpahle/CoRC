@@ -10,8 +10,8 @@
 #' @param parameters copasi_param or list of copasi_param objects
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @return A list of results.
 #' @family parameter estimation
 #' @export
 runParameterEstimation <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
@@ -683,14 +683,19 @@ pe_assemble_method <- function(method, c_task) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.string(method) || is.list(method))
+  assert_that(
+    is.string(method) || is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a string (a length one character vector) or a named list."
+  )
   
   if (is_scalar_character(method))
     method <- list(method = method)
   
-  if (hasName(method, "method"))
+  if (hasName(method, "method")) {
+    valid_methods <- names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]
     # hack to get nice error message if method string is not accepted.
-    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+    method$method <- (function(method) rlang::arg_match(method, valid_methods))(method$method)
+  }
   
   method
 }
@@ -760,15 +765,18 @@ pe_get_results <- function(c_task, settings) {
     ) %>%
     transform_names()
   
+  vals <- get_cv(c_problem$getSolutionVariables())
+  std_dev <- get_cv(c_problem$getVariableStdDeviations())
+  
   parameters <-
     tibble::tibble(
       "Parameter"               = get_key(cl_items),
       "Lower Bound"             = map_swig_dbl(cl_items, "getLowerBoundValue"),
       "Start Value"             = map_swig_dbl(cl_items, "getStartValue"),
-      "Value"                   = get_cv(c_problem$getSolutionVariables()),
+      "Value"                   = vals,
       "Upper Bound"             = map_swig_dbl(cl_items, "getUpperBoundValue"),
-      "Std. Deviation"          = get_cv(c_problem$getVariableStdDeviations()),
-      "Coeff. of Variation [%]" = NaN, # TODO
+      "Std. Deviation"          = std_dev,
+      "Coeff. of Variation [%]" = abs(100 * std_dev / vals),
       "Gradient"                = get_cv(c_problem$getVariableGradients())
     ) %>%
     transform_names()
@@ -806,18 +814,18 @@ pe_get_results <- function(c_task, settings) {
   protocol <- c_method$getMethodLog()$getPlainLog()
   
   list(
-    settings = settings,
-    main = main,
-    parameters = parameters,
-    experiments = experiments,
-    fitted_values = fitted_values,
-    correlation = correlation,
-    fim = fim,
-    fim_eigenvalues = fim_eigenvalues,
-    fim_eigenvectors = fim_eigenvectors,
-    fim_scaled = fim_scaled,
-    fim_scaled_eigenvalues = fim_scaled_eigenvalues,
+    settings                = settings,
+    main                    = main,
+    parameters              = parameters,
+    experiments             = experiments,
+    fitted_values           = fitted_values,
+    correlation             = correlation,
+    fim                     = fim,
+    fim_eigenvalues         = fim_eigenvalues,
+    fim_eigenvectors        = fim_eigenvectors,
+    fim_scaled              = fim_scaled,
+    fim_scaled_eigenvalues  = fim_scaled_eigenvalues,
     fim_scaled_eigenvectors = fim_scaled_eigenvectors,
-    protocol = protocol
+    protocol                = protocol
   )
 }

@@ -38,10 +38,10 @@ The list may contain further method args and their values.
 
 Allowed methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
 }
 \description{
 \code{runParameterEstimation} runs parameter estimation and returns the results in a list.

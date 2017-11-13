@@ -18,10 +18,13 @@ runMCA(perform_steady_state_analysis = NULL, executable = NULL,
 
 \item{method}{list}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
+\itemize{
+  \item \code{$result_ss} can be one of 'notFound', 'found', 'foundEquilibrium', 'foundNegative'.
+}
 }
 \description{
 \code{runMetabolicControlAnalysis} runs metabolic control analysis and returns the results in a list.

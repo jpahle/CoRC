@@ -7,8 +7,11 @@
 #' @param update_model flag
 #' @param executable flag
 #' @param method list
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @eval paste0("@return A list of results.
+#' \\itemize{
+#'   \\item \\code{$result} can be one of ", rox_print_v(names(.__E___CSteadyStateMethod__ReturnCode)), ".
+#' }")
 #' @family steady state
 #' @export
 runSteadyState <- function(calculate_jacobian = NULL, perform_stability_analysis = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
@@ -22,16 +25,15 @@ runSteadyState <- function(calculate_jacobian = NULL, perform_stability_analysis
     executable                 = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  
   # does assertions
-  method_settings <- ss_assemble_method(method, c_task)
+  method_settings <- ss_assemble_method(method)
   
   # try to avoid doing changes for performance reasons
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   
   c_model <- c_datamodel$getModel()
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
   # save all previous settings
@@ -103,11 +105,10 @@ setSteadyStateSettings <- function(calculate_jacobian = NULL, perform_stability_
     executable                 = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
-  
   # does assertions
-  method_settings <- ss_assemble_method(method, c_task)
+  method_settings <- ss_assemble_method(method)
   
+  c_task <- as(c_datamodel$getTask("Steady-State"), "_p_CSteadyStateTask")
   c_method <- as(c_task$getMethod(), "_p_CSteadyStateMethod")
   
   ss_set_settings(settings, c_task)
@@ -169,11 +170,15 @@ ss_assemble_settings <- function(calculate_jacobian, perform_stability_analysis,
 
 # does assertions
 # returns a list of method settings
-ss_assemble_method <- function(method, c_task) {
+ss_assemble_method <- function(method) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.list(method), !hasName(method, "method"))
+  assert_that(
+    is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a named list."
+  )
+  assert_that(!hasName(method, "method"))
   
   method
 }

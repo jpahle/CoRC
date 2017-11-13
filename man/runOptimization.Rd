@@ -22,7 +22,7 @@ runOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 \item{subtask}{string
 
-Availables tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
+Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
 
 \item{randomize_start_values}{flag}
 
@@ -42,10 +42,10 @@ The list may contain further method args and their values.
 
 Allowed methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
 }
 \description{
 \code{runOptimization} runs optimization and returns the results in a list.

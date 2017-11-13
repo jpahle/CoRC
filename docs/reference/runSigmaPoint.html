@@ -111,8 +111,7 @@
     </div>
 
     
-    <p><code>runSigmaPoint</code> runs parallel parameter estimations via the sigma point method and returns the results in a list.
-WARNING: TODO: This implementation of the sigma point method is almost completely untested.</p>
+    <p><code>runSigmaPoint</code> runs parallel parameter estimations as dictated by the sigma point method and returns the results in a list.</p>
     
 
     <pre class="usage"><span class='fu'>runSigmaPoint</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>kappa</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>experiments</span>,
@@ -166,12 +165,23 @@ Given as flag.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of results.
-<code>$fit_task_results</code> is a list of all parameter estimation results gathered in this assay.
-<code>$sp_means</code> is the result of term (28).
-<code>$sp_cov_matrix</code> is the result of term (29).
-<code>$param_bias</code> is the result of term (33).
-<code>$param_cov_matrix</code> is the result of term (34).</p>
+    <p>A list of results.</p><ul>
+<li><p><code>$fit_task_results</code> is a list of all parameter estimation results gathered in this assay.</p></li>
+<li><p><code>$sp_means</code> is the result of term (28).</p></li>
+<li><p><code>$sp_cov_matrix</code> is the result of term (29).</p></li>
+<li><p><code>$param_bias</code> is the result of term (33).</p></li>
+<li><p><code>$param_cov_matrix</code> is the result of term (34).</p></li>
+</ul>
+
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>WARNING: TODO: This implementation of the sigma point method is almost completely untested.</p>
+<p>As described in:
+Schenkendorf, R., Kremling, A., &amp; Mangold, M. (2009).
+Optimal experimental design with the sigma point method.
+IET Systems Biology, 3(1), 10–23.
+https://doi.org/10.1049/iet-syb:20080094</p>
     
 
   </div>
@@ -181,6 +191,8 @@ Given as flag.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

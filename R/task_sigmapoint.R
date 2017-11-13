@@ -1,7 +1,14 @@
 #' Run sigma point method
 #'
-#' \code{runSigmaPoint} runs parallel parameter estimations via the sigma point method and returns the results in a list.
+#' \code{runSigmaPoint} runs parallel parameter estimations as dictated by the sigma point method and returns the results in a list.
+#'
 #' WARNING: TODO: This implementation of the sigma point method is almost completely untested.
+#' 
+#' As described in:\cr
+#' Schenkendorf, R., Kremling, A., & Mangold, M. (2009).\cr
+#' Optimal experimental design with the sigma point method.\cr
+#' IET Systems Biology, 3(1), 10–23.\cr
+#' https://doi.org/10.1049/iet-syb:20080094
 #'
 #' @param alpha number
 #' @param beta number
@@ -18,11 +25,13 @@
 #' @param cl Either object of type 'cluster' as used in the parallel package, or a count of threads to use, or \code{NULL} to automatically use all cores on current machine.
 #' @param model A model object.
 #' @return A list of results.
-#' \code{$fit_task_results} is a list of all parameter estimation results gathered in this assay.
-#' \code{$sp_means} is the result of term (28).
-#' \code{$sp_cov_matrix} is the result of term (29).
-#' \code{$param_bias} is the result of term (33).
-#' \code{$param_cov_matrix} is the result of term (34).
+#' \itemize{
+#'   \item \code{$fit_task_results} is a list of all parameter estimation results gathered in this assay.
+#'   \item \code{$sp_means} is the result of term (28).
+#'   \item \code{$sp_cov_matrix} is the result of term (29).
+#'   \item \code{$param_bias} is the result of term (33).
+#'   \item \code{$param_cov_matrix} is the result of term (34).
+#' }
 #' @family sigma point method
 #' @export
 runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experiments, mean_fit_as_basis = TRUE, cl = NULL, model = getCurrentModel()) {

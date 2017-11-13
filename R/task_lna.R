@@ -5,8 +5,12 @@
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @eval paste0("@return A list of results.
+#' \\itemize{
+#'   \\item \\code{$result_ss} can be one of ", rox_print_v(names(.__E___CSteadyStateMethod__ReturnCode)), ".
+#'   \\item \\code{$result_lna} can be one of ", rox_print_v(names(.__E___CLNAMethod__EVStatus)), ".
+#' }")
 #' @family linear noise approximation
 #' @export
 runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
@@ -18,30 +22,29 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
     executable                    = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
-  
   # does assertions
-  method_settings <- lna_assemble_method(method, c_task)
+  method_settings <- lna_assemble_method(method)
   
   # try to avoid doing changes for performance reasons
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   
   c_model <- c_datamodel$getModel()
-  c_method <- as(c_task$getMethod(), "_p_CLNAMethod")
+  c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
+  c_method_ss <- as(c_datamodel$getTask("Steady-State")$getMethod(), "_p_CSteadyStateMethod")
   
   # save all previous settings
   if (do_settings)
     pre_settings <- lna_get_settings(c_task)
   if (do_method)
-    pre_method_settings <- get_method_settings(c_method)
+    pre_method_settings <- get_method_settings(c_method_ss)
   
   tryCatch({
     # apply settings
     if (do_settings)
       lna_set_settings(settings, c_task)
     if (do_method)
-      set_method_settings(method_settings, c_method)
+      set_method_settings(method_settings, c_method_ss)
     
     grab_msg(c_model$compileIfNecessary())
     
@@ -53,7 +56,7 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
     
     # run task and save current settings
     full_settings <- lna_get_settings(c_task)
-    full_settings$method <- get_method_settings(c_method)
+    full_settings$method <- get_method_settings(c_method_ss)
     assert_that(
       grab_msg(c_task$processRaw(TRUE)),
       msg = "Processing the task failed."
@@ -70,7 +73,7 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
     if (do_settings)
       lna_set_settings(pre_settings, c_task)
     if (do_method)
-      set_method_settings(pre_method_settings, c_method)
+      set_method_settings(pre_method_settings, c_method_ss)
   })
   
   ret
@@ -95,15 +98,14 @@ setLinearNoiseApproximationSettings <- function(perform_steady_state_analysis = 
     executable                    = executable
   )
   
-  c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
-  
   # does assertions
-  method_settings <- lna_assemble_method(method, c_task)
+  method_settings <- lna_assemble_method(method)
   
-  c_method <- as(c_task$getMethod(), "_p_CLNAMethod")
+  c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
+  c_method_ss <- as(c_datamodel$getTask("Steady-State")$getMethod(), "_p_CSteadyStateMethod")
   
   lna_set_settings(settings, c_task)
-  set_method_settings(method_settings, c_method)
+  set_method_settings(method_settings, c_method_ss)
   
   invisible()
 }
@@ -119,10 +121,10 @@ setLinearNoiseApproximationSettings <- function(perform_steady_state_analysis = 
 getLinearNoiseApproximationSettings <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   c_task <- as(c_datamodel$getTask("Linear Noise Approximation"), "_p_CLNATask")
-  c_method <- as(c_task$getMethod(), "_p_CLNAMethod")
+  c_method_ss <- as(c_datamodel$getTask("Steady-State")$getMethod(), "_p_CSteadyStateMethod")
   
   ret <- lna_get_settings(c_task)
-  ret$method <- get_method_settings(c_method)
+  ret$method <- get_method_settings(c_method_ss)
   
   ret
 }
@@ -157,11 +159,15 @@ lna_assemble_settings <- function(perform_steady_state_analysis, executable) {
 
 # does assertions
 # returns a list of method settings
-lna_assemble_method <- function(method, c_task) {
+lna_assemble_method <- function(method) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.list(method), !hasName(method, "method"))
+  assert_that(
+    is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a named list."
+  )
+  assert_that(!hasName(method, "method"))
   
   method
 }
@@ -203,7 +209,8 @@ lna_get_results <- function(c_task, settings) {
 
   list(
     settings                  = settings,
-    ss_result                 = ss_result,
+    result_ss                 = ss_result,
+    result_lna                = lna_result,
     covariance_matrix         = covariance_matrix,
     covariance_matrix_reduced = covariance_matrix_reduced,
     b_matrix_reduced          = b_matrix_reduced

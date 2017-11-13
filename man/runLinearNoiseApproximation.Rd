@@ -18,10 +18,14 @@ runLNA(perform_steady_state_analysis = NULL, executable = NULL,
 
 \item{method}{list}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \value{
-a list of results
+A list of results.
+\itemize{
+  \item \code{$result_ss} can be one of 'notFound', 'found', 'foundEquilibrium', 'foundNegative'.
+  \item \code{$result_lna} can be one of 'allNeg', 'nonNegEigenvaluesExist'.
+}
 }
 \description{
 \code{runLinearNoiseApproximation} runs linear noise approximation and returns the results in a list.

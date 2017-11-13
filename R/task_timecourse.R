@@ -12,8 +12,8 @@
 #' @param update_model flag
 #' @param executable flag
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
-#' @param model a model object
-#' @return a list of results
+#' @param model A model object.
+#' @return A list of results.
 #' @family time course
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
@@ -263,14 +263,19 @@ tc_assemble_method <- function(method, c_task) {
   if (is.null(method))
     return(list())
   
-  assert_that(is.string(method) || is.list(method))
+  assert_that(
+    is.string(method) || is.list(method) && (is_empty(method) || !is.null(names(method))),
+    msg = "method must be a string (a length one character vector) or a named list."
+  )
   
   if (is_scalar_character(method))
     method <- list(method = method)
   
-  if (hasName(method, "method"))
+  if (hasName(method, "method")) {
+    valid_methods <- names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]
     # hack to get nice error message if method string is not accepted.
-    method$method <- method$method %>% (function(method) rlang::arg_match(method, names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]))
+    method$method <- (function(method) rlang::arg_match(method, valid_methods))(method$method)
+  }
   
   method
 }

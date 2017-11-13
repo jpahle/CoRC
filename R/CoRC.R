@@ -58,6 +58,7 @@ pkg_env$cl_loaded_dms <- list()
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO
+  # clearing the deque hides the annoying message about copasi home directory on linux
   try(CCopasiMessage_clearDeque(), silent = TRUE)
   # In this single case only warn instead of stop
   assert_binaries(partial(warning, immediate. = TRUE), pkgname)
@@ -154,6 +155,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     }
     
     # TODO
+    # Remove archfix on v9 libs
     archfix <- arch
     if (archfix == "x86_64") archfix <- "x64"
     dlurl <- paste0(
@@ -201,6 +203,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   # Reload libary
   library.dynam("COPASI", getPackageName(), file.path(pkgpath, ".."))
   # TODO
+  # clearing the deque hides the annoying message about copasi home directory on linux
   CCopasiMessage_clearDeque()
   if (!quiet)
     message(getPackageName(), ": Successfully loaded copasi binaries.")
