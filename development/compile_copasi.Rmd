@@ -75,7 +75,7 @@ make
 
 cd ../
 mkdir -p libs/
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x64.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x86_64.so
 cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
 cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
 cd ../../
@@ -109,7 +109,7 @@ make
 
 cd ../
 mkdir -p libs/
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x64.so
+cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x86_64.so
 cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
 cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
 cd ../../
@@ -201,7 +201,7 @@ ninja
 
 cd ..\
 mkdir libs\
-cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x64.dll
+cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x86_64.dll
 cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI.dll
 cp corc_windows_x64\copasi\bindings\R\COPASI.R libs\swig_wrapper.R
 cd ..\..\

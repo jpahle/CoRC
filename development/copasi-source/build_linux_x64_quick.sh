@@ -26,6 +26,6 @@ compilers/corc_compiler_linux_x64 \
 	'
 
 mkdir -p libs/
-cp corc_linux_x64/copasi/bindings/R/COPASI.so libs/COPASI_unix_x64.so
+cp corc_linux_x64/copasi/bindings/R/COPASI.so libs/COPASI_unix_x86_64.so
 cp corc_linux_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
 cp corc_linux_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
