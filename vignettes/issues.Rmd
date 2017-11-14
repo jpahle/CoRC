@@ -45,7 +45,6 @@ Issues:
 
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
-* Can't abort running tasks
 
 # Function naming is lacking a cohesive concept
 
@@ -80,12 +79,6 @@ addParameterEstimationParameter()
 
 Naming so far has been based on the desire to stay as close to the GUI as possible.
 It's probably time to define a cohesive concept.
-
-# No option to cancel long running tasks
-
-The r-session locks up when waiting for C calls to return.
-I have no idea how I can enable interactive canceling of tasks.
-This seems like it could get frustrating because people probably start endless tasks frequently.
 
 # Checking validity of quantity unit doesn't work
 

@@ -122,7 +122,6 @@
 <ul>
 <li>getwd() and copasi$getReferenceDirectory() are not in sync</li>
 <li>some S3 classes should have reconstruct functions (hadley/sloop)</li>
-<li>Can’t abort running tasks</li>
 </ul>
 </div>
 <div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
@@ -146,11 +145,6 @@
 <span class="co"># No relation to setParameters(), which handles reaction parameters</span>
 <span class="kw"><a href="../reference/addParameterEstimationParameter.html">addParameterEstimationParameter</a></span>()</code></pre></div>
 <p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probably time to define a cohesive concept.</p>
-</div>
-<div id="no-option-to-cancel-long-running-tasks" class="section level1">
-<h1 class="hasAnchor">
-<a href="#no-option-to-cancel-long-running-tasks" class="anchor"></a>No option to cancel long running tasks</h1>
-<p>The r-session locks up when waiting for C calls to return. I have no idea how I can enable interactive canceling of tasks. This seems like it could get frustrating because people probably start endless tasks frequently.</p>
 </div>
 <div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
 <h1 class="hasAnchor">
@@ -246,7 +240,6 @@ filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span
 <li><a href="#initial-setup">Initial Setup</a></li>
       <li><a href="#quicklist">Quicklist</a></li>
       <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
-      <li><a href="#no-option-to-cancel-long-running-tasks">No option to cancel long running tasks</a></li>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
       </ul>
