@@ -149,7 +149,10 @@ get_expr_val <- function(x, c_datamodel) {
   c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
   
   grab_msg(c_expression$setInfix(x))
-  c_expression$compile()
+  assert_that(
+    grab_msg(c_expression$compile()$isSuccess()),
+    msg = "Failed to compile expression."
+  )
   val <- c_expression$calcValue()
   
   delete(c_expression)
@@ -168,7 +171,10 @@ get_expr_init_val <- function(x, c_datamodel) {
   c_init_expression <- grab_msg(CExpression_createInitialExpression(c_expression, c_datamodel))
   delete(c_expression)
   
-  c_init_expression$compile()
+  assert_that(
+    grab_msg(c_init_expression$compile()$isSuccess()),
+    msg = "Failed to compile initial expression."
+  )
   val <- c_init_expression$calcValue()
   
   delete(c_init_expression)
