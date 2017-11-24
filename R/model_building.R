@@ -369,6 +369,153 @@ deleteReaction <- function(key, model = getCurrentModel()) {
   invisible()
 }
 
+#' Create a new event
+#' 
+#' \code{newEvent} creates a new event.
+#' 
+#' Default initial value is 1.
+#' Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
+#'
+#' @param name Name to set, as string.
+#' @param trigger_expression Trigger expression to set, as string, finite numeric, or logical.
+#' @param fire_at_initial_time Whether to fire at initial time if true, as logical.
+#' @param trigger_must_remain_true Whether the trigger must remain true, as logical.
+#' @param priority_expression Priority expression to set, as string, finite numeric, or logical.
+#' @param delayed Whether the event assignment and / or calculation is to be delayed ("no", "assignment", "calculation"), as string.
+#' @param delay_expression Delay expression to set, as string, finite numeric, or logical.
+#' @param assignment_target Assignment target entities (species, compartments, global quantities), as character vector.
+#' @param assignment_expression Assignment expressions per event to set, as character, finite numeric, or logical vector.
+#' @param model a model object
+#' @return event key
+#' @family event functions
+#' @export
+newEvent <- function(name, trigger_expression, fire_at_initial_time = FALSE, trigger_must_remain_true = TRUE, priority_expression = NULL, delayed = c("no", "assignment", "calculation"), delay_expression = NULL, assignment_target = NULL, assignment_expression = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.string(name),
+    is.cexpression(trigger_expression),
+    is.flag(fire_at_initial_time)     && noNA(fire_at_initial_time),
+    is.flag(trigger_must_remain_true) && noNA(trigger_must_remain_true),
+    is.null(priority_expression)      || is.cexpression(priority_expression)   && noNA(priority_expression),
+    is.null(delay_expression)         || is.cexpression(delay_expression)      && noNA(delay_expression),
+    is.null(assignment_target)        || is.character(assignment_target)       && noNA(assignment_target),
+    is.null(assignment_expression)    || is.cexpression(assignment_expression) && noNA(assignment_expression)
+  )
+  
+  # In case of NULL set empty vector
+  assignment_target <- assignment_target %||% character()
+  assignment_expression <- assignment_expression %||% character()
+  
+  assert_that(length(assignment_target) == length(assignment_expression))
+
+  delayed <- rlang::arg_match(delayed)
+  
+  trigger_expression <- write_expr(to_cexpr(trigger_expression), c_datamodel)
+  
+  if (!is.null(priority_expression))
+    priority_expression <- write_expr(to_cexpr(priority_expression), c_datamodel)
+  
+  if (!is.null(delay_expression) && delay_expression != "") {
+    assert_that(delayed != "no", msg = '`delay_expression` cannot be set when `delayed` == "no"')
+    
+    delay_expression <- write_expr(to_cexpr(delay_expression), c_datamodel)
+  }
+  
+  # assignment_target
+  cl_assignment_targets <- map(assignment_target, dn_to_object, c_datamodel, accepted_types = c("_p_CMetab", "_p_CCompartment", "_p_CModelValue"))
+  assert_that(!some(cl_assignment_targets, is.null), msg = "Invalid assignment target given.")
+  assignment_target_keys <- map_swig_chr(cl_assignment_targets, "getKey")
+  assert_that(
+    !anyDuplicated(assignment_target_keys),
+    msg = "Assignment targets must be unique."
+  )
+  
+  assignment_expression <- write_expr(to_cexpr(assignment_expression), c_datamodel)
+
+  c_model <- c_datamodel$getModel()
+
+  c_event <- c_model$createEvent(name)
+
+  assert_that(inherits(c_event, "_p_CEvent"), msg = "Event creation failed.")
+  
+  c_event$setFireAtInitialTime(fire_at_initial_time)
+  c_event$setPersistentTrigger(!trigger_must_remain_true)
+  c_event$setDelayAssignment(delayed == "calculation")
+  cl_assignments <- map(assignment_target_keys, ~ avert_gc(CEventAssignment(.x)))
+
+  tryCatch({
+    # if setting an an expression fails, terminate all recently created objects
+    tryCatch({
+      walk2(cl_assignments, assignment_expression,
+        ~ assert_that(grab_msg(.x$setExpression(.y)), msg = "Failed when applying an assignment expression.")
+      )
+    },
+    error = function(e) {
+      walk(cl_assignments, delete)
+      base::stop(e)
+    })
+    
+    assert_that(
+      grab_msg(c_event$setTriggerExpression(trigger_expression)),
+      msg = "Failed when applying trigger_expression."
+    )
+    
+    if (!is.null(priority_expression))
+      assert_that(
+        grab_msg(c_event$setPriorityExpression(priority_expression)),
+        msg = "Failed when applying priority_expression."
+      )
+    
+    if (!is.null(delay_expression))
+      assert_that(
+        grab_msg(c_event$setDelayExpression(delay_expression)),
+        msg = "Failed when applying delay_expression."
+      )
+  },
+  error = function(e) {
+    c_model$removeEvent(c_event)
+    base::stop(e)
+  })
+  
+  c_assignments <- c_event$getAssignments()
+  walk(cl_assignments, c_assignments$add)
+
+  compile_and_check(c_model)
+  
+  get_key(c_event)
+}
+
+#' Delete events
+#' 
+#' \code{deleteEvent} deletes events.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
+#' 
+#' @param key event keys
+#' @param model a model object
+#' @family event functions
+#' @export
+deleteEvent <- function(key, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_model <- c_datamodel$getModel()
+  
+  # Use copasi keys instead of pointers to prevent crashes
+  key %>%
+    event_obj(c_datamodel) %>%
+    unique() %>%
+    map_swig_chr("getKey") %>%
+    walk(~ {
+      # recursive removal without compilation in between seems to cause crashes.
+      c_model$compileIfNecessary()
+      c_model$removeEvent(.x, recursive = TRUE)
+    })
+  
+  compile_and_check(c_model)
+  
+  invisible()
+}
+
 #' @include swig_wrapper.R
 function_role_enum <-
   names(.__E___CFunctionParameter__Role) %>%

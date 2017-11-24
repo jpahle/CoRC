@@ -7,6 +7,7 @@ test_that("get*() with empty model", {
   expect_equal(nrow(getGlobalQuantities()), 0L)
   expect_equal(nrow(getReactions()), 0L)
   expect_equal(nrow(getParameters()), 0L)
+  expect_equal(nrow(getEvents()), 0L)
 })
 
 loadExamples(1)

@@ -7,6 +7,7 @@ test_that("entity finders with empty model", {
   expect_length(quantity(), 0L)
   expect_length(reaction(), 0L)
   expect_length(parameter(), 0L)
+  expect_length(event(), 0L)
 })
 
 loadExamples(3)
@@ -188,6 +189,35 @@ test_that("kinfunction_strict() regex", {
 test_that("kinfunction_strict() vectorization", {
   expect_length(kinfunction_strict(kinfunction()), length(kinfunction()))
   expect_equal(kinfunction_strict(rev(kinfunction())), rev(kinfunction()))
+})
+
+test_that("event()", {
+  expect_length(event(), 4)
+  expect_length(event("Ca"), 2)
+})
+
+test_that("event() regex", {
+  expect_length(event(regex("^Ca")), 0)
+  expect_length(event(regex("^.*Ca.*$")), 2)
+})
+
+test_that("event_strict()", {
+  expect_error(event_strict())
+  expect_equal(event_strict("Ca"), "((Ca))")
+  expect_equal(event_strict("a1"), "((Ca1))")
+  expect_equal(event_strict("1"), "((1))")
+})
+
+test_that("event_strict() regex", {
+  expect_equal(event_strict(regex(".*\\(\\(\\d\\)\\)$")), "((1))")
+  expect_equal(event_strict(regex("^\\d$")), "((1))")
+  expect_error(event_strict(regex(".*\\d$")))
+})
+
+test_that("event_strict() vectorization", {
+  expect_length(event_strict(event()), length(event()))
+  expect_equal(event_strict(rev(event())), rev(event()))
+  expect_equal(event_strict(getEvents()$name), event())
 })
 
 unloadAllModels()

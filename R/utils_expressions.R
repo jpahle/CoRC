@@ -36,6 +36,28 @@ getInitialValue <- function(expression, model = getCurrentModel()) {
     map_dbl(get_expr_init_val, c_datamodel)
 }
 
+is.cexpression <- function(x) {
+  is.character(x) || is.numeric(x) && !any(is.infinite(x)) || is.logical(x)
+}
+on_failure(is.cexpression) <- function(call, env) {
+  paste0(deparse(call$x), ' is not a copasi expression (a character, finitie numeric or logical vector).')
+}
+
+# translate from numeric or boolean to propper copasi expression representation
+to_cexpr <- function(x) {
+  ret <- as.character(x)
+  ret[is.nan(x)] <- "nan"
+  
+  # prevented via is.cexpression
+  # ret[is.infinite(x)] <- "+-Inf"
+  
+  # default R conversion
+  # ret[isTRUE(x)] <- "TRUE"
+  # ret[isFALSE(x)] <- "FALSE"
+  
+  ret
+}
+
 # check if an entity has an expression set
 # return NA_character_ or the expression string
 expr_to_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(), raw = FALSE) {

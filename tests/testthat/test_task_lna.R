@@ -1,6 +1,7 @@
 context("Task Linear Noise Approximation")
 
 loadExamples(3)
+deleteEvent(event())
 setLinearNoiseApproximationSettings(method = list(resolution = 1e-3))
 
 test_that("runLinearNoiseApproximation()", {

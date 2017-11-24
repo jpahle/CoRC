@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.22 (Build 170) (http://www.copasi.org) at 2017-11-13 13:10:56 UTC -->
+<!-- generated with COPASI 4.22 (Build 170) (http://www.copasi.org) at 2017-11-28 15:11:04 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
 <COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="22" versionDevel="170" copasiSourcesModified="0">
   <ListOfFunctions>
@@ -215,6 +215,111 @@ Reaction scheme where the products are created from the reactants and the change
       <Reaction key="Reaction_5" name="Ca1" reversible="false" fast="false">
       </Reaction>
     </ListOfReactions>
+    <ListOfEvents>
+      <Event key="Event_0" name="Ca" fireAtInitialTime="0" persistentTrigger="0">
+        <MiriamAnnotation>
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Event_0">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2017-11-24T10:27:47Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+        </MiriamAnnotation>
+        <TriggerExpression>
+          &lt;CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca],Reference=Concentration> > 1e99
+        </TriggerExpression>
+        <ListOfAssignments>
+          <Assignment targetKey="Metabolite_0">
+            <Expression>
+              1
+            </Expression>
+          </Assignment>
+          <Assignment targetKey="Metabolite_1">
+            <Expression>
+              1
+            </Expression>
+          </Assignment>
+          <Assignment targetKey="Metabolite_4">
+            <Expression>
+              2.5
+            </Expression>
+          </Assignment>
+        </ListOfAssignments>
+      </Event>
+      <Event key="Event_1" name="Ca1" fireAtInitialTime="0" persistentTrigger="1">
+        <MiriamAnnotation>
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Event_1">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2017-11-24T10:29:12Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+        </MiriamAnnotation>
+        <TriggerExpression>
+          &lt;CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca{}],Reference=Concentration> > 1e99
+        </TriggerExpression>
+        <ListOfAssignments>
+          <Assignment targetKey="Metabolite_4">
+            <Expression>
+              1
+            </Expression>
+          </Assignment>
+        </ListOfAssignments>
+      </Event>
+      <Event key="Event_2" name="1" delayAssignment="true" fireAtInitialTime="0" persistentTrigger="1">
+        <MiriamAnnotation>
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Event_2">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2017-11-24T11:01:30Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+
+        </MiriamAnnotation>
+        <TriggerExpression>
+          FALSE
+        </TriggerExpression>
+        <DelayExpression>
+          1
+        </DelayExpression>
+        <PriorityExpression>
+          1
+        </PriorityExpression>
+      </Event>
+      <Event key="Event_3" name="2.5" delayAssignment="false" fireAtInitialTime="0" persistentTrigger="0">
+        <MiriamAnnotation>
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Event_3">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2017-11-24T10:29:15Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+        </MiriamAnnotation>
+        <TriggerExpression>
+          1 &lt; 0
+        </TriggerExpression>
+        <DelayExpression>
+          1
+        </DelayExpression>
+        <PriorityExpression>
+          2
+        </PriorityExpression>
+      </Event>
+    </ListOfEvents>
     <ListOfModelParameterSets activeSet="ModelParameterSet_1">
       <ModelParameterSet key="ModelParameterSet_1" name="Initial State">
         <ModelParameterGroup cn="String=Initial Time" type="Group">
@@ -476,10 +581,10 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="PositiveDirection" type="bool" value="1"/>
         <Parameter name="NumOutCrossingsLimit" type="unsignedInteger" value="0"/>
         <Parameter name="LimitUntilConvergence" type="bool" value="0"/>
-        <Parameter name="ConvergenceTolerance" type="float" value="9.9999999999999995e-07"/>
+        <Parameter name="ConvergenceTolerance" type="float" value="0"/>
         <Parameter name="Threshold" type="float" value="0"/>
         <Parameter name="DelayOutputUntilConvergence" type="bool" value="0"/>
-        <Parameter name="OutputConvergenceTolerance" type="float" value="9.9999999999999995e-07"/>
+        <Parameter name="OutputConvergenceTolerance" type="float" value="0"/>
         <ParameterText name="TriggerExpression" type="expression">
           
         </ParameterText>

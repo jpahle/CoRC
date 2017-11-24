@@ -579,6 +579,101 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
 }
 
 #' @rdname entity_finders
+#' @family event functions
+#' @export
+event <- function(key = "", model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  assert_that(
+    is.string(key), !is.na(key)
+  )
+  
+  cl_events <- get_cdv(c_datamodel$getModel()$getEvents())
+  keys <- get_key(cl_events)
+  
+  if (key == "") {
+    matches <- seq_along(cl_events)
+  } else {
+    matches <- stringr::str_which(
+      keys,
+      apply_eng(key)
+    )
+  }
+  
+  keys[matches]
+}
+
+#' @rdname entity_finders
+#' @family event functions
+#' @export
+event_strict <- function(key, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  cl_events <- event_obj(key, c_datamodel)
+  
+  map_swig_chr(cl_events, "getObjectDisplayName")
+}
+
+event_obj <- function(key, c_datamodel) {
+  assert_that(
+    is.character(key), noNA(key), !("" %in% key)
+  )
+  
+  # If names are already DN to metabolites we accept them (disabled for regex)
+  if (!inherits(key, "regex"))
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CEvent")
+  else
+    matches <- list_along(key)
+  
+  matched <- lengths(matches) == 1L
+  
+  if (!all(matched)) {
+    info <- "event(s)"
+    cl_events <- get_cdv(c_datamodel$getModel()$getEvents())
+    keys_model <- get_key(cl_events)
+    # keys are needed as list, else attributes are lost on subsetting
+    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    
+    # find full matches to ObjectDisplayName
+    # str_replace as hack to find complete matches
+    matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(keys_model, .x, "") == ""))
+    matched <- lengths(matches) == 1L
+    
+    if (!all(matched)) {
+      ns <- cl_events %>% map_swig_chr("getObjectName")
+      # find full matches to ObjectName
+      matches[!matched] <- map(key_l[!matched], ~ which(stringr::str_replace(ns, .x, "") == ""))
+      matched <- lengths(matches) == 1L
+      
+      if (!all(matched)) {
+        # then partial matches to ObjectDisplayName
+        matches[!matched] <- map(key_l[!matched], stringr::str_which, string = keys_model)
+        assert_matches(matches, key, keys_model, info)
+        
+        matched <- lengths(matches) == 1L
+        
+        assert_that(all(matched), msg = paste0(
+          "Couldn't match ", info, ' "',
+          key[!matched], '".',
+          collapse = '", "'
+        ))
+      }
+    }
+    
+    # the matches list contains integers and objects
+    # integers signal matches and have to be converted to objects before returning
+    matches <-
+      matches %>%
+      map_if(
+        map_lgl(., is_scalar_integer),
+        ~ cl_events[[.x]]
+      )
+  }
+  
+  matches
+}
+
+#' @rdname entity_finders
 #' @family reaction functions
 #' @export
 kinfunction <- function(key = "") {

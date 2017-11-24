@@ -1190,3 +1190,297 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   
   invisible()
 }
+
+#' Get events
+#'
+#' \code{getEvents} returns events as a data frame.
+#'
+#' @param key Optionally, a character vector specifying which events to get.
+#' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
+#' @param model A model object.
+#' @return Events and associated information, as data frame.
+#' \itemize{
+#'   \item \code{$assignment_target} is a list column containing possibly several targets per event.
+#'   \item \code{$assignment_expression} is a list column containing possibly several expressions per event.
+#' }
+#' @seealso \code{\link{getEventReferences}} \code{\link{setEvents}}
+#' @family event functions
+#' @export
+getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.flag(raw_expressions), !anyNA(raw_expressions))
+  
+  if (is_empty(key))
+    cl_events <- get_cdv(c_datamodel$getModel()$getEvents())
+  else
+    cl_events <- event_obj(key, c_datamodel)
+  
+  cl_assignments <-
+    cl_events %>%
+    map_swig("getAssignments") %>%
+    map(get_cdv)
+
+  trigger_expressions    <- map_swig_chr(cl_events, "getTriggerExpression")
+  priority_expressions   <- map_swig_chr(cl_events, "getPriorityExpression")
+  delay_expressions      <- map_swig_chr(cl_events, "getDelayExpression")
+  assignment_expressions <- map(cl_assignments , ~ map_swig_chr(.x, "getExpression"))
+  
+  if (!raw_expressions) {
+    trigger_expressions    <- read_expr(trigger_expressions, c_datamodel)
+    priority_expressions   <- read_expr(priority_expressions, c_datamodel)
+    delay_expressions      <- read_expr(delay_expressions, c_datamodel)
+    assignment_expressions <- map(assignment_expressions, read_expr, c_datamodel)
+  }
+  
+  trigger_expressions    <- emptychr_to_na(trigger_expressions)
+  # priority_expressions   <- emptychr_to_na(priority_expressions)
+  delay_expressions      <- emptychr_to_na(delay_expressions)
+  assignment_expressions <- map(assignment_expressions, map_chr, emptychr_to_na)
+
+  has_delay <- !is.na(delay_expressions)
+  has_delay_calc <- map_swig_int(cl_events, "getDelayAssignment")
+  delayed <- rep_along(cl_events, "no")
+  delayed[has_delay & !has_delay_calc] <- "assignment"
+  delayed[has_delay & has_delay_calc] <- "calculation"
+  
+  targets <-
+    cl_assignments %>%
+    map(~
+      .x %>%
+      map_swig_chr("getTargetKey") %>%
+      cop_key_to_obj() %>%
+      get_key()
+    )
+  
+  # assemble output dataframe
+  tibble::tibble(
+    key                        = get_key(cl_events),
+    "Name"                     = map_swig_chr(cl_events, "getObjectName"),
+    "Trigger Expression"       = trigger_expressions,
+    "Fire at initial time"     = as.logical(map_swig_int(cl_events, "getFireAtInitialTime")),
+    "Trigger must remain true" = !as.logical(map_swig_int(cl_events, "getPersistentTrigger")),
+    "Priority Expression"      = priority_expressions,
+    "Delayed"                  = delayed,
+    "Delay Expression"         = delay_expressions,
+    "Assignment Target"        = targets,
+    "Assignment Expression"    = assignment_expressions
+  ) %>%
+    transform_names()
+}
+
+#' Set events
+#'
+#' \code{setEvents} applies given values to events of the model depending on the \code{key} argument.
+#'
+#' Use the \code{key} argument to specify which event to modify and any of the other arguments to specify the value to set.
+#' The function is fully vectorized.
+#' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' @param key Identify which event to edit by specifying it's key, as string.
+#' Also supports fragments of keys, if uniquely matching one event.
+#' @param name Name to set, as string.
+#' @param trigger_expression Trigger expression to set, as string, finite numeric, or logical.
+#' @param fire_at_initial_time Whether to fire at initial time if true, as logical.
+#' @param trigger_must_remain_true Whether the trigger must remain true, as logical.
+#' @param priority_expression Priority expression to set, as string, finite numeric, or logical.
+#' @param delayed Whether the event assignment and / or calculation is to be delayed ("no", "assignment", "calculation"), as string.
+#' @param delay_expression Delay expression to set, as string, finite numeric, or logical.
+#' @param assignment_target List of assignment target entities (species, compartments, global quantities) per event to set, as list containing strings.
+#' @param assignment_expression List of assignment expressions per event to set, as list containing string, finite numeric, or logical.
+#' @param data A data frame as given by \code{\link{getEvents}} which will be applied before the other arguments.
+#' @param model A model object.
+#' @seealso \code{\link{getEvents}} \code{\link{getEventReferences}}
+#' @family event functions
+#' @export
+setEvents <- function(key = NULL, name = NULL, trigger_expression = NULL, fire_at_initial_time = NULL, trigger_must_remain_true = NULL, priority_expression = NULL, delayed = NULL, delay_expression = NULL, assignment_target = NULL, assignment_expression = NULL, data = NULL, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.null(name)                     || is.character(name)                   && length(name) == length(key),
+    is.null(trigger_expression)       || is.cexpression(trigger_expression)   && length(trigger_expression) == length(key),
+    is.null(fire_at_initial_time)     || is.logical(fire_at_initial_time)     && length(fire_at_initial_time) == length(key),
+    is.null(trigger_must_remain_true) || is.logical(trigger_must_remain_true) && length(trigger_must_remain_true) == length(key),
+    is.null(priority_expression)      || is.cexpression(priority_expression)  && length(priority_expression) == length(key),
+    is.null(delayed)                  || is.character(delayed)                && length(delayed) == length(key),
+    is.null(delay_expression)         || is.cexpression(delay_expression)     && length(delay_expression) == length(key),
+    is.null(assignment_target)        || is.list(assignment_target)           && length(assignment_target) == length(key),
+    is.null(assignment_expression)    || is.list(assignment_expression)       && length(assignment_expression) == length(key),
+    is.null(data)                     || is.data.frame(data)
+  )
+
+  # Do this as assertion before we start changing values
+  cl_events <- event_obj(key %||% character(), c_datamodel)
+
+  # gather vectors of what to actually do work on
+  false_vec <- rep_along(cl_events, FALSE)
+  do_name                     <- if (is.null(name))                     false_vec else !is.na(name)
+  do_trigger_expression       <- if (is.null(trigger_expression))       false_vec else !is.na(trigger_expression)
+  do_fire_at_initial_time     <- if (is.null(fire_at_initial_time))     false_vec else !is.na(fire_at_initial_time)
+  do_trigger_must_remain_true <- if (is.null(trigger_must_remain_true)) false_vec else !is.na(trigger_must_remain_true)
+  do_priority_expression      <- if (is.null(priority_expression))      false_vec else !is.na(priority_expression)
+  do_delayed                  <- if (is.null(delayed))                  false_vec else !is.na(delayed)
+  
+  if (any(do_delayed)) {
+    delayed <-
+      delayed %>%
+      map_chr(function(delayed) rlang::arg_match(delayed, c(NA_character_, "no", "assignment", "calculation")))
+    
+    # if delayed is set to no we overwrite the expression and set delayed to default (assignment)
+    nodelay <- delayed == "no"
+    if (any(nodelay)) {
+      if (is.null(delay_expression))
+        delay_expression <- rep_along(cl_events, NA_character_)
+      delay_expression[nodelay] <- ""
+      delayed[nodelay] <- "assignment"
+    }
+  }
+  
+  do_delay_expression      <- if (is.null(delay_expression))     false_vec else !is.na(delay_expression)
+  do_assignment_target     <- if (is.null(assignment_target))    false_vec else !is.na(assignment_target)
+  do_assignment_expression <- if (is.null(assignment_expression)) false_vec else !is.na(assignment_expression)
+  
+  # the way you can set event assignments with this function
+  # is a bit unwieldy but lets at least allow it if the data is perfectly structured.
+  assert_that(
+    identical(do_assignment_target, do_assignment_expression),
+    msg = "Assignment targets and assignment expressions must always be set in pairs."
+  )
+  assert_that(
+    identical(lengths(assignment_target[do_assignment_target]), lengths(assignment_expression[do_assignment_expression])),
+    msg = "Argument `assignment_target` and `assignment_expression` must have identical structure."
+  )
+  assert_that(
+    every(assignment_target[do_assignment_target], is.character),
+    msg = "Argument `assignment_target` must be a list containing character vectors only."
+  )
+  assert_that(
+    every(assignment_target[do_assignment_target], is.cexpression),
+    msg = "Argument `assignment_expression` must be a list containing copasi expressions only."
+  )
+  assert_that(
+    every(assignment_target[do_assignment_target], noNA),
+    every(assignment_expression[do_assignment_expression], noNA),
+    msg = "Assignment targets and assignment expressions must not contain <NA> in value pairs."
+  )
+
+  if (any(do_trigger_expression)) {
+    trigger_expression[do_trigger_expression] <-
+      trigger_expression[do_trigger_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
+  
+  if (any(do_priority_expression)) {
+    priority_expression[do_priority_expression] <-
+      priority_expression[do_priority_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
+  
+  if (any(do_delay_expression)) {
+    delay_expression[do_delay_expression] <-
+      delay_expression[do_delay_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
+  
+  if (any(do_assignment_target)) {
+    assignment_target[do_assignment_target] <-
+      assignment_target[do_assignment_target] %>%
+      map(~ {
+        cl_obj <- map(.x, dn_to_object, c_datamodel, accepted_types = c("_p_CMetab", "_p_CCompartment", "_p_CModelValue"))
+        assert_that(!some(cl_obj, is.null), msg = "Invalid assignment target given.")
+        map_swig_chr(cl_obj, "getKey")
+      })
+    assert_that(
+      assignment_target[do_assignment_target] %>% map_lgl(~ anyDuplicated(.x) == 0) %>% all(),
+      msg = "Assignment targets must be unique per event."
+    )
+    
+    assignment_expression[do_assignment_target] <-
+      assignment_expression[do_assignment_target] %>%
+      map(to_cexpr) %>%
+      map(write_expr, c_datamodel)
+  }
+  
+  # if data is provided with the data arg, run a recursive call
+  # needs to be kept up to date with the function args
+  if (!is.null(data))
+    do.call(setEvents, data[names(data) %in% c("key", "name", "trigger_expression", "fire_at_initial_time", "trigger_must_remain_true", "priority_expression", "delayed", "delay_expression", "assignment_target", "assignment_expression")])
+
+  if (is_empty(cl_events))
+    return(invisible())
+
+  c_model <- c_datamodel$getModel()
+  
+  # apply names
+  for (i in which(do_name))
+    cl_events[[i]]$setObjectName(name[i])
+
+  # apply trigger expressions
+  for (i in which(do_trigger_expression))
+    assert_that(
+      grab_msg(cl_events[[i]]$setTriggerExpression(trigger_expression[i])),
+      msg = "Failed when applying a trigger expression."
+    )
+  
+  # apply fire_at_initial_time
+  for (i in which(do_fire_at_initial_time))
+    cl_events[[i]]$setFireAtInitialTime(fire_at_initial_time[i])
+  
+  # apply trigger_must_remain_true
+  for (i in which(do_trigger_must_remain_true))
+    cl_events[[i]]$setPersistentTrigger(!trigger_must_remain_true[i])
+  
+  # apply priority expression
+  for (i in which(do_priority_expression))
+    assert_that(
+      grab_msg(cl_events[[i]]$setPriorityExpression(priority_expression[i])),
+      msg = "Failed when applying a priority expression."
+    )
+  
+  # apply delayed
+  if (any(do_delayed)) {
+    val <- rep_along(delayed, NA)
+    val[delayed == "assignment"] <- FALSE
+    val[delayed == "calculation"] <- TRUE
+    for (i in which(do_delayed))
+      cl_events[[i]]$setDelayAssignment(val[i])
+  }
+  
+  # apply delay expression
+  for (i in which(do_delay_expression))
+    assert_that(
+      grab_msg(cl_events[[i]]$setDelayExpression(delay_expression[i])),
+      msg = "Failed when applying a delay expression."
+    )
+  
+  # apply assignment_target
+  for (i in which(do_assignment_target)) {
+    c_event <- cl_events[[i]]
+    c_assignments <- c_event$getAssignments()
+    
+    # create all new assignments
+    cl_assignments_new <- map(assignment_target[[i]], ~ avert_gc(CEventAssignment(.x)))
+    # if setting an an expression fails, terminate all recently created objects
+    tryCatch({
+      walk2(cl_assignments_new, assignment_expression[[i]],
+        ~ assert_that(grab_msg(.x$setExpression(.y)), msg = "Failed when applying an assignment expression.")
+      )
+    },
+    error = function(e) {
+      walk(cl_assignments_new, delete)
+      base::stop(e)
+    })
+    
+    # delete old assignments, add new ones
+    c_assignments$clear()
+    # the add method should have argument adopt = TRUE
+    # argument is missing
+    # it seems like it does adopt by default though
+    walk(cl_assignments_new, c_assignments$add)
+  }
+  
+  grab_msg(c_model$compileIfNecessary())
+
+  invisible()
+}
