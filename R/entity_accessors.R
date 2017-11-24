@@ -395,7 +395,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   # cut pointless actions
   do_initial_value <- do_initial_value & !do_initial_expression
   
-  if (any(type))
+  if (any(do_type))
     type <-
       type %>%
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
@@ -592,7 +592,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # cut pointless actions
   do_initial_size <- do_initial_size & !do_initial_expression
   
-  if (any(type))
+  if (any(do_type))
     type <-
       type %>%
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
