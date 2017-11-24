@@ -29,19 +29,55 @@ test_that("basic building", {
 test_that("newSpecies() success", {
   newSpecies("s1", compartment = compartment()[1])
   expect_equal(getSpecies("s1")$initial_concentration, 1)
-  deleteSpecies(paste0("s", 1))
+  
+  newSpecies("s2", compartment = compartment()[1], initial_concentration = 1.1)
+  expect_equal(getSpecies("s2")$initial_concentration, 1.1)
+  
+  newSpecies("s3", compartment = compartment()[1], initial_number = 2.2)
+  expect_equal(getSpecies("s3")$initial_number, 2.2)
+  
+  newSpecies("s4", compartment = compartment()[1], initial_expression = 3.3)
+  expect_equal(getSpecies("s4")$initial_concentration, 3.3)
+  
+  newSpecies("s5", compartment = compartment()[1], initial_concentration = 4.4, initial_number = 5.5)
+  expect_equal(getSpecies("s5")$initial_number, 5.5)
+  
+  newSpecies("s6", compartment = compartment()[1], initial_concentration = 6.6, initial_number = 7.7, initial_expression = 8.8)
+  expect_equal(getSpecies("s6")$initial_concentration, 8.8)
+  
+  deleteSpecies(paste0("s", 1:6))
 })
 
 test_that("newCompartment() success", {
   newCompartment("s1")
   expect_equal(getCompartments("s1")$initial_size, 1)
-  deleteCompartment(paste0("s", 1))
+  
+  newCompartment("s2", initial_size = 1.1)
+  expect_equal(getCompartments("s2")$initial_size, 1.1)
+  
+  newCompartment("s3", initial_expression = 2.2)
+  expect_equal(getCompartments("s3")$initial_size, 2.2)
+  
+  newCompartment("s4", initial_size = 3.3, initial_expression = 4.4)
+  expect_equal(getCompartments("s4")$initial_size, 4.4)
+  
+  deleteCompartment(paste0("s", 1:4))
 })
 
 test_that("newGlobalQuantity() success", {
   newGlobalQuantity("s1")
   expect_equal(getGlobalQuantities("s1")$initial_value, 0)
-  deleteGlobalQuantity(paste0("s", 1))
+  
+  newGlobalQuantity("s2", initial_value = 1.1)
+  expect_equal(getGlobalQuantities("s2")$initial_value, 1.1)
+  
+  newGlobalQuantity("s3", initial_expression = 2.2)
+  expect_equal(getGlobalQuantities("s3")$initial_value, 2.2)
+  
+  newGlobalQuantity("s4", initial_value = 3.3, initial_expression = 4.4)
+  expect_equal(getGlobalQuantities("s4")$initial_value, 4.4)
+  
+  deleteGlobalQuantity(paste0("s", 1:4))
 })
 
 test_that("newEvent() success", {
