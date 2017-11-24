@@ -26,6 +26,24 @@ test_that("basic building", {
   expect_length(event(), 3)
 })
 
+test_that("newSpecies() success", {
+  newSpecies("s1", compartment = compartment()[1])
+  expect_equal(getSpecies("s1")$initial_concentration, 1)
+  deleteSpecies(paste0("s", 1))
+})
+
+test_that("newCompartment() success", {
+  newCompartment("s1")
+  expect_equal(getCompartments("s1")$initial_size, 1)
+  deleteCompartment(paste0("s", 1))
+})
+
+test_that("newGlobalQuantity() success", {
+  newGlobalQuantity("s1")
+  expect_equal(getGlobalQuantities("s1")$initial_value, 0)
+  deleteGlobalQuantity(paste0("s", 1))
+})
+
 test_that("newEvent() success", {
   newEvent("s1", trigger_expression = FALSE)
   newEvent("s2", trigger_expression = FALSE, assignment_target = character(), assignment_expression = character())

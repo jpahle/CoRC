@@ -26,6 +26,11 @@ test_that("getValue() boolean", {
   expect_equal(getValue(FALSE), 0)
 })
 
+test_that("getValue() vectorization", {
+  expect_equal(getValue(c("1", "2", "3")), c(1, 2, 3))
+  expect_equal(getValue(c(1, NaN, 3)), c(1, NaN, 3))
+})
+
 test_that("getInitialValue()", {
   expect_identical(getInitialValue(""), NaN)
   expect_identical(getInitialValue(NaN), NaN)
@@ -47,6 +52,11 @@ test_that("getInitialValue() boolean", {
   expect_equal(getInitialValue("0 > 1"), 0)
   expect_equal(getInitialValue(TRUE), 1)
   expect_equal(getInitialValue(FALSE), 0)
+})
+
+test_that("getInitialValue() vectorization", {
+  expect_equal(getInitialValue(c("1", "2", "3")), c(1, 2, 3))
+  expect_equal(getInitialValue(c(1, NaN, 3)), c(1, NaN, 3))
 })
 
 unloadAllModels()

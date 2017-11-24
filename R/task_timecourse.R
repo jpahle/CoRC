@@ -336,7 +336,6 @@ tc_set_settings <- function(data, c_task) {
 tc_get_results <- function(c_task, settings) {
   # c_datamodel is used in exported functions so make sure its safe
   c_datamodel <- make_dm_safe(c_task$getObjectDataModel())
-  c_keyfactory <- CRootContainer_getKeyFactory()
   c_timeseries <- c_task$getTimeSeries()
   
   col_count <- c_timeseries$getNumVariables()
@@ -345,7 +344,7 @@ tc_get_results <- function(c_task, settings) {
   cl_col_objects <-
     seq_len_0(col_count) %>%
     map_chr(c_timeseries$getKey) %>%
-    map(c_keyfactory$get)
+    cop_key_to_obj()
   
   col_types <- map_swig_chr(cl_col_objects, "getObjectType")
   

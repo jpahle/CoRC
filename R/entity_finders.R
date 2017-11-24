@@ -87,7 +87,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
   
   # If names are already DN to metabolites we accept them (disabled for regex)
   if (!inherits(key, "regex"))
-    matches <- map(key, dn_to_object, c_datamodel, "_p_CMetab")
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CMetab")
   else
     matches <- list_along(key)
   
@@ -193,7 +193,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
   
   # If names are already DN to metabolites we accept them (disabled for regex)
   if (!inherits(key, "regex"))
-    matches <- map(key, dn_to_object, c_datamodel, "_p_CModelValue")
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CModelValue")
   else
     matches <- list_along(key)
   
@@ -299,7 +299,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
   
   # If names are already DN to metabolites we accept them (disabled for regex)
   if (!inherits(key, "regex"))
-    matches <- map(key, dn_to_object, c_datamodel, "_p_CCompartment")
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CCompartment")
   else
     matches <- list_along(key)
   
@@ -405,7 +405,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
   
   # If names are already DN to metabolites we accept them (disabled for regex)
   if (!inherits(key, "regex"))
-    matches <- map(key, dn_to_object, c_datamodel, "_p_CReaction")
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CReaction")
   else
     matches <- list_along(key)
   
@@ -517,7 +517,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
   
   # If names are already DN to metabolites we accept them (disabled for regex)
   if (!inherits(key, "regex"))
-    matches <- map(key, dn_to_object, c_datamodel, "_p_CCopasiParameter")
+    matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CCopasiParameter")
   else
     matches <- list_along(key)
   

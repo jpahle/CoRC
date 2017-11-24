@@ -144,7 +144,10 @@ methodstructure <- function(c_method) {
     )
   
   if (has_element(struct$control_fun, NULL))
-    warning("Internal: Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is.null)], collapse = "; "))
+    warning(
+      "Unknown type found with parameters: ", paste(struct$name[map_lgl(struct$control_fun, is.null)], collapse = "; "), ". ",
+      "Ask ", getPackageName(), " developers to fix this."
+    )
   
   struct
 }

@@ -91,9 +91,9 @@ test_that("getGlobalQuantities()", {
   expect_length(quantities_df, 8)
   expect_true(nrow(quantities_df) == length(quantity()))
   
-  quantities_df_b <- getGlobalQuantities("Ca")
-  expect_equal(quantities_df_b$initial_value, 1)
-  expect_identical(quantities_df_b$value, 1)
+  quantities_df_c <- getGlobalQuantities("Ca")
+  expect_equal(quantities_df_c$initial_value, 1)
+  expect_equal(quantities_df_c$value, 1)
 })
 
 test_that("setGlobalQuantities()", {
@@ -125,9 +125,9 @@ test_that("getParameters()", {
   expect_length(parameters_df, 5)
   expect_true(nrow(parameters_df) == length(parameter()))
   
-  parameters_df_b <- getParameters("v")
-  expect_equal(parameters_df_b$value, 0.1)
-  expect_identical(parameters_df_b$mapping, NA_character_)
+  parameters_df_v <- getParameters("v")
+  expect_equal(parameters_df_v$value, 0.1)
+  expect_identical(parameters_df_v$mapping, NA_character_)
 })
 
 test_that("setParameters()", {

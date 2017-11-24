@@ -2,7 +2,7 @@
 #'
 #' \code{getValue} calculates the value of a given expression or reference.
 #'
-#' @param expression a character vector of expressions
+#' @param expression Expressions to calculate, as character, finite numeric, or logical vector.
 #' @param model a model object
 #' @return a numeric vector of values
 #' @seealso \code{\link{getInitialValue}}
@@ -14,7 +14,7 @@ getValue <- function(expression, model = getCurrentModel()) {
   
   expression %>%
     to_cexpr() %>%
-    map_chr(write_expr, c_datamodel) %>%
+    write_expr(c_datamodel) %>%
     map_dbl(get_expr_val, c_datamodel)
 }
 
@@ -22,7 +22,7 @@ getValue <- function(expression, model = getCurrentModel()) {
 #'
 #' \code{getValue} calculates the initial value of a given expression or reference.
 #'
-#' @param expression a character vector of expressions
+#' @param expression Expressions to calculate as initial expressions, as character, finite numeric, or logical vector.
 #' @param model a model object
 #' @return a numeric vector of initial values
 #' @seealso \code{\link{getValue}}
@@ -34,7 +34,7 @@ getInitialValue <- function(expression, model = getCurrentModel()) {
   
   expression %>%
     to_cexpr() %>%
-    map_chr(write_expr, c_datamodel) %>%
+    write_expr(c_datamodel) %>%
     map_dbl(get_expr_init_val, c_datamodel)
 }
 

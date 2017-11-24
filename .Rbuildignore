@@ -4,5 +4,6 @@
 ^documentation$
 ^README\.Rmd$
 ^docs$
+^_pkgdown\.yaml$
 ^vignettes/examples\.Rmd$
 ^inst/libs/*$

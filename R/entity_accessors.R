@@ -11,7 +11,7 @@
 #' @export
 getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(raw_expressions))
+  assert_that(is.flag(raw_expressions), !is.na(raw_expressions))
   
   if (is_empty(key))
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
@@ -111,8 +111,8 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param type Type ("fixed", "assignment", "reactions", "ode") to set, as string.
 #' @param initial_concentration Initial concentration to set, as numeric.
 #' @param initial_number Initial particle number to set, as numeric.
-#' @param initial_expression Initial expression to set, as string.
-#' @param expression Expression to set, as string.
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param data A data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.
 #' @param model A model object.
 #' @seealso \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
@@ -121,13 +121,13 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL, initial_concentration = NULL, initial_number = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(name)                  || is.character(name)                && length(name) == length(key),
-    is.null(type)                  || is.character(type)                && length(type) == length(key),
-    is.null(compartment)           || is.character(compartment)         && length(compartment)  == length(key),
-    is.null(initial_concentration) || is.numeric(initial_concentration) && length(initial_concentration) == length(key),
-    is.null(initial_number)        || is.numeric(initial_number)        && length(initial_number) == length(key),
-    is.null(initial_expression)    || is.character(initial_expression)  && length(initial_expression) == length(key)     && !("" %in% initial_expression),
-    is.null(expression)            || is.character(expression)          && length(expression) == length(key)             && !("" %in% expression),
+    is.null(name)                  || is.character(name)                 && length(name) == length(key),
+    is.null(type)                  || is.character(type)                 && length(type) == length(key),
+    is.null(compartment)           || is.character(compartment)          && length(compartment)  == length(key),
+    is.null(initial_concentration) || is.numeric(initial_concentration)  && length(initial_concentration) == length(key),
+    is.null(initial_number)        || is.numeric(initial_number)         && length(initial_number) == length(key),
+    is.null(initial_expression)    || is.cexpression(initial_expression) && length(initial_expression) == length(key),
+    is.null(expression)            || is.cexpression(expression)         && length(expression) == length(key),
     is.null(data)                  || is.data.frame(data)
   )
   
@@ -160,11 +160,19 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode"))) %>%
       toupper()
   
-  if (any(do_initial_expression))
-    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
+  if (any(do_initial_expression)) {
+    initial_expression[do_initial_expression] <-
+      initial_expression[do_initial_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
-  if (any(do_expression))
-    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
+  if (any(do_expression)) {
+    expression[do_expression] <-
+      expression[do_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -273,7 +281,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
 #' @export
 getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(raw_expressions))
+  assert_that(is.flag(raw_expressions), !is.na(raw_expressions))
   
   if (is_empty(key))
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
@@ -352,7 +360,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 
 #' Set global quantities
 #'
-#' \code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument
+#' \code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument.
 #'
 #' Use the \code{key} argument to specify which global quantity to modify and any of the other arguments to specify the value to set.
 #' The function is fully vectorized.
@@ -363,8 +371,8 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param name Name to set, as string.
 #' @param type Type ("fixed", "assignment", "ode") to set, as string.
 #' @param initial_value Initial value to set, as numeric.
-#' @param initial_expression Initial expression to set, as string.
-#' @param expression Expression to set, as numeric.
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param data A data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.
 #' @param model A model object.
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
@@ -373,11 +381,11 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_value = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(name)               || is.character(name)               && length(name) == length(key),
-    is.null(type)               || is.character(type)               && length(type) == length(key),
-    is.null(initial_value)      || is.numeric(initial_value)        && length(initial_value) == length(key),
-    is.null(initial_expression) || is.character(initial_expression) && length(initial_expression) == length(key) && !("" %in% initial_expression),
-    is.null(expression)         || is.character(expression)         && length(expression) == length(key)         && !("" %in% expression),
+    is.null(name)               || is.character(name)                 && length(name) == length(key),
+    is.null(type)               || is.character(type)                 && length(type) == length(key),
+    is.null(initial_value)      || is.numeric(initial_value)          && length(initial_value) == length(key),
+    is.null(initial_expression) || is.cexpression(initial_expression) && length(initial_expression) == length(key),
+    is.null(expression)         || is.cexpression(expression)         && length(expression) == length(key),
     is.null(data)               || is.data.frame(data)
   )
   
@@ -401,11 +409,19 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
       toupper()
   
-  if (any(do_initial_expression))
-    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
+  if (any(do_initial_expression)) {
+    initial_expression[do_initial_expression] <-
+      initial_expression[do_initial_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
-  if (any(do_expression))
-    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
+  if (any(do_expression)) {
+    expression[do_expression] <-
+      expression[do_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -470,7 +486,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
 #' @export
 getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.flag(raw_expressions))
+  assert_that(is.flag(raw_expressions), !is.na(raw_expressions))
   
   if (is_empty(key))
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
@@ -560,8 +576,8 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param name Name to set, as string.
 #' @param type Type ("fixed", "assignment", "ode") to set, as string.
 #' @param initial_size Initial size to set, as string.
-#' @param initial_expression Initial expression to set, as string.
-#' @param expression Expression to set, as string.
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param data A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
 #' @param model A model object.
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
@@ -570,11 +586,11 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(name)               || is.character(name)               && length(name) == length(key),
-    is.null(type)               || is.character(type)               && length(type) == length(key),
-    is.null(initial_size)       || is.numeric(initial_size)         && length(initial_size) == length(key),
-    is.null(initial_expression) || is.character(initial_expression) && length(initial_expression) == length(key) && !("" %in% initial_expression),
-    is.null(expression)         || is.character(expression)         && length(expression) == length(key)         && !("" %in% expression),
+    is.null(name)               || is.character(name)                 && length(name) == length(key),
+    is.null(type)               || is.character(type)                 && length(type) == length(key),
+    is.null(initial_size)       || is.numeric(initial_size)           && length(initial_size) == length(key),
+    is.null(initial_expression) || is.cexpression(initial_expression) && length(initial_expression) == length(key),
+    is.null(expression)         || is.cexpression(expression)         && length(expression) == length(key),
     is.null(data)               || is.data.frame(data)
   )
   
@@ -598,11 +614,19 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
       toupper()
   
-  if (any(do_initial_expression))
-    initial_expression[do_initial_expression] <- write_expr(initial_expression[do_initial_expression], c_datamodel)
+  if (any(do_initial_expression)) {
+    initial_expression[do_initial_expression] <-
+      initial_expression[do_initial_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
-  if (any(do_expression))
-    expression[do_expression] <- write_expr(expression[do_expression], c_datamodel)
+  if (any(do_expression)) {
+    expression[do_expression] <-
+      expression[do_expression] %>%
+      to_cexpr() %>%
+      write_expr(c_datamodel)
+  }
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -1203,7 +1227,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
 #'   \item \code{$assignment_target} is a list column containing possibly several targets per event.
 #'   \item \code{$assignment_expression} is a list column containing possibly several expressions per event.
 #' }
-#' @seealso \code{\link{getEventReferences}} \code{\link{setEvents}}
+#' @seealso \code{\link{setEvents}}
 #' @family event functions
 #' @export
 getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentModel()) {
@@ -1289,7 +1313,7 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
 #' @param assignment_expression List of assignment expressions per event to set, as list containing string, finite numeric, or logical.
 #' @param data A data frame as given by \code{\link{getEvents}} which will be applied before the other arguments.
 #' @param model A model object.
-#' @seealso \code{\link{getEvents}} \code{\link{getEventReferences}}
+#' @seealso \code{\link{getEvents}}
 #' @family event functions
 #' @export
 setEvents <- function(key = NULL, name = NULL, trigger_expression = NULL, fire_at_initial_time = NULL, trigger_must_remain_true = NULL, priority_expression = NULL, delayed = NULL, delay_expression = NULL, assignment_target = NULL, assignment_expression = NULL, data = NULL, model = getCurrentModel()) {

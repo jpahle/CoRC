@@ -1,6 +1,6 @@
 # CoRC 0.0.1.9001
 
-* Add model event functioniality (`event()`, `event_strict()`, `getEvents()`, `setEvents()`, `deleteEvent()`)
+* Add model event functioniality (`event()`, `event_strict()`, `getEvents()`, `setEvents()`, `newEvent()`, `deleteEvent()`)
 * Allow expressions to be automatically coerced from finite numeric and logical values.
 * Fix crashes on entity deletion. Deletion functions now delete recursively.
 * Generally warn if model fails to compile.

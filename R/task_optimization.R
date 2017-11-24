@@ -2,7 +2,7 @@
 #'
 #' \code{runOptimization} runs optimization and returns the results in a list.
 #' 
-#' @param expression string
+#' @param expression Expression to optimize, as string.
 #' @param maximize flag
 #' @eval paste0("@param subtask string
 #' 
@@ -113,7 +113,7 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #'
 #' \code{setOptimizationSettings} sets optimization task settings including parameters, experiments and method options.
 #'
-#' @param expression string
+#' @param expression Expression to optimize, as string.
 #' @param maximize flag
 #' @eval paste0("@param subtask string
 #' 
@@ -358,7 +358,7 @@ opt_assemble_parameters <- function(parameters, c_problem) {
 # returns a list of settings
 opt_assemble_settings <- function(expression, maximize, subtask, randomize_start_values, calculate_statistics, update_model, executable) {
   assert_that(
-    is.null(expression)             || is.string(expression)           && noNA(expression),
+    is.null(expression)             || is.scalar(expression)           && is.cexpression(expression) && noNA(expression),
     is.null(maximize)               || is.flag(maximize)               && noNA(maximize),
     is.null(subtask)                || is.string(subtask),
     is.null(randomize_start_values) || is.flag(randomize_start_values) && noNA(randomize_start_values),
@@ -370,6 +370,9 @@ opt_assemble_settings <- function(expression, maximize, subtask, randomize_start
   if (!is.null(subtask)) {
     subtask <- rlang::arg_match(subtask, task_enum)
   }
+  
+  if (!is.null(expression))
+    expression <- to_cexpr(expression)
   
   list(
     expression             = expression,

@@ -2,7 +2,6 @@
 #'
 #' \code{newSpecies} creates a new species.
 #' 
-#' Default initial concentration is 1.
 #' Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
 #'
 #' @param name string
@@ -10,8 +9,8 @@
 #' @param type string
 #' @param initial_concentration number
 #' @param initial_number number
-#' @param initial_expression string
-#' @param expression string
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param model a model object
 #' @return species key
 #' @family species functions
@@ -23,18 +22,18 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     is.null(compartment)           || is.string(compartment),
     is.null(initial_concentration) || is.number(initial_concentration),
     is.null(initial_number)        || is.number(initial_number),
-    is.null(initial_expression)    || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
-    is.null(expression)            || is.string(expression)         && noNA(expression)         && expression != ""
+    is.null(initial_expression)    || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
+    is.null(expression)            || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
   
   if (!is.null(initial_expression))
-    initial_expression <- write_expr(initial_expression, c_datamodel)
+    initial_expression <- write_expr(to_cexpr(initial_expression), c_datamodel)
   
   if (!is.null(expression))
-    expression <- write_expr(expression, c_datamodel)
+    expression <- write_expr(to_cexpr(expression), c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
@@ -56,9 +55,14 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
   }
   
-  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration %||% 1, toupper(type))
+  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName())
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
+  
+  c_metab$setStatus(toupper(type))
+  
+  if (!is.null(initial_concentration))
+    c_metab$setInitialValue(initial_concentration)
   
   if (!is.null(initial_number))
     c_metab$setInitialValue(initial_number)
@@ -123,14 +127,13 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #' 
 #' \code{newGlobalQuantity} creates a new global quantity.
 #' 
-#' Default initial value is 1.
 #' Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
 #'
 #' @param name string
 #' @param type string
 #' @param initial_value number
-#' @param initial_expression string
-#' @param expression string
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param model a model object
 #' @return quantity key
 #' @family global quantity functions
@@ -140,22 +143,22 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   assert_that(
     is.string(name),
     is.null(initial_value)      || is.number(initial_value),
-    is.null(initial_expression) || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
-    is.null(expression)         || is.string(expression)         && noNA(expression)         && expression != ""
+    is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
+    is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
   
   if (!is.null(initial_expression))
-    initial_expression <- write_expr(initial_expression, c_datamodel)
+    initial_expression <- write_expr(to_cexpr(initial_expression), c_datamodel)
   
   if (!is.null(expression))
-    expression <- write_expr(expression, c_datamodel)
+    expression <- write_expr(to_cexpr(expression), c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
-  c_quant <- c_model$createModelValue(name, initial_value %||% 1)
+  c_quant <- c_model$createModelValue(name)
   
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
   
@@ -224,14 +227,13 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 #' 
 #' \code{newCompartment} creates a new compartment.
 #' 
-#' Default initial size is 1.
 #' Arguments priority from lowest to highest is \code{initial_size}, \code{initial_expression}.
 #'
 #' @param name string
 #' @param type string
 #' @param initial_size number
-#' @param initial_expression string
-#' @param expression string
+#' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
+#' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param model a model object
 #' @family compartment functions
 #' @export
@@ -240,27 +242,30 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   assert_that(
     is.string(name),
     is.null(initial_size)       || is.number(initial_size),
-    is.null(initial_expression) || is.string(initial_expression) && noNA(initial_expression) && initial_expression != "",
-    is.null(expression)         || is.string(expression)         && noNA(expression)         && expression != ""
+    is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
+    is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
   )
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
   
   if (!is.null(initial_expression))
-    initial_expression <- write_expr(initial_expression, c_datamodel)
+    initial_expression <- write_expr(to_cexpr(initial_expression), c_datamodel)
   
   if (!is.null(expression))
-    expression <- write_expr(expression, c_datamodel)
+    expression <- write_expr(to_cexpr(expression), c_datamodel)
   
   c_model <- c_datamodel$getModel()
   
   # type is missing
-  c_comp <- c_model$createCompartment(name, initial_size %||% 1)
+  c_comp <- c_model$createCompartment(name)
   
   assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed.")
   
   c_comp$setStatus(toupper(type))
+  
+  if (!is.null(initial_size))
+    c_comp$setInitialValue(initial_size)
   
   tryCatch({
     if (!is.null(initial_expression)) {
@@ -432,8 +437,8 @@ newEvent <- function(name, trigger_expression, fire_at_initial_time = FALSE, tri
     is.cexpression(trigger_expression),
     is.flag(fire_at_initial_time)     && noNA(fire_at_initial_time),
     is.flag(trigger_must_remain_true) && noNA(trigger_must_remain_true),
-    is.null(priority_expression)      || is.cexpression(priority_expression)   && noNA(priority_expression),
-    is.null(delay_expression)         || is.cexpression(delay_expression)      && noNA(delay_expression),
+    is.null(priority_expression)      || is.scalar(priority_expression)        && is.cexpression(priority_expression) && noNA(priority_expression),
+    is.null(delay_expression)         || is.scalar(delay_expression)           && is.cexpression(delay_expression)    && noNA(delay_expression),
     is.null(assignment_target)        || is.character(assignment_target)       && noNA(assignment_target),
     is.null(assignment_expression)    || is.cexpression(assignment_expression) && noNA(assignment_expression)
   )
@@ -643,6 +648,10 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
 
 #' Delete a function
 #' 
+#' \code{deleteKineticFunction} deletes kinetic functions.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
+#' 
 #' @param key function keys
 #' @family reaction functions
 #' @export
@@ -669,6 +678,10 @@ deleteKineticFunction <- function(key) {
 
 #' Clear custom functions
 #' 
+#' \code{clearCustomKineticFunctions} deletes all custom kinetic functions.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
+#'
 #' @family reaction functions
 #' @export
 clearCustomKineticFunctions <- function() {

@@ -1,12 +1,15 @@
 # By comparing the output of getObjectType with this list, we can safely typecast it seems
 copasi_object_types <-
   c(
-    Model       = "_p_CModel",
-    Compartment = "_p_CCompartment",
-    Metabolite  = "_p_CMetab",
-    ModelValue  = "_p_CModelValue",
-    Reaction    = "_p_CReaction",
-    Parameter   = "_p_CCopasiParameter"
+    Model           = "_p_CModel",
+    Compartment     = "_p_CCompartment",
+    Metabolite      = "_p_CMetab",
+    ModelValue      = "_p_CModelValue",
+    Reaction        = "_p_CReaction",
+    Parameter       = "_p_CCopasiParameter",
+    Event           = "_p_CEvent",
+    EventAssignment = "_p_CEventAssignment",
+    Function        = "_p_CFunction"
   )
 
 # automatically cast according to copasi_object_types
@@ -65,7 +68,7 @@ xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
   )
   
   xn <- unescape_ref(xn)
-  c_obj <- dn_to_object(xn, c_datamodel, accepted_types)
+  c_obj <- dn_to_object(xn, c_datamodel, accepted_types = accepted_types)
   
   # if dn_to_object doesn't return a reference I think its always
   # supposed to be the ValueReference
@@ -144,4 +147,9 @@ as_ref <- function(cl_objects, c_datamodel) {
   refs[!unresolvable] <- escape_ref(refs[!unresolvable])
   
   refs
+}
+
+# gather a list of objects from the internal Copasi Key identifier
+cop_key_to_obj <- function(x) {
+  map(x, CRootContainer_getKeyFactory()$get)
 }
