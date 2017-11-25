@@ -29,7 +29,10 @@ test_that("setTimeCourseSettings() method", {
 
 test_that("autoplot.copasi_ts()", {
   TC <- runTimeCourse()
-  invisible(autoplot.copasi_ts(TC))
+  if (requireNamespace("ggplot2", quietly = T))
+    invisible(autoplot.copasi_ts(TC))
+  else
+    warning("Skipping autoplot test because package 'ggplot2' is missing")
 })
 
 unloadAllModels()
