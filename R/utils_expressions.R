@@ -10,9 +10,10 @@
 #' @export
 getValue <- function(expression, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.character(expression))
+  assert_that(is.cexpression(expression))
   
   expression %>%
+    to_cexpr() %>%
     map_chr(write_expr, c_datamodel) %>%
     map_dbl(get_expr_val, c_datamodel)
 }
@@ -29,9 +30,10 @@ getValue <- function(expression, model = getCurrentModel()) {
 #' @export
 getInitialValue <- function(expression, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.character(expression))
+  assert_that(is.cexpression(expression))
   
   expression %>%
+    to_cexpr() %>%
     map_chr(write_expr, c_datamodel) %>%
     map_dbl(get_expr_init_val, c_datamodel)
 }
