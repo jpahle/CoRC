@@ -22,6 +22,13 @@ wrapper_lines <- stringr::str_replace_all(
   '!isnullptr(\\1)'
 )
 
+# # rename COPASI lib to CoRC
+# wrapper_lines <- stringr::str_replace_all(
+#   wrapper_lines,
+#   "\\.Call\\((.*), PACKAGE='COPASI'\\);",
+#   paste0(".Call(\\1, PACKAGE='", pkgname, "');")
+# )
+
 # remove swig debug info containing personal folder structure
 wrapper_lines <- stringr::str_replace_all(
   wrapper_lines,

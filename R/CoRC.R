@@ -88,7 +88,8 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     is.flag(quiet), noNA(quiet)
   )
   
-  pkgpath <- system.file(package = "CoRC")
+  pkgname <- getPackageName()
+  pkgpath <- system.file(package = pkgname)
   
   # CHECK OS
   os <- NULL
@@ -182,7 +183,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     dlpath <- path
   }
   
-  # Try to unload COPASI if loaded so the binaries can be overwritten
+  # Try to unload libs if loaded so the binaries can be overwritten
   try(unloadAllModels(), silent = TRUE)
   try(library.dynam.unload("COPASI", pkgpath), silent = TRUE)
   
@@ -201,12 +202,12 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   )
   
   # Reload libary
-  library.dynam("COPASI", getPackageName(), file.path(pkgpath, ".."))
+  library.dynam("COPASI", pkgname, file.path(pkgpath, ".."))
   # TODO
   # clearing the deque hides the annoying message about copasi home directory on linux
   CCopasiMessage_clearDeque()
   if (!quiet)
-    message(getPackageName(), ": Successfully loaded copasi binaries.")
+    message(pkgname, ": Successfully loaded copasi binaries.")
   
   invisible()
 }
@@ -215,6 +216,6 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
 # default method for error is stop.
 # .onLoad uses warning instead.
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {
-  if (!("COPASI" %in% map_chr(.dynLibs(), get("[["), "name")))
+  if (!is.loaded("R_swig_CRootContainer_init", PACKAGE = "COPASI"))
     method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }

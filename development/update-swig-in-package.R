@@ -1,6 +1,7 @@
 # Use this if you recompile Copasi.
 # It takes the swig files from the build dir and deletes the copasi cache file.
 
+pkgname <- "CoRC"
 buildpath <- file.path("copasi-source", "libs")
 rfile <- file.path(buildpath, "swig_wrapper.R")
 binfile <- file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext))
@@ -40,13 +41,13 @@ stopifnot(
 )
 
 # Also copy binaries to the installed package
-rlibpath <- system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = "CoRC")
+rlibpath <- system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = pkgname)
 if (rlibpath != "")
   stopifnot(
     file.copy(binfile, rlibpath, overwrite = TRUE)
   )
 
-rlibpath <- system.file("libs", "x64", paste0("COPASI", .Platform$dynlib.ext), package = "CoRC")
+rlibpath <- system.file("libs", "x64", paste0("COPASI", .Platform$dynlib.ext), package = pkgname)
 if (rlibpath != "")
   stopifnot(
     file.copy(binfile, rlibpath, overwrite = TRUE)
