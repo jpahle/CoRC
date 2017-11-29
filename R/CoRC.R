@@ -215,6 +215,6 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
 # default method for error is stop.
 # .onLoad uses warning instead.
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {
-  if (!("COPASI" %in% map_chr(.dynLibs(), "name")))
+  if (!("COPASI" %in% map_chr(.dynLibs(), get("[["), "name")))
     method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }
