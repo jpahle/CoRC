@@ -56,7 +56,11 @@ test_that("newEvent() errors", {
   expect_error(newEvent("failure", trigger_expression = FALSE, assignment_target = quantity()[c(1,1)], assignment_expression = c("1", "2")))
 })
 
-test_that("basic destruction", {
+# I want to perform model deletion twice
+currentModel <- getCurrentModel()
+loadModelFromString(saveModelToString())
+
+test_that("non-recursive destruction", {
   deleteEvent(event())
   deleteReaction(reaction())
   deleteGlobalQuantity(quantity())
@@ -70,20 +74,24 @@ test_that("basic destruction", {
   expect_length(event(), 0)
 })
 
-# deleting in an unsafe manner causes crashes
-# test_that("basic destruction", {
-#   deleteCompartment(compartment())
-#   deleteSpecies(species())
-#   deleteGlobalQuantity(quantity())
-#   deleteReaction(reaction())
-#   deleteEvent(event())
-#   
-#   expect_length(compartment(), 0)
-#   expect_length(species(), 0)
-#   expect_length(quantity(), 0)
-#   expect_length(reaction(), 0)
-#   expect_length(event(), 0)
-# })
+setCurrentModel(currentModel)
+rm(currentModel)
+
+test_that("recursive destruction", {
+  expect_gt(length(species()), 0)
+  
+  deleteCompartment(compartment())
+  deleteSpecies(species())
+  deleteGlobalQuantity(quantity())
+  deleteReaction(reaction())
+  deleteEvent(event())
+
+  expect_length(compartment(), 0)
+  expect_length(species(), 0)
+  expect_length(quantity(), 0)
+  expect_length(reaction(), 0)
+  expect_length(event(), 0)
+})
 
 unloadAllModels()
 clearCustomKineticFunctions()

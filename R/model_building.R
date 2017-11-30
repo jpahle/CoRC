@@ -83,12 +83,16 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     base::stop(e)
   })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   get_key(c_metab, is_species = TRUE)
 }
 
-#' Delete a species
+#' Delete species
+#' 
+#' \code{deleteSpecies} deletes species.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 #' 
 #' @param key species keys
 #' @param model a model object
@@ -97,15 +101,20 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
 deleteSpecies <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  cl_metabs <- species_obj(key, c_datamodel)
-  
   c_model <- c_datamodel$getModel()
   
-  cl_metabs %>%
+  # Use copasi keys instead of pointers to prevent crashes
+  key %>%
+    species_obj(c_datamodel) %>%
     unique() %>%
-    walk(~ c_model$removeMetabolite(.x))
+    map_swig_chr("getKey") %>%
+    walk(~ {
+      # recursive removal without compilation in between seems to cause crashes.
+      c_model$compileIfNecessary()
+      c_model$removeMetabolite(.x, recursive = TRUE)
+    })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   invisible()
 }
@@ -175,12 +184,16 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
     base::stop(e)
   })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   get_key(c_quant)
 }
 
-#' Delete a global quantity
+#' Delete global quantities
+#' 
+#' \code{deleteGlobalQuantity} deletes global quantities.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 #' 
 #' @param key quantity keys
 #' @param model a model object
@@ -189,15 +202,20 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
 deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  cl_quants <- quantity_obj(key, c_datamodel)
-  
   c_model <- c_datamodel$getModel()
   
-  cl_quants %>%
+  # Use copasi keys instead of pointers to prevent crashes
+  key %>%
+    quantity_obj(c_datamodel) %>%
     unique() %>%
-    walk(~ c_model$removeModelValue(.x))
+    map_swig_chr("getKey") %>%
+    walk(~ {
+      # recursive removal without compilation in between seems to cause crashes.
+      c_model$compileIfNecessary()
+      c_model$removeModelValue(.x, recursive = TRUE)
+    })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   invisible()
 }
@@ -264,12 +282,16 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
     base::stop(e)
   })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   get_key(c_comp)
 }
 
-#' Delete a compartment
+#' Delete compartments
+#' 
+#' \code{deleteCompartment} deletes compartments.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 #' 
 #' @param key compartment keys
 #' @param model a model object
@@ -278,15 +300,20 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
 deleteCompartment <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  cl_comps <- compartment_obj(key, c_datamodel)
-  
   c_model <- c_datamodel$getModel()
   
-  cl_comps %>%
+  # Use copasi keys instead of pointers to prevent crashes
+  key %>%
+    compartment_obj(c_datamodel) %>%
     unique() %>%
-    walk(~ c_model$removeCompartment(.x))
+    map_swig_chr("getKey") %>%
+    walk(~ {
+      # recursive removal without compilation in between seems to cause crashes.
+      c_model$compileIfNecessary()
+      c_model$removeCompartment(.x, recursive = TRUE)
+    })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   invisible()
 }
@@ -342,12 +369,16 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
     }
   )
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   dn
 }
 
-#' Delete a reaction
+#' Delete reactions
+#' 
+#' \code{deleteReaction} deletes reactions.
+#' 
+#' Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 #' 
 #' @param key reaction keys
 #' @param model a model object
@@ -356,15 +387,20 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
 deleteReaction <- function(key, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  cl_reacts <- reaction_obj(key, c_datamodel)
-  
   c_model <- c_datamodel$getModel()
   
-  cl_reacts %>%
+  # Use copasi keys instead of pointers to prevent crashes
+  key %>%
+    reaction_obj(c_datamodel) %>%
     unique() %>%
-    walk(~ c_model$removeReaction(.x))
+    map_swig_chr("getKey") %>%
+    walk(~ {
+      # recursive removal without compilation in between seems to cause crashes.
+      c_model$compileIfNecessary()
+      c_model$removeReaction(.x, recursive = TRUE)
+    })
   
-  grab_msg(c_model$compileIfNecessary())
+  compile_and_check(c_model)
   
   invisible()
 }

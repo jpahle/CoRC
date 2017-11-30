@@ -72,7 +72,7 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
     if (do_parameters)
       addOptimizationParameter(parameter_list, model = c_datamodel)
     
-    grab_msg(c_model$compileIfNecessary())
+    compile_and_check(c_model)
     
     # initialize task
     assert_that(

@@ -71,7 +71,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
     if (do_experiments)
       addExperiments(experiment_list, model = c_datamodel)
     
-    grab_msg(c_model$compileIfNecessary())
+    compile_and_check(c_model)
     
     # initialize task
     assert_that(
