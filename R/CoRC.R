@@ -28,14 +28,14 @@
 OUTPUTFLAG <- 119L
 
 #' @export
-COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/1fa65656d534568b9d03eae8a7b625a5ea0dd7aa"
+COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/2c73939afb6379a2b216cce9fdaff48a1e56bf7a"
 
-COPASI_BIN_VERSION <- 8L
+COPASI_BIN_VERSION <- 9L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    windows = "343d69a8211abde42605bb1641f6b3b90d129e2f15cef978d9cfb838cc9c9ab2",
-    darwin = "001128cbb60494513f6ef72de3912d1e248654dac046f1879e4a61b9bfdc7c8b",
-    unix = "f465bf6ea2016c2e8b33019de05d868095bf61944296dc1be07b26919614e252"
+    windows = "6eab116f44431b14cbb0ba7eaed6ab9b9f1c6e0a1db693d240497c7d60879e40",
+    darwin  = "8147fc22ec3775cf74c119ff030f90a4734f1ddd1253c062749e0ce58d4ef59a",
+    unix    = "57b5ef820f4ba5f0f7a04d0ed7464428767c373d4f4ffceee329bbc3472655e3 "
   )
 )
 
@@ -155,15 +155,11 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       }
     }
     
-    # TODO
-    # Remove archfix on v9 libs
-    archfix <- arch
-    if (archfix == "x86_64") archfix <- "x64"
     dlurl <- paste0(
       "http://juergen.pahle.de/CoRC_libs/",
       "v", COPASI_BIN_VERSION, "/",
       "COPASI_", os,
-      "_", archfix,
+      "_", arch,
       .Platform$dynlib.ext
     )
     
