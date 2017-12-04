@@ -7,7 +7,10 @@
 clearCustomKineticFunctions()
 }
 \description{
-Clear custom functions
+\code{clearCustomKineticFunctions} deletes all custom kinetic functions.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other reaction functions: \code{\link{deleteKineticFunction}},

@@ -10,7 +10,10 @@ deleteKineticFunction(key)
 \item{key}{function keys}
 }
 \description{
-Delete a function
+\code{deleteKineticFunction} deletes kinetic functions.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},

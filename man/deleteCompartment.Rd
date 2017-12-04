@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_building.R
 \name{deleteCompartment}
 \alias{deleteCompartment}
-\title{Delete a compartment}
+\title{Delete compartments}
 \usage{
 deleteCompartment(key, model = getCurrentModel())
 }
@@ -12,7 +12,10 @@ deleteCompartment(key, model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-Delete a compartment
+\code{deleteCompartment} deletes compartments.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other compartment functions: \code{\link{entity_finders}},

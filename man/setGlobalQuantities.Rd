@@ -18,16 +18,16 @@ Also supports fragments of keys, if uniquely matching one global quantity.}
 
 \item{initial_value}{Initial value to set, as numeric.}
 
-\item{initial_expression}{Initial expression to set, as string.}
+\item{initial_expression}{Initial expression to set, as string, finite numeric, or logical.}
 
-\item{expression}{Expression to set, as numeric.}
+\item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{data}{A data frame as given by \code{\link{getGlobalQuantities}} which will be applied before the other arguments.}
 
 \item{model}{A model object.}
 }
 \description{
-\code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument
+\code{setGlobalQuantities} applies given values to global quantities of the model depending on the \code{key} argument.
 }
 \details{
 Use the \code{key} argument to specify which global quantity to modify and any of the other arguments to specify the value to set.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_building.R
 \name{deleteGlobalQuantity}
 \alias{deleteGlobalQuantity}
-\title{Delete a global quantity}
+\title{Delete global quantities}
 \usage{
 deleteGlobalQuantity(key, model = getCurrentModel())
 }
@@ -12,7 +12,10 @@ deleteGlobalQuantity(key, model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-Delete a global quantity
+\code{deleteGlobalQuantity} deletes global quantities.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other global quantity functions: \code{\link{entity_finders}},

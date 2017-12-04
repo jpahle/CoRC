@@ -12,6 +12,8 @@
 \alias{reaction_strict}
 \alias{parameter}
 \alias{parameter_strict}
+\alias{event}
+\alias{event_strict}
 \alias{kinfunction}
 \alias{kinfunction_strict}
 \title{Entity finders}
@@ -35,6 +37,10 @@ reaction_strict(key, reference = NULL, model = getCurrentModel())
 parameter(key = "", reference = NULL, model = getCurrentModel())
 
 parameter_strict(key, reference = NULL, model = getCurrentModel())
+
+event(key = "", model = getCurrentModel())
+
+event_strict(key, model = getCurrentModel())
 
 kinfunction(key = "")
 
@@ -176,6 +182,14 @@ Other reaction functions: \code{\link{clearCustomKineticFunctions}},
   \code{\link{setReactionMappings}},
   \code{\link{setReactions}}
 
+Other event functions: \code{\link{deleteEvent}},
+  \code{\link{getEvents}}, \code{\link{newEvent}},
+  \code{\link{setEvents}}
+
+Other event functions: \code{\link{deleteEvent}},
+  \code{\link{getEvents}}, \code{\link{newEvent}},
+  \code{\link{setEvents}}
+
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},
   \code{\link{deleteKineticFunction}},
   \code{\link{deleteReaction}},
@@ -207,6 +221,7 @@ Other reaction functions: \code{\link{clearCustomKineticFunctions}},
   \code{\link{setReactions}}
 }
 \concept{compartment functions}
+\concept{event functions}
 \concept{global quantity functions}
 \concept{reaction functions}
 \concept{species functions}

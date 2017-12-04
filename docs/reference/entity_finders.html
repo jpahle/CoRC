@@ -136,6 +136,10 @@ They give a quick overview of available species, compartments etc..</p>
 
 <span class='fu'>parameter_strict</span>(<span class='no'>key</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
+<span class='fu'>event</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+
+<span class='fu'>event_strict</span>(<span class='no'>key</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+
 <span class='fu'>kinfunction</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
 <span class='fu'>kinfunction_strict</span>(<span class='no'>key</span>)</pre>
@@ -266,6 +270,12 @@ Various references such as "Value" or "InitialConcentration" are available for s
   <code><a href='setReactionFunction.html'>setReactionFunction</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
   <code><a href='setReactions.html'>setReactions</a></code></p>
+<p>Other event functions: <code><a href='deleteEvent.html'>deleteEvent</a></code>,
+  <code><a href='getEvents.html'>getEvents</a></code>, <code><a href='newEvent.html'>newEvent</a></code>,
+  <code><a href='setEvents.html'>setEvents</a></code></p>
+<p>Other event functions: <code><a href='deleteEvent.html'>deleteEvent</a></code>,
+  <code><a href='getEvents.html'>getEvents</a></code>, <code><a href='newEvent.html'>newEvent</a></code>,
+  <code><a href='setEvents.html'>setEvents</a></code></p>
 <p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
   <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
@@ -318,7 +328,7 @@ Various references such as "Value" or "InitialConcentration" are available for s
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

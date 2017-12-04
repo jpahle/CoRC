@@ -35,7 +35,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Jürgen Pahle \email{juergen.pahle@bioquant.uni-heidelberg.de} [funder]
+  \item Jürgen Pahle \email{juergen.pahle@bioquant.uni-heidelberg.de}
 }
 
 }

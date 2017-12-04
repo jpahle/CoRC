@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_building.R
 \name{deleteSpecies}
 \alias{deleteSpecies}
-\title{Delete a species}
+\title{Delete species}
 \usage{
 deleteSpecies(key, model = getCurrentModel())
 }
@@ -12,7 +12,10 @@ deleteSpecies(key, model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-Delete a species
+\code{deleteSpecies} deletes species.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other species functions: \code{\link{entity_finders}},

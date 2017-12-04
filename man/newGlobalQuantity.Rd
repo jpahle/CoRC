@@ -15,9 +15,9 @@ newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
 
 \item{initial_value}{number}
 
-\item{initial_expression}{string}
+\item{initial_expression}{Initial expression to set, as string, finite numeric, or logical.}
 
-\item{expression}{string}
+\item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{model}{a model object}
 }
@@ -28,7 +28,6 @@ quantity key
 \code{newGlobalQuantity} creates a new global quantity.
 }
 \details{
-Default initial value is 1.
 Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
 }
 \seealso{

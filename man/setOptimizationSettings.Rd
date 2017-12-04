@@ -16,7 +16,7 @@ setOpt(expression = NULL, maximize = NULL, subtask = NULL,
   method = NULL, model = getCurrentModel())
 }
 \arguments{
-\item{expression}{string}
+\item{expression}{Expression to optimize, as string.}
 
 \item{maximize}{flag}
 

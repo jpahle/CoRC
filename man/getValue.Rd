@@ -7,7 +7,7 @@
 getValue(expression, model = getCurrentModel())
 }
 \arguments{
-\item{expression}{a character vector of expressions}
+\item{expression}{Expressions to calculate, as character, finite numeric, or logical vector.}
 
 \item{model}{a model object}
 }

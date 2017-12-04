@@ -18,9 +18,9 @@ Also supports fragments of keys, if uniquely matching one compartment.}
 
 \item{initial_size}{Initial size to set, as string.}
 
-\item{initial_expression}{Initial expression to set, as string.}
+\item{initial_expression}{Initial expression to set, as string, finite numeric, or logical.}
 
-\item{expression}{Expression to set, as string.}
+\item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{data}{A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
 

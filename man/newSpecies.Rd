@@ -19,9 +19,9 @@ newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
 
 \item{initial_number}{number}
 
-\item{initial_expression}{string}
+\item{initial_expression}{Initial expression to set, as string, finite numeric, or logical.}
 
-\item{expression}{string}
+\item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{model}{a model object}
 }
@@ -32,7 +32,6 @@ species key
 \code{newSpecies} creates a new species.
 }
 \details{
-Default initial concentration is 1.
 Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
 }
 \seealso{

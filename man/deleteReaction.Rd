@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_building.R
 \name{deleteReaction}
 \alias{deleteReaction}
-\title{Delete a reaction}
+\title{Delete reactions}
 \usage{
 deleteReaction(key, model = getCurrentModel())
 }
@@ -12,7 +12,10 @@ deleteReaction(key, model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-Delete a reaction
+\code{deleteReaction} deletes reactions.
+}
+\details{
+Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},

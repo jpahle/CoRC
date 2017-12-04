@@ -87,7 +87,7 @@
       <h1>Model Building</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2017-11-13</h4>
+            <h4 class="date">2018-01-19</h4>
           </div>
 
     
@@ -115,27 +115,25 @@
 
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;              key  name compartment      type initial_concentration</span>
-<span class="co">#&gt;            &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;                 &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartment}     a compartment reactions                     1</span>
-<span class="co">#&gt; 2 b{compartment}     b compartment reactions                     1</span>
-<span class="co">#&gt; # ... with 7 more variables: initial_number &lt;dbl&gt;, concentration &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   number &lt;dbl&gt;, rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
-<span class="co">#&gt; #   expression &lt;chr&gt;</span>
+<span class="co">#&gt;   key       name  compartment type    initial_concentra…    initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compar… a     compartment reacti…               1.00           6.02e²⁰</span>
+<span class="co">#&gt; 2 b{compar… b     compartment reacti…               1.00           6.02e²⁰</span>
+<span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate</span>
+<span class="co">#&gt; #   &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
-<span class="co">#&gt;       key  name reaction                                          rate_law</span>
-<span class="co">#&gt;     &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                             &lt;chr&gt;</span>
-<span class="co">#&gt; 1 (a = b) a = b    a = b FunctionDB.Functions[Reversible Michaelis-Menten]</span>
-<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number_flux &lt;dbl&gt;</span>
+<span class="co">#&gt;   key     name  reaction rate_law                         flux number_flux</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                           &lt;dbl&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…     0           0</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;           key  name reaction value mapping</span>
-<span class="co">#&gt;         &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;   &lt;chr&gt;</span>
-<span class="co">#&gt; 1 (a = b).Kms   Kms    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 2 (a = b).Kmp   Kmp    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 3  (a = b).Vf    Vf    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 4  (a = b).Vr    Vr    a = b   0.1    &lt;NA&gt;</span>
+<span class="co">#&gt;   key         name  reaction value mapping</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
+<span class="co">#&gt; 1 (a = b).Kms Kms   a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 2 (a = b).Kmp Kmp   a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 3 (a = b).Vf  Vf    a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 4 (a = b).Vr  Vr    a = b    0.100 &lt;NA&gt;</span>
 
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
 </div>
@@ -163,34 +161,30 @@ subs_value
 
 <span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;                               key                    name  type</span>
-<span class="co">#&gt;                             &lt;chr&gt;                   &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt; 1 Values[substrate concentration] substrate concentration fixed</span>
-<span class="co">#&gt; # ... with 5 more variables: initial_value &lt;dbl&gt;, value &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
+<span class="co">#&gt;   key    name  type  initial_value value  rate initial_express… expression</span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 Value… subs… fixed          10.0   NaN     0 ""               ""</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;              key  name compartment       type initial_concentration</span>
-<span class="co">#&gt;            &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                 &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartment}     a compartment assignment                    10</span>
-<span class="co">#&gt; 2 b{compartment}     b compartment  reactions                     1</span>
-<span class="co">#&gt; # ... with 7 more variables: initial_number &lt;dbl&gt;, concentration &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   number &lt;dbl&gt;, rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
-<span class="co">#&gt; #   expression &lt;chr&gt;</span>
+<span class="co">#&gt;   key       name  compartment type    initial_concentra…    initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compar… a     compartment assign…              10.0            6.02e²¹</span>
+<span class="co">#&gt; 2 b{compar… b     compartment reacti…               1.00           6.02e²⁰</span>
+<span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate</span>
+<span class="co">#&gt; #   &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getReactions.html">getReactions</a></span>()
 <span class="co">#&gt; # A tibble: 1 x 6</span>
-<span class="co">#&gt;       key  name reaction                                          rate_law</span>
-<span class="co">#&gt;     &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                             &lt;chr&gt;</span>
-<span class="co">#&gt; 1 (a = b) a = b    a = b FunctionDB.Functions[Reversible Michaelis-Menten]</span>
-<span class="co">#&gt; # ... with 2 more variables: flux &lt;dbl&gt;, number_flux &lt;dbl&gt;</span>
+<span class="co">#&gt;   key     name  reaction rate_law                         flux number_flux</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                           &lt;dbl&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…     0           0</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;           key  name reaction value mapping</span>
-<span class="co">#&gt;         &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;   &lt;chr&gt;</span>
-<span class="co">#&gt; 1 (a = b).Kms   Kms    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 2 (a = b).Kmp   Kmp    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 3  (a = b).Vf    Vf    a = b   0.1    &lt;NA&gt;</span>
-<span class="co">#&gt; 4  (a = b).Vr    Vr    a = b   0.1    &lt;NA&gt;</span>
+<span class="co">#&gt;   key         name  reaction value mapping</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
+<span class="co">#&gt; 1 (a = b).Kms Kms   a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 2 (a = b).Kmp Kmp   a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 3 (a = b).Vf  Vf    a = b    0.100 &lt;NA&gt;   </span>
+<span class="co">#&gt; 4 (a = b).Vr  Vr    a = b    0.100 &lt;NA&gt;</span>
 
 timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)
 
@@ -265,18 +259,18 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 
 <span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 101 x 3</span>
-<span class="co">#&gt;     Time        b     a</span>
-<span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1     0 1.000000    10</span>
-<span class="co">#&gt;  2    10 1.750746    10</span>
-<span class="co">#&gt;  3    20 2.400951    10</span>
-<span class="co">#&gt;  4    30 2.972440    10</span>
-<span class="co">#&gt;  5    40 3.480364    10</span>
-<span class="co">#&gt;  6    50 3.935746    10</span>
-<span class="co">#&gt;  7    60 4.346893    10</span>
-<span class="co">#&gt;  8    70 4.720247    10</span>
-<span class="co">#&gt;  9    80 5.060919    10</span>
-<span class="co">#&gt; 10    90 5.373042    10</span>
+<span class="co">#&gt;     Time     b     a</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1   0    1.00  10.0</span>
+<span class="co">#&gt;  2  10.0  1.75  10.0</span>
+<span class="co">#&gt;  3  20.0  2.40  10.0</span>
+<span class="co">#&gt;  4  30.0  2.97  10.0</span>
+<span class="co">#&gt;  5  40.0  3.48  10.0</span>
+<span class="co">#&gt;  6  50.0  3.94  10.0</span>
+<span class="co">#&gt;  7  60.0  4.35  10.0</span>
+<span class="co">#&gt;  8  70.0  4.72  10.0</span>
+<span class="co">#&gt;  9  80.0  5.06  10.0</span>
+<span class="co">#&gt; 10  90.0  5.37  10.0</span>
 <span class="co">#&gt; # ... with 91 more rows</span>
 
 <span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(
@@ -288,18 +282,18 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 
 <span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 101 x 4</span>
-<span class="co">#&gt;     Time        b     a `Values[reaction rate]`</span>
-<span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1     0 1.000000    10              0.08108108</span>
-<span class="co">#&gt;  2    10 1.750746    10              0.06960958</span>
-<span class="co">#&gt;  3    20 2.400951    10              0.06078776</span>
-<span class="co">#&gt;  4    30 2.972440    10              0.05375860</span>
-<span class="co">#&gt;  5    40 3.480364    10              0.04800782</span>
-<span class="co">#&gt;  6    50 3.935746    10              0.04320579</span>
-<span class="co">#&gt;  7    60 4.346893    10              0.03913026</span>
-<span class="co">#&gt;  8    70 4.720247    10              0.03562527</span>
-<span class="co">#&gt;  9    80 5.060919    10              0.03257772</span>
-<span class="co">#&gt; 10    90 5.373042    10              0.02990335</span>
+<span class="co">#&gt;     Time     b     a `Values[reaction rate]`</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1   0    1.00  10.0                  0.0811</span>
+<span class="co">#&gt;  2  10.0  1.75  10.0                  0.0696</span>
+<span class="co">#&gt;  3  20.0  2.40  10.0                  0.0608</span>
+<span class="co">#&gt;  4  30.0  2.97  10.0                  0.0538</span>
+<span class="co">#&gt;  5  40.0  3.48  10.0                  0.0480</span>
+<span class="co">#&gt;  6  50.0  3.94  10.0                  0.0432</span>
+<span class="co">#&gt;  7  60.0  4.35  10.0                  0.0391</span>
+<span class="co">#&gt;  8  70.0  4.72  10.0                  0.0356</span>
+<span class="co">#&gt;  9  80.0  5.06  10.0                  0.0326</span>
+<span class="co">#&gt; 10  90.0  5.37  10.0                  0.0299</span>
 <span class="co">#&gt; # ... with 91 more rows</span>
 
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>
@@ -329,7 +323,7 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

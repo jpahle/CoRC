@@ -23,9 +23,9 @@ Also supports fragments of keys, if uniquely matching one species.}
 
 \item{initial_number}{Initial particle number to set, as numeric.}
 
-\item{initial_expression}{Initial expression to set, as string.}
+\item{initial_expression}{Initial expression to set, as string, finite numeric, or logical.}
 
-\item{expression}{Expression to set, as string.}
+\item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{data}{A data frame as given by \code{\link{getSpecies}} which will be applied before the other arguments.}
 
