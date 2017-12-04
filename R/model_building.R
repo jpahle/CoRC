@@ -55,14 +55,15 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     c_comp <- compartment_obj(compartment, c_datamodel)[[1]]
   }
   
-  c_metab <- c_model$createMetabolite(name, c_comp$getObjectName())
+  # metabs need special consideration for concentrations
+  if (is.null(initial_concentration))
+    c_metab <- c_model$createMetabolite(name, c_comp$getObjectName())
+  else
+    c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration)
   
   assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
   
   c_metab$setStatus(toupper(type))
-  
-  if (!is.null(initial_concentration))
-    c_metab$setInitialValue(initial_concentration)
   
   if (!is.null(initial_number))
     c_metab$setInitialValue(initial_number)
