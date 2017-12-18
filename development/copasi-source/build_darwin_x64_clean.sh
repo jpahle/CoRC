@@ -6,12 +6,12 @@ BUILD_NAME=darwin
 BUILD_DIR=corc_${BUILD_NAME}_x64
 R_LOC=/opt/R-resources
 
-#cd copasi-dependencies/
-#rm -rf bin/ tmp/ bin_${BUILD_NAME}_x64/
-#./createOSX-qt5-cross.sh
-#rm -rf tmp/
-#mv bin/ bin_${BUILD_NAME}_x64/
-#cd ../
+cd copasi-dependencies/
+rm -rf bin/ tmp/ bin_${BUILD_NAME}_x64/
+./createOSX-qt5-cross.sh
+rm -rf tmp/
+mv bin/ bin_${BUILD_NAME}_x64/
+cd ../
 
 cp CopasiVersion.h COPASI/copasi/
 
@@ -19,6 +19,7 @@ rm -rf ${BUILD_DIR}/
 mkdir ${BUILD_DIR}/
 cd ${BUILD_DIR}/
 cmake \
+	-DCMAKE_TOOLCHAIN_FILE=/opt/toolchain-apple-darwin.cmake \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \

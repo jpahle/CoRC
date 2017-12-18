@@ -52,21 +52,36 @@ RUN wget -O- https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar xz \
 	&& make install \
 	&& cd ../ \
 	&& rm -r swig-rel-3.0.12/
+	
+#Build arguments
+ARG osxcross_repo="tpoechtrager/osxcross"
+ARG osxcross_revision="1a1733a773fe26e7b6c93b16fbf9341f22fac831"
+ARG osxcross_path="/opt/osxcross"
+ARG darwin_sdk_version="10.10"
+ARG darwin_osx_version_min="10.8"
+ARG darwin_version="14"
+ARG darwin_sdk_url="https://www.dropbox.com/s/yfbesd249w10lpc/MacOSX${darwin_sdk_version}.sdk.tar.xz"
 
-# setup osxcross
-ENV OSXCROSS_REPO="tpoechtrager/osxcross" \
-    OSXCROSS_REVISION="1a1733a773fe26e7b6c93b16fbf9341f22fac831" \
-    DARWIN_SDK_VERSION="10.9" \
-    DARWIN_OSX_VERSION_MIN="10.8" \
-	OSXCROSS_PATH="/opt/osxcross"
+# ENV available in docker image
+ENV OSXCROSS_REPO="${osxcross_repo}" \
+    OSXCROSS_REVISION="${osxcross_revision}" \
+	OSXCROSS_PATH="${osxcross_path}" \
+    DARWIN_SDK_VERSION="${darwin_sdk_version}" \
+    DARWIN_VERSION="${darwin_version}" \
+    DARWIN_OSX_VERSION_MIN="${darwin_osx_version_min}" \
+    DARWIN_SDK_URL="${darwin_sdk_url}" \
+    MACOSX_DEPLOYMENT_TARGET="${darwin_osx_version_min}"
 
 # install osxcross
 RUN mkdir -p ${OSXCROSS_PATH} \
 	&& cd ${OSXCROSS_PATH} \
 	&& wget -O- "https://codeload.github.com/${OSXCROSS_REPO}/tar.gz/${OSXCROSS_REVISION}" | tar zx --strip=1 \
-	&& wget -P tarballs/ "https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX${DARWIN_SDK_VERSION}.sdk.tar.xz" \
-	&& OSX_VERSION_MIN=${DARWIN_OSX_VERSION_MIN} OSXCROSS_TARGET=darwin13 UNATTENDED=1 ./build.sh
+	&& wget -P tarballs/ ${DARWIN_SDK_URL} \
+	&& OSX_VERSION_MIN=${DARWIN_OSX_VERSION_MIN} UNATTENDED=1 ./build.sh \
+	&& ./build_compiler_rt.sh
 
 # force build env
 ENV PATH ${OSXCROSS_PATH}/target/bin:$PATH
 ENV CC=o64-clang CXX=o64-clang++
+
+COPY toolchain-apple-darwin.cmake /opt/
