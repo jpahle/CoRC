@@ -4,7 +4,7 @@ Title: Copasi R Connector
 Version: 0.0.1.9001
 Authors@R: c(
     person("Jonas", "Förster", email = "jonasfoerster@gmail.com", role = c("aut", "cre")),
-    person("Jürgen", "Pahle", email = "juergen.pahle@bioquant.uni-heidelberg.de", role = c("aut", "fnd"))
+    person("Jürgen", "Pahle", email = "juergen.pahle@bioquant.uni-heidelberg.de", role = c("aut"))
     )
 Description: This package loads Copasi R bindings and wraps a simplyfied API around it.
 URL: https://github.com/jpahle/CoRC
