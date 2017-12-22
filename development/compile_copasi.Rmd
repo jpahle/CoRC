@@ -50,7 +50,7 @@ brew install cmake swig
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
 rm -rf bin/ tmp/ bin_darwin_x64/
-./createOSX-qt5.sh
+./createOSX-qt5-64.sh
 mv bin/ bin_darwin_x64/
 cd ../../../
 ```
@@ -88,7 +88,7 @@ cd development/copasi-source/
 
 cd copasi-dependencies/
 rm -rf bin/ tmp/ bin_darwin_x64/
-./createOSX-qt5.sh
+./createOSX-qt5-64.sh
 mv bin/ bin_darwin_x64/
 cd ..
 
@@ -131,7 +131,7 @@ Build dependencies:
 cd development/copasi-source/copasi-dependencies/
 export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
 rm -rf bin/ tmp/ bin_darwin_x64/
-./createOSX-qt5.sh
+./createOSX-qt5-64.sh
 mv bin/ bin_darwin_x64/
 cd ../../../
 ```
