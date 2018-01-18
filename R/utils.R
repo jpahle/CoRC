@@ -86,10 +86,6 @@ compile_and_check <- function(c_model) {
     warning("The model failed to compile in it's current state. Some CoRC features might fail unexpectedly.")
 }
 
-emptychr_to_na <- function(x) {
-  replace(x, x == "", NA_character_)
-}
-
 # transforms names from how they appear in the GUI to the preferred format in CoRC
 # e.g. "Initial Concentration" -> "initial_concentration" 
 # e.g. "Rate (1/s)" -> "rate_1_s"

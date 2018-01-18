@@ -183,7 +183,7 @@ test_that("getEvents()", {
   expect_identical(events_df_c$trigger_must_remain_true, TRUE)
   expect_identical(events_df_c$priority_expression, "")
   expect_identical(events_df_c$delayed, "no")
-  expect_identical(events_df_c$delay_expression, NA_character_)
+  expect_identical(events_df_c$delay_expression, "")
   expect_identical(events_df_c$assignment_target, list(c("Ca{Ca}", "Ca{inside}", "Ca{}")))
   expect_identical(events_df_c$assignment_expression, list(c("1", "1", "2.5")))
 })
@@ -202,7 +202,7 @@ test_that("setEvents()", {
   expect_error(setEvents("Ca", delay = "failure"))
   setEvents("Ca", delay = "no", delay_expression = "failure")
   expect_identical(getEvents("Ca")$delayed, "no")
-  expect_identical(getEvents("Ca")$delay_expression, NA_character_)
+  expect_identical(getEvents("Ca")$delay_expression, "")
 })
 
 test_that("setEvents() list columns", {

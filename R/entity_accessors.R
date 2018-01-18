@@ -22,11 +22,11 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
-  initial_expressions <- rep_along(cl_metabs, NA_character_)
+  initial_expressions <- rep_along(cl_metabs, "")
   initial_expressions[has_init_expression] <-
     map_chr(cl_metabs[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
-  expressions <- rep_along(cl_metabs, NA_character_)
+  expressions <- rep_along(cl_metabs, "")
   expressions[has_expression] <-
     map_chr(cl_metabs[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
@@ -257,11 +257,18 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
     )
   
   # apply expressions
-  for (i in which(do_expression))
+  for (i in which(do_expression)) {
+    c_metab <- cl_metabs[[i]]
+    expr <- expression[i]
+    
+    success <- grab_msg(c_metab$setExpression(expr)$isSuccess())
+    
+    # if fixed, expression will be "" but setting to "" will not succeed
     assert_that(
-      grab_msg(cl_metabs[[i]]$setExpression(expression[i])$isSuccess()),
+      success || (expr == "" && c_metab$getExpression() == ""),
       msg = "Failed when applying an expression."
     )
+  }
   
   compile_and_check(c_model)
   
@@ -292,11 +299,11 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
-  initial_expressions <- rep_along(cl_quants, NA_character_)
+  initial_expressions <- rep_along(cl_quants, "")
   initial_expressions[has_init_expression] <-
     map_chr(cl_quants[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
-  expressions <- rep_along(cl_quants, NA_character_)
+  expressions <- rep_along(cl_quants, "")
   expressions[has_expression] <-
     map_chr(cl_quants[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
@@ -462,11 +469,18 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
     )
   
   # apply expressions
-  for (i in which(do_expression))
+  for (i in which(do_expression)) {
+    c_quant <- cl_quants[[i]]
+    expr <- expression[i]
+    
+    success <- grab_msg(c_quant$setExpression(expr)$isSuccess())
+    
+    # if fixed, expression will be "" but setting to "" will not succeed
     assert_that(
-      grab_msg(cl_quants[[i]]$setExpression(expression[i])$isSuccess()),
+      success || (expr == "" && c_quant$getExpression() == ""),
       msg = "Failed when applying an expression."
     )
+  }
   
   compile_and_check(c_model)
   
@@ -497,11 +511,11 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
-  initial_expressions <- rep_along(cl_comps, NA_character_)
+  initial_expressions <- rep_along(cl_comps, "")
   initial_expressions[has_init_expression] <-
     map_chr(cl_comps[has_init_expression], iexpr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
-  expressions <- rep_along(cl_comps, NA_character_)
+  expressions <- rep_along(cl_comps, "")
   expressions[has_expression] <-
     map_chr(cl_comps[has_expression], expr_to_str, c_datamodel = c_datamodel, raw = raw_expressions)
   
@@ -667,11 +681,18 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
     )
   
   # apply expressions
-  for (i in which(do_expression))
+  for (i in which(do_expression)) {
+    c_comp <- cl_comps[[i]]
+    expr <- expression[i]
+    
+    success <- grab_msg(c_comp$setExpression(expr)$isSuccess())
+    
+    # if fixed, expression will be "" but setting to "" will not succeed
     assert_that(
-      grab_msg(cl_comps[[i]]$setExpression(expression[i])$isSuccess()),
+      success || (expr == "" && c_comp$getExpression() == ""),
       msg = "Failed when applying an expression."
     )
+  }
   
   compile_and_check(c_model)
   
@@ -1247,7 +1268,7 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
   trigger_expressions    <- map_swig_chr(cl_events, "getTriggerExpression")
   priority_expressions   <- map_swig_chr(cl_events, "getPriorityExpression")
   delay_expressions      <- map_swig_chr(cl_events, "getDelayExpression")
-  assignment_expressions <- map(cl_assignments , ~ map_swig_chr(.x, "getExpression"))
+  assignment_expressions <- map(cl_assignments, ~ map_swig_chr(.x, "getExpression"))
   
   if (!raw_expressions) {
     trigger_expressions    <- read_expr(trigger_expressions, c_datamodel)
@@ -1256,12 +1277,12 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
     assignment_expressions <- map(assignment_expressions, read_expr, c_datamodel)
   }
   
-  trigger_expressions    <- emptychr_to_na(trigger_expressions)
-  # priority_expressions   <- emptychr_to_na(priority_expressions)
-  delay_expressions      <- emptychr_to_na(delay_expressions)
-  assignment_expressions <- map(assignment_expressions, map_chr, emptychr_to_na)
+  # trigger_expressions    <- emptychr_to_na(trigger_expressions)
+  # # priority_expressions   <- emptychr_to_na(priority_expressions)
+  # delay_expressions      <- emptychr_to_na(delay_expressions)
+  # assignment_expressions <- map(assignment_expressions, map_chr, emptychr_to_na)
 
-  has_delay <- !is.na(delay_expressions)
+  has_delay <- delay_expressions != ""
   has_delay_calc <- map_swig_int(cl_events, "getDelayAssignment")
   delayed <- rep_along(cl_events, "no")
   delayed[has_delay & !has_delay_calc] <- "assignment"

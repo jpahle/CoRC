@@ -61,19 +61,16 @@ to_cexpr <- function(x) {
 }
 
 # check if an entity has an expression set
-# return NA_character_ or the expression string
+# return "" or the expression string
 expr_to_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(), raw = FALSE) {
   c_expression <- c_entity$getExpressionPtr()
   
   if (is.null(c_expression))
-    return(NA_character_)
+    return("")
   
   expr <- c_expression$getInfix()
   
-  if (expr == "")
-    return(NA_character_)
-  
-  if (!raw)
+  if (expr != "" && !raw)
     expr <- read_expr(expr, c_datamodel)
   
   expr
@@ -96,19 +93,16 @@ expr_to_ref_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(
 }
 
 # check if an entity has an initial expression set
-# return NA_character_ or the expression string
+# return "" or the expression string
 iexpr_to_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel(), raw = FALSE) {
   c_expression <- c_entity$getInitialExpressionPtr()
   
   if (is.null(c_expression))
-    return(NA_character_)
+    return("")
   
   expr <- c_expression$getInfix()
   
-  if (expr == "")
-    return(NA_character_)
-  
-  if (!raw)
+  if (expr != "" && !raw)
     expr <- read_expr(expr, c_datamodel)
   
   expr
