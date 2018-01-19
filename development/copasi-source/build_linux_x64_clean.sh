@@ -3,10 +3,10 @@ set -e
 set -x
 
 cd copasi-dependencies/
-rm -rf bin/ tmp/ bin_linux_x64/
-./createLinux-qt5.sh
-rm -rf tmp/
-mv bin/ bin_linux_x64/
+rm -rf tmp_linux_x64/ bin_linux_x64/
+BUILD_DIR=${PWD}/tmp_linux_x64/ \
+	INSTALL_DIR=${PWD}/bin_linux_x64/ \
+	./createLinux.sh
 cd ../
 
 cp CopasiVersion.h COPASI/copasi/
@@ -20,10 +20,9 @@ cmake \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
-	-DENABLE_NEW_PARSER=OFF \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
 	../COPASI/
-make
+make binding_r_lib
 cd ../
 
 mkdir -p libs/

@@ -12,10 +12,9 @@ cmake \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
-	-DENABLE_NEW_PARSER=OFF \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
 	../COPASI/
-make
+make binding_r_lib
 cd ../
 
 mkdir -p libs/

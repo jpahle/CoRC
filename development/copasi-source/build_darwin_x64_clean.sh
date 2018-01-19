@@ -27,10 +27,9 @@ cmake \
 	-DR_INCLUDE_DIRS=${R_LOC}/include/ \
 	-DR_LIB=${R_LOC}/lib/libR.dylib \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
-	-DENABLE_NEW_PARSER=OFF \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_${BUILD_NAME}_x64/ \
 	../COPASI/
-make
+make binding_r_lib
 cd ../
 
 mkdir -p libs/

@@ -68,10 +68,9 @@ cmake \
   -DBUILD_SE=OFF \
   -DENABLE_R=ON \
   -DR_USE_DYNAMIC_LOOKUP=ON \
-  -DENABLE_NEW_PARSER=OFF \
   -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
   ../COPASI/
-make
+make binding_r_lib
 
 cd ../
 mkdir -p libs/
@@ -102,10 +101,9 @@ cmake \
   -DBUILD_SE=OFF \
   -DENABLE_R=ON \
   -DR_USE_DYNAMIC_LOOKUP=ON \
-  -DENABLE_NEW_PARSER=OFF \
   -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
   ../COPASI/
-make
+make binding_r_lib
 
 cd ../
 mkdir -p libs/
@@ -190,14 +188,13 @@ cmake -G Ninja ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
   -DENABLE_R=ON ^
-  -DENABLE_NEW_PARSER=OFF ^
   -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
   -DSWIG_EXECUTABLE="../swigwin/swig.exe" ^
   -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.2/include/" ^
   -DR_INTERPRETER="C:/Program Files/R/R-3.4.2/bin/R.exe" ^
   -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ^
   ../COPASI/
-ninja
+ninja binding_r_lib
 
 cd ..\
 mkdir libs\
@@ -215,7 +212,7 @@ Install docker CE and get docker permissions for your user.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-./build_linux_clean.sh
+./d_build_linux_clean.sh
 cd ../../
 ```
 
@@ -225,7 +222,7 @@ Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-./build_linux_x64_quick.sh
+./d_build_linux_x64_quick.sh
 cd ../../
 ```
 

@@ -7,6 +7,7 @@
 * Fix crashes on entity deletion. Deletion functions now delete recursively.
 * Generally warn if model fails to compile.
 * Fix errors with argument` type` of `setCompartments()` and `setGlobalQuantities()`
+* Use new Copasi XML parser
 
 # CoRC 0.0.1
 
