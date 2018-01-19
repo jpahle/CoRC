@@ -87,7 +87,7 @@ test_that("newEvent() success", {
   newEvent("s4", trigger_expression = FALSE, assignment_target = NULL, assignment_expression = character())
   newEvent("s5", trigger_expression = FALSE, assignment_target = quantity()[1], assignment_expression = "1")
   newEvent("s6", trigger_expression = FALSE, assignment_target = quantity()[1:2], assignment_expression = c("1", "2"))
-  deleteEvent(paste0("s", 1:6))
+  expect_null(deleteEvent(paste0("s", 1:6)))
 })
 
 # this is an edge case where delayed will be set to "no" afterwards because of the empty expression. fine for now.
