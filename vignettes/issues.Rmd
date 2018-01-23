@@ -33,7 +33,6 @@ loadExamples(1)
 
 Todo:
 
-* Add model events
 * Add more copasi tasks
 * Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)
 * (Internal) Code marked with 'TODO' for minor problems
@@ -45,40 +44,6 @@ Issues:
 
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
-
-# Function naming is lacking a cohesive concept
-
-Quantity accessors are named:
-
-```{r, eval=FALSE}
-getSpecies()
-setSpecies()
-getGlobalQuantities()
-setGlobalQuantities()
-setParameters()
-```
-
-Task related functions are named:
-
-```{r, eval=FALSE}
-runTimeCourse()
-runSteadyState()
-runParameterEstimation()
-setTimeCourseSettings()
-setSteadyStateSettings()
-setParameterEstimationSettings()
-```
-
-There are further functions which with awkward names:
-
-```{r, eval=FALSE}
-# Adds FitItem to parameter estimation task
-# No relation to setParameters(), which handles reaction parameters
-addParameterEstimationParameter()
-```
-
-Naming so far has been based on the desire to stay as close to the GUI as possible.
-It's probably time to define a cohesive concept.
 
 # Checking validity of quantity unit doesn't work
 

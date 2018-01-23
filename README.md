@@ -28,8 +28,8 @@ Installation
 Install the development version from GitHub.
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("jpahle/CoRC")
+install.packages("remotes")
+remotes::install_github("jpahle/CoRC")
 CoRC::getCopasi()
 ```
 

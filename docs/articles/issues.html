@@ -110,7 +110,6 @@
 <a href="#quicklist" class="anchor"></a>Quicklist</h1>
 <p>Todo:</p>
 <ul>
-<li>Add model events</li>
 <li>Add more copasi tasks</li>
 <li>Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)</li>
 <li>(Internal) Code marked with ‘TODO’ for minor problems</li>
@@ -123,28 +122,6 @@
 <li>getwd() and copasi$getReferenceDirectory() are not in sync</li>
 <li>some S3 classes should have reconstruct functions (hadley/sloop)</li>
 </ul>
-</div>
-<div id="function-naming-is-lacking-a-cohesive-concept" class="section level1">
-<h1 class="hasAnchor">
-<a href="#function-naming-is-lacking-a-cohesive-concept" class="anchor"></a>Function naming is lacking a cohesive concept</h1>
-<p>Quantity accessors are named:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
-<span class="kw"><a href="../reference/setSpecies.html">setSpecies</a></span>()
-<span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
-<span class="kw"><a href="../reference/setGlobalQuantities.html">setGlobalQuantities</a></span>()
-<span class="kw"><a href="../reference/setParameters.html">setParameters</a></span>()</code></pre></div>
-<p>Task related functions are named:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>()
-<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>()
-<span class="kw"><a href="../reference/runParameterEstimation.html">runParameterEstimation</a></span>()
-<span class="kw"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span>()
-<span class="kw"><a href="../reference/setSteadyStateSettings.html">setSteadyStateSettings</a></span>()
-<span class="kw"><a href="../reference/setParameterEstimationSettings.html">setParameterEstimationSettings</a></span>()</code></pre></div>
-<p>There are further functions which with awkward names:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Adds FitItem to parameter estimation task</span>
-<span class="co"># No relation to setParameters(), which handles reaction parameters</span>
-<span class="kw"><a href="../reference/addParameterEstimationParameter.html">addParameterEstimationParameter</a></span>()</code></pre></div>
-<p>Naming so far has been based on the desire to stay as close to the GUI as possible. It’s probably time to define a cohesive concept.</p>
 </div>
 <div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
 <h1 class="hasAnchor">
@@ -239,7 +216,6 @@ filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
       <li><a href="#quicklist">Quicklist</a></li>
-      <li><a href="#function-naming-is-lacking-a-cohesive-concept">Function naming is lacking a cohesive concept</a></li>
       <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
       </ul>

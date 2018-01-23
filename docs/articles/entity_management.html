@@ -133,7 +133,9 @@
 <span class="co">#&gt; [1] "(Rm4).kR"</span>
 <span class="kw"><a href="../reference/entity_finders.html">kinfunction</a></span>(<span class="st">"Michaelis-Menten"</span>)
 <span class="co">#&gt; [1] "FunctionDB.Functions[Henri-Michaelis-Menten (irreversible)]"</span>
-<span class="co">#&gt; [2] "FunctionDB.Functions[Reversible Michaelis-Menten]"</span></code></pre></div>
+<span class="co">#&gt; [2] "FunctionDB.Functions[Reversible Michaelis-Menten]"</span>
+<span class="kw"><a href="../reference/entity_finders.html">event</a></span>()
+<span class="co">#&gt; character(0)</span></code></pre></div>
 <p>There are <code>_strict</code> variants that will always return a vector of <code>key</code>s of the same length as the input or throw an error. Accordingly, the behavior for <code>NA</code> or non-uniquely matching strings is to throw an error. This allows the <code>_strict</code> variants to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>)
 <span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span>

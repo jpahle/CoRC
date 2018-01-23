@@ -44,6 +44,7 @@ quantity("a")
 reaction("Che B phosph")
 parameter("4).kR")
 kinfunction("Michaelis-Menten")
+event()
 ```
 
 There are `_strict` variants that will always return a vector of `key`s of the same length as the input or throw an error.
