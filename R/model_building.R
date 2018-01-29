@@ -693,8 +693,7 @@ deleteKineticFunction <- function(key) {
 clearCustomKineticFunctions <- function() {
   c_fun_db <- CRootContainer_getFunctionList()
   
-  cl_funs <-
-    c_fun_db$loadedFunctions() %>%
+  c_fun_db$loadedFunctions() %>%
     get_cdv() %>%
     discard(map_swig_lgl(., "isReadOnly")) %>%
     map_swig_chr("getKey") %>%

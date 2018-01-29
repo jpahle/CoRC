@@ -452,9 +452,9 @@ openCopasi <- function(readin = FALSE, copasi_loc = "CopasiUI", model = getCurre
   
   c_fittask <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
   c_fitproblem <- as(c_fittask$getProblem(), "_p_CFitProblem")
-  has_exps <- !is_empty(c_fitproblem$getExperimentSet()$getFileNames()) || !is_empty(c_fitproblem$getCrossValidationSet()$getFileNames())
+  has_experiments <- !is_empty(c_fitproblem$getExperimentSet()$getFileNames()) || !is_empty(c_fitproblem$getCrossValidationSet()$getFileNames())
   
-  if (readin == FALSE && has_exps) {
+  if (!readin && has_experiments) {
     warning(
       "Using readin = TRUE because the model references experimental data which breaks when using the systems temp folder.",
       immediate. = TRUE
