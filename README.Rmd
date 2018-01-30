@@ -24,25 +24,27 @@ These scripts can then be run interactively from the R command line interface or
 
 CoRC features:
 
-* high-level API for Copasi in the R language
-* define reproducible workflows using Copasi's powerful modelling tools
-* easy parallization of Copasi tasks
+* high-level API for COPASI in the R language
+* define reproducible workflows using COPASI's powerful modelling tools
+* easy parallization of COPASI tasks
 * enables straight forward publication-ready plotting with the R ecosystem
 * ...
 
-It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
+It is based on a current development version of COPASI but is expected to closely follow official release versions in the future.
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
 
 ## Installation
 
-Install the development version from GitHub.
+Install the development version from GitHub:
 
 ```{r, eval = FALSE}
 install.packages("remotes")
 remotes::install_github("jpahle/CoRC")
 CoRC::getCopasi()
 ```
+
+CoRC runs it's own version of the COPASI backend which it will download via the `getCopasi` function.
 
 ## Usage
 
