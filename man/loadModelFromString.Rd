@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_management.R
 \name{loadModelFromString}
 \alias{loadModelFromString}
-\title{Load a model from string}
+\title{Load a model from a string}
 \usage{
 loadModelFromString(model)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_management.R
 \name{loadSBML}
 \alias{loadSBML}
-\title{Load SBML data}
+\title{Load an SBML model}
 \usage{
 loadSBML(path)
 }
@@ -13,7 +13,7 @@ loadSBML(path)
 a model object
 }
 \description{
-\code{loadSBML} loads SBML data into copasi and returns a reference to it.
+\code{loadSBML} loads an SBML model into copasi and returns a reference to it.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

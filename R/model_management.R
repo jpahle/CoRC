@@ -124,7 +124,7 @@ loadModel <- function(path) {
   c_datamodel
 }
 
-#' Load a model from string
+#' Load a model from a string
 #'
 #' \code{loadModelFromString} loads a model from a string.
 #'
@@ -150,9 +150,9 @@ loadModelFromString <- function(model) {
   c_datamodel
 }
 
-#' Load SBML data
+#' Load an SBML model
 #'
-#' \code{loadSBML} loads SBML data into copasi and returns a reference to it.
+#' \code{loadSBML} loads an SBML model into copasi and returns a reference to it.
 #'
 #' @param path url or path
 #' @return a model object
@@ -177,7 +177,7 @@ loadSBML <- function(path) {
   
   if (!success) {
     CRootContainer_removeDatamodel(c_datamodel)
-    stop("Failed to load SBML data.")
+    stop("Failed to load SBML model.")
   }
   
   pkg_env$c_curr_dm <- c_datamodel
