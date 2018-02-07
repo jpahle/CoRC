@@ -8,13 +8,16 @@ newReaction(scheme, name = scheme, fun = NULL, mappings = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{scheme}{string}
+\item{scheme}{Reaction scheme as to set, as string.}
 
-\item{name}{string}
+\item{name}{Name to set, as string.
+Defaults to scheme.}
 
-\item{fun}{string}
+\item{fun}{Identify which kinetic function to set by specifying it's key, as string.}
 
-\item{mappings}{named list}
+\item{mappings}{Parameter mappings, as named list.
+Names are the parameters of the kinetic function.
+Values are either entity keys valid for the specific type of parameter or a numeric value in case of a local parameter.}
 
 \item{model}{a model object}
 }

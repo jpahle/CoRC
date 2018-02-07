@@ -13,7 +13,9 @@ Also supports fragments of keys, if uniquely matching one reaction.}
 \item{fun}{Key of new kinetic function to set, as string.
 Also supports fragments of keys, if uniquely matching one kinetic function.}
 
-\item{mappings}{New parameter mappings, as named list.}
+\item{mappings}{Parameter mappings, as named list.
+Names are the parameters of the kinetic function.
+Values are either entity keys valid for the specific type of parameter or a numeric value in case of a local parameter.}
 
 \item{model}{A model object.}
 }

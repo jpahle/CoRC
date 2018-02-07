@@ -843,7 +843,9 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param fun Key of new kinetic function to set, as string.
 #' Also supports fragments of keys, if uniquely matching one kinetic function.
-#' @param mappings New parameter mappings, as named list.
+#' @param mappings Parameter mappings, as named list.
+#' Names are the parameters of the kinetic function.
+#' Values are either entity keys valid for the specific type of parameter or a numeric value in case of a local parameter.
 #' @param model A model object.
 #' @seealso \code{\link{getValidReactionFunctions}}
 #' @family reaction functions
@@ -924,7 +926,9 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
 #' 
 #' @param key Identify which reaction to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
-#' @param mappings New parameter mappings, as named list.
+#' @param mappings Parameter mappings, as named list.
+#' Names are the parameters of the kinetic function.
+#' Values are either entity keys valid for the specific type of parameter or a numeric value in case of a local parameter.
 #' @param model A model object.
 #' @seealso \code{\link{getReactionMappings}}
 #' @family reaction functions

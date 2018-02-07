@@ -8,15 +8,17 @@ newKineticFunction(name, formula, parameters, function_type = c("general",
   "reversible", "irreversible"))
 }
 \arguments{
-\item{name}{string}
+\item{name}{Name to set, as string}
 
-\item{formula}{string}
+\item{formula}{Function formula to set, as string}
 
-\item{parameters}{named character vector
+\item{parameters}{Parameter types to set, as named character vector
+Defaults to 'parameter' for every parameter.
 
 Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time'.}
 
-\item{function_type}{string}
+\item{function_type}{Type of function to set, as string.
+Defines if the function is gerneral, reversible or irreversible.}
 }
 \value{
 function key

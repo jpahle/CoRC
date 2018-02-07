@@ -326,10 +326,13 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
 
 #' Create a new reaction
 #'
-#' @param scheme string
-#' @param name string
-#' @param fun string
-#' @param mappings named list
+#' @param scheme Reaction scheme as to set, as string.
+#' @param name Name to set, as string.
+#' Defaults to scheme.
+#' @param fun Identify which kinetic function to set by specifying it's key, as string.
+#' @param mappings Parameter mappings, as named list.
+#' Names are the parameters of the kinetic function.
+#' Values are either entity keys valid for the specific type of parameter or a numeric value in case of a local parameter.
 #' @param model a model object
 #' @return reaction key
 #' @family reaction functions
@@ -566,12 +569,14 @@ function_role_enum <-
 
 #' Create a new kinetic function
 #' 
-#' @param name string
-#' @param formula string
-#' @eval paste0("@param parameters named character vector
+#' @param name Name to set, as string
+#' @param formula Function formula to set, as string
+#' @eval paste0("@param parameters Parameter types to set, as named character vector
+#' Defaults to 'parameter' for every parameter.
 #' 
 #' Allowed values: ", rox_print_v(function_role_enum), ".")
-#' @param function_type string
+#' @param function_type Type of function to set, as string.
+#' Defines if the function is gerneral, reversible or irreversible.
 #' @return function key
 #' @family reaction functions
 #' @export
