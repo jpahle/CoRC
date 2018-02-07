@@ -571,7 +571,7 @@ function_role_enum <-
 #' 
 #' @param name Name to set, as string
 #' @param formula Function formula to set, as string
-#' @eval paste0("@param parameters Parameter types to set, as named character vector
+#' @eval paste0("@param parameters Parameter types to set, as named character vector.
 #' Defaults to 'parameter' for every parameter.
 #' 
 #' Allowed values: ", rox_print_v(function_role_enum), ".")
