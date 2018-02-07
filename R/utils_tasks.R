@@ -4,14 +4,6 @@ task_enum <-
   names(.__E___CTaskEnum__Task) %>%
   .[. != "UnsetTask" & . != "__SIZE"]
 
-# Push transient values from mathcontainer back to the model.
-# Mostly called after task execution to update model values.
-update_model_from_mc <- function(c_mathcontainer) {
-  c_mathcontainer$updateSimulatedValues(FALSE);
-  c_mathcontainer$updateTransientDataValues();
-  c_mathcontainer$pushAllTransientValues();
-}
-
 #' Autoplot method for copasi timeseries objects.
 #'
 #' Uses ggplot2 to plot timeseries.

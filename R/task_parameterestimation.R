@@ -87,9 +87,6 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
       msg = "Processing the task failed."
     )
     
-    # write back info from math container to model
-    update_model_from_mc(c_task$getMathContainer())
-    
     # get results
     ret <- pe_get_results(c_task, full_settings)
   },
