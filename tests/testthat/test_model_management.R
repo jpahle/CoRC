@@ -48,5 +48,24 @@ test_that("loadSBML local file failure", {
   expect_error(loadSBML("__fake_file.xml"))
 })
 
+test_that("loadSBMLFromString success", {
+  sbml_string <- paste0(readLines(model_path("Kummer2000_Ca.xml")), collapse = "\n")
+  expect_s4_class(loadSBMLFromString(sbml_string), "_p_CDataModel")
+  unloadModel()
+})
+
+test_that("loadSBMLFromString failure", {
+  expect_error(suppressWarnings(loadSBMLFromString("1\n2\n3")))
+})
+
+test_that("saveSBMLToString successs", {
+  loadExamples(1)
+  sbml_string <- suppressWarnings(saveSBMLToString(3, 1))
+  expect_type(sbml_string, "character")
+  expect_false(is.na(sbml_string))
+  expect_true(sbml_string != "")
+  unloadModel()
+})
+
 unloadAllModels()
 clearCustomKineticFunctions()

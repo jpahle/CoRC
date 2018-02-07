@@ -186,6 +186,32 @@ loadSBML <- function(path) {
   c_datamodel
 }
 
+#' Load an SBML model from a string
+#'
+#' \code{loadSBMLFromString} loads an SBML model from a string.
+#'
+#' @param sbml string
+#' @family model loading
+#' @export
+loadSBMLFromString <- function(sbml) {
+  assert_binaries()
+  assert_that(is.string(sbml), noNA(sbml))
+  
+  c_datamodel <- CRootContainer_addDatamodel()
+  
+  success <- grab_msg(c_datamodel$importSBMLFromString(sbml))
+  
+  if (!success) {
+    CRootContainer_removeDatamodel(c_datamodel)
+    stop("Failed to load SBML model.")
+  }
+  
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
+  
+  c_datamodel
+}
+
 #' Unload a model
 #'
 #' \code{unloadModel} frees memory by unloading the given model from copasi
@@ -309,6 +335,25 @@ saveSBML <- function(filename = model$getFileName(), level, version, overwrite =
   )
   
   invisible()
+}
+
+#' Save the model to an SBML string
+#'
+#' \code{saveSBMLToString} saves the given model to an SBML string.
+#'
+#' @param level numeric sbml level
+#' @param version numeric sbml version
+#' @param model a model object
+#' @family model loading
+#' @export
+saveSBMLToString <- function(level, version, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.count(level),     noNA(level),
+    is.count(version),   noNA(version)
+  )
+  
+  grab_msg(c_datamodel$exportSBMLToString(sbmlLevel = level, sbmlVersion = version))
 }
 
 #' Load example models

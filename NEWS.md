@@ -1,6 +1,7 @@
 # CoRC 0.1.0.9002
 
 * Rebase on latest COPASI development sources.
+* Add functions to handle SBML models as strings (`loadSBMLFromString()`, `saveSBMLToString()`).
 
 # CoRC 0.1.0.9001
 
