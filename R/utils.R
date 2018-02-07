@@ -47,8 +47,9 @@ setMethod("show",
 
 # Checks whether the given c_datamodel is valid / loaded
 # Whenever it's called, it will also set the model as the currently active one
-assert_datamodel <- function(c_datamodel) {
-  assert_that(inherits(c_datamodel, "_p_CDataModel"))
+assert_datamodel <- function(model) {
+  assert_that(inherits(model, "_p_CDataModel"))
+  c_datamodel <- model
   
   assert_that(
     !has_null_pointer(c_datamodel),
