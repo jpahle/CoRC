@@ -1,6 +1,7 @@
 # CoRC 0.1.0.9000
 
-* Fix installation on UNIX systems
+* Fix loadSBML function failing for local files.
+* Fix installation on UNIX systems.
 
 # CoRC 0.1.0
 

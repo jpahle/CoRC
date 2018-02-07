@@ -170,7 +170,7 @@ loadSBML <- function(path) {
   success <- FALSE
   
   if (is.character(path) && file.exists(path) && is.readable(path)) {
-    success <- grab_msg(c_datamodel$importSMBL(normalizePathC(path)))
+    success <- grab_msg(c_datamodel$importSBML(normalizePathC(path)))
   }
   
   if (!success) {
