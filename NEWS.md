@@ -1,3 +1,7 @@
+# CoRC 0.1.0.9000
+
+* Fix installation on UNIX systems
+
 # CoRC 0.1.0
 
 * Rebase on latest COPASI development sources.
