@@ -28,13 +28,10 @@ test_that("setTimeCourseSettings() method", {
 })
 
 test_that("autoplot.copasi_ts()", {
+  skip_if_not_installed("ggplot2")
+  
   TC <- runTimeCourse()
-  if (requireNamespace("ggplot2", quietly = T)) {
-    expect_s3_class(autoplot.copasi_ts(TC), "ggplot")
-  } else {
-    expect_error(autoplot.copasi_ts(TC))
-    warning("Skipping autoplot test because package 'ggplot2' is missing")
-  }
+  expect_s3_class(autoplot.copasi_ts(TC), "ggplot")
 })
 
 unloadAllModels()
