@@ -62,12 +62,9 @@ getLoadedModels <- function() {
 # helper for loading models from connections
 # If x is a readable path, the contents are returned as string, else NULL
 con_to_string <- function(x) {
-  if (is.character(x))
-    x <- file(x)
-  
   result <- quietly(readLines)(x)
-  close(x)
   
+  # warnings indicate problems like binary files
   assert_that(is_empty(result$warnings), msg = "Could not interpret path contents.")
   
   paste0(result$result, collapse = "\n")
