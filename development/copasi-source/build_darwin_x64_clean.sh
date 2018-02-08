@@ -3,21 +3,23 @@ set -e
 set -x
 
 BUILD_NAME=darwin
-BUILD_DIR=corc_${BUILD_NAME}_x64
+DEP_BUILD_DIR=tmp_${BUILD_NAME}_x64
+DEP_INSTALL_DIR=bin_${BUILD_NAME}_x64
+CORC_BUILD_DIR=corc_${BUILD_NAME}_x64
 R_LOC=/opt/R-resources
 
 cd copasi-dependencies/
-rm -rf bin/ tmp/ bin_${BUILD_NAME}_x64/
-./createOSX-qt5-cross.sh
-rm -rf tmp/
-mv bin/ bin_${BUILD_NAME}_x64/
+rm -rf ${DEP_BUILD_DIR}/ ${DEP_INSTALL_DIR}/
+BUILD_DIR=${PWD}/${DEP_BUILD_DIR}/ \
+	INSTALL_DIR=${PWD}/${DEP_INSTALL_DIR}/ \
+	./createOSX-qt5-cross.sh
 cd ../
 
 cp CopasiVersion.h COPASI/copasi/
 
-rm -rf ${BUILD_DIR}/
-mkdir ${BUILD_DIR}/
-cd ${BUILD_DIR}/
+rm -rf ${CORC_BUILD_DIR}/
+mkdir ${CORC_BUILD_DIR}/
+cd ${CORC_BUILD_DIR}/
 cmake \
 	-DCMAKE_TOOLCHAIN_FILE=/opt/toolchain-apple-darwin.cmake \
 	-DCMAKE_BUILD_TYPE=Release \
@@ -27,7 +29,7 @@ cmake \
 	-DR_INCLUDE_DIRS=${R_LOC}/include/ \
 	-DR_LIB=${R_LOC}/lib/libR.dylib \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
-	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_${BUILD_NAME}_x64/ \
+	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/${DEP_INSTALL_DIR}/ \
 	../COPASI/
 make binding_r_lib
 cd ../
