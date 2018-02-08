@@ -10,8 +10,8 @@ R_LOC=/opt/R-resources
 
 cd copasi-dependencies/
 rm -rf ${DEP_BUILD_DIR}/ ${DEP_INSTALL_DIR}/
-BUILD_DIR=${PWD}/${DEP_BUILD_DIR}/ \
-	INSTALL_DIR=${PWD}/${DEP_INSTALL_DIR}/ \
+BUILD_DIR=${PWD}/${DEP_BUILD_DIR} \
+	INSTALL_DIR=${PWD}/${DEP_INSTALL_DIR} \
 	./createOSX-qt5-cross.sh
 cd ../
 

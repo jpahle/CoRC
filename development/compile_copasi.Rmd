@@ -50,8 +50,8 @@ brew install cmake swig
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
 rm -rf tmp_darwin_x64/ bin_darwin_x64/
-BUILD_DIR=${PWD}/tmp_darwin_x64/ \
-	INSTALL_DIR=${PWD}/bin_darwin_x64/ \
+BUILD_DIR=${PWD}/tmp_darwin_x64 \
+	INSTALL_DIR=${PWD}/bin_darwin_x64 \
 	./createOSX-qt5.sh
 cd ../../../
 ```
@@ -88,8 +88,8 @@ cd development/copasi-source/
 
 cd copasi-dependencies/
 rm -rf tmp_darwin_x64/ bin_darwin_x64/
-BUILD_DIR=${PWD}/tmp_darwin_x64/ \
-	INSTALL_DIR=${PWD}/bin_darwin_x64/ \
+BUILD_DIR=${PWD}/tmp_darwin_x64 \
+	INSTALL_DIR=${PWD}/bin_darwin_x64 \
 	./createOSX-qt5.sh
 cd ..
 
