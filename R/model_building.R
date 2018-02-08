@@ -61,7 +61,7 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
   else
     c_metab <- c_model$createMetabolite(name, c_comp$getObjectName(), initial_concentration)
   
-  assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed.")
+  assert_that(inherits(c_metab, "_p_CMetab"), msg = "Species creation failed. Does a species of that name exist already?")
   
   c_metab$setStatus(toupper(type))
   
@@ -72,14 +72,14 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
     if (!is.null(initial_expression)) {
       assert_that(
         grab_msg(c_metab$setInitialExpression(initial_expression)$isSuccess()),
-        msg = "Species creation failed when applying the initial expression."
+        msg = "Species creation failed when applying the initial expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
     
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_metab$setExpression(expression)$isSuccess()),
-        msg = "Species creation failed when applying the expression."
+        msg = "Species creation failed when applying the expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
   },
@@ -161,7 +161,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   c_quant <- c_model$createModelValue(name)
   
-  assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed.")
+  assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed. Does a global quantity of that name exist already?")
   
   c_quant$setStatus(toupper(type))
   
@@ -172,14 +172,14 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
     if (!is.null(initial_expression)) {
       assert_that(
         grab_msg(c_quant$setInitialExpression(initial_expression)$isSuccess()),
-        msg = "Global quantity failed when applying the initial expression."
+        msg = "Global quantity failed when applying the initial expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
     
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_quant$setExpression(expression)$isSuccess()),
-        msg = "Global quantity creation failed when applying the expression."
+        msg = "Global quantity creation failed when applying the expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
   },
@@ -261,7 +261,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   # type is missing
   c_comp <- c_model$createCompartment(name)
   
-  assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed.")
+  assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed. Does a compartment of that name exist already?")
   
   c_comp$setStatus(toupper(type))
   
@@ -272,14 +272,14 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
     if (!is.null(initial_expression)) {
       assert_that(
         grab_msg(c_comp$setInitialExpression(initial_expression)$isSuccess()),
-        msg = "Compartment creation failed when applying the expression."
+        msg = "Compartment creation failed when applying the initial expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
     
     if (!is.null(expression)) {
       assert_that(
         grab_msg(c_comp$setExpression(expression)$isSuccess()),
-        msg = "Compartment creation failed when applying the expression."
+        msg = "Compartment creation failed when applying the expression. The expression may be invalid or the entity is not of appropriate `type`."
       )
     }
   },
@@ -347,7 +347,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
   c_model <- c_datamodel$getModel()
   
   c_react <- c_model$createReaction(name)
-  assert_that(inherits(c_react, "_p_CReaction"), msg = "Reaction creation failed")
+  assert_that(inherits(c_react, "_p_CReaction"), msg = "Reaction creation failed. Does a reaction of that name exist already?")
   
   assert_that(
     grab_msg(c_react$setReactionScheme(scheme)),
@@ -481,7 +481,7 @@ newEvent <- function(name, trigger_expression, fire_at_initial_time = FALSE, tri
 
   c_event <- c_model$createEvent(name)
 
-  assert_that(inherits(c_event, "_p_CEvent"), msg = "Event creation failed.")
+  assert_that(inherits(c_event, "_p_CEvent"), msg = "Event creation failed. Does an event of that name exist already?")
   
   c_event$setFireAtInitialTime(fire_at_initial_time)
   c_event$setPersistentTrigger(!trigger_must_remain_true)
