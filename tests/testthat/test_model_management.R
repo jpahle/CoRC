@@ -33,9 +33,7 @@ test_that("loadModelFromString failure", {
 test_that("saveModelToString successs", {
   loadExamples(1)
   model_string <- saveModelToString()
-  expect_type(model_string, "character")
-  expect_false(is.na(model_string))
-  expect_true(model_string != "")
+  expect_match(model_string, "^<\\?xml.*<COPASI.*</COPASI>(\n)?$")
   unloadModel()
 })
 
@@ -61,9 +59,7 @@ test_that("loadSBMLFromString failure", {
 test_that("saveSBMLToString successs", {
   loadExamples(1)
   sbml_string <- suppressWarnings(saveSBMLToString(3, 1))
-  expect_type(sbml_string, "character")
-  expect_false(is.na(sbml_string))
-  expect_true(sbml_string != "")
+  expect_match(sbml_string, "^<\\?xml.*<sbml.*</sbml>(\n)?$")
   unloadModel()
 })
 
