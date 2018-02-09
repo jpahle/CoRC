@@ -39,6 +39,17 @@ COPASI_BIN_HASHES <- list(
   )
 )
 
+COPASI_BIN_BASE_URL <- "http://juergen.pahle.de/CoRC_libs/"
+dl_url_former <- function(base = COPASI_BIN_BASE_URL, version = COPASI_BIN_VERSION, os, arch) {
+  paste0(
+    base,
+    "v", version, "/",
+    "COPASI_", os,
+    "_", arch,
+    .Platform$dynlib.ext
+  )
+}
+
 # Package environment for persistent options etc
 pkg_env <- new.env(parent = emptyenv())
 # Variable to keep track of the default c_datamodel
@@ -155,13 +166,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       }
     }
     
-    dlurl <- paste0(
-      "http://juergen.pahle.de/CoRC_libs/",
-      "v", COPASI_BIN_VERSION, "/",
-      "COPASI_", os,
-      "_", arch,
-      .Platform$dynlib.ext
-    )
+    dlurl <- dl_url_former(os = os, arch = arch)
     
     dlpath <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
