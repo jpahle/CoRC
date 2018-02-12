@@ -54,13 +54,12 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
       msg = "Initializing the task failed."
     )
     
-    # run task and save current settings
+    # save current settings
     full_settings <- lna_get_settings(c_task)
     full_settings$method <- get_method_settings(c_method_ss)
-    assert_that(
-      grab_msg(c_task$processRaw(TRUE)),
-      msg = "Processing the task failed."
-    )
+    
+    # run task
+    process_task(c_task)
     
     # get results
     ret <- lna_get_results(c_task, full_settings)

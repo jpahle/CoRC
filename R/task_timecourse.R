@@ -73,13 +73,12 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
       msg = "Initializing the task failed."
     )
     
-    # run task and save current settings
+    # save current settings
     full_settings <- tc_get_settings(c_task)
     full_settings$method <- get_method_settings(c_method, with_name = TRUE)
-    assert_that(
-      grab_msg(c_task$processRaw(TRUE)),
-      msg = "Processing the task failed."
-    )
+    
+    # run task
+    process_task(c_task)
     
     # get results
     ret <- tc_get_results(c_task, full_settings)

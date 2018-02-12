@@ -4,6 +4,22 @@ task_enum <-
   names(.__E___CTaskEnum__Task) %>%
   .[. != "UnsetTask" & . != "__SIZE"]
 
+process_task <- function(c_task) {
+  cb <- RProcessCallback(0L)
+  
+  tryCatch({
+    c_task$setCallBack(cb)
+    
+    assert_that(
+      grab_msg(c_task$processRaw(TRUE)),
+      msg = "Processing the task failed."
+    )
+  },
+  finally = {
+    c_task$clearCallBack()
+  })
+}
+
 #' Autoplot method for copasi timeseries objects.
 #'
 #' Uses ggplot2 to plot timeseries.

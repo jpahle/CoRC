@@ -2,6 +2,7 @@
 
 * Rebase on latest COPASI development sources.
 * Add functions to handle SBML models as strings (`loadSBMLFromString()`, `saveSBMLToString()`).
+* Allow for currently running tasks to be terminated interactively (issue #3).
 
 # CoRC 0.1.0.9001
 
