@@ -230,6 +230,8 @@ cd ../../
 
 # Copying the relevant file into the package repository
 
+Will also patch the swig wrapper (COPASI.R) as per patch-swig-wrapper.R
+
 ```{r, eval=FALSE}
 source("../development/update-swig-in-package.R", chdir = TRUE)
 ```
