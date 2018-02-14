@@ -288,9 +288,10 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
 
 #' Save the model to string
 #'
-#' \code{saveModelToString} saves the given model to a string.
+#' \code{saveModelToString} returns the given model as a string.
 #'
 #' @param model a model object
+#' @return The copasi model file, as string.
 #' @family model loading
 #' @export
 saveModelToString <- function(model = getCurrentModel()) {
@@ -341,11 +342,12 @@ saveSBML <- function(filename = model$getFileName(), level, version, overwrite =
 
 #' Save the model to an SBML string
 #'
-#' \code{saveSBMLToString} saves the given model to an SBML string.
+#' \code{saveSBMLToString} returns the given model as an SBML string.
 #'
 #' @param level numeric sbml level
 #' @param version numeric sbml version
 #' @param model a model object
+#' @return The model SBML file, as string.
 #' @family model loading
 #' @export
 saveSBMLToString <- function(level, version, model = getCurrentModel()) {
