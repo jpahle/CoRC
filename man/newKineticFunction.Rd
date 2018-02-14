@@ -12,7 +12,7 @@ newKineticFunction(name, formula, parameters, function_type = c("general",
 
 \item{formula}{Function formula to set, as string}
 
-\item{parameters}{Parameter types to set, as named character vector
+\item{parameters}{Parameter types to set, as named character vector.
 Defaults to 'parameter' for every parameter.
 
 Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time'.}

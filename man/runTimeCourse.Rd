@@ -42,7 +42,7 @@ Set the method directly with a string or with a list containing the entry named 
 
 The list may contain further method args and their values.
 
-Allowed methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45'.}
+Allowed methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
 
 \item{model}{A model object.}
 }

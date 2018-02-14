@@ -1,17 +1,11 @@
-# CoRC 0.1.0.9002
+# CoRC 0.2.0 (2018-02-19)
 
 * Rebase on latest COPASI development sources.
 * Add functions to handle SBML models as strings (`loadSBMLFromString()`, `saveSBMLToString()`).
 * Allow for currently running tasks to be terminated interactively (issue #3).
-
-# CoRC 0.1.0.9001
-
-* Minor fixes and improvements.
-
-# CoRC 0.1.0.9000
-
 * Fix loadSBML function failing for local files.
 * Fix installation on UNIX systems.
+* Minor fixes and improvements.
 
 # CoRC 0.1.0 (2017-12-04)
 

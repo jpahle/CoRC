@@ -20,9 +20,10 @@ saveModel(filename = model$getFileName(), overwrite = FALSE,
 \seealso{
 Other model loading: \code{\link{loadExamples}},
   \code{\link{loadModelFromString}},
-  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{loadModel}},
+  \code{\link{loadSBMLFromString}}, \code{\link{loadSBML}},
   \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveSBML}}, \code{\link{unloadAllModels}},
-  \code{\link{unloadModel}}
+  \code{\link{saveSBMLToString}}, \code{\link{saveSBML}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
 }
 \concept{model loading}

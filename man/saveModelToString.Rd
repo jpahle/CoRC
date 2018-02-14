@@ -9,15 +9,19 @@ saveModelToString(model = getCurrentModel())
 \arguments{
 \item{model}{a model object}
 }
+\value{
+The copasi model file, as string.
+}
 \description{
-\code{saveModelToString} saves the given model to a string.
+\code{saveModelToString} returns the given model as a string.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},
   \code{\link{loadModelFromString}},
-  \code{\link{loadModel}}, \code{\link{loadSBML}},
+  \code{\link{loadModel}},
+  \code{\link{loadSBMLFromString}}, \code{\link{loadSBML}},
   \code{\link{newModel}}, \code{\link{saveModel}},
-  \code{\link{saveSBML}}, \code{\link{unloadAllModels}},
-  \code{\link{unloadModel}}
+  \code{\link{saveSBMLToString}}, \code{\link{saveSBML}},
+  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
 }
 \concept{model loading}
