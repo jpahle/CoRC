@@ -175,7 +175,8 @@ loadSBML <- function(path) {
     success <- grab_msg(c_datamodel$importSBMLFromString(sbml_str))
   }
   
-  if (!success) {
+  # failed imports sometimes generate NULL instead of FALSE
+  if (is.null(success) || !success) {
     CRootContainer_removeDatamodel(c_datamodel)
     stop("Failed to load SBML model.")
   }
@@ -201,7 +202,8 @@ loadSBMLFromString <- function(sbml) {
   
   success <- grab_msg(c_datamodel$importSBMLFromString(sbml))
   
-  if (!success) {
+  # failed imports sometimes generate NULL instead of FALSE
+  if (is.null(success) || !success) {
     CRootContainer_removeDatamodel(c_datamodel)
     stop("Failed to load SBML model.")
   }
