@@ -18,7 +18,7 @@ Depends:
 Imports:
     assertthat (>= 0.2.0),
     backports (>= 1.1.2),
-    digest (>= 0.6.14),
+    digest (>= 0.6.13),
     dplyr (>= 0.7.4),
     isnullptr (>= 1.0.1),
     methods,
