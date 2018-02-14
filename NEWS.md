@@ -13,7 +13,7 @@
 * Fix loadSBML function failing for local files.
 * Fix installation on UNIX systems.
 
-# CoRC 0.1.0
+# CoRC 0.1.0 (2017-12-04)
 
 * Rebase on latest COPASI development sources.
 * Add model event functioniality (`event()`, `event_strict()`, `getEvents()`, `setEvents()`, `newEvent()`, `deleteEvent()`).
@@ -24,6 +24,6 @@
 * Fix errors with argument `type` of `setCompartments()` and `setGlobalQuantities()`.
 * Use new Copasi XML parser.
 
-# CoRC 0.0.1
+# CoRC 0.0.1 (2017-11-15)
 
 * Initial public beta release
