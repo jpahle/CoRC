@@ -18,3 +18,5 @@ navbar:
         href: articles/model_building.html
       - text: "Issues"
         href: articles/issues.html
+    - text: News
+      href: news/index.html
