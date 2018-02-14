@@ -6,7 +6,7 @@
 
 # CoRC 0.1.0.9001
 
-* Minor fixes and improvements
+* Minor fixes and improvements.
 
 # CoRC 0.1.0.9000
 
