@@ -1,3 +1,7 @@
+# CoRC 0.1.0.9002
+
+* Rebase on latest COPASI development sources.
+
 # CoRC 0.1.0.9001
 
 * Minor fixes and improvements
