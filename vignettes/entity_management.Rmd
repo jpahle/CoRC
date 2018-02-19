@@ -33,9 +33,9 @@ species()
 
 # Identifying entities
 
-There are at the moment six different types of model entities supported for identification by string.
-The strings are matched against the available entity names.
-These functions return an entity `key` when a species is identified.
+There are various types of model entities supported for identification by a given string.
+The strings are matched against the available names of e.g. species, compartments, or global quantities.
+The fuctions are listed below and return entitiy `key`s when entities are identified.
 
 ```{r}
 species("CheA")
@@ -61,7 +61,7 @@ species_strict(c(NA, "CheY"))
 species_strict("failure")
 ```
 
-CoRC makes use of the regex functionality of the stringr package.
+CoRC makes use of the regex functionality of the 'stringr' R package.
 You can therefore wrap any string via `regex(string)` to enable regex matching.
 
 ```{r}
@@ -87,7 +87,7 @@ Such references identify specific values, of which most copasi entities can have
 This allows to differentiate for example between 'Concentration' and 'Initial Concentration' of a species.
 References are needed e.g. for definition of optimization task parameters.
 They also allow for building expressions, which are needed e.g. in value assignments and the optimization task.
-Expressions in CoRC behave similar to how they work in Copasi.
+Expressions in CoRC behave similar to how they work in COPASI.
 
 ```{r}
 species("CheY", reference = "InitialConcentration")
@@ -109,24 +109,28 @@ str(getSpeciesReferences("CheY"))
 # Building expressions
 
 Any expression can easily be built as a string.
-`getValue` calculates an expression value.
+In the following example, several related species are selected via a REGEX rule and the reference to their initial concentration is requested.
+The expression is then built by concatenating these references with a plus sign.
+`getValue` calculates this expressions value and thereby the sum of the individual species.
 
 ```{r}
-expression <- paste0(species(regex("^T[0-4]"), reference = "InitialConcentration"), collapse = " + ")
+matching_init_conc <- species(regex("^T[0-4]"), reference = "InitialConcentration")
+matching_init_conc
+expression <- paste0(matching_init_conc, collapse = " + ")
 expression
 getValue(expression)
 ```
 
-# Extension suggestion
+# Using numbers for referencing
 
-Using numbers for referencing:
+Numbers can in principle be used by getting all entities and picking an index from that vector:
 
 ```{r}
 species()[5]
 getSpecies(species()[5])$name
 ```
 
-Maybe I should allow integers to be passed as keys:
+It is under consideration to allow for a simpler method:
 
 ```{r}
 species(5)
@@ -138,7 +142,7 @@ getSpecies(5)$name
 
 For most kinds of entities there is a finder function (e.g. `species`), a getter function (e.g. `getSpecies`) and a setter function (e.g. `setSpecies`).
 
-Other ways to access model values is by evaluating expressions (e.g. `getValue`).
+Another way to access model values is by evaluating expressions (e.g. `getValue`):
 
 ```{r}
 getSpecies("CheYp")$initial_concentration

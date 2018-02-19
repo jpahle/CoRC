@@ -90,7 +90,7 @@
       <h1>Managing Model Entities</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2018-02-14</h4>
+            <h4 class="date">2018-02-19</h4>
           </div>
 
     
@@ -123,7 +123,7 @@
 <div id="identifying-entities" class="section level1">
 <h1 class="hasAnchor">
 <a href="#identifying-entities" class="anchor"></a>Identifying entities</h1>
-<p>There are at the moment six different types of model entities supported for identification by string. The strings are matched against the available entity names. These functions return an entity <code>key</code> when a species is identified.</p>
+<p>There are various types of model entities supported for identification by a given string. The strings are matched against the available names of e.g. species, compartments, or global quantities. The fuctions are listed below and return entitiy <code>key</code>s when entities are identified.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheA"</span>)
 <span class="co">#&gt; [1] "CheA{compartment}"  "CheAp{compartment}"</span>
 <span class="kw"><a href="../reference/entity_finders.html">compartment</a></span>(<span class="st">"comp"</span>)
@@ -154,7 +154,7 @@
 <span class="co">#&gt; Error: key contains 1 missing values</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="st">"failure"</span>)
 <span class="co">#&gt; Error: Couldn't match species "failure".</span></code></pre></div>
-<p>CoRC makes use of the regex functionality of the stringr package. You can therefore wrap any string via <code><a href="../reference/regex.html">regex(string)</a></code> to enable regex matching.</p>
+<p>CoRC makes use of the regex functionality of the ‘stringr’ R package. You can therefore wrap any string via <code><a href="../reference/regex.html">regex(string)</a></code> to enable regex matching.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"Che.p"</span>))
 <span class="co">#&gt; [1] "CheAp{compartment}" "CheBp{compartment}" "CheYp{compartment}"</span></code></pre></div>
 <p>In cases, where a function argument <code>key</code> is clear to always expect the same kind of entity, identification can also be handled by the function itself. These methods will always use the <code>_strict</code> variants to reliably match species.</p>
@@ -174,7 +174,7 @@
 <div id="using-references" class="section level1">
 <h1 class="hasAnchor">
 <a href="#using-references" class="anchor"></a>Using References</h1>
-<p>The identifying functions can also return value references if specified. Such references identify specific values, of which most copasi entities can have multiple. This allows to differentiate for example between ‘Concentration’ and ‘Initial Concentration’ of a species. References are needed e.g. for definition of optimization task parameters. They also allow for building expressions, which are needed e.g. in value assignments and the optimization task. Expressions in CoRC behave similar to how they work in Copasi.</p>
+<p>The identifying functions can also return value references if specified. Such references identify specific values, of which most copasi entities can have multiple. This allows to differentiate for example between ‘Concentration’ and ‘Initial Concentration’ of a species. References are needed e.g. for definition of optimization task parameters. They also allow for building expressions, which are needed e.g. in value assignments and the optimization task. Expressions in CoRC behave similar to how they work in COPASI.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="st">"CheY"</span>, <span class="dt">reference =</span> <span class="st">"InitialConcentration"</span>)
 <span class="co">#&gt; [1] "{[CheY]_0}"  "{[CheYp]_0}"</span></code></pre></div>
 <p>These functions however can not give any clues about what references are available.</p>
@@ -213,22 +213,25 @@
 <div id="building-expressions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#building-expressions" class="anchor"></a>Building expressions</h1>
-<p>Any expression can easily be built as a string. <code>getValue</code> calculates an expression value.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">expression &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"^T[0-4]"</span>), <span class="dt">reference =</span> <span class="st">"InitialConcentration"</span>), <span class="dt">collapse =</span> <span class="st">" + "</span>)
+<p>Any expression can easily be built as a string. In the following example, several related species are selected via a REGEX rule and the reference to their initial concentration is requested. The expression is then built by concatenating these references with a plus sign. <code>getValue</code> calculates this expressions value and thereby the sum of the individual species.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matching_init_conc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="kw"><a href="../reference/regex.html">regex</a></span>(<span class="st">"^T[0-4]"</span>), <span class="dt">reference =</span> <span class="st">"InitialConcentration"</span>)
+matching_init_conc
+<span class="co">#&gt; [1] "{[T0]_0}" "{[T1]_0}" "{[T2]_0}" "{[T3]_0}" "{[T4]_0}"</span>
+expression &lt;-<span class="st"> </span><span class="kw">paste0</span>(matching_init_conc, <span class="dt">collapse =</span> <span class="st">" + "</span>)
 expression
 <span class="co">#&gt; [1] "{[T0]_0} + {[T1]_0} + {[T2]_0} + {[T3]_0} + {[T4]_0}"</span>
 <span class="kw"><a href="../reference/getValue.html">getValue</a></span>(expression)
 <span class="co">#&gt; [1] 5.3</span></code></pre></div>
 </div>
-<div id="extension-suggestion" class="section level1">
+<div id="using-numbers-for-referencing" class="section level1">
 <h1 class="hasAnchor">
-<a href="#extension-suggestion" class="anchor"></a>Extension suggestion</h1>
-<p>Using numbers for referencing:</p>
+<a href="#using-numbers-for-referencing" class="anchor"></a>Using numbers for referencing</h1>
+<p>Numbers can in principle be used by getting all entities and picking an index from that vector:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>]
 <span class="co">#&gt; [1] "CheY{compartment}"</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="kw"><a href="../reference/entity_finders.html">species</a></span>()[<span class="dv">5</span>])<span class="op">$</span>name
 <span class="co">#&gt; [1] "CheY"</span></code></pre></div>
-<p>Maybe I should allow integers to be passed as keys:</p>
+<p>It is under consideration to allow for a simpler method:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/entity_finders.html">species</a></span>(<span class="dv">5</span>)
 <span class="co">#&gt; Error: key is not a string (a length one character vector).</span>
 <span class="kw"><a href="../reference/entity_finders.html">species_strict</a></span>(<span class="dv">5</span>)
@@ -240,7 +243,7 @@ expression
 <h1 class="hasAnchor">
 <a href="#entity-modification" class="anchor"></a>Entity modification</h1>
 <p>For most kinds of entities there is a finder function (e.g. <code>species</code>), a getter function (e.g. <code>getSpecies</code>) and a setter function (e.g. <code>setSpecies</code>).</p>
-<p>Other ways to access model values is by evaluating expressions (e.g. <code>getValue</code>).</p>
+<p>Another way to access model values is by evaluating expressions (e.g. <code>getValue</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>(<span class="st">"CheYp"</span>)<span class="op">$</span>initial_concentration
 <span class="co">#&gt; [1] 0</span>
 
@@ -266,7 +269,7 @@ yp_init_expression
       <li><a href="#identifying-entities">Identifying entities</a></li>
       <li><a href="#using-references">Using References</a></li>
       <li><a href="#building-expressions">Building expressions</a></li>
-      <li><a href="#extension-suggestion">Extension suggestion</a></li>
+      <li><a href="#using-numbers-for-referencing">Using numbers for referencing</a></li>
       <li><a href="#entity-modification">Entity modification</a></li>
       </ul>
 </div>
