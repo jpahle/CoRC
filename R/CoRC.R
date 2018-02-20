@@ -40,13 +40,13 @@ COPASI_BIN_HASHES <- list(
 )
 
 COPASI_BIN_BASE_URL <- "http://juergen.pahle.de/CoRC_libs/"
-dl_url_former <- function(base = COPASI_BIN_BASE_URL, version = COPASI_BIN_VERSION, os, arch) {
+dl_url_former <- function(base = COPASI_BIN_BASE_URL, version = COPASI_BIN_VERSION, os, arch, ext = .Platform$dynlib.ext) {
   paste0(
     base,
     "v", version, "/",
     "COPASI_", os,
     "_", arch,
-    .Platform$dynlib.ext
+    ext
   )
 }
 

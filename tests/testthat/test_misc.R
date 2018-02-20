@@ -35,8 +35,13 @@ test_that("libs on server are accessible", {
   
   for (arch in names(COPASI_BIN_HASHES)) {
     for (os in names(COPASI_BIN_HASHES[[arch]])) {
+      if (os == "windows")
+        ext <- ".dll"
+      else
+        ext <- ".so"
+        
       expect_true(
-        is_url_readable(dl_url_former(os = os, arch = arch)),
+        is_url_readable(dl_url_former(os = os, arch = arch, ext = ext)),
         paste0("Cannot access file for os '", os, "' and arch '", arch, "'.")
       )
     }
