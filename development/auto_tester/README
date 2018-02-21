@@ -1,0 +1,8 @@
+Use the auto tester to see if CoRC is still compatible with the latest Copasi sources.
+
+It uses a docker container with recent ubuntu, gcc and R.
+
+It compiles Copasi from the latest develop HEAD and uses this as backend for the CoRC test set.
+It should be a good indication on whether breaking (for CoRC) changes have been introduced in Copasi.
+
+Run auto_tester.sh to use it.
