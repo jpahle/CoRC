@@ -1,17 +1,19 @@
 #' CoRC: Copasi R Console.
 #'
-#' CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI to R.
+#' CoRC, the Copasi R Connector, links the Complex Pathway Simulator Copasi to R.
 #' It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi.
 #' This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
 #' These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations.
 #' 
 #' CoRC features:
 #'   
-#' * high-level API for Copasi
-#' * define reproducible workflows using Copasi's powerful modelling tools
-#' * easy parallization of Copasi tasks
-#' * enables straight forward publication-ready plotting with the R ecosystem
-#' * ...
+#' * high-level API for Copasi in the R language.
+#' * Immediate access to R's data analysis capabilities and publication-ready plotting.
+#' * Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
+#' * Rule-based modification of model structure to test structural variations or create large models.
+#' * Scaling up assays, e.g. from 3 models to 3000.
+#' * Handling of multiple models at once.
+#' * Parallelization on multi-core machines or computing clusters.
 #' 
 #' It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
 #'
@@ -79,14 +81,14 @@ pkg_env$cl_loaded_dms <- list()
   try(library.dynam.unload("COPASI", libpath), silent = TRUE)
 }
 
-#' Install copasi binaries
+#' Install Copasi binaries
 #'
 #' \code{getCopasi} automatically downloads binaries or retrieves them from given path.
 #' 
 #' In case of no internet connection, run the function and retrieve the URL from the error message.
 #' Download the file manually, copy it to a local path and give its path via the \code{path} argument.
 #' 
-#' To install copasi binaries, you need write access to the packages installation folder.
+#' To install Copasi binaries, you need write access to the packages installation folder.
 #'
 #' @param path optional file path to copasi binaries
 #' @param force optional bool to force overwriting the binaries

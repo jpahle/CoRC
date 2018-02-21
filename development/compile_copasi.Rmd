@@ -39,7 +39,7 @@ xcode command line tools
 xcode-select --install
 ```
 
-Cosider using homebrew for macOS to install other dependencies:
+Consider using homebrew for macOS to install other dependencies:
 
 ```{bash, eval=FALSE}
 brew install cmake swig
