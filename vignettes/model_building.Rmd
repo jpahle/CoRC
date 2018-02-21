@@ -1,5 +1,5 @@
 ---
-title: "Model Building"
+title: "Building Models"
 author: "Jonas Förster & Jürgen Pahle"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -68,7 +68,7 @@ getSpecies()
 getReactions()
 getParameters()
 
-timecourse <- runTC(1000)
+timecourse <- runTimeCourse(1000)
 
 autoplot(timecourse)
 
@@ -104,7 +104,7 @@ newReaction(
   )
 )
 
-timecourse <- runTC(1000)
+timecourse <- runTimeCourse(1000)
 
 autoplot(timecourse)
 
@@ -113,8 +113,9 @@ unloadModel()
 
 # Quantities as Proxy for Time Course Output
 
-The `runTC` function only returns actual defined entities of the model.
-Auxiliarry information like reaction rates can be missing and and need to be added via global quantity assignment.
+The `runTimeCourse` function only returns data for actual defined entities of the model.
+Auxiliarry information like reaction rates can be missing and needs to be added via global quantity assignments.
+This example creates a global quantity "reaction rate" to generate data for the main reaction's flux.
 
 ```{r}
 newModel()
@@ -133,7 +134,7 @@ newGlobalQuantity(
   expression = reaction("a = b", reference = "Flux")
 )
 
-runTC(1000)$result
+runTimeCourse(1000)$result
 
 unloadModel()
 ```
