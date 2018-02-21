@@ -3,6 +3,9 @@ title: "0-dev_setup"
 output: html_notebook
 ---
 
+This file contains various helpers for the development environment.
+Use this to load the development environment and frequently run reset_copasi() to load code changes.
+
 ```{r setup}
 knitr::opts_knit$set(root.dir = normalizePath(".."))
 # reset_copasi(), ls_corc(pattern), inspect(object)

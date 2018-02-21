@@ -205,5 +205,5 @@ I have implemented several helpers to convert C Vectors to R lists or vectors in
 
 # SWIG workarounds
 
-I have implemented several helpers to deal with SWIG issues in swig_workarounds.R
+I have implemented several helpers to deal with SWIG issues in utils_swig.R
 This is a collection of functions that could be considered dirty hacks.

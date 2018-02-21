@@ -1,3 +1,5 @@
+# Various helpers to make up for the fact that the swig wrapper prevents decent integration with any IDE.
+
 reset_copasi <- function() {
   rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "current_example", "ls_corc", "inspect"))], envir = .GlobalEnv)
   gc()

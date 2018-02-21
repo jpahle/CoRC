@@ -1,5 +1,6 @@
 # Use this if you recompile Copasi.
-# It takes the swig files from the build dir and deletes the copasi cache file.
+# It takes the swig files from the lib folder in copasi-source and puts them into the package.
+# It also patches the swig wrapper as per patch-swig-wrapper.R
 
 pkgname <- "CoRC"
 buildpath <- file.path("copasi-source", "libs")
