@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 *.DS_Store
+development/copasi-source/COPASI/
+development/copasi-source/copasi-dependencies/
 development/copasi-source/corc_*_*/
 development/copasi-source/compilers/corc_compiler_*_*
 development/copasi-source/libs/

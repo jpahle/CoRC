@@ -19,13 +19,33 @@ Alternatively via ssh:
 git clone git@github.com:jpahle/CoRC.git
 ```
 
-Once the repository is cloned, use:
+# Pull sources
+
+Once the repository is cloned, make sure the relevant revision of the Copasi sources is available.
+
+Quick:
 
 ```{bash, eval=FALSE}
-git submodule update --init --recursive
+cd copasi-source/
+./copasi_sources_copy.sh
+cd ../
 ```
 
-This step makes sure the Copasi sources are cloned.
+Full clone:
+
+```{bash, eval=FALSE}
+cd copasi-source/
+./copasi_sources_clone.sh
+cd ../
+```
+
+Windows:
+
+```
+cd development\copasi-source\
+.\copasi_sources_clone.ps1
+cd ..\..\
+```
 
 # macOS
 
