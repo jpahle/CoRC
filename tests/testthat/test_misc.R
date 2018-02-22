@@ -1,6 +1,6 @@
 context("Miscellaneous Tests")
 
-is_url_readable <- function(url) {
+is_url_readable <- function(url = "http://www.google.com") {
   # test connection by trying to read first line of url
   test <- try(suppressWarnings(readLines(url, n = 1)), silent = TRUE)
   
@@ -9,12 +9,12 @@ is_url_readable <- function(url) {
 }
 
 # test if online
-is_online <- function(url = "http://www.google.com") {
+is_online <- function() {
   # test the http capabilities of the current R build
   if (!capabilities(what = "http/ftp"))
     return(FALSE)
   
-  is_url_readable(url)
+  is_url_readable()
 }
 
 test_that("COPASI_BIN_VERSION is count", {
