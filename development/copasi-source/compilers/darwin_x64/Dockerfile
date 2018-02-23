@@ -42,9 +42,9 @@ RUN mkdir rtmp/ \
 	&& rm -r rtmp/
 
 # install swig
-# RUN wget -O- "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar zx \
+# RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar zx \
 # get from github instead for reliability
-RUN wget -O- https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar xz \
+RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar xz \
 	&& cd swig-rel-3.0.12/ \
 	&& ./autogen.sh \
 	&& ./configure --disable-dependency-tracking \
@@ -75,7 +75,7 @@ ENV OSXCROSS_REPO="${osxcross_repo}" \
 # install osxcross
 RUN mkdir -p ${OSXCROSS_PATH} \
 	&& cd ${OSXCROSS_PATH} \
-	&& wget -O- "https://codeload.github.com/${OSXCROSS_REPO}/tar.gz/${OSXCROSS_REVISION}" | tar zx --strip=1 \
+	&& curl -L "https://codeload.github.com/${OSXCROSS_REPO}/tar.gz/${OSXCROSS_REVISION}" | tar zx --strip=1 \
 	&& wget -P tarballs/ ${DARWIN_SDK_URL} \
 	&& OSX_VERSION_MIN=${DARWIN_OSX_VERSION_MIN} UNATTENDED=1 ./build.sh \
 	&& ./build_compiler_rt.sh
