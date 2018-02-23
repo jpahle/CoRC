@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
 # install some tedious dependencies early
 RUN R -e 'install.packages(c("remotes", "testthat", "purrr", "tidyr", "dplyr", "stringr"), repos = "https://cloud.r-project.org")'
 
+# make copasi dependencies
 ADD https://github.com/copasi/copasi-dependencies/archive/master.tar.gz copasi-dependencies/
 RUN cd copasi-dependencies/ \
 	&& tar --strip 1 -xzf *
@@ -19,6 +20,7 @@ RUN cd copasi-dependencies/ \
 		INSTALL_DIR=${PWD}/bin_linux_x64 \
 		./createLinux.sh
 
+# make copasi
 ADD https://github.com/copasi/COPASI/archive/develop.tar.gz COPASI/
 RUN cd COPASI/ \
 	&& tar --strip 1 -xzf *
@@ -37,12 +39,13 @@ RUN mkdir corc_linux_x64/ \
 		../COPASI/ \
 	&& make binding_r_lib
 
+# install corc
 ADD https://github.com/jpahle/CoRC/archive/master.tar.gz CoRC/
 RUN cd CoRC/ \
 	&& tar --strip 1 -xzf *
 
 RUN mkdir CoRC/inst/libs/ \
 	&& cp corc_linux_x64/copasi/bindings/R/COPASI.so CoRC/inst/libs/ \
-	&& cp corc_linux_x64/copasi/bindings/R/COPASI.R CoRC/R/swig_wrapper.R
-
-RUN R -e 'remotes::install_local("CoRC", INSTALL_opts = "--install-tests")'
+	&& cp corc_linux_x64/copasi/bindings/R/COPASI.R CoRC/R/swig_wrapper.R \
+	&& R -e 'remotes::install_local("CoRC", INSTALL_opts = "--install-tests")' \
+	&& rm -r copasi-dependencies/ COPASI/ corc_linux_x64/ CoRC/

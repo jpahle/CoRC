@@ -3,11 +3,13 @@
 # A summary is printed in the end.
 
 options(warn = 1)
-library(tidyverse)
+library(purrr)
+library(dplyr)
 library(CoRC)
 
 max_biomodels <- 700
 
+message("getting biomodels... this may take a while")
 if (file.exists("bmdls.rds")) {
   biomodels <- readRDS("bmdls.rds")
 } else {
@@ -28,6 +30,7 @@ if (file.exists("bmdls.rds")) {
   saveRDS(biomodels, "bmdls.rds")
 }
 
+message("Testing model loading...")
 for (id in biomodels$id) {
   if (!biomodels$exists[id])
     next()
@@ -45,6 +48,7 @@ for (id in biomodels$id) {
   clearCustomKineticFunctions()
 }
 
+message("Testing model saving...")
 for (id in biomodels$id) {
   if (!isTRUE(biomodels$loadable[id]))
     next()
@@ -57,6 +61,7 @@ for (id in biomodels$id) {
   clearCustomKineticFunctions()
 }
 
+message("Testing model time courses...")
 for (id in biomodels$id) {
   if (!isTRUE(biomodels$loadable[id]))
     next()

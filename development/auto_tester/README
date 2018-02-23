@@ -6,3 +6,4 @@ It compiles Copasi from the latest develop HEAD and uses this as backend for the
 It should be a good indication on whether breaking (for CoRC) changes have been introduced in Copasi.
 
 Run auto_tester.sh to use it.
+Run auto_tester_biomodels.sh to run the additional biomodels test.
