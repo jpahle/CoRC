@@ -6,9 +6,9 @@ RUN yum install -y \
 	R-core-devel.x86_64 \
 	&& yum clean all
 
-# RUN wget -O- "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar zx \
+# RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
 # get from github instead for reliability
-RUN wget -O- https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar xz \
+RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \
 	&& cd swig-rel-3.0.12/ \
 	&& ./autogen.sh \
 	&& ./configure --disable-dependency-tracking \
