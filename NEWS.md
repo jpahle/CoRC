@@ -1,6 +1,8 @@
 # CoRC 0.2.0.9001
 
 * Breaking: Rename first argument of `newReaction()` from `scheme` to `reaction`.
+* Rebase on latest COPASI 4.23 sources.
+    * Fixes rare crashes.
 * Minor fixes
 
 # CoRC 0.2.0 (2018-02-19)
