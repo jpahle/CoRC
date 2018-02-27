@@ -43,7 +43,8 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     is.number(beta),
     is.count(kappa),
     is.null(var) || is.numeric(var),
-    is.copasi_exp(experiments)
+    is.copasi_exp(experiments),
+    is.flag(mean_fit_as_basis)
   )
   
   c_task <- as(c_datamodel$getTask("Parameter Estimation"), "_p_CFitTask")
@@ -324,23 +325,19 @@ gen_sigma_points <- function(means, cov_m, lambdterm) {
   # add means vector to each row to get final data
   sigma_points <- sweep(sigma_point_delta, 2L, means, "+")
   
-  # dep_data <-
-  #   dep_data %>%
-  #   mutate(value = imap(value, ~ c(
-  #     .x,
-  #     .x * (1 + noise_matrix[, .y]),
-  #     .x * (1 - noise_matrix[, .y])
-  #   )))
   sigma_points
 }
 
+# for each row in sigma_points, replicate the original data once
+# and perturb its dependent data columns according to the sigma points.
 perturb_data <- function(data, dep_cols, sigma_points) {
-  seq_len(nrow(sigma_points)) %>%
-    map(~ {
-      new_dep_data <-
-        sigma_points[.x, ] %>%
-        matrix(ncol = dep_cols)
-      
-      replace(x = data, list = dep_cols, new_dep_data)
-    })
+  sigma_points %>%
+    nrow() %>%
+    seq_len() %>%
+    # seperate all rows into individual list entries
+    map(~ sigma_points[.x, ]) %>%
+    # reshape those rows to matrices
+    map(matrix, ncol = dep_cols) %>%
+    # merge each of the matrices back into the original data
+    map(replace, x = data, list = dep_cols)
 }

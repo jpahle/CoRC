@@ -133,7 +133,7 @@ read_expr <- function(x, c_datamodel) {
     function(x) {
       x <- stringr::str_sub(x, 2L, -2L)
       c_obj <- cn_to_object(x, c_datamodel)
-      assert_that(!is.null(c_obj), msg = paste0("Failure in expression readout"))
+      assert_that(!is.null(c_obj), msg = paste0("Failure in expression readout. A common name was not resolvable."))
       
       escape_ref(get_key(c_obj))
     }
