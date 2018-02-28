@@ -1,5 +1,5 @@
-# Use this if you recompile Copasi.
-# It takes the swig files from the lib folder in copasi-source and puts them into the package.
+# Use this if you recompile COPASI.
+# It takes the swig files from the libs folder in copasi-source and puts them into the package.
 # It also patches the swig wrapper as per patch-swig-wrapper.R
 
 pkgname <- "CoRC"
@@ -8,7 +8,7 @@ rfile <- file.path(buildpath, "swig_wrapper.R")
 binfile <- file.path(buildpath, paste0("COPASI", .Platform$dynlib.ext))
 
 if (!dir.exists(buildpath))
-  stop("Missing swig builds. Did you compile copasi?")
+  stop("Missing swig builds. Did you compile COPASI?")
 
 # Copy the swig wrapper (COPASI.R)
 stopifnot(

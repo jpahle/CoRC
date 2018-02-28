@@ -1,14 +1,14 @@
 ---
-title: "Copasi R Console"
+title: "COPASI R Connector"
 output:
   html_document:
     toc: yes
   html_notebook: default
 ---
 
-## Fixing Copasi source
+## Fixing COPASI source
 
-I am using my own Copasi fork repository to implement some changes to allow for successful compilation on modern macOS and to fix some problems with SWIG.
+I am using my own COPASI fork repository to implement some changes to allow for successful compilation on modern macOS and to fix some problems with SWIG.
 
 The repository is located at:
 https://github.com/jonasfoe/COPASI
@@ -17,7 +17,7 @@ The changes have since been pulled into the COPASI develop branch.
 
 # Loading the COPASI-R-API
 
-A general workflow to load up the Copasi shared library looks like this:
+A general workflow to load up the COPASI shared library looks like this:
 
 ```{r}
 dyn.load(paste0("../development/copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
@@ -55,7 +55,7 @@ https://github.com/copasi/COPASI/commit/0766eb58fde43546edfd0f9e920f86ab8d905e0c
 
 ## Understanding the OO system
 
-The examples as used in the Copasi sources make use of R's S4 system which is a generic-function OO.
+The examples as used in the COPASI sources make use of R's S4 system which is a generic-function OO.
 With this paradigm, methods are not part of objects and as a result typical code as extracted from example 1 looks like this:
 
 ```{r}
@@ -88,7 +88,7 @@ compartment <- model$createCompartment("cell", 5.0)
 object <- compartment$getObject(CCommonName("Reference=InitialVolume"))
 ```
 
-This works as a far cleaner approach for the copasi API.
+This works as a far cleaner approach for the COPASI API.
 
 ## Problems with this approach
 

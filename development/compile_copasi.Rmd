@@ -1,5 +1,5 @@
 ---
-title: "Compile Copasi R Bindings From Source"
+title: "Compile COPASI R Bindings From Source"
 output:
   html_document:
     toc: yes
@@ -25,11 +25,11 @@ Once the repository is cloned, use:
 git submodule update --init --recursive
 ```
 
-This step makes sure the Copasi sources are cloned.
+This step makes sure the COPASI sources are cloned.
 
 # macOS
 
-## Dependencies for compilation of the copasi sources
+## Dependencies for compilation of the COPASI sources
 
 The following dependencies exist for compiling the sources:
 
@@ -45,7 +45,7 @@ Consider using homebrew for macOS to install other dependencies:
 brew install cmake swig
 ```
 
-## Compiling copasi dependencies
+## Compiling COPASI dependencies
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
@@ -56,7 +56,7 @@ BUILD_DIR=${PWD}/tmp_darwin_x64 \
 cd ../../../
 ```
 
-## Compiling copasi from source
+## Compiling COPASI from source
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
@@ -152,7 +152,7 @@ cd ../../../
 
 # Windows
 
-## Dependencies for compilation of the copasi sources
+## Dependencies for compilation of the COPASI sources
 
 Use chocolatey to install:
 
@@ -165,7 +165,7 @@ Manually get the Rlib (Rlib.lib) files for your current R Version and put it in 
 
 Use the cmd prompt.
 
-## Compiling copasi dependencies
+## Compiling COPASI dependencies
 
 run:
 ```
@@ -174,7 +174,9 @@ cd development\copasi-source\copasi-dependencies\
 cd ..\..\..\
 ```
 
-## Compiling copasi from source
+## Compiling COPASI from source
+
+Make sure to fix the paths for R in this script.
 
 run:
 ```
@@ -192,8 +194,8 @@ cmake -G Ninja ^
   -DENABLE_R=ON ^
   -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
   -DSWIG_EXECUTABLE="../swigwin/swig.exe" ^
-  -DR_INCLUDE_DIRS="C:/Program Files/R/R-3.4.2/include/" ^
-  -DR_INTERPRETER="C:/Program Files/R/R-3.4.2/bin/R.exe" ^
+  -DR_INCLUDE_DIRS="%ProgramFiles%/R/R-3.4.2/include/" ^
+  -DR_INTERPRETER="%ProgramFiles%/R/R-3.4.2/bin/R.exe" ^
   -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ^
   ../COPASI/
 ninja binding_r_lib
@@ -211,6 +213,8 @@ cd ..\..\
 Install docker CE and get docker permissions for your user.
 
 ## Full
+
+Clears relevant folders before compilation.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/

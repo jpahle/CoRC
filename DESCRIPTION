@@ -1,12 +1,12 @@
 Package: CoRC
 Type: Package
-Title: Copasi R Connector
+Title: COPASI R Connector
 Version: 0.2.0.9001
 Authors@R: c(
     person("Jonas", "Förster", email = "jonasfoerster@gmail.com", role = c("aut", "cre")),
     person("Jürgen", "Pahle", email = "juergen.pahle@bioquant.uni-heidelberg.de", role = c("aut"))
     )
-Description: CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI to R. It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi.
+Description: CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R. It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.
 URL: https://github.com/jpahle/CoRC
 BugReports: https://github.com/jpahle/CoRC/issues
 License: Artistic-2.0 | file LICENSE

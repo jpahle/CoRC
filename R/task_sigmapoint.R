@@ -94,10 +94,10 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   }
   
   if (c_problem$getExperimentSet()$getExperimentCount() != 0L) {
-    warnings("Experimental data present in Copasi. Ignoring it for this task.")
+    warnings("Experimental data present in COPASI Ignoring it for this task.")
   }
   if (c_problem$getCrossValidationSet()$getExperimentCount() != 0L) {
-    warnings("Cross-validation data present in Copasi. Ignoring it for this task.")
+    warnings("Cross-validation data present in COPASI Ignoring it for this task.")
   }
   
   # clean up model for the task
@@ -245,7 +245,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
 #' @export
 runSP <- runSigmaPoint
 
-# as in condor copasi but not really anymore
+# as in condor COPASI but not really anymore
 # calc_cov_hoops <- function(data_dep_matrix, measurement_error) {
 #   # Noise added to the data will be assumed to normally distributed within the measurement error with 95% confidence.
 #   generate_noise_factor <- function() {

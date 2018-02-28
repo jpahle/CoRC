@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 # install some tedious dependencies early
 RUN R -e 'install.packages(c("remotes", "testthat", "purrr", "tidyr", "dplyr", "stringr"), repos = "https://cloud.r-project.org")'
 
-# make copasi dependencies
+# make COPASI dependencies
 ADD https://github.com/copasi/copasi-dependencies/archive/master.tar.gz copasi-dependencies/
 RUN cd copasi-dependencies/ \
 	&& tar --strip 1 -xzf *
@@ -20,7 +20,7 @@ RUN cd copasi-dependencies/ \
 		INSTALL_DIR=${PWD}/bin_linux_x64 \
 		./createLinux.sh
 
-# make copasi
+# make COPASI
 ADD https://github.com/copasi/COPASI/archive/develop.tar.gz COPASI/
 RUN cd COPASI/ \
 	&& tar --strip 1 -xzf *

@@ -32,7 +32,7 @@ loadExamples(2)
 
 # Task functions
 
-CoRC has implemented a variety of copasi functions.
+CoRC has implemented a variety of COPASI functions.
 Tasks generally have an `run` execution function (e.g. `runTimeCourse`), a settings `set` function (e.g. `setTimeCourseSettings`) and a settings `get` function (e.g. `getTimeCourseSettings`).
 
 **Get task settings**:

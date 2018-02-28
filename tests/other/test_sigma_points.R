@@ -11,7 +11,7 @@ measurement_error <- 0.1
 
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
 
-# define the parameters for copasi
+# define the parameters for COPASI
 walk(
   parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
   ~ {
@@ -30,7 +30,7 @@ data_experimental <-
   rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
   set_tidy_names(TRUE)
 
-# define the experiments for copasi
+# define the experiments for COPASI
 fit_experiments <- defineExperiments(
   data = data_experimental,
   type = c("time", "dependent", "dependent"),

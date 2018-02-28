@@ -9,7 +9,7 @@ hasName <- function (x, name) {
 setMethod("format",
   "_p_CDataModel",
   function(x, ...) {
-    string <- "# A copasi model reference:\n"
+    string <- "# A COPASI model reference:\n"
     
     if (has_null_pointer(x))
       return(paste0(string, "Model has been unloaded."))
@@ -127,7 +127,7 @@ to_param_vector <- function(x, type) {
 }
 
 # wrapper for getReferenceDirectory
-# if no ref dir is set in Copasi, getReferenceDirectory returns ""
+# if no ref dir is set in COPASI, getReferenceDirectory returns ""
 # in that case, use getwd()
 get_ref_dir <- function(c_datamodel) {
   dir <- c_datamodel$getReferenceDirectory()
@@ -138,7 +138,7 @@ get_ref_dir <- function(c_datamodel) {
   dir
 }
 
-# finds copasi messages and helps purge known annoying messages
+# finds COPASI messages and helps purge known annoying messages
 # because of lazy evaluation, x will not be evaluated on the function
 # call but be evaluated with force(x) and then messages are checked
 grab_msg <- function(x, purge = character()) {
@@ -152,7 +152,7 @@ grab_msg <- function(x, purge = character()) {
     warning(
       "\n",
       "==========================================\n",
-      "Uncaptured Copasi Message(s):\n",
+      "Uncaptured COPASI Message(s):\n",
       CCopasiMessage_getAllMessageText(), "\n",
       "==========================================\n"
     )
@@ -168,7 +168,7 @@ grab_msg <- function(x, purge = character()) {
     
     if (!is_empty(messages)) {
       warning(
-        "Process generated Copasi Message(s):\n",
+        "Process generated COPASI Message(s):\n",
         paste0(messages, collapse = "\n"), "\n"
       )
     }

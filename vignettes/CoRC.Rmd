@@ -36,7 +36,7 @@ library(CoRC)
 getCopasi(quiet = TRUE)
 ```
 
-From this point on, CoRC keeps an instance of Copasi running in the background.
+From this point on, CoRC keeps an instance of COPASI running in the background.
 This instance can load up as many models as desired.
 
 ## Loading a model
@@ -69,7 +69,7 @@ This reference can be used with most functions using the `model` argument but ca
 
 ## Workflow
 
-CoRC contains a plethora of functions for working with Copasi models.
+CoRC contains a plethora of functions for working with COPASI models.
 The most basic ones required for common workflows are used for manipulation of model entities and running tasks.
 
 ```{r}

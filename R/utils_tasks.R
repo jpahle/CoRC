@@ -20,7 +20,7 @@ process_task <- function(c_task) {
   })
 }
 
-#' Autoplot method for copasi timeseries objects.
+#' Autoplot method for COPASI timeseries objects.
 #'
 #' Uses ggplot2 to plot timeseries.
 #' The plot has a geom_line layer.

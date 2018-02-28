@@ -108,7 +108,7 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  # Use copasi keys instead of pointers to prevent crashes
+  # Use COPASI keys instead of pointers to prevent crashes
   key %>%
     species_obj(c_datamodel) %>%
     unique() %>%
@@ -208,7 +208,7 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  # Use copasi keys instead of pointers to prevent crashes
+  # Use COPASI keys instead of pointers to prevent crashes
   key %>%
     quantity_obj(c_datamodel) %>%
     unique() %>%
@@ -308,7 +308,7 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  # Use copasi keys instead of pointers to prevent crashes
+  # Use COPASI keys instead of pointers to prevent crashes
   key %>%
     compartment_obj(c_datamodel) %>%
     unique() %>%
@@ -398,7 +398,7 @@ deleteReaction <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  # Use copasi keys instead of pointers to prevent crashes
+  # Use COPASI keys instead of pointers to prevent crashes
   key %>%
     reaction_obj(c_datamodel) %>%
     unique() %>%
@@ -545,7 +545,7 @@ deleteEvent <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  # Use copasi keys instead of pointers to prevent crashes
+  # Use COPASI keys instead of pointers to prevent crashes
   key %>%
     event_obj(c_datamodel) %>%
     unique() %>%

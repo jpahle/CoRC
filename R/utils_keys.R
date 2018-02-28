@@ -149,7 +149,7 @@ as_ref <- function(cl_objects, c_datamodel) {
   refs
 }
 
-# gather a list of objects from the internal Copasi Key identifier
+# gather a list of objects from the internal COPASI Key identifier
 cop_key_to_obj <- function(x) {
   map(x, CRootContainer_getKeyFactory()$get)
 }

@@ -83,7 +83,7 @@ getSpecies(species(regex("Che.p")))$name
 # Using References
 
 The identifying functions can also return value references if specified.
-Such references identify specific values, of which most copasi entities can have multiple.
+Such references identify specific values, of which most COPASI entities can have multiple.
 This allows to differentiate for example between 'Concentration' and 'Initial Concentration' of a species.
 References are needed e.g. for definition of optimization task parameters.
 They also allow for building expressions, which are needed e.g. in value assignments and the optimization task.

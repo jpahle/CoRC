@@ -33,7 +33,7 @@ loadExamples(1)
 
 Todo:
 
-* Add more copasi tasks
+* Add more COPASI tasks
 * Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)
 * (Internal) Code marked with 'TODO' for minor problems
 * Check if installation can be as easy as with stringi package
@@ -67,7 +67,7 @@ mol$buildExpression()
 mMol$buildExpression()
 ```
 
-CUnit$getExpression() shows what Copasi makes of the input.
+CUnit$getExpression() shows what COPASI makes of the input.
 
 ```{r}
 ms$getExpression()

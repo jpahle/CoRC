@@ -90,7 +90,7 @@ newModel <- function() {
 
 #' Load a model
 #'
-#' \code{loadModel} loads a model into copasi and returns a reference to it.
+#' \code{loadModel} loads a model into COPASI and returns a reference to it.
 #'
 #' @param path url or path
 #' @return a model object
@@ -152,7 +152,7 @@ loadModelFromString <- function(model) {
 
 #' Load an SBML model
 #'
-#' \code{loadSBML} loads an SBML model into copasi and returns a reference to it.
+#' \code{loadSBML} loads an SBML model into COPASI and returns a reference to it.
 #'
 #' @param path url or path
 #' @return a model object
@@ -216,7 +216,7 @@ loadSBMLFromString <- function(sbml) {
 
 #' Unload a model
 #'
-#' \code{unloadModel} frees memory by unloading the given model from copasi
+#' \code{unloadModel} frees memory by unloading the given model from COPASI.
 #'
 #' @param model a model object
 #' @family model loading
@@ -235,7 +235,7 @@ unloadModel <- function(model = getCurrentModel()) {
 
 #' Unload all loaded models
 #'
-#' \code{unloadAllModels} frees memory by unloading all loaded models from copasi
+#' \code{unloadAllModels} frees memory by unloading all loaded models from COPASI.
 #'
 #' @family model loading
 #' @export
@@ -291,7 +291,7 @@ saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model =
 #' \code{saveModelToString} returns the given model as a string.
 #'
 #' @param model a model object
-#' @return The copasi model file, as string.
+#' @return The COPASI model file, as string.
 #' @family model loading
 #' @export
 saveModelToString <- function(model = getCurrentModel()) {
@@ -458,9 +458,11 @@ convertToIrreversible <- function(model = getCurrentModel()) {
   invisible()
 }
 
-#' Open the model in the copasi UI
-#'
-#' @param readin if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model
+#' Open the model in the COPASI GUI
+#' 
+#' \code{openCopasi} saves the given model to a temporary file and opens it in the COPASI GUI.
+#' 
+#' @param readin if \code{TRUE}, the function waits for COPASI to quit and then reads in the temporary model file, overwriting the given model.
 #' @param copasi_loc location of CopasiUI
 #' @param model a model object
 #' @family model handlers

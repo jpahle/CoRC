@@ -42,10 +42,10 @@ is.cexpression <- function(x) {
   is.character(x) || is.numeric(x) && !any(is.infinite(x)) || is.logical(x)
 }
 on_failure(is.cexpression) <- function(call, env) {
-  paste0(deparse(call$x), ' is not a copasi expression (a character, finitie numeric or logical vector).')
+  paste0(deparse(call$x), ' is not a COPASI expression (a character, finitie numeric or logical vector).')
 }
 
-# translate from numeric or boolean to propper copasi expression representation
+# translate from numeric or boolean to propper COPASI expression representation
 to_cexpr <- function(x) {
   ret <- as.character(x)
   ret[is.nan(x)] <- "nan"
@@ -124,8 +124,8 @@ iexpr_to_ref_str <- function(c_entity, c_datamodel = c_entity$getObjectDataModel
   as_ref(list(c_expression), c_datamodel)
 }
 
-# Copasi -> R
-# In copasi, expressions consist of <CN>, in R they should be mostly {DN}
+# COPASI -> R
+# In COPASI, expressions consist of <CN>, in R they should be mostly {DN}
 read_expr <- function(x, c_datamodel) {
   stringr::str_replace_all(
     x,
@@ -140,8 +140,8 @@ read_expr <- function(x, c_datamodel) {
   )
 }
 
-# R -> Copasi
-# In copasi, expressions consist of <CN>, in R they should be mostly {DN}
+# R -> COPASI
+# In COPASI, expressions consist of <CN>, in R they should be mostly {DN}
 # Also implicitly translates {Time}, {Avogadro Constant} and {Quantity Conversion Factor}
 write_expr <- function(x, c_datamodel) {
   stringr::str_replace_all(

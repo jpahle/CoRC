@@ -339,7 +339,7 @@ opt_assemble_parameters <- function(parameters, c_problem) {
   
   assert_that(
     c_problem$getOptItemSize() == 0L,
-    msg = "This function can not set parameters if there are already parameters set in copasi."
+    msg = "This function can not set parameters if there are already parameters set in COPASI."
   )
   
   walk(parameters, validate_copasi_parm)

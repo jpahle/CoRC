@@ -435,7 +435,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
 #' 
 #' \code{defineExperiments} defines a set of experiments given as tidy data frame to the given model.
 #' 
-#' CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+#' CoRC uses it's own methodology for defining experimental data for use with a COPASI model.
 #' To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
 #' For help on data import and tidying see: \code{vignette("tidy-data", "tidyr")}.
 #' This function adds required metadata to experimental data for use with CoRC.
@@ -457,7 +457,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
 #' Allowed methods: ", rox_print_v(exp_weight_methods), ".")
 #' @param filename optional string
 #' 
-#' When adding the experiments to a copasi model, this filename will be used.
+#' When adding the experiments to a COPASI model, this filename will be used.
 #' In use cases, where experiments are only used temporarily, the filename is ignored.
 #' @return copasi_exp object for input into related functions
 #' @seealso \code{\link{addExperiments}} \code{\link{clearExperiments}}
@@ -548,7 +548,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         types_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setRole", .y - 1L, .x))
         mappings_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setObjectCN", .y - 1L, .x))
         
-        # Add all experiments to copasi
+        # Add all experiments to COPASI
         cl_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
         
         # possibly compile
@@ -614,7 +614,7 @@ pe_assemble_parameters <- function(parameters, c_problem) {
   
   assert_that(
     c_problem$getOptItemSize() == 0L,
-    msg = "This function can not set parameters if there are already parameters set in copasi."
+    msg = "This function can not set parameters if there are already parameters set in COPASI."
   )
   
   walk(parameters, validate_copasi_parm)
@@ -633,7 +633,7 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
   
   assert_that(
     c_problem$getExperimentSet()$getExperimentCount() == 0L,
-    msg = "This function can not set experiments if there are already experiments set in copasi."
+    msg = "This function can not set experiments if there are already experiments set in COPASI."
   )
   
   # force temporary experiment file names so they can be deleted safely

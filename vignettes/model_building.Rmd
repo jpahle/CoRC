@@ -32,8 +32,8 @@ library(CoRC)
 
 # Quick Model Building
 
-Building a quick Michaelis-Menten reaction using Copasi's automatisms.
-Working with reaction schemes automatically creates required entities the same way the Copasi GUI does.
+Building a quick Michaelis-Menten reaction using COPASI's automatisms.
+Working with reaction schemes automatically creates required entities the same way the COPASI GUI does.
 
 ```{r}
 newModel()

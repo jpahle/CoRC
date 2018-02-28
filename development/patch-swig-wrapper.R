@@ -1,6 +1,6 @@
 # Apply my patches to the swig_wrapper
 # These patches are likely specific for the CoRC packages
-# which is why I did not commit them upstream to Copasi
+# which is why I did not commit them upstream to COPASI
 
 wrapper_path <- file.path("..", "R", "swig_wrapper.R")
 

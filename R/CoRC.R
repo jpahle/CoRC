@@ -1,13 +1,13 @@
-#' CoRC: Copasi R Console.
+#' CoRC: COPASI R Connector.
 #'
-#' CoRC, the Copasi R Connector, links the Complex Pathway Simulator Copasi to R.
-#' It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi.
+#' CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R.
+#' It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.
 #' This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
 #' These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations.
 #' 
 #' CoRC features:
 #'   
-#' * high-level API for Copasi in the R language.
+#' * high-level API for COPASI in the R language.
 #' * Immediate access to R's data analysis capabilities and publication-ready plotting.
 #' * Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
 #' * Rule-based modification of model structure to test structural variations or create large models.
@@ -15,7 +15,7 @@
 #' * Handling of multiple models at once.
 #' * Parallelization on multi-core machines or computing clusters.
 #' 
-#' It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.
+#' It is based on a current development version of COPASI but is expected to closely follow official COPASI releases in the future.
 #'
 #' @import assertthat
 #' @import methods
@@ -71,7 +71,7 @@ pkg_env$cl_loaded_dms <- list()
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO
-  # clearing the deque hides the annoying message about copasi home directory on linux
+  # clearing the deque hides the annoying message about COPASI home directory on linux
   try(CCopasiMessage_clearDeque(), silent = TRUE)
   # In this single case only warn instead of stop
   assert_binaries(partial(warning, immediate. = TRUE), pkgname)
@@ -81,16 +81,17 @@ pkg_env$cl_loaded_dms <- list()
   try(library.dynam.unload("COPASI", libpath), silent = TRUE)
 }
 
-#' Install Copasi binaries
+#' Install COPASI binaries
 #'
 #' \code{getCopasi} automatically downloads binaries or retrieves them from given path.
 #' 
-#' In case of no internet connection, run the function and retrieve the URL from the error message.
-#' Download the file manually, copy it to a local path and give its path via the \code{path} argument.
+#' In case of no internet connection, run the function, retrieve the URL from the error message, and download the file manually.
+#' Alternatively, download the binaries from the release section on github.
+#' Copy the file to a local path and give its path via the \code{path} argument.
 #' 
-#' To install Copasi binaries, you need write access to the packages installation folder.
+#' To install COPASI binaries, you need write access to the packages installation folder.
 #'
-#' @param path optional file path to copasi binaries
+#' @param path optional file path to COPASI binaries
 #' @param force optional bool to force overwriting the binaries
 #' @param quiet optional bool to silence messages
 #' @export
@@ -145,7 +146,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   if (is.null(path)) {
     assert_that(
       !is.null(os),
-      msg = "Unsupported platform. Supply copasi binaries via the `path` argument."
+      msg = "Unsupported platform. Supply COPASI binaries via the `path` argument."
     )
     
     assert_that(
@@ -175,12 +176,12 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     # download the binaries
     dlstatus <- utils::download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
     
-    assert_that(dlstatus == 0, msg = "Downloading copasi binaries failed.")
+    assert_that(dlstatus == 0, msg = "Downloading COPASI binaries failed.")
     
     # Check if the hash matches
     assert_that(
       digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os],
-      msg = "Downloaded copasi binaries are corrupted."
+      msg = "Downloaded COPASI binaries are corrupted."
     )
   } else {
     dlpath <- path
@@ -201,24 +202,24 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   # Copy file into package folder
   assert_that(
     file.copy(dlpath, libfile, overwrite = TRUE),
-    msg = "Copying copasi binaries into package folder failed."
+    msg = "Copying COPASI binaries into package folder failed."
   )
   
   # Reload libary
   library.dynam("COPASI", pkgname, file.path(pkgpath, ".."))
   # TODO
-  # clearing the deque hides the annoying message about copasi home directory on linux
+  # clearing the deque hides the annoying message about COPASI home directory on linux
   CCopasiMessage_clearDeque()
   if (!quiet)
-    message(pkgname, ": Successfully loaded copasi binaries.")
+    message(pkgname, ": Successfully loaded COPASI binaries.")
   
   invisible()
 }
 
-# check if copasi lib is loaded.
+# check if COPASI lib is loaded.
 # default method for error is stop.
 # .onLoad uses warning instead.
 assert_binaries <- function(method = stop, pkgname = getPackageName()) {
   if (!is.loaded("R_swig_CRootContainer_init", PACKAGE = "COPASI"))
-    method(pkgname, ": Copasi binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
+    method(pkgname, ": COPASI binaries are not installed. Use ", pkgname, "::getCopasi() to install them.")
 }

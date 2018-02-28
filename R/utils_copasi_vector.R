@@ -3,7 +3,7 @@ seq_len_0 <- function(len) {
   seq_len(len) - 1L
 }
 
-# Works like seq_along for many copasi vectors (0 based index)
+# Works like seq_along for many COPASI vectors (0 based index)
 seq_along_v <- function(c_copasivector) {
   len <- c_copasivector$size()
   

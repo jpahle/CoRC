@@ -1184,7 +1184,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   do_param <- do_value | do_mapping
 
   # Do this as assertion before we start changing values
-  # Makes sure mapping is either NA or a copasi key
+  # Makes sure mapping is either NA or a COPASI key
   if (any(do_mapping))
     mapping[do_mapping] <-
       mapping[do_mapping] %>%
@@ -1403,7 +1403,7 @@ setEvents <- function(key = NULL, name = NULL, trigger_expression = NULL, fire_a
   )
   assert_that(
     every(assignment_target[do_assignment_target], is.cexpression),
-    msg = "Argument `assignment_expression` must be a list containing copasi expressions only."
+    msg = "Argument `assignment_expression` must be a list containing COPASI expressions only."
   )
   assert_that(
     every(assignment_target[do_assignment_target], noNA),

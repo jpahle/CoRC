@@ -138,7 +138,7 @@ plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 
 ## 2D Scan Over the Cartesian Product of Two Species Concentration Vectors
 
-This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on Copasi use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
@@ -189,7 +189,7 @@ plotly::ggplotly(plot)
 
 ## 2D Scan over Random Concentrations of Two Species
 
-This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on Copasi use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 It is in many ways similar to the previous example but is written to run parallelized.
 
 ```{r}
@@ -249,7 +249,7 @@ plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 
 # Parameter Estimation
 
-This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on Copasi use cases.
+This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
@@ -265,7 +265,7 @@ data_experimental <-
   rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
   set_tidy_names(TRUE)
 
-# define the experiments for copasi
+# define the experiments for COPASI
 fit_experiments <- defineExperiments(
   data = data_experimental,
   type = c("time", "dependent", "dependent"),
@@ -273,7 +273,7 @@ fit_experiments <- defineExperiments(
   weight_method = "mean_square"
 )
 
-# define the parameters for copasi
+# define the parameters for COPASI
 fit_parameters <-
   map(
     parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
