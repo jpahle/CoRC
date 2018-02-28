@@ -65,8 +65,8 @@ A character vector of species identifiers or references.
 }
 \description{
 The entity finder family of functions are a set of helpers to
-get unique identifiers for the various entities defined in copasi.
-They give a quick overview of available species, compartments etc..
+get unique identifiers for the various entities defined in COPASI.
+They give a quick overview of available species, compartments, etc.
 }
 \details{
 There are two classes of entity finders.

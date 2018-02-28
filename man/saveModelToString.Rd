@@ -10,7 +10,7 @@ saveModelToString(model = getCurrentModel())
 \item{model}{a model object}
 }
 \value{
-The copasi model file, as string.
+The COPASI model file, as string.
 }
 \description{
 \code{saveModelToString} returns the given model as a string.

@@ -5,11 +5,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Copasi R Connector • CoRC</title>
+<title>COPASI R Connector • CoRC</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="COPASI R Connector">
+<meta property="og:description" content="CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R. It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.">
+<meta property="og:image" content="/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -91,20 +95,19 @@
     
     
 <div class="contents">
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="the-copasi-r-connector" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#the-copasi-r-connector" class="anchor"></a><img src="reference/figures/logo.png" alt="CoRC logo" width="200"> — the <b>Co</b>pasi <b>R</b> <b>C</b>onnector</h1></div>
+<a href="#the-copasi-r-connector" class="anchor"></a><img src="reference/figures/logo.png" alt="CoRC logo" width="200"> — the <b>CO</b>PASI <b>R</b> <b>C</b>onnector</h1></div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>Development Stage: <strong>Beta</strong></p>
-<p>CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI (<a href="http://copasi.org">copasi.org</a>) and the (statistical) programming environment R (<a href="http://r-project.org">r-project.org</a>). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.</p>
+<p>CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI (<a href="http://copasi.org">copasi.org</a>) and the (statistical) programming environment R (<a href="http://r-project.org">r-project.org</a>). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.</p>
 <p>CoRC features:</p>
 <ul>
-<li>high-level API for COPASI in the R language</li>
-<li>Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).</li>
+<li>high-level API for COPASI in the R language.</li>
 <li>Immediate access to R’s data analysis capabilities and publication-ready plotting.</li>
+<li>Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).</li>
 <li>Rule-based modification of model structure to test structural variations or create large models.</li>
 <li>Scaling up assays, e.g. from 3 models to 3000.</li>
 <li>Handling of multiple models at once.</li>
@@ -128,7 +131,7 @@ CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
 <span class="kw"><a href="reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
@@ -138,7 +141,7 @@ CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <span class="co">#&gt; # A tibble: 201 x 3</span>
 <span class="co">#&gt;     Time     X     Y</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 0     3.00  3.00 </span>
+<span class="co">#&gt;  1 0.    3.00  3.00 </span>
 <span class="co">#&gt;  2 0.500 3.41  0.817</span>
 <span class="co">#&gt;  3 1.00  1.90  1.28 </span>
 <span class="co">#&gt;  4 1.50  0.876 1.87 </span>
@@ -167,8 +170,8 @@ CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <p><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a> | file <a href="LICENSE.html">LICENSE</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Jonas Förster <br><small class="roles"> Author, maintainer </small> </li>
-<li>Jürgen Pahle <br><small class="roles"> Author </small> </li>
+<li>Jonas Förster <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Jürgen Pahle <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 

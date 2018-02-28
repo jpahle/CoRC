@@ -1,6 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-<img src="man/figures/logo.png" alt="CoRC logo" width="200"> --- the <b>Co</b>pasi <b>R</b> <b>C</b>onnector
+<img src="man/figures/logo.png" alt="CoRC logo" width="200"> --- the <b>CO</b>PASI <b>R</b> <b>C</b>onnector
 ============================================================================================================
 
 Overview
@@ -8,13 +7,13 @@ Overview
 
 Development Stage: **Beta**
 
-CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.
+CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.
 
 CoRC features:
 
--   high-level API for COPASI in the R language
--   Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
+-   high-level API for COPASI in the R language.
 -   Immediate access to R's data analysis capabilities and publication-ready plotting.
+-   Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
 -   Rule-based modification of model structure to test structural variations or create large models.
 -   Scaling up assays, e.g. from 3 models to 3000.
 -   Handling of multiple models at once.
@@ -44,7 +43,7 @@ Usage
 library(CoRC)
 loadExamples(1)
 #> [[1]]
-#> # A copasi model reference:
+#> # A COPASI model reference:
 #> Model name: "The Brusselator"
 #> Number of compartments: 1
 #> Number of species: 6
@@ -54,7 +53,7 @@ runTimeCourse()$result
 #> # A tibble: 201 x 3
 #>     Time     X     Y
 #>    <dbl> <dbl> <dbl>
-#>  1 0     3.00  3.00 
+#>  1 0.    3.00  3.00 
 #>  2 0.500 3.41  0.817
 #>  3 1.00  1.90  1.28 
 #>  4 1.50  0.876 1.87 

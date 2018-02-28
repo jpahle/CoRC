@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Open the model in the copasi UI — openCopasi • CoRC</title>
+<title>Open the model in the COPASI GUI — openCopasi • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,12 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Open the model in the COPASI GUI — openCopasi" />
+
+<meta property="og:description" content="openCopasi saves the given model to a temporary file and opens it in the COPASI GUI." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -110,11 +118,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Open the model in the copasi UI</h1>
+    <h1>Open the model in the COPASI GUI</h1>
     </div>
 
     
-    <p>Open the model in the copasi UI</p>
+    <p><code>openCopasi</code> saves the given model to a temporary file and opens it in the COPASI GUI.</p>
     
 
     <pre class="usage"><span class='fu'>openCopasi</span>(<span class='kw'>readin</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>copasi_loc</span> <span class='kw'>=</span> <span class='st'>"CopasiUI"</span>,
@@ -125,7 +133,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>readin</th>
-      <td><p>if <code>TRUE</code>, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model</p></td>
+      <td><p>if <code>TRUE</code>, the function waits for COPASI to quit and then reads in the temporary model file, overwriting the given model.</p></td>
     </tr>
     <tr>
       <th>copasi_loc</th>

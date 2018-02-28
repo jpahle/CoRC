@@ -31,7 +31,7 @@ Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.}
 
 \item{filename}{optional string
 
-When adding the experiments to a copasi model, this filename will be used.
+When adding the experiments to a COPASI model, this filename will be used.
 In use cases, where experiments are only used temporarily, the filename is ignored.}
 }
 \value{
@@ -41,7 +41,7 @@ copasi_exp object for input into related functions
 \code{defineExperiments} defines a set of experiments given as tidy data frame to the given model.
 }
 \details{
-CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+CoRC uses it's own methodology for defining experimental data for use with a COPASI model.
 To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
 For help on data import and tidying see: \code{vignette("tidy-data", "tidyr")}.
 This function adds required metadata to experimental data for use with CoRC.

@@ -13,7 +13,7 @@ loadModel(path)
 a model object
 }
 \description{
-\code{loadModel} loads a model into copasi and returns a reference to it.
+\code{loadModel} loads a model into COPASI and returns a reference to it.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

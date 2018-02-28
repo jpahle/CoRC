@@ -40,9 +40,9 @@ setTC(duration = NULL, dt = NULL, intervals = NULL,
 
 Set the method directly with a string or with a list containing the entry named `method`.
 
-The list may contain further method args and their values.
+The list may contain further method arguments and their values.
 
-Allowed methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
+Available methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
 
 \item{model}{a model object}
 }

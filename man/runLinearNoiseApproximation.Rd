@@ -16,7 +16,7 @@ runLNA(perform_steady_state_analysis = NULL, executable = NULL,
 
 \item{executable}{flag}
 
-\item{method}{list}
+\item{method}{list of further method arguments and their values.}
 
 \item{model}{A model object.}
 }

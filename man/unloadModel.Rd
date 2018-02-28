@@ -10,7 +10,7 @@ unloadModel(model = getCurrentModel())
 \item{model}{a model object}
 }
 \description{
-\code{unloadModel} frees memory by unloading the given model from copasi
+\code{unloadModel} frees memory by unloading the given model from COPASI.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

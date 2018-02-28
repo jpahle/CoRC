@@ -8,8 +8,12 @@
 <title>Issues • CoRC</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Issues">
+<meta property="og:description" content="">
+<meta property="og:image" content="/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -90,7 +94,7 @@
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2018-02-14</h4>
+            <h4 class="date">2018-02-28</h4>
           </div>
 
     
@@ -102,7 +106,7 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CoRC)
 <span class="kw"><a href="../reference/loadExamples.html">loadExamples</a></span>(<span class="dv">1</span>)
 <span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "The Brusselator"</span>
 <span class="co">#&gt; Number of compartments: 1</span>
 <span class="co">#&gt; Number of species: 6</span>
@@ -113,7 +117,7 @@
 <a href="#quicklist" class="anchor"></a>Quicklist</h1>
 <p>Todo:</p>
 <ul>
-<li>Add more copasi tasks</li>
+<li>Add more COPASI tasks</li>
 <li>Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)</li>
 <li>(Internal) Code marked with ‘TODO’ for minor problems</li>
 <li>Check if installation can be as easy as with stringi package</li>
@@ -142,7 +146,7 @@ s<span class="op">$</span><span class="kw">buildExpression</span>()
 mmol<span class="op">$</span><span class="kw">buildExpression</span>()
 mol<span class="op">$</span><span class="kw">buildExpression</span>()
 mMol<span class="op">$</span><span class="kw">buildExpression</span>()</code></pre></div>
-<p>CUnit$getExpression() shows what Copasi makes of the input.</p>
+<p>CUnit$getExpression() shows what COPASI makes of the input.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms<span class="op">$</span><span class="kw">getExpression</span>()
 <span class="co">#&gt; [1] "ms"</span>
 s<span class="op">$</span><span class="kw">getExpression</span>()
@@ -203,7 +207,7 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<sp
 filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/1x/3760hf7d4fd85qf73rqhg8t80000gp/T/RtmpwVe1S5/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/1x/3760hf7d4fd85qf73rqhg8t80000gp/T/RtmpcNzbVD/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()

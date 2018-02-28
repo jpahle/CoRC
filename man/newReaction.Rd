@@ -4,14 +4,14 @@
 \alias{newReaction}
 \title{Create a new reaction}
 \usage{
-newReaction(scheme, name = scheme, fun = NULL, mappings = NULL,
+newReaction(reaction, name = reaction, fun = NULL, mappings = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{scheme}{Reaction scheme as to set, as string.}
+\item{reaction}{Reaction equation to set, as string.}
 
 \item{name}{Name to set, as string.
-Defaults to scheme.}
+Defaults to reaction.}
 
 \item{fun}{Identify which kinetic function to set by specifying it's key, as string.}
 

@@ -5,11 +5,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model Building • CoRC</title>
+<title>Building Models • CoRC</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Building Models">
+<meta property="og:description" content="">
+<meta property="og:image" content="/logo.png">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -87,10 +91,10 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Model Building</h1>
+      <h1>Building Models</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2018-02-14</h4>
+            <h4 class="date">2018-02-28</h4>
           </div>
 
     
@@ -105,9 +109,9 @@
 <div id="quick-model-building" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quick-model-building" class="anchor"></a>Quick Model Building</h1>
-<p>Building a quick Michaelis-Menten reaction using Copasi’s automatisms. Working with reaction schemes automatically creates required entities the same way the Copasi GUI does.</p>
+<p>Building a quick Michaelis-Menten reaction using COPASI’s automatisms. Working with reaction equations automatically creates required entities the same way the COPASI GUI does.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
@@ -118,10 +122,10 @@
 
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;   key       name  compartment type    initial_concentra…    initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compar… a     compartment reacti…               1.00           6.02e²⁰</span>
-<span class="co">#&gt; 2 b{compar… b     compartment reacti…               1.00           6.02e²⁰</span>
+<span class="co">#&gt;   key         name  compartment type    initial_concentrat… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartm… a     compartment reacti…                  1.        6.02e20</span>
+<span class="co">#&gt; 2 b{compartm… b     compartment reacti…                  1.        6.02e20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
@@ -129,7 +133,7 @@
 <span class="co">#&gt; # A tibble: 1 x 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                         flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                           &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…     0           0</span>
+<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…    0.          0.</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
@@ -146,7 +150,7 @@
 <a href="#more-detail" class="anchor"></a>More Detail</h1>
 <p>Getting more detail in can be helpful. Here we create a global quantity “substrate concentration” which applies a fixed value to species “a”. This is achieved by assigning the <code>Value</code> reference of the global quantity to species “a”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
@@ -167,13 +171,13 @@ subs_value
 <span class="co">#&gt; # A tibble: 1 x 8</span>
 <span class="co">#&gt;   key    name  type  initial_value value  rate initial_express… expression</span>
 <span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;     </span>
-<span class="co">#&gt; 1 Value… subs… fixed          10.0   NaN     0 ""               ""</span>
+<span class="co">#&gt; 1 Value… subs… fixed           10.   NaN    0. ""               ""</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
 <span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;   key       name  compartment type    initial_concentra…    initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compar… a     compartment assign…              10.0            6.02e²¹</span>
-<span class="co">#&gt; 2 b{compar… b     compartment reacti…               1.00           6.02e²⁰</span>
+<span class="co">#&gt;   key         name  compartment type     initial_concentra… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartm… a     compartment assignm…                10.        6.02e21</span>
+<span class="co">#&gt; 2 b{compartm… b     compartment reactio…                 1.        6.02e20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
@@ -181,7 +185,7 @@ subs_value
 <span class="co">#&gt; # A tibble: 1 x 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                         flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                           &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…     0           0</span>
+<span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversibl…    0.          0.</span>
 <span class="kw"><a href="../reference/getParameters.html">getParameters</a></span>()
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
@@ -191,7 +195,7 @@ subs_value
 <span class="co">#&gt; 3 (a = b).Vf  Vf    a = b    0.100 &lt;NA&gt;   </span>
 <span class="co">#&gt; 4 (a = b).Vr  Vr    a = b    0.100 &lt;NA&gt;</span>
 
-timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)
+timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dv">1000</span>)
 
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
 <p><img src="model_building_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
@@ -203,7 +207,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <a href="#defining-reaction-kinetics-manually" class="anchor"></a>Defining Reaction Kinetics Manually</h1>
 <p>In previous examples, we used the predefined “Reversible Michaelis-Menten” kinetic functions. In this example we create an equivalent function manually to achieve the same result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
@@ -235,7 +239,7 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 )
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)
+timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dv">1000</span>)
 
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/autoplot">autoplot</a></span>(timecourse)</code></pre></div>
 <p><img src="model_building_files/figure-html/unnamed-chunk-4-1.png" width="100%"></p>
@@ -245,9 +249,9 @@ timecourse &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <div id="quantities-as-proxy-for-time-course-output" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quantities-as-proxy-for-time-course-output" class="anchor"></a>Quantities as Proxy for Time Course Output</h1>
-<p>The <code>runTC</code> function only returns actual defined entities of the model. Auxiliarry information like reaction rates can be missing and and need to be added via global quantity assignment.</p>
+<p>The <code>runTimeCourse</code> function only returns data for actual defined entities of the model. Auxiliarry information like reaction rates can be missing and needs to be added via global quantity assignments. This example creates a global quantity “reaction rate” to generate data for the main reaction’s flux.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/newModel.html">newModel</a></span>()
-<span class="co">#&gt; # A copasi model reference:</span>
+<span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
@@ -266,16 +270,16 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="co">#&gt; # A tibble: 101 x 3</span>
 <span class="co">#&gt;     Time     b     a</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   0    1.00  10.0</span>
-<span class="co">#&gt;  2  10.0  1.75  10.0</span>
-<span class="co">#&gt;  3  20.0  2.40  10.0</span>
-<span class="co">#&gt;  4  30.0  2.97  10.0</span>
-<span class="co">#&gt;  5  40.0  3.48  10.0</span>
-<span class="co">#&gt;  6  50.0  3.94  10.0</span>
-<span class="co">#&gt;  7  60.0  4.35  10.0</span>
-<span class="co">#&gt;  8  70.0  4.72  10.0</span>
-<span class="co">#&gt;  9  80.0  5.06  10.0</span>
-<span class="co">#&gt; 10  90.0  5.37  10.0</span>
+<span class="co">#&gt;  1    0.  1.00   10.</span>
+<span class="co">#&gt;  2   10.  1.75   10.</span>
+<span class="co">#&gt;  3   20.  2.40   10.</span>
+<span class="co">#&gt;  4   30.  2.97   10.</span>
+<span class="co">#&gt;  5   40.  3.48   10.</span>
+<span class="co">#&gt;  6   50.  3.94   10.</span>
+<span class="co">#&gt;  7   60.  4.35   10.</span>
+<span class="co">#&gt;  8   70.  4.72   10.</span>
+<span class="co">#&gt;  9   80.  5.06   10.</span>
+<span class="co">#&gt; 10   90.  5.37   10.</span>
 <span class="co">#&gt; # ... with 91 more rows</span>
 
 <span class="kw"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(
@@ -285,20 +289,20 @@ subs_value &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 )
 <span class="co">#&gt; [1] "Values[reaction rate]"</span>
 
-<span class="kw"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
+<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="dv">1000</span>)<span class="op">$</span>result
 <span class="co">#&gt; # A tibble: 101 x 4</span>
 <span class="co">#&gt;     Time     b     a `Values[reaction rate]`</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   0    1.00  10.0                  0.0811</span>
-<span class="co">#&gt;  2  10.0  1.75  10.0                  0.0696</span>
-<span class="co">#&gt;  3  20.0  2.40  10.0                  0.0608</span>
-<span class="co">#&gt;  4  30.0  2.97  10.0                  0.0538</span>
-<span class="co">#&gt;  5  40.0  3.48  10.0                  0.0480</span>
-<span class="co">#&gt;  6  50.0  3.94  10.0                  0.0432</span>
-<span class="co">#&gt;  7  60.0  4.35  10.0                  0.0391</span>
-<span class="co">#&gt;  8  70.0  4.72  10.0                  0.0356</span>
-<span class="co">#&gt;  9  80.0  5.06  10.0                  0.0326</span>
-<span class="co">#&gt; 10  90.0  5.37  10.0                  0.0299</span>
+<span class="co">#&gt;  1    0.  1.00   10.                  0.0811</span>
+<span class="co">#&gt;  2   10.  1.75   10.                  0.0696</span>
+<span class="co">#&gt;  3   20.  2.40   10.                  0.0608</span>
+<span class="co">#&gt;  4   30.  2.97   10.                  0.0538</span>
+<span class="co">#&gt;  5   40.  3.48   10.                  0.0480</span>
+<span class="co">#&gt;  6   50.  3.94   10.                  0.0432</span>
+<span class="co">#&gt;  7   60.  4.35   10.                  0.0391</span>
+<span class="co">#&gt;  8   70.  4.72   10.                  0.0356</span>
+<span class="co">#&gt;  9   80.  5.06   10.                  0.0326</span>
+<span class="co">#&gt; 10   90.  5.37   10.                  0.0299</span>
 <span class="co">#&gt; # ... with 91 more rows</span>
 
 <span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()</code></pre></div>

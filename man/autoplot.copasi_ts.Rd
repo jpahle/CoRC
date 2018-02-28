@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_tasks.R
 \name{autoplot.copasi_ts}
 \alias{autoplot.copasi_ts}
-\title{Autoplot method for copasi timeseries objects.}
+\title{Autoplot method for COPASI timeseries objects.}
 \usage{
 autoplot.copasi_ts(object, ..., use_concentrations = TRUE)
 }

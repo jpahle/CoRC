@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,12 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="Define a parameter estimation experiment — defineExperiments" />
+
+<meta property="og:description" content="defineExperiments defines a set of experiments given as tidy data frame to the given model." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -152,7 +160,7 @@
     <tr>
       <th>filename</th>
       <td><p>optional string</p>
-<p>When adding the experiments to a copasi model, this filename will be used.
+<p>When adding the experiments to a COPASI model, this filename will be used.
 In use cases, where experiments are only used temporarily, the filename is ignored.</p></td>
     </tr>
     </table>
@@ -163,7 +171,7 @@ In use cases, where experiments are only used temporarily, the filename is ignor
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>CoRC uses it's own methodology for defining experimental data for use with a copasi model.
+    <p>CoRC uses it's own methodology for defining experimental data for use with a COPASI model.
 To this end it is required that experimental data be imported to R by the user and transformed to tidy data.
 For help on data import and tidying see: <code><a href='https://cran.rstudio.com/web/packages/tidyr/vignettes/tidy-data.html'>vignette("tidy-data", "tidyr")</a></code>.
 This function adds required metadata to experimental data for use with CoRC.</p>

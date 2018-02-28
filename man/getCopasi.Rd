@@ -2,12 +2,12 @@
 % Please edit documentation in R/CoRC.R
 \name{getCopasi}
 \alias{getCopasi}
-\title{Install copasi binaries}
+\title{Install COPASI binaries}
 \usage{
 getCopasi(path = NULL, force = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{path}{optional file path to copasi binaries}
+\item{path}{optional file path to COPASI binaries}
 
 \item{force}{optional bool to force overwriting the binaries}
 
@@ -17,8 +17,9 @@ getCopasi(path = NULL, force = FALSE, quiet = FALSE)
 \code{getCopasi} automatically downloads binaries or retrieves them from given path.
 }
 \details{
-In case of no internet connection, run the function and retrieve the URL from the error message.
-Download the file manually, copy it to a local path and give its path via the \code{path} argument.
+In case of no internet connection, run the function, retrieve the URL from the error message, and download the file manually.
+Alternatively, download the binaries from the release section on github.
+Copy the file to a local path and give its path via the \code{path} argument.
 
-To install copasi binaries, you need write access to the packages installation folder.
+To install COPASI binaries, you need write access to the packages installation folder.
 }

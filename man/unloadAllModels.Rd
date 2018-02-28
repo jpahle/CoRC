@@ -7,7 +7,7 @@
 unloadAllModels()
 }
 \description{
-\code{unloadAllModels} frees memory by unloading all loaded models from copasi
+\code{unloadAllModels} frees memory by unloading all loaded models from COPASI.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},

@@ -50,6 +50,8 @@ A list of results.
 \details{
 WARNING: TODO: This implementation of the sigma point method is almost completely untested.
 
+Uses the current parameter estimation settings as defined in the model, with the exception of experiments.
+
 As described in:\cr
 Schenkendorf, R., Kremling, A., & Mangold, M. (2009).\cr
 Optimal experimental design with the sigma point method.\cr

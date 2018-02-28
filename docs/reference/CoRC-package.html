@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CoRC: Copasi R Console. — CoRC-package • CoRC</title>
+<title>CoRC: COPASI R Connector. — CoRC-package • CoRC</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,6 +18,8 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -25,6 +27,15 @@
 <script src="../pkgdown.js"></script>
   
   
+<meta property="og:title" content="CoRC: COPASI R Connector. — CoRC-package" />
+
+<meta property="og:description" content="CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R.
+It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.
+This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
+These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations." />
+
+<meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -110,12 +121,12 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>CoRC: Copasi R Console.</h1>
+    <h1>CoRC: COPASI R Connector.</h1>
     </div>
 
     
-    <p>CoRC, the Copasi R Connector, links the Complex Pathway Simulator COPASI to R.
-It provides easy access to the powerful biochemical model editing, simulation and analysis backend of Copasi.
+    <p>CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R.
+It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.
 This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
 These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations.</p>
     
@@ -124,12 +135,14 @@ These scripts can then be run interactively or be sent to cluster or cloud facil
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>CoRC features:</p>  
-<p>* high-level API for Copasi
-* define reproducible workflows using Copasi's powerful modelling tools
-* easy parallization of Copasi tasks
-* enables straight forward publication-ready plotting with the R ecosystem
-* ...</p>
-<p>It is based on a current development version of Copasi but is expected to closely follow official Copasi releases in the future.</p>
+<p>* high-level API for COPASI in the R language.
+* Immediate access to R's data analysis capabilities and publication-ready plotting.
+* Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
+* Rule-based modification of model structure to test structural variations or create large models.
+* Scaling up assays, e.g. from 3 models to 3000.
+* Handling of multiple models at once.
+* Parallelization on multi-core machines or computing clusters.</p>
+<p>It is based on a current development version of COPASI but is expected to closely follow official COPASI releases in the future.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

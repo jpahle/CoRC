@@ -2,20 +2,20 @@
 % Please edit documentation in R/model_management.R
 \name{openCopasi}
 \alias{openCopasi}
-\title{Open the model in the copasi UI}
+\title{Open the model in the COPASI GUI}
 \usage{
 openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
   model = getCurrentModel())
 }
 \arguments{
-\item{readin}{if \code{TRUE}, the function waits for Copasi to quit and then reads in the temporary model file, overwriting the given model}
+\item{readin}{if \code{TRUE}, the function waits for COPASI to quit and then reads in the temporary model file, overwriting the given model.}
 
 \item{copasi_loc}{location of CopasiUI}
 
 \item{model}{a model object}
 }
 \description{
-Open the model in the copasi UI
+\code{openCopasi} saves the given model to a temporary file and opens it in the COPASI GUI.
 }
 \seealso{
 Other model handlers: \code{\link{getCurrentModel}},

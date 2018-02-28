@@ -13,7 +13,7 @@ loadSBML(path)
 a model object
 }
 \description{
-\code{loadSBML} loads an SBML model into copasi and returns a reference to it.
+\code{loadSBML} loads an SBML model into COPASI and returns a reference to it.
 }
 \seealso{
 Other model loading: \code{\link{loadExamples}},
