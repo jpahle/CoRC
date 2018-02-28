@@ -186,6 +186,7 @@ set_method_settings <- function(values, c_method) {
     tibble::tibble(value = values) %>%
     dplyr::mutate(rowid = pmatch(names(values), struct$name))
   
+  # if rowid is NA, there was no matching name in struct
   matched <- !is.na(data$rowid)
   
   assert_that(
@@ -197,10 +198,12 @@ set_method_settings <- function(values, c_method) {
     )
   )
   
-  data <-
-    data %>%
-    dplyr::filter(map_lgl(.data$value, negate(is.null))) %>%
-    dplyr::left_join(struct, by = "rowid")
+  # value is a list column and therefore needs map for checking if values are null
+  has_null_value <- map_lgl(data$value, is.null)
+  
+  data <- data[!has_null_value, ]
+  
+  data <- dplyr::left_join(data, struct, by = "rowid")
   
   skipped <- map_lgl(data$control_fun, is.null)
   
@@ -210,7 +213,7 @@ set_method_settings <- function(values, c_method) {
       warning('Parameter "', data$name[.x], '" was skipped because it is of unsupported type "', data$struct[.x], '".')
     )
   
-  data <- dplyr::filter(data, !skipped)
+  data <- data[!skipped, ]
   
   allowed <- map2_lgl(data$control_fun, data$value, ~ .x(.y))
   
