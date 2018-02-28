@@ -20,8 +20,8 @@ rox_method_param <- function(task, class) {
     "",
     "Set the method directly with a string or with a list containing the entry named `method`.",
     "",
-    "The list may contain further method args and their values.",
+    "The list may contain further method arguments and their values.",
     "",
-    paste0("Allowed methods: ", rox_print_v(values), ".")
+    paste0("Available methods: ", rox_print_v(values), ".")
   )
 }

@@ -4,7 +4,7 @@
 #'
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
-#' @param method list
+#' @param method list of further method arguments and their values.
 #' @param model A model object.
 #' @eval paste0("@return A list of results.
 #' \\itemize{

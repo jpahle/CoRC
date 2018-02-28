@@ -54,6 +54,7 @@ newModel()
 loadModel(path)
 loadModelFromString(model_string)
 loadSBML(path)
+loadSBMLFromString(sbml_string)
 loadExamples()
 ```
 
@@ -124,6 +125,7 @@ Finally, a model can be saved via several model management commands.
 saveModel(filename)
 saveModelToString()
 saveSBML(path, level = 3, version = 1)
+saveSBMLToString()
 ```
 
 To free up memory, unload any loaded models or restart R.
