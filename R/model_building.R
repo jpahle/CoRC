@@ -326,9 +326,9 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
 
 #' Create a new reaction
 #'
-#' @param scheme Reaction scheme as to set, as string.
+#' @param reaction Reaction equation to set, as string.
 #' @param name Name to set, as string.
-#' Defaults to scheme.
+#' Defaults to reaction.
 #' @param fun Identify which kinetic function to set by specifying it's key, as string.
 #' @param mappings Parameter mappings, as named list.
 #' Names are the parameters of the kinetic function.
@@ -337,11 +337,11 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
 #' @return reaction key
 #' @family reaction functions
 #' @export
-newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, model = getCurrentModel()) {
+newReaction <- function(reaction, name = reaction, fun = NULL, mappings = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.string(scheme)
+    is.string(reaction)
   )
   
   c_model <- c_datamodel$getModel()
@@ -350,7 +350,7 @@ newReaction <- function(scheme, name = scheme, fun = NULL, mappings = NULL, mode
   assert_that(inherits(c_react, "_p_CReaction"), msg = "Reaction creation failed. Does a reaction of that name exist already?")
   
   assert_that(
-    grab_msg(c_react$setReactionScheme(scheme)),
+    grab_msg(c_react$setReactionScheme(reaction)),
     msg = "Reaction scheme invalid"
   )
   

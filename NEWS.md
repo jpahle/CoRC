@@ -1,5 +1,6 @@
 # CoRC 0.2.0.9001
 
+* Breaking: Rename first argument of `newReaction()` from `scheme` to `reaction`.
 * Minor fixes
 
 # CoRC 0.2.0 (2018-02-19)
