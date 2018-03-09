@@ -45,73 +45,24 @@ Consider using homebrew for macOS to install other dependencies:
 brew install cmake swig
 ```
 
-## Compiling COPASI dependencies
+## Full
 
-```{bash, eval=FALSE}
-cd development/copasi-source/copasi-dependencies/
-rm -rf tmp_darwin_x64/ bin_darwin_x64/
-BUILD_DIR=${PWD}/tmp_darwin_x64 \
-	INSTALL_DIR=${PWD}/bin_darwin_x64 \
-	./createOSX-qt5.sh
-cd ../../../
-```
-
-## Compiling COPASI from source
+Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-cp CopasiVersion.h COPASI/copasi/
-mkdir -p corc_darwin_x64/
-cd corc_darwin_x64/
-cmake \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DBUILD_GUI=OFF \
-  -DBUILD_SE=OFF \
-  -DENABLE_R=ON \
-  -DR_USE_DYNAMIC_LOOKUP=ON \
-  -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
-  ../COPASI/
-make binding_r_lib
-
-cd ../
-mkdir -p libs/
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x86_64.so
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
-cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
+./build_darwin_clean.sh
 cd ../../
 ```
 
-## (Optionally) rebuild all for release
+## Quick
+
+Requires copasi-dependencies to be compiled already.
+Uses existing build but might cause issues when copasi_wrapper.cpp is old.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-
-cd copasi-dependencies/
-rm -rf tmp_darwin_x64/ bin_darwin_x64/
-BUILD_DIR=${PWD}/tmp_darwin_x64 \
-	INSTALL_DIR=${PWD}/bin_darwin_x64 \
-	./createOSX-qt5.sh
-cd ..
-
-cp CopasiVersion.h COPASI/copasi/
-rm -rf corc_darwin_x64/
-mkdir corc_darwin_x64/
-cd corc_darwin_x64/
-cmake \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DBUILD_GUI=OFF \
-  -DBUILD_SE=OFF \
-  -DENABLE_R=ON \
-  -DR_USE_DYNAMIC_LOOKUP=ON \
-  -DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \
-  ../COPASI/
-make binding_r_lib
-
-cd ../
-mkdir -p libs/
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI_darwin_x86_64.so
-cp corc_darwin_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
-cp corc_darwin_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
+./build_darwin_x64_quick.sh
 cd ../../
 ```
 
@@ -152,75 +103,84 @@ cd ../../../
 
 # Windows
 
-## Dependencies for compilation of the COPASI sources
+On windows, get docker-ce.
+On other systems, run a windows-docker-machine.
+The windows-docker-machine uses vagrant and virtualbox to create a docker backend that can run windows containers.
+Instructions here: https://github.com/StefanScherer/windows-docker-machine.
+For evaluation only, consider the easy variant of this repo: 'vagrant up 2016-box'.
 
-Use chocolatey to install:
+On macOS, preparation works like this:
 
-```
-choco install -y visualstudio2017community visualstudio2017-workload-nativedesktop ninja cmake.portable wget
-```
-
-Manually download swig and put it in: development\copasi-source\copasi-dependencies\swigwin\
-Manually get the Rlib (Rlib.lib) files for your current R Version and put it in e.g.: development\copasi-source\r-3.4.1-import-lib\x64\
-
-Use the cmd prompt.
-
-## Compiling COPASI dependencies
-
-run:
-```
-cd development\copasi-source\copasi-dependencies\
-.\createX86_vs15_x64_release.bat
-cd ..\..\..\
+```{bash, eval=FALSE}
+export INSTALL_DIR = "~/"
+brew cask install docker-ce vagrant virtualbox
+cd $INSTALL_DIR
+git clone https://github.com/StefanScherer/windows-docker-machine
+cd windows-docker-machine
+vagrant up 2016-box
 ```
 
-## Compiling COPASI from source
+You now run a headless VM in the background which can host the Docker container.
 
-Make sure to fix the paths for R in this script.
+Confirm that the '2016-box' machine is listed:
 
-run:
-```
-cd development\copasi-source\
-cp CopasiVersion.h COPASI\copasi\
-mkdir corc_windows_x64\
-cd corc_windows_x64\
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-cmake -G Ninja ^
-  -DCMAKE_BUILD_TYPE=Release ^
-  -DCMAKE_C_COMPILER=cl ^
-  -DCMAKE_CXX_COMPILER=cl ^
-  -DBUILD_GUI=OFF ^
-  -DBUILD_SE=OFF ^
-  -DENABLE_R=ON ^
-  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
-  -DSWIG_EXECUTABLE="../swigwin/swig.exe" ^
-  -DR_INCLUDE_DIRS="%ProgramFiles%/R/R-3.4.2/include/" ^
-  -DR_INTERPRETER="%ProgramFiles%/R/R-3.4.2/bin/R.exe" ^
-  -DR_LIB="../r-3.4.1-import-lib/x64/Rlib" ^
-  ../COPASI/
-ninja binding_r_lib
-
-cd ..\
-mkdir libs\
-cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x86_64.dll
-cp corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI.dll
-cp corc_windows_x64\copasi\bindings\R\COPASI.R libs\swig_wrapper.R
-cd ..\..\
+```{bash, eval=FALSE}
+docker-machine ls
 ```
 
-# linux
+Use this to stop from install folder when done:
 
+```{bash, eval=FALSE}
+vagrant halt 2016-box
+vagrant destroy 2016-box
+```
+
+## Full
+
+Clears relevant folders before building.
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+./d_build_windows_clean.sh
+cd ../../
+```
+
+alternatives:
+  on windows: d_build_windows_clean.ps1
+  without docker: build_windows_clean.bat (see windows Dockerfile for system requirements)
+
+## Quick
+
+Requires copasi-dependencies to be compiled already.
+
+```{bash, eval=FALSE}
+cd development/copasi-source/
+./d_build_windows_x64_quick.sh
+cd ../../
+```
+
+alternatives:
+  on windows: d_build_windows_quick.ps1
+  without docker: build_windows_quick.bat (see windows Dockerfile for system requirements)
+
+# Linux
+
+For linux we generally use docker.
 Install docker CE and get docker permissions for your user.
 
 ## Full
 
-Clears relevant folders before compilation.
+Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
 ./d_build_linux_clean.sh
 cd ../../
 ```
+
+alternatives:
+  on windows: d_build_linux_clean.ps1
+  without docker: build_linux_clean.sh (see linux Dockerfile for system requirements)
 
 ## Quick
 
@@ -231,6 +191,10 @@ cd development/copasi-source/
 ./d_build_linux_x64_quick.sh
 cd ../../
 ```
+
+alternatives:
+  on windows: d_build_linux_quick.ps1
+  without docker: build_linux_quick.sh (see linux Dockerfile for system requirements)
 
 # Copying the relevant file into the package repository
 
@@ -252,4 +216,3 @@ devtools::install("..")
 for (file in list.files("copasi-source/libs", full.names = T))
   cat(file, "\t", digest::digest(file, algo = "sha256", file = TRUE), "\n")
 ```
-

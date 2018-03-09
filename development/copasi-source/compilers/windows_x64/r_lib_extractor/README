@@ -1,0 +1,4 @@
+These files were gathered from:
+https://sourceforge.net/p/sbml/code/HEAD/tree/trunk/libsbml/dev/utilities/expdef
+
+They help extracting files required for binding to R.
