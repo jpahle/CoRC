@@ -8,3 +8,4 @@ development/copasi-source/compilers/corc_compiler_*_*
 development/copasi-source/libs/
 development/*.nb.html
 inst/doc
+inst/libs
