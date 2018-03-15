@@ -18,21 +18,22 @@ runTC(duration = NULL, dt = NULL, intervals = NULL,
   model = getCurrentModel())
 }
 \arguments{
-\item{duration}{number}
+\item{duration}{The time course duration, as number.}
 
-\item{dt}{number}
+\item{dt}{The time course output step size, as number.}
 
-\item{intervals}{count}
+\item{intervals}{The time course step count, as count.
+Overwrites `dt` in case of conflict.}
 
-\item{suppress_output_before}{flag}
+\item{suppress_output_before}{Whether to suppress before a certain time point, as number.}
 
-\item{output_events}{flag}
+\item{output_events}{Whether to output events as additional steps, as flag.}
 
-\item{save_result_in_memory}{flag}
+\item{save_result_in_memory}{Whether to generate an output data frame for the time course, as flag.}
 
-\item{start_in_steady_state}{flag}
+\item{start_in_steady_state}{Whether to first go to steady state before running the time course, as flag.}
 
-\item{update_model}{flag}
+\item{update_model}{Whether to update the model with the state resulting from the time course, as flag.}
 
 \item{executable}{flag}
 
@@ -48,6 +49,11 @@ Available methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'ad
 }
 \value{
 A list of results.
+\itemize{
+  \item \code{$result} is a data frame containing time course output as concentrations.
+  \item \code{$result_number} is a data frame containing time course output as particle numbers.
+}
+\strong{Attention}: Both result data frames will be empty if \code{save_result_in_memory} is set to \code{FALSE}.
 }
 \description{
 \code{runTimeCourse} runs a time course and returns the results in a list.

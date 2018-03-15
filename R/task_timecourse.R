@@ -2,18 +2,24 @@
 #'
 #' \code{runTimeCourse} runs a time course and returns the results in a list.
 #'
-#' @param duration number
-#' @param dt number
-#' @param intervals count
-#' @param suppress_output_before flag
-#' @param output_events flag
-#' @param save_result_in_memory flag
-#' @param start_in_steady_state flag
-#' @param update_model flag
+#' @param duration The time course duration, as number.
+#' @param dt The time course output step size, as number.
+#' @param intervals The time course step count, as count.
+#' Overwrites `dt` in case of conflict.
+#' @param suppress_output_before Whether to suppress before a certain time point, as number.
+#' @param output_events Whether to output events as additional steps, as flag.
+#' @param save_result_in_memory Whether to generate an output data frame for the time course, as flag.
+#' @param start_in_steady_state Whether to first go to steady state before running the time course, as flag.
+#' @param update_model Whether to update the model with the state resulting from the time course, as flag.
 #' @param executable flag
 #' @eval rox_method_param("Time-Course", "_p_CTrajectoryTask")
 #' @param model A model object.
 #' @return A list of results.
+#' \itemize{
+#'   \item \code{$result} is a data frame containing time course output as concentrations.
+#'   \item \code{$result_number} is a data frame containing time course output as particle numbers.
+#' }
+#' \strong{Attention}: Both result data frames will be empty if \code{save_result_in_memory} is set to \code{FALSE}.
 #' @family time course
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
