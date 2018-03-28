@@ -33,51 +33,77 @@ test_that("newSpecies() success", {
   newSpecies("s2", compartment = compartment()[1], initial_concentration = 1.1)
   expect_equal(getSpecies("s2")$initial_concentration, 1.1)
   
-  newSpecies("s3", compartment = compartment()[1], initial_number = 2.2)
-  expect_equal(getSpecies("s3")$initial_number, 2.2)
+  newSpecies("s3", compartment = compartment()[1], initial_concentration = NaN)
+  expect_equal(getSpecies("s3")$initial_concentration, NaN)
   
-  newSpecies("s4", compartment = compartment()[1], initial_expression = 3.3)
-  expect_equal(getSpecies("s4")$initial_concentration, 3.3)
+  newSpecies("s4", compartment = compartment()[1], initial_concentration = Inf)
+  expect_equal(getSpecies("s4")$initial_concentration, Inf)
   
-  newSpecies("s5", compartment = compartment()[1], initial_concentration = 4.4, initial_number = 5.5)
-  expect_equal(getSpecies("s5")$initial_number, 5.5)
+  newSpecies("s5", compartment = compartment()[1], initial_number = 2.2)
+  expect_equal(getSpecies("s5")$initial_number, 2.2)
   
-  newSpecies("s6", compartment = compartment()[1], initial_concentration = 6.6, initial_number = 7.7, initial_expression = 8.8)
-  expect_equal(getSpecies("s6")$initial_concentration, 8.8)
+  newSpecies("s6", compartment = compartment()[1], initial_expression = 3.3)
+  expect_equal(getSpecies("s6")$initial_concentration, 3.3)
   
-  deleteSpecies(paste0("s", 1:6))
+  newSpecies("s7", compartment = compartment()[1], initial_concentration = 4.4, initial_number = 5.5)
+  expect_equal(getSpecies("s7")$initial_number, 5.5)
+  
+  newSpecies("s8", compartment = compartment()[1], initial_concentration = 6.6, initial_number = 7.7, initial_expression = 8.8)
+  expect_equal(getSpecies("s8")$initial_concentration, 8.8)
+  
+  deleteSpecies(paste0("s", 1:8))
 })
 
 test_that("newCompartment() success", {
   newCompartment("s1")
   expect_equal(getCompartments("s1")$initial_size, 1)
   
-  newCompartment("s2", initial_size = 1.1)
-  expect_equal(getCompartments("s2")$initial_size, 1.1)
+  newCompartment("s2", dimensionality = 2)
+  compartments_df_2 <- getCompartments("s2")
+  expect_equal(compartments_df_2$dimensionality, 2)
+  expect_identical(charToRaw(compartments_df_2$unit), charToRaw("m²"))
   
-  newCompartment("s3", initial_expression = 2.2)
-  expect_equal(getCompartments("s3")$initial_size, 2.2)
+  newCompartment("s3", initial_size = 1.1)
+  expect_equal(getCompartments("s3")$initial_size, 1.1)
   
-  newCompartment("s4", initial_size = 3.3, initial_expression = 4.4)
-  expect_equal(getCompartments("s4")$initial_size, 4.4)
+  newCompartment("s4", initial_size = NaN)
+  expect_equal(getCompartments("s4")$initial_size, NaN)
   
-  deleteCompartment(paste0("s", 1:4))
+  newCompartment("s5", initial_size = Inf)
+  expect_equal(getCompartments("s5")$initial_size, Inf)
+  
+  newCompartment("s6", initial_expression = 2.2)
+  expect_equal(getCompartments("s6")$initial_size, 2.2)
+  
+  newCompartment("s7", initial_size = 3.3, initial_expression = 4.4)
+  expect_equal(getCompartments("s7")$initial_size, 4.4)
+  
+  deleteCompartment(paste0("s", 1:7))
 })
 
 test_that("newGlobalQuantity() success", {
   newGlobalQuantity("s1")
   expect_equal(getGlobalQuantities("s1")$initial_value, 0)
   
-  newGlobalQuantity("s2", initial_value = 1.1)
-  expect_equal(getGlobalQuantities("s2")$initial_value, 1.1)
+  newGlobalQuantity("s2", unit = "ps")
+  expect_identical(getGlobalQuantities("s2")$unit, "ps")
   
-  newGlobalQuantity("s3", initial_expression = 2.2)
-  expect_equal(getGlobalQuantities("s3")$initial_value, 2.2)
+  newGlobalQuantity("s3", initial_value = 1.1)
+  expect_equal(getGlobalQuantities("s3")$initial_value, 1.1)
   
-  newGlobalQuantity("s4", initial_value = 3.3, initial_expression = 4.4)
-  expect_equal(getGlobalQuantities("s4")$initial_value, 4.4)
+  newGlobalQuantity("s4", initial_value = NaN)
+  expect_equal(getGlobalQuantities("s4")$initial_value, NaN)
   
-  deleteGlobalQuantity(paste0("s", 1:4))
+  newGlobalQuantity("s5", initial_value = Inf)
+  expect_equal(getGlobalQuantities("s5")$initial_value, Inf)
+  
+  newGlobalQuantity("s6", initial_expression = 2.2)
+  expect_equal(getGlobalQuantities("s6")$initial_value, 2.2)
+  
+  newGlobalQuantity("s7", initial_value = 3.3, initial_expression = 4.4)
+  expect_equal(getGlobalQuantities("s7")$initial_value, 4.4)
+  
+  deleteGlobalQuantity(paste0("s", 1:7))
 })
 
 test_that("newEvent() success", {

@@ -16,17 +16,24 @@ runTimeCourse()
 
 test_that("getSpecies()", {
   species_df <- getSpecies()
-  expect_length(species_df, 12)
+  expect_length(species_df, 13)
   expect_true(nrow(species_df) == length(species()))
   
   species_df_b <- getSpecies("B")
   expect_equal(species_df_b$initial_concentration, 3)
   expect_equal(species_df_b$concentration, 3)
+  expect_identical(species_df_b$unit, "mmol/ml")
 })
 
-test_that("setSpecies()", {
+test_that("setSpecies() concentrations", {
   setSpecies("B", initial_concentration = 1.1)
   expect_equal(getSpecies("B")$initial_concentration, 1.1)
+  
+  setSpecies("B", initial_concentration = NaN)
+  expect_equal(getSpecies("B")$initial_concentration, NaN)
+  
+  setSpecies("B", initial_concentration = Inf)
+  expect_equal(getSpecies("B")$initial_concentration, Inf)
   
   setSpecies(regex("^B"), initial_concentration = 2.2)
   expect_equal(getSpecies("B")$initial_concentration, 2.2)
@@ -35,6 +42,20 @@ test_that("setSpecies()", {
   expect_equal(getSpecies("B")$expression, "1.1")
   expect_error(setSpecies("B", type = "failure"))
   setSpecies("B", type = "reactions", initial_concentration = 1.1)
+})
+
+test_that("setSpecies() numbers", {
+  setSpecies("B", initial_number = 1)
+  expect_equal(getSpecies("B")$initial_number, 1)
+  
+  setSpecies("B", initial_number = NaN)
+  expect_equal(getSpecies("B")$initial_number, NaN)
+  
+  setSpecies("B", initial_number = Inf)
+  expect_equal(getSpecies("B")$initial_number, Inf)
+  
+  setSpecies(regex("^B"), initial_number = 2)
+  expect_equal(getSpecies("B")$initial_number, 2)
 })
 
 test_that("setSpecies() vectorization", {
@@ -59,17 +80,25 @@ runTimeCourse()
 
 test_that("getCompartments()", {
   compartments_df <- getCompartments()
-  expect_length(compartments_df, 8)
+  expect_length(compartments_df, 10)
   expect_true(nrow(compartments_df) == length(compartment()))
   
-  compartments_df_c <- getCompartments("Ca")
+  compartments_df_c <- getCompartments("Ca1")
   expect_equal(compartments_df_c$initial_size, 1)
   expect_equal(compartments_df_c$size, 1)
+  expect_equal(compartments_df_c$dimensionality, 2)
+  expect_identical(charToRaw(compartments_df_c$unit), charToRaw("m²"))
 })
 
 test_that("setCompartments()", {
   setCompartments("Ca", initial_size = 1.1)
   expect_equal(getCompartments("Ca")$initial_size, 1.1)
+  
+  setCompartments("Ca", initial_size = NaN)
+  expect_equal(getCompartments("Ca")$initial_size, NaN)
+  
+  setCompartments("Ca", initial_size = Inf)
+  expect_equal(getCompartments("Ca")$initial_size, Inf)
   
   setCompartments(regex(".*a$"), initial_size = 2.2)
   expect_equal(getCompartments("Ca")$initial_size, 2.2)
@@ -78,6 +107,11 @@ test_that("setCompartments()", {
   expect_equal(getCompartments("Ca")$expression, "1.1")
   expect_error(setCompartments("Ca", type = "failure"))
   setCompartments("Ca", type = "fixed", initial_size = 1.1)
+  
+  setCompartments("Ca", dimensionality = 1)
+  expect_equal(getCompartments("Ca")$dimensionality, 1)
+  
+  expect_error(setCompartments("Ca", dimensionality = NaN))
 })
 
 test_that("setCompartments() vectorization", {
@@ -98,17 +132,24 @@ test_that("setCompartments() persistence", {
 
 test_that("getGlobalQuantities()", {
   quantities_df <- getGlobalQuantities()
-  expect_length(quantities_df, 8)
+  expect_length(quantities_df, 9)
   expect_true(nrow(quantities_df) == length(quantity()))
   
   quantities_df_c <- getGlobalQuantities("Ca")
   expect_equal(quantities_df_c$initial_value, 1)
   expect_equal(quantities_df_c$value, 1)
+  expect_identical(quantities_df_c$unit, "m^3")
 })
 
 test_that("setGlobalQuantities()", {
   setGlobalQuantities("Ca", initial_value = 1.1)
   expect_equal(getGlobalQuantities("Ca")$initial_value, 1.1)
+  
+  setGlobalQuantities("Ca", initial_value = NaN)
+  expect_equal(getGlobalQuantities("Ca")$initial_value, NaN)
+  
+  setGlobalQuantities("Ca", initial_value = Inf)
+  expect_equal(getGlobalQuantities("Ca")$initial_value, Inf)
   
   setGlobalQuantities(regex("Ca$"), initial_value = 2.2)
   expect_equal(getGlobalQuantities("Ca")$initial_value, 2.2)
@@ -117,6 +158,11 @@ test_that("setGlobalQuantities()", {
   expect_equal(getGlobalQuantities("Ca")$expression, "1.1")
   expect_error(setGlobalQuantities("Ca", type = "failure"))
   setGlobalQuantities("Ca", type = "fixed", initial_value = 1.1)
+  
+  setGlobalQuantities("Ca", unit = "s")
+  expect_equal(getGlobalQuantities("Ca")$unit, "s")
+  
+  expect_error(expect_warning(setGlobalQuantities("Ca", unit = "failure")))
 })
 
 test_that("setGlobalQuantities() vectorization", {
