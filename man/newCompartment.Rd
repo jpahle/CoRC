@@ -5,13 +5,15 @@
 \title{Create a new compartment}
 \usage{
 newCompartment(name, type = c("fixed", "assignment", "ode"),
-  initial_size = NULL, initial_expression = NULL, expression = NULL,
-  model = getCurrentModel())
+  dimensionality = NULL, initial_size = NULL, initial_expression = NULL,
+  expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}
 
 \item{type}{string}
+
+\item{dimensionality}{Dimensionality of the compartment (0D, 1D, 2D, 3D), as number.}
 
 \item{initial_size}{number}
 

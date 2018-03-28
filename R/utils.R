@@ -140,6 +140,16 @@ to_param_vector <- function(x, type) {
   x_val
 }
 
+# depending on dimensionality of the compartment, the units vary
+get_dimension_units <- function(c_model) {
+  c(
+    1,
+    CUnit_prettyPrint(c_model$getLengthUnit()),
+    CUnit_prettyPrint(c_model$getAreaUnit()),
+    CUnit_prettyPrint(c_model$getVolumeUnit())
+  )
+}
+
 # wrapper for getReferenceDirectory
 # if no ref dir is set in COPASI, getReferenceDirectory returns ""
 # in that case, use getwd()

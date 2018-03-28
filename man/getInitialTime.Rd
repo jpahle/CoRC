@@ -15,13 +15,15 @@ getInitialTime(model = getCurrentModel())
 \seealso{
 \code{\link{setInitialTime}}
 
-Other model property functions: \code{\link{getLinkMatrix}},
+Other model property functions: \code{\link{getAreaUnit}},
+  \code{\link{getLengthUnit}}, \code{\link{getLinkMatrix}},
   \code{\link{getModelName}},
   \code{\link{getQuantityUnit}},
   \code{\link{getReducedStoichiometryMatrix}},
   \code{\link{getStoichiometryMatrix}},
   \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
-  \code{\link{setInitialTime}}, \code{\link{setModelName}},
+  \code{\link{setAreaUnit}}, \code{\link{setInitialTime}},
+  \code{\link{setLengthUnit}}, \code{\link{setModelName}},
   \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
   \code{\link{setVolumeUnit}}
 }

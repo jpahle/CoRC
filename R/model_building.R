@@ -132,6 +132,7 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #'
 #' @param name string
 #' @param type string
+#' @param unit string
 #' @param initial_value number
 #' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
 #' @param expression Expression to set, as string, finite numeric, or logical.
@@ -139,10 +140,11 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #' @return quantity key
 #' @family global quantity functions
 #' @export
-newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), initial_value = NULL, initial_expression = NULL, expression = NULL, model = getCurrentModel()) {
+newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), unit = NULL, initial_value = NULL, initial_expression = NULL, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
+    is.null(unit)               || is.string(unit),
     is.null(initial_value)      || is.number(initial_value)      && noPureNA(initial_value),
     is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
     is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
@@ -150,6 +152,9 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
+  
+  if (!is.null(unit) && unit != "")
+    assert_that(grab_msg(CUnit_prettyPrint(unit)) != "?", msg = paste0('`unit` value "', unit, '" could not be interpreted.'))
   
   if (!is.null(initial_expression))
     initial_expression <- write_expr(to_cexpr(initial_expression), c_datamodel)
@@ -164,6 +169,9 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   assert_that(inherits(c_quant, "_p_CModelValue"), msg = "Global quantity creation failed. Does a global quantity of that name exist already?")
   
   c_quant$setStatus(toupper(type))
+  
+  if (!is.null(unit))
+    c_quant$setUnitExpression(unit)
   
   if (!is.null(initial_value))
     c_quant$setInitialValue(initial_value)
@@ -232,16 +240,18 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 #'
 #' @param name string
 #' @param type string
+#' @param dimensionality Dimensionality of the compartment (0D, 1D, 2D, 3D), as number.
 #' @param initial_size number
 #' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
 #' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param model a model object
 #' @family compartment functions
 #' @export
-newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial_size = NULL, initial_expression= NULL, expression = NULL, model = getCurrentModel()) {
+newCompartment <- function(name, type = c("fixed", "assignment", "ode"), dimensionality = NULL, initial_size = NULL, initial_expression= NULL, expression = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
+    is.null(dimensionality)     || is.number(dimensionality),
     is.null(initial_size)       || is.number(initial_size)       && noPureNA(initial_size),
     is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
     is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
@@ -249,6 +259,11 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   
   # .__E___CModelEntity__Status has other weird entries
   type <- rlang::arg_match(type)
+  
+  if (!is.null(dimensionality)) {
+    dimensionality <- as.integer(dimensionality)
+    assert_that(noNA(dimensionality), dimensionality >= 0L, dimensionality <= 3L)
+  }
   
   if (!is.null(initial_expression))
     initial_expression <- write_expr(to_cexpr(initial_expression), c_datamodel)
@@ -264,6 +279,9 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   assert_that(inherits(c_comp, "_p_CCompartment"), msg = "Compartment creation failed. Does a compartment of that name exist already?")
   
   c_comp$setStatus(toupper(type))
+  
+  if (!is.null(dimensionality))
+    c_comp$setDimensionality(dimensionality)
   
   if (!is.null(initial_size))
     c_comp$setInitialValue(initial_size)

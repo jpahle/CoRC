@@ -1,7 +1,8 @@
-# CoRC 0.2.1.9001
+# CoRC 0.2.1.9002
 
 * Rebase on COPASI release 4.23 sources.
 * Prepare for R version 3.5.
+* Add unit system.
 * Allow `NaN`, `Inf` and `-Inf` for many values.
 * Add `getVersion()` for retrieving the version of the COPASI backend.
 

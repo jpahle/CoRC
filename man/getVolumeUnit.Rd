@@ -13,18 +13,21 @@ getVolumeUnit(model = getCurrentModel())
 unit of volume
 }
 \description{
-\code{getTimeUnit} gets the unit used for volume.
+\code{getVolumeUnit} gets the unit used for volume.
 }
 \seealso{
 \code{\link{setVolumeUnit}}
 
-Other model property functions: \code{\link{getInitialTime}},
-  \code{\link{getLinkMatrix}}, \code{\link{getModelName}},
+Other model property functions: \code{\link{getAreaUnit}},
+  \code{\link{getInitialTime}},
+  \code{\link{getLengthUnit}}, \code{\link{getLinkMatrix}},
+  \code{\link{getModelName}},
   \code{\link{getQuantityUnit}},
   \code{\link{getReducedStoichiometryMatrix}},
   \code{\link{getStoichiometryMatrix}},
-  \code{\link{getTimeUnit}}, \code{\link{setInitialTime}},
-  \code{\link{setModelName}},
+  \code{\link{getTimeUnit}}, \code{\link{setAreaUnit}},
+  \code{\link{setInitialTime}},
+  \code{\link{setLengthUnit}}, \code{\link{setModelName}},
   \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
   \code{\link{setVolumeUnit}}
 }

@@ -44,57 +44,6 @@ Issues:
 * getwd() and copasi$getReferenceDirectory() are not in sync
 * some S3 classes should have reconstruct functions (hadley/sloop)
 
-# Checking validity of quantity unit doesn't work
-
-```{r}
-CUnit <- CoRC:::CUnit
-```
-
-The CUnit class can be used for testing if user specified input is valid
-
-```{r, results="hide"}
-ms <- CUnit("ms")
-s <- CUnit("ms * 1e3")
-mmol <- CUnit("mmol")
-mol <- CUnit("mmol * 1e3")
-mMol <- CUnit("mMol")
-
-ms$buildExpression()
-s$buildExpression()
-mmol$buildExpression()
-mol$buildExpression()
-mMol$buildExpression()
-```
-
-CUnit$getExpression() shows what COPASI makes of the input.
-
-```{r}
-ms$getExpression()
-s$getExpression()
-mmol$getExpression()
-mol$getExpression()
-mMol$getExpression()
-```
-
-CUnit$isUnitType("\<type\>") will return useful information on validity for all but "quantity".
-
-```{r}
-ms$isUnitType("time")
-
-s$isUnitType("time")
-s$isUnitType("quantity")
-
-mmol$isUnitType("quantity")
-
-mol$isUnitType("quantity")
-mol$isUnitType("time")
-mol$isUnitType("volume")
-mol$isUnitType("area")
-mol$isUnitType("length")
-
-mMol$isUnitType("quantity")
-```
-
 # Saving .cps loses experimental data
 
 I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.

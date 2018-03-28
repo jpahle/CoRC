@@ -4,7 +4,7 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(key = NULL, name = NULL, type = NULL,
+setGlobalQuantities(key = NULL, name = NULL, type = NULL, unit = NULL,
   initial_value = NULL, initial_expression = NULL, expression = NULL,
   data = NULL, model = getCurrentModel())
 }
@@ -15,6 +15,8 @@ Also supports fragments of keys, if uniquely matching one global quantity.}
 \item{name}{Name to set, as string.}
 
 \item{type}{Type ("fixed", "assignment", "ode") to set, as string.}
+
+\item{unit}{Unit to set, as string.}
 
 \item{initial_value}{Initial value to set, as numeric.}
 

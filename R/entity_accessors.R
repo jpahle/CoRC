@@ -13,12 +13,17 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(raw_expressions), !is.na(raw_expressions))
   
+  c_model <- c_datamodel$getModel()
+  
   if (is_empty(key))
-    cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
+    cl_metabs <- get_cdv(c_model$getMetabolites())
   else
     cl_metabs <- species_obj(key, c_datamodel)
   
+  cl_comps <- map_swig(cl_metabs, "getCompartment")
+  
   types <- map_swig_chr(cl_metabs, "getStatus")
+  dimensionality <- map_swig_int(cl_comps, "getDimensionality")
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
@@ -34,8 +39,9 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
   tibble::tibble(
     key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
-    "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Compartment"           = map_swig_chr(cl_comps, "getObjectName"),
     "Type"                  = tolower(types),
+    "Unit"                  = paste0(c_model$getQuantityUnit(), "/", get_dimension_units(c_model)[dimensionality + 1L]),
     "Initial Concentration" = map_swig_dbl(cl_metabs, "getInitialConcentration"),
     "Initial Number"        = map_swig_dbl(cl_metabs, "getInitialValue"),
     "Concentration"         = map_swig_dbl(cl_metabs, "getConcentration"),
@@ -61,12 +67,17 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
 getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
+  c_model <- c_datamodel$getModel()
+  
   if (is_empty(key))
-    cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
+    cl_metabs <- get_cdv(c_model$getMetabolites())
   else
     cl_metabs <- species_obj(key, c_datamodel)
   
+  cl_comps <- map_swig(cl_metabs, "getCompartment")
+  
   types <- map_swig_chr(cl_metabs, "getStatus")
+  dimensionality <- map_swig_int(cl_comps, "getDimensionality")
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
@@ -82,8 +93,9 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
   tibble::tibble(
     key                     = get_key(cl_metabs, is_species = TRUE),
     "Name"                  = map_swig_chr(cl_metabs, "getObjectName"),
-    "Compartment"           = cl_metabs %>% map_swig("getCompartment") %>% map_swig_chr("getObjectName"),
+    "Compartment"           = map_swig_chr(cl_comps, "getObjectName"),
     "Type"                  = tolower(types),
+    "Unit"                  = paste0(c_model$getQuantityUnit(), "/", get_dimension_units(c_model)[dimensionality + 1L]),
     "Initial Concentration" = cl_metabs %>% map_swig("getInitialConcentrationReference") %>% as_ref(c_datamodel),
     "Initial Number"        = cl_metabs %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Concentration"         = cl_metabs %>% map_swig("getConcentrationReference") %>% as_ref(c_datamodel),
@@ -312,6 +324,7 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
     key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = tolower(types),
+    "Unit"               = map_swig_chr(cl_quants, "getUnitExpression"),
     "Initial Value"      = map_swig_dbl(cl_quants, "getInitialValue"),
     "Value"              = map_swig_dbl(cl_quants, "getValue"),
     "Rate"               = map_swig_dbl(cl_quants, "getRate"),
@@ -356,6 +369,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
     key                  = get_key(cl_quants),
     "Name"               = map_swig_chr(cl_quants, "getObjectName"),
     "Type"               = tolower(types),
+    "Unit"               = map_swig_chr(cl_quants, "getUnitExpression"),
     "Initial Value"      = cl_quants %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Value"              = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
@@ -377,6 +391,7 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' Also supports fragments of keys, if uniquely matching one global quantity.
 #' @param name Name to set, as string.
 #' @param type Type ("fixed", "assignment", "ode") to set, as string.
+#' @param unit Unit to set, as string.
 #' @param initial_value Initial value to set, as numeric.
 #' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
 #' @param expression Expression to set, as string, finite numeric, or logical.
@@ -385,11 +400,12 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
 #' @family global quantity functions
 #' @export
-setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_value = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, unit = NULL, initial_value = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)               || is.character(name)                 && length(name) == length(key),
     is.null(type)               || is.character(type)                 && length(type) == length(key),
+    is.null(unit)               || is.character(unit)                 && length(unit) == length(key),
     is.null(initial_value)      || is.numeric(initial_value)          && length(initial_value) == length(key),
     is.null(initial_expression) || is.cexpression(initial_expression) && length(initial_expression) == length(key),
     is.null(expression)         || is.cexpression(expression)         && length(expression) == length(key),
@@ -403,6 +419,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   false_vec <- rep_along(cl_quants, FALSE)
   do_name               <- if (is.null(name))               false_vec else !is.na(name)
   do_type               <- if (is.null(type))               false_vec else !is.na(type)
+  do_unit               <- if (is.null(unit))               false_vec else !is.na(unit)
   do_initial_value      <- if (is.null(initial_value))      false_vec else !is_pure_na(initial_value)
   do_initial_expression <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression)
   do_expression         <- if (is.null(expression))         false_vec else !is.na(expression)
@@ -415,6 +432,21 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
       type %>%
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
       toupper()
+  
+  if (any(do_unit)) {
+    unit_pretty <- unit
+    do_unit_not_empty <- do_unit & unit != ""
+    
+    # Use prettyprint as check for valid units. Returns "?" for invalid.
+    unit_pretty[do_unit_not_empty] <- grab_msg(map_chr(unit[do_unit_not_empty], unclass(CUnit_prettyPrint)))
+    
+    invalid_units <- unit_pretty == "?"
+    
+    assert_that(
+      !any(invalid_units),
+      msg = paste0('`unit` value(s) "', paste0(unit[invalid_units], collapse = '", "'), '" could not be interpreted.')
+    )
+  }
   
   if (any(do_initial_expression)) {
     initial_expression[do_initial_expression] <-
@@ -433,7 +465,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "initial_value", "initial_expression", "expression")])
+    do.call(setGlobalQuantities, data[names(data) %in% c("key", "name", "type", "unit", "initial_value", "initial_expression", "expression")])
   
   if (is_empty(cl_quants))
     return(invisible())
@@ -447,6 +479,10 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, initial_va
   # apply types
   for (i in which(do_type))
     cl_quants[[i]]$setStatus(type[i])
+  
+  # apply units
+  for (i in which(do_unit))
+    cl_quants[[i]]$setUnitExpression(unit[i])
   
   # apply initial value
   if (any(do_initial_value)) {
@@ -502,12 +538,15 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(raw_expressions), !is.na(raw_expressions))
   
+  c_model <- c_datamodel$getModel()
+  
   if (is_empty(key))
-    cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
+    cl_comps <- get_cdv(c_model$getCompartments())
   else
     cl_comps <- compartment_obj(key, c_datamodel)
   
   types <- map_swig_chr(cl_comps, "getStatus")
+  dimensionality <- map_swig_int(cl_comps, "getDimensionality")
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
@@ -524,6 +563,8 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
     key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
     "Type"               = tolower(types),
+    "Dimensionality"     = dimensionality,
+    "Unit"               = get_dimension_units(c_model)[dimensionality + 1L],
     "Initial Size"       = map_swig_dbl(cl_comps, "getInitialValue"),
     "Size"               = map_swig_dbl(cl_comps, "getValue"),
     "Rate"               = map_swig_dbl(cl_comps, "getRate"),
@@ -546,12 +587,15 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
 getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
+  c_model <- c_datamodel$getModel()
+  
   if (is_empty(key))
-    cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
+    cl_comps <- get_cdv(c_model$getCompartments())
   else
     cl_comps <- compartment_obj(key, c_datamodel)
   
   types <- map_swig_chr(cl_comps, "getStatus")
+  dimensionality <- map_swig_int(cl_comps, "getDimensionality")
   has_init_expression <- types != "ASSIGNMENT"
   has_expression <- !has_init_expression | (types == "ODE")
   
@@ -568,6 +612,8 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
     key                  = get_key(cl_comps),
     "Name"               = map_swig_chr(cl_comps, "getObjectName"),
     "Type"               = tolower(types),
+    "Dimensionality"     = dimensionality,
+    "Unit"               = get_dimension_units(c_model)[dimensionality + 1L],
     "Initial Size"       = cl_comps %>% map_swig("getInitialValueReference") %>% as_ref(c_datamodel),
     "Size"               = cl_comps %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_comps %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
@@ -589,6 +635,7 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' Also supports fragments of keys, if uniquely matching one compartment.
 #' @param name Name to set, as string.
 #' @param type Type ("fixed", "assignment", "ode") to set, as string.
+#' @param dimensionality Dimensionality to set (0D, 1D, 2D, 3D), as number.
 #' @param initial_size Initial size to set, as string.
 #' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
 #' @param expression Expression to set, as string, finite numeric, or logical.
@@ -597,11 +644,12 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 #' @family compartment functions
 #' @export
-setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)               || is.character(name)                 && length(name) == length(key),
     is.null(type)               || is.character(type)                 && length(type) == length(key),
+    is.null(dimensionality)     || is.numeric(dimensionality)         && length(dimensionality) == length(key),
     is.null(initial_size)       || is.numeric(initial_size)           && length(initial_size) == length(key),
     is.null(initial_expression) || is.cexpression(initial_expression) && length(initial_expression) == length(key),
     is.null(expression)         || is.cexpression(expression)         && length(expression) == length(key),
@@ -615,6 +663,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   false_vec <- rep_along(cl_comps, FALSE)
   do_name               <- if (is.null(name))               false_vec else !is.na(name)
   do_type               <- if (is.null(type))               false_vec else !is.na(type)
+  do_dimensionality     <- if (is.null(dimensionality))     false_vec else !is_pure_na(dimensionality)
   do_initial_size       <- if (is.null(initial_size))       false_vec else !is_pure_na(initial_size)
   do_initial_expression <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression)
   do_expression         <- if (is.null(expression))         false_vec else !is.na(expression)
@@ -628,6 +677,14 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
       map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
       toupper()
   
+  if (any(do_dimensionality)) {
+    dimensionality <- as.integer(dimensionality)
+    assert_that(
+      all(dimensionality[do_dimensionality] %in% c(0L:3L)),
+      msg = '`dimensionality` should be one of: `NA`, 0, 1, 2, 3'
+    )
+  }
+
   if (any(do_initial_expression)) {
     initial_expression[do_initial_expression] <-
       initial_expression[do_initial_expression] %>%
@@ -645,7 +702,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "initial_size", "initial_expression", "expression")])
+    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "dimensionality", "initial_size", "initial_expression", "expression")])
   
   if (is_empty(cl_comps))
     return(invisible())
@@ -659,6 +716,10 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, initial_size =
   # apply types
   for (i in which(do_type))
     cl_comps[[i]]$setStatus(type[i])
+  
+  # apply dimensionality
+  for (i in which(do_dimensionality))
+    cl_comps[[i]]$setDimensionality(dimensionality[i])
   
   # apply initial size
   if (any(do_initial_size)) {

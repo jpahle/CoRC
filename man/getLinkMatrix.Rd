@@ -16,13 +16,15 @@ matrix
 Get link matrix
 }
 \seealso{
-Other model property functions: \code{\link{getInitialTime}},
-  \code{\link{getModelName}},
+Other model property functions: \code{\link{getAreaUnit}},
+  \code{\link{getInitialTime}},
+  \code{\link{getLengthUnit}}, \code{\link{getModelName}},
   \code{\link{getQuantityUnit}},
   \code{\link{getReducedStoichiometryMatrix}},
   \code{\link{getStoichiometryMatrix}},
   \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
-  \code{\link{setInitialTime}}, \code{\link{setModelName}},
+  \code{\link{setAreaUnit}}, \code{\link{setInitialTime}},
+  \code{\link{setLengthUnit}}, \code{\link{setModelName}},
   \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}},
   \code{\link{setVolumeUnit}}
 }

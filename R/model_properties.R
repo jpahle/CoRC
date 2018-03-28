@@ -46,7 +46,7 @@ setModelName <- function(name, model = getCurrentModel()) {
 getTimeUnit <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  c_datamodel$getModel()$getTimeUnitName()
+  c_datamodel$getModel()$getTimeUnit()
 }
 
 #' Set the unit of time
@@ -65,56 +65,15 @@ setTimeUnit <- function(unit, model = getCurrentModel()) {
   c_unit <- grab_msg(CUnit(unit))
   c_unit$buildExpression()
   unit <- c_unit$getExpression()
-  accepted <- c_unit$isUnitType("time")
   
-  assert_that(accepted, msg = paste0(unit, " is not a valid time unit."))
+  assert_that(
+    c_unit$isUnitType("time"),
+    msg = paste0(unit, " is not a valid time unit.")
+  )
   
   assert_that(
     grab_msg(c_datamodel$getModel()$setTimeUnitFromString(unit)),
     msg = "Setting time unit failed."
-  )
-  
-  invisible()
-}
-
-#' Get the unit of volume
-#'
-#' \code{getTimeUnit} gets the unit used for volume.
-#'
-#' @param model a model object
-#' @return unit of volume
-#' @seealso \code{\link{setVolumeUnit}}
-#' @family model property functions
-#' @export
-getVolumeUnit <- function(model = getCurrentModel()) {
-  c_datamodel <- assert_datamodel(model)
-  
-  c_datamodel$getModel()$getVolumeUnitName()
-}
-
-#' Set the unit of volume
-#'
-#' \code{setVolumeUnit} sets the unit used for volume.
-#'
-#' @param unit string
-#' @param model a model object
-#' @seealso \code{\link{getTimeUnit}}
-#' @family model property functions
-#' @export
-setVolumeUnit <- function(unit, model = getCurrentModel()) {
-  c_datamodel <- assert_datamodel(model)
-  assert_that(is.string(unit))
-  
-  c_unit <- grab_msg(CUnit(unit))
-  c_unit$buildExpression()
-  unit <- c_unit$getExpression()
-  accepted <- c_unit$isUnitType("volume")
-  
-  assert_that(accepted, msg = paste0(unit, " is not a valid volume unit."))
-  
-  assert_that(
-    grab_msg(c_datamodel$getModel()$setVolumeUnitFromString(unit)),
-    msg = "Setting volume unit failed."
   )
   
   invisible()
@@ -132,7 +91,7 @@ setVolumeUnit <- function(unit, model = getCurrentModel()) {
 getQuantityUnit <- function(model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
-  c_datamodel$getModel()$getQuantityUnitName()
+  c_datamodel$getModel()$getQuantityUnit()
 }
 
 #' Set the unit of quantity
@@ -151,9 +110,12 @@ setQuantityUnit <- function(unit, model = getCurrentModel()) {
   c_unit <- grab_msg(CUnit(unit))
   c_unit$buildExpression()
   unit <- c_unit$getExpression()
-  accepted <- c_unit$isUnitType("quantity")
   
-  assert_that(accepted, msg = paste0(unit, " is not a valid quantity unit."))
+  assert_that(
+    # type quantity needs an extra check because quanitity only works for "1" and "#".
+    c_unit$isUnitType("quantity") || c_unit$isEquivalent(CUnit("mol")),
+    msg = paste0(unit, " is not a valid quantity unit.")
+  )
   
   assert_that(
     grab_msg(c_datamodel$getModel()$setQuantityUnitFromString(unit)),
@@ -163,6 +125,140 @@ setQuantityUnit <- function(unit, model = getCurrentModel()) {
   invisible()
 }
 
+#' Get the unit of volume
+#'
+#' \code{getVolumeUnit} gets the unit used for volume.
+#'
+#' @param model a model object
+#' @return unit of volume
+#' @seealso \code{\link{setVolumeUnit}}
+#' @family model property functions
+#' @export
+getVolumeUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_datamodel$getModel()$getVolumeUnit()
+}
+
+#' Set the unit of volume
+#'
+#' \code{setVolumeUnit} sets the unit used for volume.
+#'
+#' @param unit string
+#' @param model a model object
+#' @seealso \code{\link{getVolumeUnit}}
+#' @family model property functions
+#' @export
+setVolumeUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.string(unit))
+  
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  
+  assert_that(
+    c_unit$isUnitType("volume"),
+    msg = paste0(unit, " is not a valid volume unit.")
+  )
+  
+  assert_that(
+    grab_msg(c_datamodel$getModel()$setVolumeUnitFromString(unit)),
+    msg = "Setting volume unit failed."
+  )
+  
+  invisible()
+}
+
+#' Get the unit of area
+#'
+#' \code{getAreaUnit} gets the unit used for area.
+#'
+#' @param model a model object
+#' @return unit of area
+#' @seealso \code{\link{setAreaUnit}}
+#' @family model property functions
+#' @export
+getAreaUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_datamodel$getModel()$getAreaUnit()
+}
+
+#' Set the unit of area
+#'
+#' \code{setAreaUnit} sets the unit used for area.
+#'
+#' @param unit string
+#' @param model a model object
+#' @seealso \code{\link{getAreaUnit}}
+#' @family model property functions
+#' @export
+setAreaUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.string(unit))
+  
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  
+  assert_that(
+    c_unit$isUnitType("area"),
+    msg = paste0(unit, " is not a valid area unit.")
+  )
+  
+  assert_that(
+    grab_msg(c_datamodel$getModel()$setAreaUnitFromString(unit)),
+    msg = "Setting area unit failed."
+  )
+  
+  invisible()
+}
+
+#' Get the unit of length
+#'
+#' \code{getLengthUnit} gets the unit used for length.
+#'
+#' @param model a model object
+#' @return unit of length
+#' @seealso \code{\link{setLengthUnit}}
+#' @family model property functions
+#' @export
+getLengthUnit <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_datamodel$getModel()$getLengthUnit()
+}
+
+#' Set the unit of length
+#'
+#' \code{setLengthUnit} sets the unit used for length.
+#'
+#' @param unit string
+#' @param model a model object
+#' @seealso \code{\link{getLengthUnit}}
+#' @family model property functions
+#' @export
+setLengthUnit <- function(unit, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(is.string(unit))
+  
+  c_unit <- grab_msg(CUnit(unit))
+  c_unit$buildExpression()
+  unit <- c_unit$getExpression()
+  
+  assert_that(
+    c_unit$isUnitType("length"),
+    msg = paste0(unit, " is not a valid length unit.")
+  )
+  
+  assert_that(
+    grab_msg(c_datamodel$getModel()$setLengthUnitFromString(unit)),
+    msg = "Setting length unit failed."
+  )
+  
+  invisible()
+}
 
 #' Get the model's inital time
 #'
