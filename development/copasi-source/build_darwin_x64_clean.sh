@@ -2,6 +2,9 @@
 set -e
 set -x
 
+echo "===== Adding homebrew QT to PATH"
+export PATH="/usr/local/opt/qt/bin:$PATH"
+
 cd copasi-dependencies/
 echo "===== Deleting old dependencies build"
 rm -rf tmp_darwin_x64/ bin_darwin_x64/

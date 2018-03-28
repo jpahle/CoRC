@@ -73,14 +73,14 @@ Instructions build on top of already compiled R bindings.
 Cosider using homebrew for macOS intall qt5:
 
 ```{bash, eval=FALSE}
-brew install qt5
+brew install qt
 ```
 
 Build dependencies:
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/copasi-dependencies/
-export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
+export PATH="/usr/local/opt/qt/bin:$PATH"
 BUILD_DIR=${PWD}/tmp_darwin_x64 \
 	INSTALL_DIR=${PWD}/bin_darwin_x64 \
   ./createOSX-qt5.sh
@@ -90,8 +90,8 @@ cd ../../../
 Build GUI:
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/build_copasi_r_binding/
-export Qt5_Dir=/usr/local/opt/qt/lib/cmake/Qt5
+cd development/copasi-source/corc_darwin_x64/
+export PATH="/usr/local/opt/qt/bin:$PATH"
 cmake \
   -DBUILD_GUI=ON \
   -DSELECT_QT=Qt5 \
