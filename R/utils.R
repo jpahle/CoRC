@@ -3,6 +3,20 @@ hasName <- function (x, name) {
   match(name, names(x), nomatch = 0L) > 0L
 }
 
+# like is.na but ignores NaN
+is_pure_na <- function(x) {
+  is.na(x) & !is.nan(x)
+}
+
+# like noNA but ignores NaN
+noPureNA <- function(x) {
+  !(any(is_pure_na(x)))
+}
+on_failure(noPureNA) <- function(call, env) {
+  n <- sum(is_pure_na(eval(call$x, env)))
+  paste0(deparse(call$x), " contains ", n, " missing values")
+}
+
 # Format function for the CDataModel class which is used as a basis for the print method
 #' @include swig_wrapper.R
 #' @export

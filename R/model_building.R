@@ -20,10 +20,10 @@ newSpecies <- function(name, compartment = NULL, type = c("reactions", "fixed", 
   assert_that(
     is.string(name),
     is.null(compartment)           || is.string(compartment),
-    is.null(initial_concentration) || is.number(initial_concentration),
-    is.null(initial_number)        || is.number(initial_number),
-    is.null(initial_expression)    || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
-    is.null(expression)            || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
+    is.null(initial_concentration) || is.number(initial_concentration) && noPureNA(initial_concentration),
+    is.null(initial_number)        || is.number(initial_number)        && noPureNA(initial_number),
+    is.null(initial_expression)    || is.scalar(initial_expression)    && is.cexpression(initial_expression) && noNA(initial_expression),
+    is.null(expression)            || is.scalar(expression)            && is.cexpression(expression)         && noNA(expression)
   )
   
   # .__E___CModelEntity__Status has other weird entries
@@ -143,7 +143,7 @@ newGlobalQuantity <- function(name, type = c("fixed", "assignment", "ode"), init
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.null(initial_value)      || is.number(initial_value),
+    is.null(initial_value)      || is.number(initial_value)      && noPureNA(initial_value),
     is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
     is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
   )
@@ -242,7 +242,7 @@ newCompartment <- function(name, type = c("fixed", "assignment", "ode"), initial
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(name),
-    is.null(initial_size)       || is.number(initial_size),
+    is.null(initial_size)       || is.number(initial_size)       && noPureNA(initial_size),
     is.null(initial_expression) || is.scalar(initial_expression) && is.cexpression(initial_expression) && noNA(initial_expression),
     is.null(expression)         || is.scalar(expression)         && is.cexpression(expression)         && noNA(expression)
   )
