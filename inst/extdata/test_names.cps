@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- generated with COPASI 4.22 (Build 170) (http://www.copasi.org) at 2017-11-28 15:11:04 UTC -->
+<!-- generated with COPASI 4.23 (Build 178) (http://www.copasi.org) at 2018-03-28 14:39:37 UTC -->
 <?oxygen RNGSchema="http://www.copasi.org/static/schema/CopasiML.rng" type="xml"?>
-<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="22" versionDevel="170" copasiSourcesModified="0">
+<COPASI xmlns="http://www.copasi.org/static/schema" versionMajor="4" versionMinor="23" versionDevel="178" copasiSourcesModified="0">
   <ListOfFunctions>
     <Function key="Function_6" name="Constant flux (irreversible)" type="PreDefined" reversible="false">
       <Expression>
@@ -31,8 +31,8 @@ Reaction scheme where the products are created from the reactants and the change
         k1*PRODUCT&lt;substrate_i>
       </Expression>
       <ListOfParameterDescriptions>
-        <ParameterDescription key="FunctionParameter_81" name="k1" order="0" role="constant"/>
-        <ParameterDescription key="FunctionParameter_79" name="substrate" order="1" role="substrate"/>
+        <ParameterDescription key="FunctionParameter_80" name="k1" order="0" role="constant"/>
+        <ParameterDescription key="FunctionParameter_81" name="substrate" order="1" role="substrate"/>
       </ListOfParameterDescriptions>
     </Function>
   </ListOfFunctions>
@@ -52,19 +52,47 @@ Reaction scheme where the products are created from the reactants and the change
 
     </MiriamAnnotation>
     <ListOfCompartments>
-      <Compartment key="Compartment_0" name="Ca" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_0" name="Ca" simulationType="fixed" dimensionality="3" addNoise="false">
+        <MiriamAnnotation>
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Compartment_0">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2018-03-28T16:38:25Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+
+        </MiriamAnnotation>
       </Compartment>
-      <Compartment key="Compartment_1" name="inside" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_1" name="inside" simulationType="fixed" dimensionality="3" addNoise="false">
       </Compartment>
-      <Compartment key="Compartment_2" name="Ca1" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_2" name="Ca1" simulationType="fixed" dimensionality="2" addNoise="false">
+        <MiriamAnnotation>
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#Compartment_2">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2018-03-28T16:37:21Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+
+        </MiriamAnnotation>
       </Compartment>
-      <Compartment key="Compartment_3" name="1" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_3" name="1" simulationType="fixed" dimensionality="3" addNoise="false">
       </Compartment>
-      <Compartment key="Compartment_4" name="2.5" simulationType="fixed" dimensionality="3">
+      <Compartment key="Compartment_4" name="2.5" simulationType="fixed" dimensionality="3" addNoise="false">
       </Compartment>
     </ListOfCompartments>
     <ListOfMetabolites>
-      <Metabolite key="Metabolite_0" name="Ca" simulationType="reactions" compartment="Compartment_0">
+      <Metabolite key="Metabolite_0" name="Ca" simulationType="reactions" compartment="Compartment_0" addNoise="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_0">
@@ -77,7 +105,7 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
       </Metabolite>
-      <Metabolite key="Metabolite_1" name="Ca" simulationType="reactions" compartment="Compartment_1">
+      <Metabolite key="Metabolite_1" name="Ca" simulationType="reactions" compartment="Compartment_1" addNoise="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Metabolite_1">
@@ -90,19 +118,21 @@ Reaction scheme where the products are created from the reactants and the change
 </rdf:RDF>
         </MiriamAnnotation>
       </Metabolite>
-      <Metabolite key="Metabolite_2" name="1" simulationType="reactions" compartment="Compartment_0">
+      <Metabolite key="Metabolite_2" name="1" simulationType="reactions" compartment="Compartment_0" addNoise="false">
       </Metabolite>
-      <Metabolite key="Metabolite_3" name="2.5" simulationType="reactions" compartment="Compartment_0">
+      <Metabolite key="Metabolite_3" name="2.5" simulationType="reactions" compartment="Compartment_0" addNoise="false">
       </Metabolite>
-      <Metabolite key="Metabolite_4" name="Ca{}" simulationType="reactions" compartment="Compartment_0">
+      <Metabolite key="Metabolite_4" name="Ca{}" simulationType="reactions" compartment="Compartment_0" addNoise="false">
       </Metabolite>
-      <Metabolite key="Metabolite_5" name="Ca1" simulationType="reactions" compartment="Compartment_0">
+      <Metabolite key="Metabolite_5" name="Ca1" simulationType="reactions" compartment="Compartment_0" addNoise="false">
       </Metabolite>
     </ListOfMetabolites>
     <ListOfModelValues>
-      <ModelValue key="ModelValue_0" name="Ca" simulationType="fixed">
+      <ModelValue key="ModelValue_0" name="Ca" simulationType="fixed" addNoise="false">
         <MiriamAnnotation>
-<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#ModelValue_0">
     <dcterms:created>
       <rdf:Description>
@@ -111,17 +141,35 @@ Reaction scheme where the products are created from the reactants and the change
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
+
+        </MiriamAnnotation>
+        <Unit>
+          m^3
+        </Unit>
+      </ModelValue>
+      <ModelValue key="ModelValue_1" name="1" simulationType="fixed" addNoise="false">
+        <MiriamAnnotation>
+<rdf:RDF
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="#ModelValue_1">
+    <dcterms:created>
+      <rdf:Description>
+        <dcterms:W3CDTF>2018-03-28T16:39:34Z</dcterms:W3CDTF>
+      </rdf:Description>
+    </dcterms:created>
+  </rdf:Description>
+</rdf:RDF>
+
         </MiriamAnnotation>
       </ModelValue>
-      <ModelValue key="ModelValue_1" name="1" simulationType="fixed">
+      <ModelValue key="ModelValue_2" name="2.5" simulationType="fixed" addNoise="false">
       </ModelValue>
-      <ModelValue key="ModelValue_2" name="2.5" simulationType="fixed">
-      </ModelValue>
-      <ModelValue key="ModelValue_3" name="Ca1" simulationType="fixed">
+      <ModelValue key="ModelValue_3" name="Ca1" simulationType="fixed" addNoise="false">
       </ModelValue>
     </ListOfModelValues>
     <ListOfReactions>
-      <Reaction key="Reaction_0" name="Ca{inside} -> Ca" reversible="false" fast="false">
+      <Reaction key="Reaction_0" name="Ca{inside} -> Ca" reversible="false" fast="false" addNoise="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_0">
@@ -140,20 +188,20 @@ Reaction scheme where the products are created from the reactants and the change
           <Product metabolite="Metabolite_0" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_5005" name="k1" value="1"/>
+          <Constant key="Parameter_5006" name="k1" value="1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca]">
           <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_81">
+            <CallParameter functionParameter="FunctionParameter_80">
               <SourceParameter reference="ModelValue_0"/>
             </CallParameter>
-            <CallParameter functionParameter="FunctionParameter_79">
+            <CallParameter functionParameter="FunctionParameter_81">
               <SourceParameter reference="Metabolite_1"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
       </Reaction>
-      <Reaction key="Reaction_1" name="-> Ca{inside}" reversible="false" fast="false">
+      <Reaction key="Reaction_1" name="-> Ca{inside}" reversible="false" fast="false" addNoise="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_1">
@@ -169,17 +217,17 @@ Reaction scheme where the products are created from the reactants and the change
           <Product metabolite="Metabolite_1" stoichiometry="1"/>
         </ListOfProducts>
         <ListOfConstants>
-          <Constant key="Parameter_5004" name="v" value="0.1"/>
+          <Constant key="Parameter_5005" name="v" value="0.1"/>
         </ListOfConstants>
         <KineticLaw function="Function_6" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside]">
           <ListOfCallParameters>
             <CallParameter functionParameter="FunctionParameter_49">
-              <SourceParameter reference="Parameter_5004"/>
+              <SourceParameter reference="Parameter_5005"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
       </Reaction>
-      <Reaction key="Reaction_2" name="Ca" reversible="false" fast="false">
+      <Reaction key="Reaction_2" name="Ca" reversible="false" fast="false" addNoise="false">
         <MiriamAnnotation>
 <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Reaction_2">
@@ -195,24 +243,24 @@ Reaction scheme where the products are created from the reactants and the change
           <Substrate metabolite="Metabolite_0" stoichiometry="1"/>
         </ListOfSubstrates>
         <ListOfConstants>
-          <Constant key="Parameter_5003" name="k1" value="0.1"/>
+          <Constant key="Parameter_5004" name="k1" value="0.1"/>
         </ListOfConstants>
         <KineticLaw function="Function_13" unitType="Default" scalingCompartment="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca]">
           <ListOfCallParameters>
-            <CallParameter functionParameter="FunctionParameter_81">
-              <SourceParameter reference="Parameter_5003"/>
+            <CallParameter functionParameter="FunctionParameter_80">
+              <SourceParameter reference="Parameter_5004"/>
             </CallParameter>
-            <CallParameter functionParameter="FunctionParameter_79">
+            <CallParameter functionParameter="FunctionParameter_81">
               <SourceParameter reference="Metabolite_0"/>
             </CallParameter>
           </ListOfCallParameters>
         </KineticLaw>
       </Reaction>
-      <Reaction key="Reaction_3" name="1" reversible="false" fast="false">
+      <Reaction key="Reaction_3" name="1" reversible="false" fast="false" addNoise="false">
       </Reaction>
-      <Reaction key="Reaction_4" name="2.5" reversible="false" fast="false">
+      <Reaction key="Reaction_4" name="2.5" reversible="false" fast="false" addNoise="false">
       </Reaction>
-      <Reaction key="Reaction_5" name="Ca1" reversible="false" fast="false">
+      <Reaction key="Reaction_5" name="Ca1" reversible="false" fast="false" addNoise="false">
       </Reaction>
     </ListOfReactions>
     <ListOfEvents>
@@ -274,9 +322,7 @@ Reaction scheme where the products are created from the reactants and the change
       </Event>
       <Event key="Event_2" name="1" delayAssignment="true" fireAtInitialTime="0" persistentTrigger="1">
         <MiriamAnnotation>
-<rdf:RDF
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about="#Event_2">
     <dcterms:created>
       <rdf:Description>
@@ -285,7 +331,6 @@ Reaction scheme where the products are created from the reactants and the change
     </dcterms:created>
   </rdf:Description>
 </rdf:RDF>
-
         </MiriamAnnotation>
         <TriggerExpression>
           FALSE
@@ -466,6 +511,7 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="Number of Iterations" type="unsignedInteger" value="100000"/>
         <Parameter name="Random Number Generator" type="unsignedInteger" value="1"/>
         <Parameter name="Seed" type="unsignedInteger" value="0"/>
+        <Parameter name="#LogVerbosity" type="unsignedInteger" value="0"/>
       </Method>
     </Task>
     <Task key="Task_19" name="Parameter Estimation" type="parameterFitting" scheduled="false" updateModel="false">
@@ -484,8 +530,8 @@ Reaction scheme where the products are created from the reactants and the change
         <ParameterGroup name="Experiment Set">
         </ParameterGroup>
         <ParameterGroup name="Validation Set">
-          <Parameter name="Threshold" type="unsignedInteger" value="5"/>
           <Parameter name="Weight" type="unsignedFloat" value="1"/>
+          <Parameter name="Threshold" type="unsignedInteger" value="5"/>
         </ParameterGroup>
       </Problem>
       <Method name="Evolutionary Programming" type="EvolutionaryProgram">
@@ -493,6 +539,7 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="Population Size" type="unsignedInteger" value="20"/>
         <Parameter name="Random Number Generator" type="unsignedInteger" value="1"/>
         <Parameter name="Seed" type="unsignedInteger" value="0"/>
+        <Parameter name="#LogVerbosity" type="unsignedInteger" value="0"/>
       </Method>
     </Task>
     <Task key="Task_20" name="Metabolic Control Analysis" type="metabolicControlAnalysis" scheduled="false" updateModel="false">
@@ -734,29 +781,29 @@ Reaction scheme where the products are created from the reactants and the change
     </Report>
   </ListOfReports>
   <ListOfPlots>
-    <PlotSpecification name="Concentrations, Volumes, and Global Quantity Values" type="Plot2D" active="1">
+    <PlotSpecification name="Concentrations, Volumes, and Global Quantity Values" type="Plot2D" active="1" taskTypes="">
       <Parameter name="log X" type="bool" value="0"/>
       <Parameter name="log Y" type="bool" value="0"/>
       <ListOfPlotItems>
         <PlotItem name="[Ca]" type="Curve2D">
-          <Parameter name="Color" type="string" value="auto"/>
-          <Parameter name="Line subtype" type="unsignedInteger" value="0"/>
           <Parameter name="Line type" type="unsignedInteger" value="0"/>
+          <Parameter name="Line subtype" type="unsignedInteger" value="0"/>
           <Parameter name="Line width" type="unsignedFloat" value="1"/>
-          <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
+          <Parameter name="Color" type="string" value="auto"/>
+          <Parameter name="Recording Activity" type="string" value="during"/>
           <ListOfChannels>
             <ChannelSpec cn="CN=Root,Model=Simple test with non-unique object names.,Reference=Time"/>
             <ChannelSpec cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca],Reference=Concentration"/>
           </ListOfChannels>
         </PlotItem>
         <PlotItem name="[Ca{inside}]" type="Curve2D">
-          <Parameter name="Color" type="string" value="auto"/>
-          <Parameter name="Line subtype" type="unsignedInteger" value="0"/>
           <Parameter name="Line type" type="unsignedInteger" value="0"/>
+          <Parameter name="Line subtype" type="unsignedInteger" value="0"/>
           <Parameter name="Line width" type="unsignedFloat" value="1"/>
-          <Parameter name="Recording Activity" type="string" value="during"/>
           <Parameter name="Symbol subtype" type="unsignedInteger" value="0"/>
+          <Parameter name="Color" type="string" value="auto"/>
+          <Parameter name="Recording Activity" type="string" value="during"/>
           <ListOfChannels>
             <ChannelSpec cn="CN=Root,Model=Simple test with non-unique object names.,Reference=Time"/>
             <ChannelSpec cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside],Vector=Metabolites[Ca],Reference=Concentration"/>
@@ -776,6 +823,26 @@ Reaction scheme where the products are created from the reactants and the change
     <UnitDefinition key="Unit_2" name="second" symbol="s">
       <Expression>
         s
+      </Expression>
+    </UnitDefinition>
+    <UnitDefinition key="Unit_6" name="Avogadro" symbol="Avogadro">
+      <Expression>
+        Avogadro
+      </Expression>
+    </UnitDefinition>
+    <UnitDefinition key="Unit_8" name="item" symbol="#">
+      <Expression>
+        #
+      </Expression>
+    </UnitDefinition>
+    <UnitDefinition key="Unit_17" name="liter" symbol="l">
+      <Expression>
+        0.001*m^3
+      </Expression>
+    </UnitDefinition>
+    <UnitDefinition key="Unit_20" name="mole" symbol="mol">
+      <Expression>
+        Avogadro*#
       </Expression>
     </UnitDefinition>
   </ListOfUnitDefinitions>
