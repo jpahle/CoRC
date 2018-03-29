@@ -7,13 +7,13 @@ RUN yum install -y \
 	&& yum clean all
 
 # install recent cmake
-RUN curl -L https://cmake.org/files/v3.10/cmake-3.10.2.tar.gz | tar -xz \
-	&& cd cmake-3.10.2/ \
+RUN curl -L https://cmake.org/files/v3.11/cmake-3.11.1.tar.gz | tar -xz \
+	&& cd cmake-3.11.1/ \
 	&& ./bootstrap \
 	&& make \
 	&& make install \
 	&& cd ../ \
-	&& rm -r cmake-3.10.2/
+	&& rm -r cmake-3.11.1/
 
 # install recent swig
 # RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
