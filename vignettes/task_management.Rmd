@@ -1,7 +1,6 @@
 ---
 title: "Managing Tasks"
 author: "Jonas Förster & Jürgen Pahle"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Managing Tasks}
