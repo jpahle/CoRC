@@ -23,7 +23,7 @@ runTC(duration = NULL, dt = NULL, intervals = NULL,
 \item{dt}{The time course output step size, as number.}
 
 \item{intervals}{The time course step count, as count.
-Overwrites `dt` in case of conflict.}
+Overwrites \code{dt} in case of conflict.}
 
 \item{suppress_output_before}{Whether to suppress before a certain time point, as number.}
 

@@ -4,7 +4,7 @@
 # Read arbitrary CVectors
 # Sometimes R tries to create classes like _p_CVectorT_CObjectInterface_const_p_t which it has never defined.
 # This functions skips those vectors classes and gives the contents as list.
-# @param self slot "ref" of the object which the method is called on
+# @param self object which the method is called on
 # @param fun symbol of the function that gives a bad vector
 # @param class name or symbol for the class that is forced on all list members
 swigfix_resolve_obj_cvector <- function(self, fun, class) {
@@ -15,7 +15,7 @@ swigfix_resolve_obj_cvector <- function(self, fun, class) {
   vector <- .Call(fun, self@ref, FALSE, PACKAGE='COPASI')
   # args: self@ref, bool
   vectorsize <- .Call('R_swig_ObjectVectorCore_size', vector, FALSE, PACKAGE='COPASI')
-  
+
   seq_len_0(vectorsize) %>%
     map(~ {
       new(

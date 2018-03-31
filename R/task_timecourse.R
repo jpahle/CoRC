@@ -5,7 +5,7 @@
 #' @param duration The time course duration, as number.
 #' @param dt The time course output step size, as number.
 #' @param intervals The time course step count, as count.
-#' Overwrites `dt` in case of conflict.
+#' Overwrites \code{dt} in case of conflict.
 #' @param suppress_output_before Whether to suppress before a certain time point, as number.
 #' @param output_events Whether to output events as additional steps, as flag.
 #' @param save_result_in_memory Whether to generate an output data frame for the time course, as flag.

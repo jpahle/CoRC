@@ -90,14 +90,14 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     close_cl <- TRUE
     cl <- parallel::makeCluster(cl %||% parallel::detectCores())
   } else if (!inherits(cl, "cluster")) {
-    stop("Argument `cl` has to a number of threads or a parallel cluster as created with the parallel package.")
+    stop("Argument `cl` has to be a number of threads or a parallel cluster as created with the parallel package.")
   }
   
   if (c_problem$getExperimentSet()$getExperimentCount() != 0L) {
-    warnings("Experimental data present in COPASI Ignoring it for this task.")
+    warnings("Experimental data present in COPASI. Ignoring it for this task.")
   }
   if (c_problem$getCrossValidationSet()$getExperimentCount() != 0L) {
-    warnings("Cross-validation data present in COPASI Ignoring it for this task.")
+    warnings("Cross-validation data present in COPASI. Ignoring it for this task.")
   }
   
   # clean up model for the task

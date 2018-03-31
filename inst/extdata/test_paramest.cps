@@ -299,8 +299,6 @@ Reaction scheme where the products are created from the reactants and the change
         <Parameter name="Std. Deviation" type="unsignedFloat" value="9.9999999999999995e-007"/>
         <Parameter name="Random Number Generator" type="unsignedInteger" value="1"/>
         <Parameter name="Seed" type="unsignedInteger" value="0"/>
-        <Parameter name="#LogVerbosity" type="unsignedInteger" value="0"/>
-        <Parameter name="#LogDetail" type="unsignedInteger" value="2"/>
       </Method>
     </Task>
     <Task key="Task_19" name="Parameter Estimation" type="parameterFitting" scheduled="true" updateModel="false">
@@ -383,7 +381,6 @@ Reaction scheme where the products are created from the reactants and the change
       <Method name="Levenberg - Marquardt" type="LevenbergMarquardt">
         <Parameter name="Iteration Limit" type="unsignedInteger" value="2000"/>
         <Parameter name="Tolerance" type="float" value="9.9999999999999995e-007"/>
-        <Parameter name="#LogVerbosity" type="unsignedInteger" value="1"/>
       </Method>
     </Task>
     <Task key="Task_20" name="Metabolic Control Analysis" type="metabolicControlAnalysis" scheduled="false" updateModel="false">

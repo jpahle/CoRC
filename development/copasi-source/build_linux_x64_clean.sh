@@ -5,7 +5,7 @@ set -x
 cd copasi-dependencies/
 : ===== Deleting old dependencies build
 rm -rf tmp_linux_x64/ bin_linux_x64/
-: ===== Building dependencies# 
+: ===== Building dependencies
 BUILD_DIR=${PWD}/tmp_linux_x64 \
 	INSTALL_DIR=${PWD}/bin_linux_x64 \
 	./createLinux.sh

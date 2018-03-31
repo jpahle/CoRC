@@ -8,23 +8,23 @@ RUN yum install -y \
 
 # install recent cmake
 RUN curl -L https://cmake.org/files/v3.11/cmake-3.11.1.tar.gz | tar -xz \
-	&& cd cmake-3.11.1/ \
+	&& cd cmake-*/ \
 	&& ./bootstrap \
 	&& make \
 	&& make install \
 	&& cd ../ \
-	&& rm -r cmake-3.11.1/
+	&& rm -r cmake-*/
 
-# install recent swig
+# install swig 3.0.12
 # RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
 # get from github instead for reliability
 RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \
-	&& cd swig-rel-3.0.12/ \
+	&& cd swig-rel-*/ \
 	&& ./autogen.sh \
 	&& ./configure --disable-dependency-tracking \
 	&& make \
 	&& make install \
 	&& cd ../ \
-	&& rm -r swig-rel-3.0.12/
+	&& rm -r swig-rel-*/
 
 WORKDIR /work
