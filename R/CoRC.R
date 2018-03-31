@@ -29,9 +29,6 @@
 # Output flag for tasks
 OUTPUTFLAG <- 119L
 
-#' @export
-COPASI_VERSION <- "https://github.com/copasi/COPASI/commit/4a560f42104e7f08340ef829b68c98739722b0f3"
-
 COPASI_BIN_VERSION <- 12L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
@@ -214,6 +211,24 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     message(pkgname, ": Successfully loaded COPASI binaries.")
   
   invisible()
+}
+
+#' Get COPASI version numbers
+#'
+#' \code{getVersion} returns the current version numbers of the COPASI binaries.
+#' 
+#' @return Numeric vector consisting of the major version, minor version and build numbers.
+#' @export
+getVersion <- function() {
+  assert_binaries()
+  
+  c_version <- CVersion_VERSION()
+  
+  c(
+    major = c_version$getVersionMajor(),
+    minor = c_version$getVersionMinor(),
+    build = c_version$getVersionDevel()
+  )
 }
 
 # check if COPASI lib is loaded.

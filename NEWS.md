@@ -1,3 +1,7 @@
+# CoRC 0.2.1.9000
+
+* Add `getVersion()` for retrieving the version of the COPASI backend.
+
 # CoRC 0.2.1 (2018-03-01)
 
 * Breaking: Rename first argument of `newReaction()` from `scheme` to `reaction`.
