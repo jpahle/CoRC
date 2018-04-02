@@ -25,14 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
 <meta property="og:title" content="Run sigma point method — runSigmaPoint" />
 
 <meta property="og:description" content="runSigmaPoint runs parallel parameter estimations as dictated by the sigma point method and returns the results in a list." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -40,6 +40,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -55,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">CoRC</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">CoRC</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -108,6 +114,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -115,10 +122,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run sigma point method</h1>
+    <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/task_sigmapoint.R'><code>R/task_sigmapoint.R</code></a></small>
     </div>
 
     
@@ -131,7 +139,7 @@
 <span class='fu'>runSP</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>kappa</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>experiments</span>,
   <span class='kw'>mean_fit_as_basis</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -189,10 +197,10 @@ Given as flag.</p></td>
 
     <p>WARNING: TODO: This implementation of the sigma point method is almost completely untested.</p>
 <p>Uses the current parameter estimation settings as defined in the model, with the exception of experiments.</p>
-<p>As described in:
-Schenkendorf, R., Kremling, A., &amp; Mangold, M. (2009).
-Optimal experimental design with the sigma point method.
-IET Systems Biology, 3(1), 10–23.
+<p>As described in:<br />
+Schenkendorf, R., Kremling, A., &amp; Mangold, M. (2009).<br />
+Optimal experimental design with the sigma point method.<br />
+IET Systems Biology, 3(1), 10–23.<br />
 https://doi.org/10.1049/iet-syb:20080094</p>
     
 
@@ -222,5 +230,8 @@ https://doi.org/10.1049/iet-syb:20080094</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

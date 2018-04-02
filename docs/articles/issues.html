@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -28,8 +28,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">CoRC</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">CoRC</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -89,17 +93,19 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Issues</h1>
                         <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
             
-            <h4 class="date">2018-02-28</h4>
-          </div>
+            <h4 class="date">2018-04-02</h4>
+      
+      <small>Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/issues.Rmd"><code>vignettes/issues.Rmd</code></a></small>
+
+    </div>
 
     
     
-<div class="contents">
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
@@ -207,12 +213,11 @@ fitproblem &lt;-<span class="st"> </span><span class="kw">as</span>(datamodel<sp
 filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span class="kw">getExperimentSet</span>()<span class="op">$</span><span class="kw">getFileNames</span>()</code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">filenames
-<span class="co">#&gt; [1] "/private/var/folders/1x/3760hf7d4fd85qf73rqhg8t80000gp/T/RtmpcNzbVD/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/private/var/folders/1x/3760hf7d4fd85qf73rqhg8t80000gp/T/RtmpRD6B3b/test_paramest_exp_data.txt"</span>
 <span class="kw">file.exists</span>(filenames)
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/unloadModel.html">unloadModel</a></span>()
 <span class="kw">invisible</span>(<span class="kw">file.remove</span>(file))</code></pre></div>
-</div>
 </div>
   </div>
 
@@ -242,6 +247,8 @@ filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

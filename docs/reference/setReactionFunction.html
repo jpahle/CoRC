@@ -25,14 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
 <meta property="og:title" content="Set a reaction function — setReactionFunction" />
 
 <meta property="og:description" content="Set a reaction function" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -40,6 +40,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -55,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">CoRC</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">CoRC</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -108,6 +114,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -115,10 +122,11 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Set a reaction function</h1>
+    <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/entity_accessors.R'><code>R/entity_accessors.R</code></a></small>
     </div>
 
     
@@ -127,7 +135,7 @@
 
     <pre class="usage"><span class='fu'>setReactionFunction</span>(<span class='no'>key</span>, <span class='no'>fun</span>, <span class='kw'>mappings</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -154,7 +162,7 @@ Values are either entity keys valid for the specific type of parameter or a nume
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code></p>
+    <div class='dont-index'><p><code><a href='getValidReactionFunctions.html'>getValidReactionFunctions</a></code></p>
 <p>Other reaction functions: <code><a href='clearCustomKineticFunctions.html'>clearCustomKineticFunctions</a></code>,
   <code><a href='deleteKineticFunction.html'>deleteKineticFunction</a></code>,
   <code><a href='deleteReaction.html'>deleteReaction</a></code>,
@@ -168,7 +176,7 @@ Values are either entity keys valid for the specific type of parameter or a nume
   <code><a href='newKineticFunction.html'>newKineticFunction</a></code>,
   <code><a href='newReaction.html'>newReaction</a></code>, <code><a href='setParameters.html'>setParameters</a></code>,
   <code><a href='setReactionMappings.html'>setReactionMappings</a></code>,
-  <code><a href='setReactions.html'>setReactions</a></code></p>
+  <code><a href='setReactions.html'>setReactions</a></code></p></div>
     
 
   </div>
@@ -195,5 +203,8 @@ Values are either entity keys valid for the specific type of parameter or a nume
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
