@@ -1,6 +1,6 @@
 pandoc: 1.19.2.1
 pkgdown: 0.1.0.9000
-pkgdown_sha: 21b9e469e4bd7f443bf0bbf194d47760c174463e
+pkgdown_sha: 7b4cc583696f7a46812880d0d2152cb3cf442f4b
 articles:
   CoRC: CoRC.html
   entity_management: entity_management.html
@@ -8,4 +8,7 @@ articles:
   issues: issues.html
   model_building: model_building.html
   task_management: task_management.html
+urls:
+  reference: https://jpahle.github.io/CoRC/reference
+  article: https://jpahle.github.io/CoRC/articles
 

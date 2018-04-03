@@ -1,7 +1,7 @@
 {
   "index_name": "CoRC",
-  "start_urls": {},
-  "sitemap_urls": "/sitemap.xml",
+  "start_urls": "https://jpahle.github.io/CoRC",
+  "sitemap_urls": "https://jpahle.github.io/CoRC/sitemap.xml",
   "selectors": {
     "lvl0": ".contents h1",
     "lvl1": ".contents h2",
