@@ -17,6 +17,7 @@ test_that("setTimeUnit success", {
   setTimeUnit("m/m * ps")
   expect_identical(getTimeUnit(), "ps")
   
+  expect_error(expect_warning(setTimeUnit("mol")))
   expect_error(expect_warning(setTimeUnit("failure")))
 })
 
@@ -33,6 +34,7 @@ test_that("setQuantityUnit success", {
   setQuantityUnit("m/m * pmol")
   expect_identical(getQuantityUnit(), "pmol")
   
+  expect_error(expect_warning(setQuantityUnit("s")))
   expect_error(expect_warning(setQuantityUnit("failure")))
 })
 
@@ -52,6 +54,7 @@ test_that("setVolumeUnit success", {
   setVolumeUnit("m/m * pm^3")
   expect_identical(charToRaw(getVolumeUnit()), charToRaw("pm³"))
   
+  expect_error(expect_warning(setVolumeUnit("m")))
   expect_error(expect_warning(setVolumeUnit("failure")))
 })
 
@@ -68,6 +71,7 @@ test_that("setAreaUnit success", {
   setAreaUnit("m/m * pm^2")
   expect_identical(charToRaw(getAreaUnit()), charToRaw("pm²"))
   
+  expect_error(expect_warning(setAreaUnit("m")))
   expect_error(expect_warning(setAreaUnit("failure")))
 })
 
@@ -84,6 +88,7 @@ test_that("setLengthUnit success", {
   setLengthUnit("m/m * pm")
   expect_identical(getLengthUnit(), "pm")
   
+  expect_error(expect_warning(setLengthUnit("m²")))
   expect_error(expect_warning(setLengthUnit("failure")))
 })
 

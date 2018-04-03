@@ -113,7 +113,7 @@ setQuantityUnit <- function(unit, model = getCurrentModel()) {
   
   assert_that(
     # type quantity needs an extra check because quanitity only works for "1" and "#".
-    c_unit$isUnitType("quantity") || c_unit$isEquivalent(CUnit("mol")),
+    c_unit$isUnitType("quantity"),
     msg = paste0(unit, " is not a valid quantity unit.")
   )
   
