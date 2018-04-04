@@ -65,6 +65,7 @@ pkg_env$cl_loaded_dms <- list()
     libname <- .libPaths()
   
   backports::import(pkgname, c("anyNA", "dir.exists", "lengths"))
+  backports::import(pkgname, "hasName", force = TRUE)
     
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO

@@ -1,7 +1,5 @@
-# backport of utils::hasName because backports package is broken with that function
-hasName <- function (x, name) {
-  match(name, names(x), nomatch = 0L) > 0L
-}
+# stub for backports
+hasName <- function (...) {}
 
 # like is.na but ignores NaN
 is_pure_na <- function(x) {
