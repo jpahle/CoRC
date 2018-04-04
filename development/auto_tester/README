@@ -1,9 +1,26 @@
-Use the auto tester to see if CoRC is still compatible with the latest COPASI sources.
+Use the auto tester containers to see if CoRC is still compatible with different COPASI sources and R versions.
 
-It uses a docker container with recent ubuntu, gcc and R.
+COPASI sources:
+    Uses docker containers with recent ubuntu, gcc and R.
+    Compiles COPASI from a specific branch and uses this as backend for the CoRC tests.
+    Should be a good indication on whether breaking (for CoRC) changes have been introduced in the branch.
+    Runs the testthat test set.
+    Also has a workflow for loading all biomodels packages in sequence and checking for errors.
 
-It compiles COPASI from the latest develop HEAD and uses this as backend for the CoRC test set.
-It should be a good indication on whether breaking (for CoRC) changes have been introduced in COPASI.
+    test_copasi_*.sh
 
-Run auto_tester.sh to use it.
-Run auto_tester_biomodels.sh to run the additional biomodels test.
+R-devel:
+    Uses the rocker/r-devel container.
+    Installs current CoRC master branch and downloads binaries.
+    Should be a good indication on whether the coming R version is still binary compatible.
+    Runs the testthat test set.
+
+    test_*_with_r_devel.sh
+
+R-var:
+    Uses a docker container with recent ubuntu and all relevant R releases in /opt.
+    Installs current state of CoRC (../../) and installs it with latest binaries in ../copasi-source/libs.
+    Allows for testing the current state with all relevant R releases.
+    Runs the testthat test set.
+
+    test_lib_with_r_var.sh

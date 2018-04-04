@@ -1,15 +1,14 @@
-FROM alpine
+FROM ubuntu:18.04
 
-RUN apk add --no-cache \
-	bash \
-	build-base \
-	cmake \
-	R \
-	R-dev \
-	swig
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+		build-essential \
+		cmake \
+		r-base-core \
+		swig \
+	&& rm -rf /var/lib/apt/lists/*
 
 # install some tedious dependencies early
-RUN R -e 'install.packages(c("remotes", "testthat", "purrr", "tidyr", "dplyr", "stringr"), repos = "https://cloud.r-project.org")'
+RUN R -e 'chooseCRANmirror(ind = 1); install.packages(c("remotes", "sessioninfo", "testthat", "purrr", "tidyr", "dplyr", "stringr"))'
 
 # make COPASI dependencies
 ADD https://github.com/copasi/copasi-dependencies/archive/master.tar.gz copasi-dependencies/

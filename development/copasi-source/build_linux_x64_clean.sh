@@ -26,6 +26,9 @@ cmake \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
+	-DR_INCLUDE_DIRS=/usr/local/lib64/R/include/ \
+	-DR_LIB=/usr/local/lib64/R/lib/libR.so \
+	-DR_INTERPRETER=/usr/local/bin/R \
 	../COPASI/
 : ===== Running Make
 make binding_r_lib

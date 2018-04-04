@@ -1,5 +1,5 @@
 # adapted from https://github.com/StefanScherer/dockerfiles-windows/tree/master/msbuild
-FROM microsoft/windowsservercore:10.0.14393.2068
+FROM microsoft/windowsservercore:10.0.14393.2125
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
@@ -41,6 +41,6 @@ RUN cd $env:ProgramFiles/R/R-*/bin/x64/ ; \
 SHELL ["cmd.exe", "/s", "/c", "C:\\entrypoint.bat"]
 
 WORKDIR /work
-    
+
 ENTRYPOINT ["C:\\entrypoint.bat"]
 CMD ["cmd"]
