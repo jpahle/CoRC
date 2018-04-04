@@ -7,7 +7,7 @@
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_param or list of copasi_param objects
+#' @param parameters copasi_parm or list of copasi_parm objects
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model A model object.
@@ -125,7 +125,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_param or list of copasi_param objects
+#' @param parameters copasi_parm or list of copasi_parm objects
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object

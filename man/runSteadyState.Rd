@@ -3,7 +3,7 @@
 \name{runSteadyState}
 \alias{runSteadyState}
 \alias{runSS}
-\title{Run to stready state}
+\title{Run to steady state}
 \usage{
 runSteadyState(calculate_jacobian = NULL, perform_stability_analysis = NULL,
   update_model = NULL, executable = NULL, method = NULL,

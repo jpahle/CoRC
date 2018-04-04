@@ -594,7 +594,7 @@ function_role_enum <-
 #' 
 #' Allowed values: ", rox_print_v(function_role_enum), ".")
 #' @param function_type Type of function to set, as string.
-#' Defines if the function is gerneral, reversible or irreversible.
+#' Defines if the function is general, reversible or irreversible.
 #' @return function key
 #' @family reaction functions
 #' @export

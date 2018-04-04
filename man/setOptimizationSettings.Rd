@@ -22,7 +22,7 @@ setOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 \item{subtask}{string
 
-Availables tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
+Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
 
 \item{randomize_start_values}{flag}
 
@@ -32,7 +32,7 @@ Availables tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization
 
 \item{executable}{flag}
 
-\item{parameters}{copasi_param or list of copasi_param objects}
+\item{parameters}{copasi_parm or list of copasi_parm objects}
 
 \item{method}{string or list
 

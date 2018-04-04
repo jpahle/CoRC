@@ -7,11 +7,11 @@
 getCopasi(path = NULL, force = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{path}{optional file path to COPASI binaries}
+\item{path}{Optionally, a file path to COPASI binaries, as string.}
 
-\item{force}{optional bool to force overwriting the binaries}
+\item{force}{Whether to force overwriting the binaries, as flag.}
 
-\item{quiet}{optional bool to silence messages}
+\item{quiet}{Whether to silence messages, as flag.}
 }
 \description{
 \code{getCopasi} automatically downloads binaries or retrieves them from given path.

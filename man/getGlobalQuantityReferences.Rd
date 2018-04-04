@@ -2,7 +2,7 @@
 % Please edit documentation in R/entity_accessors.R
 \name{getGlobalQuantityReferences}
 \alias{getGlobalQuantityReferences}
-\title{Get global quantitiy references}
+\title{Get global quantity references}
 \usage{
 getGlobalQuantityReferences(key = NULL, model = getCurrentModel())
 }

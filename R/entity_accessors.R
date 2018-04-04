@@ -334,7 +334,7 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
     transform_names()
 }
 
-#' Get global quantitiy references
+#' Get global quantity references
 #'
 #' \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.
 #'

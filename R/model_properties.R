@@ -81,7 +81,7 @@ setTimeUnit <- function(unit, model = getCurrentModel()) {
 
 #' Get the unit of quantity
 #'
-#' \code{getQuantityUnit} gets the unit used for quantitiy.
+#' \code{getQuantityUnit} gets the unit used for quantity.
 #'
 #' @param model a model object
 #' @return unit of quantity
@@ -260,7 +260,7 @@ setLengthUnit <- function(unit, model = getCurrentModel()) {
   invisible()
 }
 
-#' Get the model's inital time
+#' Get the model's initial time
 #'
 #' \code{getInitialTime} gets the initial time of the model.
 #'

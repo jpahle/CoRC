@@ -13,7 +13,7 @@ getQuantityUnit(model = getCurrentModel())
 unit of quantity
 }
 \description{
-\code{getQuantityUnit} gets the unit used for quantitiy.
+\code{getQuantityUnit} gets the unit used for quantity.
 }
 \seealso{
 \code{\link{setQuantityUnit}}

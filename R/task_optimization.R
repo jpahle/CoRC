@@ -11,7 +11,7 @@
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_param or list of copasi_param objects
+#' @param parameters copasi_parm or list of copasi_parm objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model A model object.
 #' @return A list of results.
@@ -113,12 +113,12 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #' @param maximize flag
 #' @eval paste0("@param subtask string
 #' 
-#' Availables tasks: ", rox_print_v(task_enum), ".")
+#' Available tasks: ", rox_print_v(task_enum), ".")
 #' @param randomize_start_values flag
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_param or list of copasi_param objects
+#' @param parameters copasi_parm or list of copasi_parm objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @family optimization

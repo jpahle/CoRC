@@ -1,4 +1,4 @@
-#' Run to stready state
+#' Run to steady state
 #'
 #' \code{runSteadyState} calculates the steady state and returns the results in a list.
 #'

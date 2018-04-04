@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_properties.R
 \name{getInitialTime}
 \alias{getInitialTime}
-\title{Get the model's inital time}
+\title{Get the model's initial time}
 \usage{
 getInitialTime(model = getCurrentModel())
 }

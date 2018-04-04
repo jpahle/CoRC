@@ -89,9 +89,9 @@ pkg_env$cl_loaded_dms <- list()
 #' 
 #' To install COPASI binaries, you need write access to the packages installation folder.
 #'
-#' @param path optional file path to COPASI binaries
-#' @param force optional bool to force overwriting the binaries
-#' @param quiet optional bool to silence messages
+#' @param path Optionally, a file path to COPASI binaries, as string.
+#' @param force Whether to force overwriting the binaries, as flag.
+#' @param quiet Whether to silence messages, as flag.
 #' @export
 getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   assert_that(

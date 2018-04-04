@@ -13,8 +13,8 @@
 #' This mechanism is also used by CoRC internally to ensure that functions like \code{\link{getSpecies}}
 #' return one row in the output for each key given as parameter.
 #' 
-#' Whereas the main functions generally won't help seperate an entity `a` from and entity `ab`, the
-#' `_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets peference
+#' Whereas the main functions generally won't help separate an entity `a` from and entity `ab`, the
+#' `_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets preference
 #' over the partial match with `ab`.
 #' 
 #' The matching mechanism can be tuned using a \code{\link{regex}} mechanism.
@@ -23,7 +23,7 @@
 #' Various references such as "Value" or "InitialConcentration" are available for some types of entities.
 #' 
 #' @name entity_finders
-#' @param key entity name framents
+#' @param key entity name fragments
 #' 
 #'   * main varieties: a string.
 #'   

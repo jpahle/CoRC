@@ -18,7 +18,7 @@ Defaults to 'parameter' for every parameter.
 Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time'.}
 
 \item{function_type}{Type of function to set, as string.
-Defines if the function is gerneral, reversible or irreversible.}
+Defines if the function is general, reversible or irreversible.}
 }
 \value{
 function key
