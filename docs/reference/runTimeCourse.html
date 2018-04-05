@@ -62,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     <div class="page-header">
     <h1>Run a time course</h1>
     <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/task_timecourse.R'><code>R/task_timecourse.R</code></a></small>
-    <p class="hidden name"><code>runTimeCourse.Rd</code></p>
+    <div class="hidden name"><code>runTimeCourse.Rd</code></div>
     </div>
 
     
@@ -169,7 +169,7 @@
     <tr>
       <th>intervals</th>
       <td><p>The time course step count, as count.
-Overwrites `dt` in case of conflict.</p></td>
+Overwrites <code>dt</code> in case of conflict.</p></td>
     </tr>
     <tr>
       <th>suppress_output_before</th>
@@ -215,6 +215,10 @@ Overwrites `dt` in case of conflict.</p></td>
 <li><p><code>$result_number</code> is a data frame containing time course output as particle numbers.</p></li>
 </ul><p><strong>Attention</strong>: Both result data frames will be empty if <code>save_result_in_memory</code> is set to <code>FALSE</code>.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The <a href='https://jpahle.github.io/CoRC/articles/task_management.html'>online article on managing tasks</a> provides some further context.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other time course: <code><a href='getTimeCourseSettings.html'>getTimeCourseSettings</a></code>,
@@ -228,6 +232,8 @@ Overwrites `dt` in case of conflict.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

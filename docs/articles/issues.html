@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@
             
       
       <small>Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/issues.Rmd"><code>vignettes/issues.Rmd</code></a></small>
-      <p class="hidden name"><code>issues.Rmd</code></p>
+      <div class="hidden name"><code>issues.Rmd</code></div>
 
     </div>
 
@@ -141,59 +141,6 @@
 <li>getwd() and copasi$getReferenceDirectory() are not in sync</li>
 <li>some S3 classes should have reconstruct functions (hadley/sloop)</li>
 </ul>
-</div>
-<div id="checking-validity-of-quantity-unit-doesnt-work" class="section level1">
-<h1 class="hasAnchor">
-<a href="#checking-validity-of-quantity-unit-doesnt-work" class="anchor"></a>Checking validity of quantity unit doesn’t work</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CUnit &lt;-<span class="st"> </span>CoRC<span class="op">:::</span>CUnit</code></pre></div>
-<p>The CUnit class can be used for testing if user specified input is valid</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms"</span>)
-s &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"ms * 1e3"</span>)
-mmol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol"</span>)
-mol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mmol * 1e3"</span>)
-mMol &lt;-<span class="st"> </span><span class="kw">CUnit</span>(<span class="st">"mMol"</span>)
-
-ms<span class="op">$</span><span class="kw">buildExpression</span>()
-s<span class="op">$</span><span class="kw">buildExpression</span>()
-mmol<span class="op">$</span><span class="kw">buildExpression</span>()
-mol<span class="op">$</span><span class="kw">buildExpression</span>()
-mMol<span class="op">$</span><span class="kw">buildExpression</span>()</code></pre></div>
-<p>CUnit$getExpression() shows what COPASI makes of the input.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms<span class="op">$</span><span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "ms"</span>
-s<span class="op">$</span><span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "1000*ms"</span>
-mmol<span class="op">$</span><span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "mmol"</span>
-mol<span class="op">$</span><span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "1000*mmol"</span>
-mMol<span class="op">$</span><span class="kw">getExpression</span>()
-<span class="co">#&gt; [1] "?"</span></code></pre></div>
-<p>CUnit$isUnitType(“&lt;type&gt;”) will return useful information on validity for all but “quantity”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ms<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] TRUE</span>
-
-s<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] TRUE</span>
-s<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-
-mmol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-
-mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"time"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"volume"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"area"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-mol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"length"</span>)
-<span class="co">#&gt; [1] FALSE</span>
-
-mMol<span class="op">$</span><span class="kw">isUnitType</span>(<span class="st">"quantity"</span>)
-<span class="co">#&gt; [1] FALSE</span></code></pre></div>
 </div>
 <div id="saving--cps-loses-experimental-data" class="section level1">
 <h1 class="hasAnchor">
@@ -234,7 +181,6 @@ filenames &lt;-<span class="st"> </span>fitproblem<span class="op">$</span><span
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#initial-setup">Initial Setup</a></li>
       <li><a href="#quicklist">Quicklist</a></li>
-      <li><a href="#checking-validity-of-quantity-unit-doesnt-work">Checking validity of quantity unit doesn’t work</a></li>
       <li><a href="#saving--cps-loses-experimental-data">Saving .cps loses experimental data</a></li>
       </ul>
 </div>

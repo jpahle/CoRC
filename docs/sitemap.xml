@@ -70,6 +70,9 @@
     <loc>https://jpahle.github.io/CoRC/reference/entity_finders.html</loc>
   </url>
   <url>
+    <loc>https://jpahle.github.io/CoRC/reference/getAreaUnit.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/reference/getCompartmentReferences.html</loc>
   </url>
   <url>
@@ -95,6 +98,9 @@
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/getInitialValue.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/reference/getLengthUnit.html</loc>
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/getLinearNoiseApproximationSettings.html</loc>
@@ -161,6 +167,9 @@
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/getValue.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/reference/getVersion.html</loc>
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/getVolumeUnit.html</loc>
@@ -241,6 +250,9 @@
     <loc>https://jpahle.github.io/CoRC/reference/saveSBMLToString.html</loc>
   </url>
   <url>
+    <loc>https://jpahle.github.io/CoRC/reference/setAreaUnit.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/reference/setCompartments.html</loc>
   </url>
   <url>
@@ -254,6 +266,9 @@
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/setInitialTime.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/reference/setLengthUnit.html</loc>
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/setLinearNoiseApproximationSettings.html</loc>

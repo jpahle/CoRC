@@ -64,7 +64,7 @@ They give a quick overview of available species, compartments, etc." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@ They give a quick overview of available species, compartments, etc." />
     <div class="page-header">
     <h1>Entity finders</h1>
     <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/entity_finders.R'><code>R/entity_finders.R</code></a></small>
-    <p class="hidden name"><code>entity_finders.Rd</code></p>
+    <div class="hidden name"><code>entity_finders.Rd</code></div>
     </div>
 
     
@@ -180,7 +180,7 @@ They give a quick overview of available species, compartments, etc.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>key</th>
-      <td><p>entity name framents</p>
+      <td><p>entity name fragments</p>
 <p>* main varieties: a string.</p>  
 <p>* `_strict` varieties: a character vector with each entry uniquely matching one entity.</p></td>
     </tr>
@@ -208,12 +208,13 @@ They give a quick overview of available species, compartments, etc.</p>
 This ensures that there are always as many identifiers returned as are given to the functions.
 This mechanism is also used by CoRC internally to ensure that functions like <code><a href='getSpecies.html'>getSpecies</a></code>
 return one row in the output for each key given as parameter.</p>
-<p>Whereas the main functions generally won't help seperate an entity `a` from and entity `ab`, the
-`_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets peference
+<p>Whereas the main functions generally won't help separate an entity `a` from and entity `ab`, the
+`_strict` varieties will accept a key "a" because it fully matches the entity `a`, which gets preference
 over the partial match with `ab`.</p>
 <p>The matching mechanism can be tuned using a <code><a href='regex.html'>regex</a></code> mechanism.</p>
 <p>The functions can also be used to find value references by giving the `reference` argument.
 Various references such as "Value" or "InitialConcentration" are available for some types of entities.</p>
+<p>The <a href='https://jpahle.github.io/CoRC/articles/entity_management.html'>online article on managing model entities</a> provides some further context.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
@@ -106,7 +106,7 @@
             
       
       <small>Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/model_building.Rmd"><code>vignettes/model_building.Rmd</code></a></small>
-      <p class="hidden name"><code>model_building.Rmd</code></p>
+      <div class="hidden name"><code>model_building.Rmd</code></div>
 
     </div>
 
@@ -133,11 +133,11 @@
 <span class="co">#&gt; [1] "(a = b)"</span>
 
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
-<span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;   key         name  compartment type    initial_concentrat… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartm… a     compartment reacti…                  1.        6.02e20</span>
-<span class="co">#&gt; 2 b{compartm… b     compartment reacti…                  1.        6.02e20</span>
+<span class="co">#&gt; # A tibble: 2 x 13</span>
+<span class="co">#&gt;   key      name  compartment type   unit  initial_concentr… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compa… a     compartment react… mmol…                1.        6.02e20</span>
+<span class="co">#&gt; 2 b{compa… b     compartment react… mmol…                1.        6.02e20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
@@ -180,16 +180,17 @@ subs_value
 <span class="co">#&gt; [1] "(a = b)"</span>
 
 <span class="kw"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;   key    name  type  initial_value value  rate initial_express… expression</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;     </span>
-<span class="co">#&gt; 1 Value… subs… fixed           10.   NaN    0. ""               ""</span>
+<span class="co">#&gt; # A tibble: 1 x 9</span>
+<span class="co">#&gt;   key       name    type  unit  initial_value value  rate initial_express…</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           </span>
+<span class="co">#&gt; 1 Values[s… substr… fixed ""              10.   NaN    0. ""              </span>
+<span class="co">#&gt; # ... with 1 more variable: expression &lt;chr&gt;</span>
 <span class="kw"><a href="../reference/getSpecies.html">getSpecies</a></span>()
-<span class="co">#&gt; # A tibble: 2 x 12</span>
-<span class="co">#&gt;   key         name  compartment type     initial_concentra… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;                 &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartm… a     compartment assignm…                10.        6.02e21</span>
-<span class="co">#&gt; 2 b{compartm… b     compartment reactio…                 1.        6.02e20</span>
+<span class="co">#&gt; # A tibble: 2 x 13</span>
+<span class="co">#&gt;   key      name  compartment type   unit  initial_concentr… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;             &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compa… a     compartment assig… mmol…               10.        6.02e21</span>
+<span class="co">#&gt; 2 b{compa… b     compartment react… mmol…                1.        6.02e20</span>
 <span class="co">#&gt; # ... with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   rate &lt;dbl&gt;, number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;,</span>
 <span class="co">#&gt; #   expression &lt;chr&gt;</span>
