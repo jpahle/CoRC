@@ -43,6 +43,8 @@ Also supports fragments of keys, if uniquely matching one event.}
 Use the \code{key} argument to specify which event to modify and any of the other arguments to specify the value to set.
 The function is fully vectorized.
 If a \code{NA} value is supplied, the model value is kept unchanged.
+
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 }
 \seealso{
 \code{\link{getEvents}}

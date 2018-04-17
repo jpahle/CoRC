@@ -23,6 +23,9 @@ setMCA(perform_steady_state_analysis = NULL, executable = NULL,
 \description{
 \code{setMetabolicControlAnalysis} sets metabolic control analysis task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other metabolic control analysis: \code{\link{getMetabolicControlAnalysisSettings}},
   \code{\link{runMetabolicControlAnalysis}}

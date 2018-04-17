@@ -35,6 +35,9 @@ A list of results.
 \description{
 \code{runSteadyState} calculates the steady state and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other steady state: \code{\link{getSteadyStateSettings}},
   \code{\link{setSteadyStateSettings}}

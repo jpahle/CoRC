@@ -1,6 +1,8 @@
 #' Get species
 #'
 #' \code{getSpecies} returns species information as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which species to get.
 #' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
@@ -57,6 +59,8 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
 #' Get species references
 #'
 #' \code{getSpeciesReferences} returns species attribute references as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which species to get.
 #' @param model A model object.
@@ -115,6 +119,8 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
 #' Use the \code{key} argument to specify which species to modify and any of the other arguments to specify the value to set.
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Identify which species to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one species.
@@ -290,6 +296,8 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
 #' Get global quantities
 #'
 #' \code{getGlobalQuantities} returns global quantities as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which global quantities to get.
 #' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
@@ -337,6 +345,8 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
 #' Get global quantity references
 #'
 #' \code{getGlobalQuantityReferences} returns global quantity attribute references as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which global quantities to get.
 #' @param model A model object.
@@ -387,6 +397,8 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which global quantity to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one global quantity.
 #' @param name Name to set, as string.
@@ -526,6 +538,8 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, unit = NUL
 #' Get compartments
 #'
 #' \code{getCompartments} returns compartments as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which compartments to get.
 #' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
@@ -577,6 +591,8 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
 #' Get compartment references
 #'
 #' \code{getCompartmentReferences} returns compartment attribute references as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which compartments to get.
 #' @param model A model object.
@@ -631,6 +647,8 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which compartment to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one compartment.
 #' @param name Name to set, as string.
@@ -763,6 +781,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
 #' Get reactions
 #'
 #' \code{getReactions} returns reactions as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which reactions to get.
 #' @param model A model object.
@@ -793,6 +813,8 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
 #' Get reaction references
 #'
 #' \code{getReactions} returns reactions attribute references as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which reactions to get.
 #' @param model A model object.
@@ -828,6 +850,8 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param name Name to set, as string.
@@ -867,6 +891,10 @@ setReactions <- function(key = NULL, name = NULL, data = NULL, model = getCurren
 
 #' Get valid function names for reaction
 #' 
+#' \code{getValidReactionFunctions} returns valid function names for a reaction.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction to read by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param model A model object.
@@ -900,6 +928,10 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
 
 #' Set a reaction function
 #' 
+#' \code{setReactionFunction} sets the reaction function for a reaction.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param fun Key of new kinetic function to set, as string.
@@ -950,6 +982,10 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
 
 #' Get reaction parameter mappings
 #' 
+#' \code{getReactionMappings} returns reaction parameter mappings for a reaction.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction to read by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param model A model object.
@@ -985,6 +1021,10 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
 
 #' Set reaction parameter mappings
 #' 
+#' \code{setReactionMappings} sets reaction parameter mappings for a reaction.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction.
 #' @param mappings Parameter mappings, as named list.
@@ -1083,6 +1123,8 @@ set_rparam_mapping <- function(c_datamodel, c_reacti, i, value) {
 #' Get reaction parameters
 #'
 #' \code{getParameters} returns reaction parameters as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which reaction parameters to get.
 #' @param model A model object.
@@ -1144,6 +1186,8 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
 #' Get reaction parameter references
 #'
 #' \code{getParameterReferences} returns reaction parameters as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which reaction parameters to get.
 #' @param model A model object.
@@ -1211,6 +1255,8 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which reaction parameter to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction parameter.
 #' @param name Name to set, as string.
@@ -1304,6 +1350,8 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
 #' Get events
 #'
 #' \code{getEvents} returns events as a data frame.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 #'
 #' @param key Optionally, a character vector specifying which events to get.
 #' @param raw_expressions Whether expressions should be raw (not converted to readable format), as flag.
@@ -1386,6 +1434,8 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
 #' The function is fully vectorized.
 #' If a \code{NA} value is supplied, the model value is kept unchanged.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @param key Identify which event to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one event.
 #' @param name Name to set, as string.

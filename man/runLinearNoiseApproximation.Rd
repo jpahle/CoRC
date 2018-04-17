@@ -30,6 +30,9 @@ A list of results.
 \description{
 \code{runLinearNoiseApproximation} runs linear noise approximation and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other linear noise approximation: \code{\link{getLinearNoiseApproximationSettings}},
   \code{\link{setLinearNoiseApproximationSettings}}

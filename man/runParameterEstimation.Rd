@@ -46,6 +46,9 @@ A list of results.
 \description{
 \code{runParameterEstimation} runs parameter estimation and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},

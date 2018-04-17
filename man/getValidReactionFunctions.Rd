@@ -16,7 +16,10 @@ Also supports fragments of keys, if uniquely matching one reaction.}
 Function names, as character vector.
 }
 \description{
-Get valid function names for reaction
+\code{getValidReactionFunctions} returns valid function names for a reaction.
+}
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 }
 \seealso{
 \code{\link{setReactionFunction}}

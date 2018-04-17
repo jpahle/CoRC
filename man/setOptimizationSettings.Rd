@@ -47,6 +47,9 @@ Available methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryP
 \description{
 \code{setOptimizationSettings} sets optimization task settings including parameters, experiments and method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
   \code{\link{clearOptimizationParameters}},

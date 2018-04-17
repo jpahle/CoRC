@@ -58,6 +58,9 @@ A list of results.
 \description{
 \code{runTimeCourse} runs a time course and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other time course: \code{\link{getTimeCourseSettings}},
   \code{\link{setTimeCourseSettings}}

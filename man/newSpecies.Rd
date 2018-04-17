@@ -33,6 +33,8 @@ species key
 }
 \details{
 Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
+
+The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
 Other species functions: \code{\link{deleteSpecies}},

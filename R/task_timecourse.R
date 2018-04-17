@@ -2,6 +2,8 @@
 #'
 #' \code{runTimeCourse} runs a time course and returns the results in a list.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param duration The time course duration, as number.
 #' @param dt The time course output step size, as number.
 #' @param intervals The time course step count, as count.
@@ -106,6 +108,8 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #'
 #' \code{setTimeCourseSettings} sets time course task settings including method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param duration number
 #' @param dt number
 #' @param intervals count
@@ -155,6 +159,8 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
 #' Get time course settings
 #'
 #' \code{getTimeCourseSettings} gets time course task settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of time course task settings including method options.

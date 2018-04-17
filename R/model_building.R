@@ -3,7 +3,9 @@
 #' \code{newSpecies} creates a new species.
 #' 
 #' Arguments priority from lowest to highest is \code{initial_concentration}, \code{initial_number}, \code{initial_expression}.
-#'
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
+#' 
 #' @param name string
 #' @param compartment compartment key
 #' @param type string
@@ -129,7 +131,9 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
 #' \code{newGlobalQuantity} creates a new global quantity.
 #' 
 #' Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
-#'
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
+#' 
 #' @param name string
 #' @param type string
 #' @param unit string
@@ -237,7 +241,9 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
 #' \code{newCompartment} creates a new compartment.
 #' 
 #' Arguments priority from lowest to highest is \code{initial_size}, \code{initial_expression}.
-#'
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
+#' 
 #' @param name string
 #' @param type string
 #' @param dimensionality Dimensionality of the compartment (0D, 1D, 2D, 3D), as number.
@@ -343,7 +349,11 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
 }
 
 #' Create a new reaction
-#'
+#' 
+#' \code{newReaction} creates a new reaction.
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
+#' 
 #' @param reaction Reaction equation to set, as string.
 #' @param name Name to set, as string.
 #' Defaults to reaction.
@@ -438,7 +448,9 @@ deleteReaction <- function(key, model = getCurrentModel()) {
 #' 
 #' Default initial value is 1.
 #' Arguments priority from lowest to highest is \code{initial_value}, \code{initial_expression}.
-#'
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
+#' 
 #' @param name Name to set, as string.
 #' @param trigger_expression Trigger expression to set, as string, finite numeric, or logical.
 #' @param fire_at_initial_time Whether to fire at initial time if true, as logical.
@@ -586,6 +598,8 @@ function_role_enum <-
   tolower()
 
 #' Create a new kinetic function
+#' 
+#' The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 #' 
 #' @param name Name to set, as string
 #' @param formula Function formula to set, as string

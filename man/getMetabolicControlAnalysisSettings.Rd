@@ -18,6 +18,9 @@ A list of metabolic control analysis task settings including method options.
 \description{
 \code{getMetabolicControlAnalysisSettings} gets metabolic control analysis settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other metabolic control analysis: \code{\link{runMetabolicControlAnalysis}},
   \code{\link{setMetabolicControlAnalysisSettings}}

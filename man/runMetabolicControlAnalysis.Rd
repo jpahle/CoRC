@@ -29,6 +29,9 @@ A list of results.
 \description{
 \code{runMetabolicControlAnalysis} runs metabolic control analysis and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other metabolic control analysis: \code{\link{getMetabolicControlAnalysisSettings}},
   \code{\link{setMetabolicControlAnalysisSettings}}

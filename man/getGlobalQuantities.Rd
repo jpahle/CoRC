@@ -20,6 +20,9 @@ Global quantities and associated information, as data frame.
 \description{
 \code{getGlobalQuantities} returns global quantities as a data frame.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+}
 \seealso{
 \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
 

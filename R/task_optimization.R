@@ -2,6 +2,8 @@
 #'
 #' \code{runOptimization} runs optimization and returns the results in a list.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param expression Expression to optimize, as string.
 #' @param maximize flag
 #' @eval paste0("@param subtask string
@@ -109,6 +111,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #'
 #' \code{setOptimizationSettings} sets optimization task settings including parameters, experiments and method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param expression Expression to optimize, as string.
 #' @param maximize flag
 #' @eval paste0("@param subtask string
@@ -172,6 +176,8 @@ setOptimizationSettings <- function(expression = NULL, maximize = NULL, subtask 
 #' Set optimization settings
 #'
 #' \code{getOptimizationSettings} gets optimization task settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of parameter estimation task settings including method options.

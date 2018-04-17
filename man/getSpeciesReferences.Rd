@@ -17,6 +17,9 @@ Species and associated references, as data frame.
 \description{
 \code{getSpeciesReferences} returns species attribute references as a data frame.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+}
 \seealso{
 \code{\link{getSpecies}} \code{\link{setSpecies}}
 

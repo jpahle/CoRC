@@ -18,6 +18,9 @@ A list of metabolic control analysis task settings including method options.
 \description{
 \code{getLinearNoiseApproximationSettings} gets linear noise approximation settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other linear noise approximation: \code{\link{runLinearNoiseApproximation}},
   \code{\link{setLinearNoiseApproximationSettings}}

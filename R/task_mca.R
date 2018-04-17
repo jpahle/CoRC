@@ -2,6 +2,8 @@
 #'
 #' \code{runMetabolicControlAnalysis} runs metabolic control analysis and returns the results in a list.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list of further method arguments and their values.
@@ -78,6 +80,8 @@ runMetabolicControlAnalysis <- function(perform_steady_state_analysis = NULL, ex
 #'
 #' \code{setMetabolicControlAnalysis} sets metabolic control analysis task settings including method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
@@ -108,6 +112,8 @@ setMetabolicControlAnalysisSettings <- function(perform_steady_state_analysis = 
 #' Get metabolic control analysis settings
 #'
 #' \code{getMetabolicControlAnalysisSettings} gets metabolic control analysis settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of metabolic control analysis task settings including method options.

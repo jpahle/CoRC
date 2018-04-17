@@ -50,6 +50,9 @@ A list of results.
 \description{
 \code{runOptimization} runs optimization and returns the results in a list.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
   \code{\link{clearOptimizationParameters}},

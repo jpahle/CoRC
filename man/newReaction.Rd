@@ -25,7 +25,10 @@ Values are either entity keys valid for the specific type of parameter or a nume
 reaction key
 }
 \description{
-Create a new reaction
+\code{newReaction} creates a new reaction.
+}
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},

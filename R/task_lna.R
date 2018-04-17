@@ -2,6 +2,8 @@
 #'
 #' \code{runLinearNoiseApproximation} runs linear noise approximation and returns the results in a list.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list of further method arguments and their values.
@@ -79,6 +81,8 @@ runLinearNoiseApproximation <- function(perform_steady_state_analysis = NULL, ex
 #'
 #' \code{setLinearNoiseApproximation} sets linear noise approximation task settings including method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param perform_steady_state_analysis flag
 #' @param executable flag
 #' @param method list
@@ -109,6 +113,8 @@ setLinearNoiseApproximationSettings <- function(perform_steady_state_analysis = 
 #' Get linear noise approximation settings
 #'
 #' \code{getLinearNoiseApproximationSettings} gets linear noise approximation settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of metabolic control analysis task settings including method options.

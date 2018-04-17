@@ -23,6 +23,9 @@ setLNA(perform_steady_state_analysis = NULL, executable = NULL,
 \description{
 \code{setLinearNoiseApproximation} sets linear noise approximation task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other linear noise approximation: \code{\link{getLinearNoiseApproximationSettings}},
   \code{\link{runLinearNoiseApproximation}}

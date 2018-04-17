@@ -24,7 +24,7 @@ Defines if the function is general, reversible or irreversible.}
 function key
 }
 \description{
-Create a new kinetic function
+The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
 Other reaction functions: \code{\link{clearCustomKineticFunctions}},

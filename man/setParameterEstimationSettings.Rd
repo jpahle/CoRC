@@ -43,6 +43,9 @@ Available methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryP
 \description{
 \code{setParameterEstimationSettings} sets parameter estimation task settings including parameters, experiments and method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},

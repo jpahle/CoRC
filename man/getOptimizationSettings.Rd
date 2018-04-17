@@ -18,6 +18,9 @@ A list of parameter estimation task settings including method options.
 \description{
 \code{getOptimizationSettings} gets optimization task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other optimization: \code{\link{addOptimizationParameter}},
   \code{\link{clearOptimizationParameters}},

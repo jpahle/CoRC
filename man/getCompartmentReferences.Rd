@@ -17,6 +17,9 @@ Compartments and associated references, as data frame.
 \description{
 \code{getCompartmentReferences} returns compartment attribute references as a data frame.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+}
 \seealso{
 \code{\link{getCompartments}} \code{\link{setCompartments}}
 

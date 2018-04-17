@@ -20,7 +20,10 @@ Values are either entity keys valid for the specific type of parameter or a nume
 \item{model}{A model object.}
 }
 \description{
-Set a reaction function
+\code{setReactionFunction} sets the reaction function for a reaction.
+}
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 }
 \seealso{
 \code{\link{getValidReactionFunctions}}

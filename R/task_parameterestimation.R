@@ -2,6 +2,8 @@
 #'
 #' \code{runParameterEstimation} runs parameter estimation and returns the results in a list.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param randomize_start_values flag
 #' @param create_parameter_sets flag
 #' @param calculate_statistics flag
@@ -120,6 +122,8 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #'
 #' \code{setParameterEstimationSettings} sets parameter estimation task settings including parameters, experiments and method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param randomize_start_values flag
 #' @param create_parameter_sets flag
 #' @param calculate_statistics flag
@@ -187,6 +191,8 @@ setParameterEstimationSettings <- function(randomize_start_values = NULL, create
 #' Set parameter estimation settings
 #'
 #' \code{getParameterEstimationSettings} gets parameter estimation task settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of parameter estimation task settings including method options.

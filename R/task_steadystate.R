@@ -2,6 +2,8 @@
 #'
 #' \code{runSteadyState} calculates the steady state and returns the results in a list.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param calculate_jacobian flag
 #' @param perform_stability_analysis flag
 #' @param update_model flag
@@ -82,6 +84,8 @@ runSteadyState <- function(calculate_jacobian = NULL, perform_stability_analysis
 #'
 #' \code{setSteadyStateSettings} sets steady state task settings including method options.
 #'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+#'
 #' @param calculate_jacobian flag
 #' @param perform_stability_analysis flag
 #' @param update_model flag
@@ -116,6 +120,8 @@ setSteadyStateSettings <- function(calculate_jacobian = NULL, perform_stability_
 #' Get steady state settings
 #'
 #' \code{getSteadyStateSettings} gets steady state task settings including method options.
+#'
+#' The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 #'
 #' @param model a model object
 #' @return A list of steady state task settings including method options.

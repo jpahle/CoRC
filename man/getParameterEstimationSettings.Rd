@@ -18,6 +18,9 @@ A list of parameter estimation task settings including method options.
 \description{
 \code{getParameterEstimationSettings} gets parameter estimation task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other parameter estimation: \code{\link{addExperiments}},
   \code{\link{addParameterEstimationParameter}},

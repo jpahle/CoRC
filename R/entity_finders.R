@@ -22,6 +22,8 @@
 #' The functions can also be used to find value references by giving the `reference` argument.
 #' Various references such as "Value" or "InitialConcentration" are available for some types of entities.
 #' 
+#' The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
+#'
 #' @name entity_finders
 #' @param key entity name fragments
 #' 

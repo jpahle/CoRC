@@ -18,6 +18,9 @@ A list of steady state task settings including method options.
 \description{
 \code{getSteadyStateSettings} gets steady state task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other steady state: \code{\link{runSteadyState}},
   \code{\link{setSteadyStateSettings}}

@@ -29,6 +29,9 @@ setSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
 \description{
 \code{setSteadyStateSettings} sets steady state task settings including method options.
 }
+\details{
+The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
+}
 \seealso{
 Other steady state: \code{\link{getSteadyStateSettings}},
   \code{\link{runSteadyState}}
