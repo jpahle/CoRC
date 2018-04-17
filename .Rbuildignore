@@ -1,9 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^development$
-^documentation$
-^README\.Rmd$
 ^docs$
-^_pkgdown\.yaml$
-^vignettes/examples\.Rmd$
 ^inst/libs/*$
+^README\.Rmd$
+^_pkgdown\.yml$
+^vignettes/examples\.Rmd$
