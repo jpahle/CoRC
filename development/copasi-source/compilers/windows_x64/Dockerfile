@@ -1,5 +1,5 @@
 # adapted from https://github.com/StefanScherer/dockerfiles-windows/tree/master/msbuild
-FROM microsoft/windowsservercore:10.0.14393.2125
+FROM microsoft/windowsservercore:10.0.14393.2189
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
@@ -17,7 +17,10 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Ne
 RUN choco install -y cmake.portable ninja
 
 # install R
-RUN choco install -y R.Project
+#RUN choco install -y R.Project
+# or use a snapshot
+RUN wget "https://cran.r-project.org/bin/windows/base/R-3.5.0rc-win.exe" -OutFile R-patched-win.exe -UseBasicParsing ; \
+    Start-Process -Wait -NoNewWindow -FilePath 'R-patched-win.exe' -ArgumentList '/SILENT','/SUPPRESSMSGBOXES','/SP-','/COMPONENTS="main,x64"','/LOG=C:\\log.txt'
 
 # download swig win 3.0.12
 # URLS are unreliable:
