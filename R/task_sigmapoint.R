@@ -183,7 +183,8 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     map_parallel(
       cl = cl,
       .x = data_list,
-      .f = ~ CoRC::runParameterEstimation(experiments = .x)
+      .f = ~ CoRC::runParameterEstimation(experiments = .x),
+      chunk.size = 1
     )
   
   if (close_cl) {

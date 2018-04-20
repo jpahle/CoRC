@@ -32,9 +32,9 @@ library(CoRC)
 mapInParallel <- function(data, fun, ..., .prep = {}) {
   cl <- makeCluster(detectCores())
   clusterCall(cl = cl, fun = eval, .prep, env = .GlobalEnv)
-  ret <- clusterApplyLB(cl = cl, x = imap(data, ~ set_names(list(.x), .y)), fun = lapply, as_mapper(fun), ...)
+  result <- parLapplyLB(cl = cl, X = data, fun = as_mapper(fun), ..., chunk.size = 50)
   stopCluster(cl)
-  flatten(ret)
+  result
 }
 ```
 
@@ -96,7 +96,7 @@ timeseries <-
       loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
       setTimeCourseSettings(method = list(method = "directMethod", use_random_seed = T))
     }),
-    # iteration data (1000 random seeds),
+    # iteration data (1000 random seeds) is given as .x to iteration formula,
     1:1000,
     # iteration code (formula ~)
     ~ runTimeCourse(method = list(random_seed = .x))$result
@@ -204,7 +204,7 @@ scan <-
       loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
       setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
     }),
-    # iteration data (10000 random seeds),
+    # iteration data (10000 random seeds) is given as .x to iteration formula,
     1:10000,
     # iteration code (formula ~)
     ~ {

@@ -1,3 +1,7 @@
+# CoRC 0.3.0.9000
+
+* Use `parallel::parLapplyLB()` for parallel processing as it was fixed in R version 3.5.
+
 # CoRC 0.3.0 (2018-04-19)
 
 * Rebase on COPASI release 4.23 sources.
