@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="Compile the model — compileModel" />
 
 <meta property="og:description" content="compileModel potentially forces compilation of the given model." />
@@ -42,11 +50,6 @@
 <![endif]-->
 
 
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-
   </head>
 
   <body>
@@ -62,7 +65,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0.9000</span>
       </span>
     </div>
 
@@ -120,7 +123,7 @@
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -135,13 +138,15 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compile the model</h1>
-    <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/model_management.R'><code>R/model_management.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/model_management.R'><code>R/model_management.R</code></a></small>
     <div class="hidden name"><code>compileModel.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>compileModel</code> potentially forces compilation of the given model.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>compileModel</span>(<span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
@@ -194,10 +199,16 @@
 <script>
   docsearch({
     
+    
     apiKey: 'fcbd5b3c51a83bf9b730904eb6ce2d5a',
     indexName: 'corc',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

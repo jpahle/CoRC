@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="Entity finders — entity_finders" />
 
 <meta property="og:description" content="The entity finder family of functions are a set of helpers to
@@ -44,11 +52,6 @@ They give a quick overview of available species, compartments, etc." />
 <![endif]-->
 
 
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-
   </head>
 
   <body>
@@ -64,7 +67,7 @@ They give a quick overview of available species, compartments, etc." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0.9000</span>
       </span>
     </div>
 
@@ -122,7 +125,7 @@ They give a quick overview of available species, compartments, etc." />
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -137,15 +140,17 @@ They give a quick overview of available species, compartments, etc." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Entity finders</h1>
-    <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/entity_finders.R'><code>R/entity_finders.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/entity_finders.R'><code>R/entity_finders.R</code></a></small>
     <div class="hidden name"><code>entity_finders.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>The entity finder family of functions are a set of helpers to
 get unique identifiers for the various entities defined in COPASI.
 They give a quick overview of available species, compartments, etc.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>species</span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>reference</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
@@ -371,10 +376,16 @@ Various references such as "Value" or "InitialConcentration" are available for s
 <script>
   docsearch({
     
+    
     apiKey: 'fcbd5b3c51a83bf9b730904eb6ce2d5a',
     indexName: 'corc',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 

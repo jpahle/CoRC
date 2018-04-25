@@ -25,6 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="CoRC: COPASI R Connector. — CoRC-package" />
 
 <meta property="og:description" content="CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R.
@@ -45,11 +53,6 @@ These scripts can then be run interactively or be sent to cluster or cloud facil
 <![endif]-->
 
 
-
-
-<!-- docsearch -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
-
   </head>
 
   <body>
@@ -65,7 +68,7 @@ These scripts can then be run interactively or be sent to cluster or cloud facil
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0.9000</span>
       </span>
     </div>
 
@@ -123,7 +126,7 @@ These scripts can then be run interactively or be sent to cluster or cloud facil
       
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
       </form>
       
@@ -138,16 +141,18 @@ These scripts can then be run interactively or be sent to cluster or cloud facil
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>CoRC: COPASI R Connector.</h1>
-    <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/CoRC.R'><code>R/CoRC.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jpahle/CoRC/blob/master/R/CoRC.R'><code>R/CoRC.R</code></a></small>
     <div class="hidden name"><code>CoRC-package.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI to R.
 It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI.
 This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise.
 These scripts can then be run interactively or be sent to cluster or cloud facilities for more demanding calculations.</p>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -210,10 +215,16 @@ Authors:
 <script>
   docsearch({
     
+    
     apiKey: 'fcbd5b3c51a83bf9b730904eb6ce2d5a',
     indexName: 'corc',
     inputSelector: 'input#search-input.form-control',
-    debug: false // Set debug to true if you want to inspect the dropdown
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
   });
 </script>
 
