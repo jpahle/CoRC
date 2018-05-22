@@ -1,5 +1,5 @@
 ---
-title: "Building Models"
+title: "Model Building"
 author: "Jonas Förster & Jürgen Pahle"
 output: rmarkdown::html_vignette
 vignette: >

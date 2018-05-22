@@ -21,6 +21,9 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
+This article contains case-studies illustrating the benefits of implementing workflows with CoRC.
+Example code to get started can be found in the tutorial articles on [model entitiy management](https://jpahle.github.io/CoRC/articles/entity_management.html), [task management](https://jpahle.github.io/CoRC/articles/task_management.html) and [model building](https://jpahle.github.io/CoRC/articles/model_building.html).
+
 # Initial Setup
 
 ```{r setup, results="hide"}

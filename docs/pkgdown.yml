@@ -1,6 +1,6 @@
 pandoc: 1.19.2.1
-pkgdown: 1.0.0
-pkgdown_sha: d43ca38c74827d1d6babc3a80d48cd3a8e8fad8c
+pkgdown: 1.0.0.9000
+pkgdown_sha: 3d28bb96434232e5204b0d57d55e4ed13af3a2a7
 articles:
   CoRC: CoRC.html
   entity_management: entity_management.html

@@ -47,12 +47,6 @@
 <li>
   <a href="articles/CoRC.html">Get Started</a>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="articles/examples.html">Examples</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -61,10 +55,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/entity_management.html">Managing Model Entities</a>
+      <a href="articles/entity_management.html">Model Entity Management</a>
     </li>
     <li>
-      <a href="articles/task_management.html">Managing Tasks</a>
+      <a href="articles/task_management.html">Task Management</a>
     </li>
     <li>
       <a href="articles/model_building.html">Model Building</a>
@@ -73,6 +67,12 @@
       <a href="articles/issues.html">Issues</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="articles/examples.html">Examples</a>
+</li>
+<li>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
   <a href="news/index.html">News</a>
@@ -132,7 +132,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the development version from GitHub:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
-remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"jpahle/CoRC"</span>)
+remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jpahle/CoRC"</span>)
 CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/CoRC/topics/getCopasi">getCopasi</a></span>()</code></pre></div>
 <p>CoRC runs it’s own version of the COPASI backend which it will download via the <code>getCopasi</code> function.</p>
 </div>
@@ -152,16 +152,16 @@ CoRC<span class="op">::</span><span class="kw"><a href="http://www.rdocumentatio
 <span class="co">#&gt; # A tibble: 201 x 3</span>
 <span class="co">#&gt;     Time     X     Y</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 0.    3.00  3.00 </span>
-<span class="co">#&gt;  2 0.500 3.41  0.817</span>
-<span class="co">#&gt;  3 1.00  1.90  1.28 </span>
-<span class="co">#&gt;  4 1.50  0.876 1.87 </span>
-<span class="co">#&gt;  5 2.00  0.346 2.37 </span>
-<span class="co">#&gt;  6 2.50  0.183 2.66 </span>
-<span class="co">#&gt;  7 3.00  0.147 2.86 </span>
-<span class="co">#&gt;  8 3.50  0.141 3.05 </span>
-<span class="co">#&gt;  9 4.00  0.141 3.23 </span>
-<span class="co">#&gt; 10 4.50  0.142 3.41 </span>
+<span class="co">#&gt;  1   0   3.00  3.00 </span>
+<span class="co">#&gt;  2   0.5 3.41  0.817</span>
+<span class="co">#&gt;  3   1   1.90  1.28 </span>
+<span class="co">#&gt;  4   1.5 0.876 1.87 </span>
+<span class="co">#&gt;  5   2   0.346 2.37 </span>
+<span class="co">#&gt;  6   2.5 0.183 2.66 </span>
+<span class="co">#&gt;  7   3   0.147 2.86 </span>
+<span class="co">#&gt;  8   3.5 0.141 3.05 </span>
+<span class="co">#&gt;  9   4   0.141 3.23 </span>
+<span class="co">#&gt; 10   4.5 0.142 3.41 </span>
 <span class="co">#&gt; # ... with 191 more rows</span></code></pre></div>
 </div>
 </div>

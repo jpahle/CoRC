@@ -136,4 +136,5 @@ unloadAllModels()
 
 ## Examples
 
-Examples and case-studies can be found in the [examples article](https://jpahle.github.io/CoRC/articles/examples.html) on the CoRC website.
+Information regarding different aspects of CoRC and simple examples can be found in the articles on [model entity management](https://jpahle.github.io/CoRC/articles/entity_management.html), [task management](https://jpahle.github.io/CoRC/articles/task_management.html) and [model building](https://jpahle.github.io/CoRC/articles/model_building.html) on the CoRC website.
+More sophisticated examples and case-studies illustrating further benefits of using CoRC can be found in the [examples article](https://jpahle.github.io/CoRC/articles/examples.html).
