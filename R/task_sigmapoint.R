@@ -335,10 +335,9 @@ gen_sigma_points <- function(means, cov_m, lambdterm) {
 # and perturb its dependent data columns according to the sigma points.
 perturb_data <- function(data, dep_cols, sigma_points) {
   sigma_points %>%
-    nrow() %>%
-    seq_len() %>%
-    # seperate all rows into individual list entries
-    map(~ sigma_points[.x, ]) %>%
+    # separate all rows into individual list entries
+    split(seq_len(nrow(.))) %>%
+    unname() %>%
     # reshape those rows to matrices
     map(matrix, ncol = dep_cols) %>%
     # merge each of the matrices back into the original data
