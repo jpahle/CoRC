@@ -63,6 +63,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   exp_rows <- pmap(experiments, function(first_row, last_row, ...) first_row:last_row)
   exp_count <- nrow(experiments)
   
+  assert_that(!is_empty(dep_cols), msg = "At least one experiment variable of type `dependent` is required.")
   assert_that(every(data_dep, is.numeric), msg = "All experiment variables of type `dependent` must be numeric.")
   assert_that(noNA(data_dep), msg = "Experiment variables of type `dependent` must not contain <NA> values.")
   
@@ -109,6 +110,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   setParameterEstimationSettings(update_model = FALSE, executable = FALSE, model = c_temp_datamodel)
   clean_model <- saveModelToString(model = c_temp_datamodel)
   unloadModel(model = c_temp_datamodel)
+  setCurrentModel(model = c_datamodel)
   
   # generate a full matrix of dependent data
   # extract dep colums from data frame and then procedurally merge data to matrix format
@@ -147,6 +149,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     
     base_model <- saveModelToString(model = c_temp_datamodel)
     unloadModel(model = c_temp_datamodel)
+    setCurrentModel(model = c_datamodel)
   } else {
     base_model <- clean_model
   }
@@ -339,7 +342,7 @@ perturb_data <- function(data, dep_cols, sigma_points) {
     split(seq_len(nrow(.))) %>%
     unname() %>%
     # reshape those rows to matrices
-    map(matrix, ncol = dep_cols) %>%
+    map(matrix, ncol = length(dep_cols)) %>%
     # merge each of the matrices back into the original data
     map(replace, x = data, list = dep_cols)
 }

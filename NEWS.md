@@ -1,5 +1,6 @@
 # CoRC 0.3.0.9000
 
+* Fix sigma point method for cases other than two dependent variables.
 * Use `parallel::parLapplyLB()` for parallel processing as it was fixed in R version 3.5.
 
 # CoRC 0.3.0 (2018-04-19)
