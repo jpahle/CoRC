@@ -15,6 +15,24 @@ on_failure(noPureNA) <- function(call, env) {
   paste0(deparse(call$x), " contains ", n, " missing values")
 }
 
+# extended rlang::arg_match
+# works with arg being a character vector
+# allows for custom symbol name given in error by specifying 'name'
+args_match <- function(arg, ..., name) {
+  if (missing(name))
+    name <- substitute(arg)
+  
+  args <- list(arg = as.symbol(name), ...)
+  
+  map_chr(arg, ~ {
+    do.call(
+      rlang::arg_match,
+      args,
+      envir = list2env(set_names(list(.x), name))
+    )
+  })
+}
+
 # Format function for the CDataModel class which is used as a basis for the print method
 #' @include swig_wrapper.R
 #' @export

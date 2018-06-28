@@ -173,10 +173,7 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   }
   
   if (any(do_type))
-    type <-
-      type %>%
-      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode"))) %>%
-      toupper()
+    type <- toupper(args_match(type, c(NA_character_, "fixed", "assignment", "reactions", "ode")))
   
   if (any(do_initial_expression)) {
     initial_expression[do_initial_expression] <-
@@ -440,10 +437,7 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, unit = NUL
   do_initial_value <- do_initial_value & !do_initial_expression
   
   if (any(do_type))
-    type <-
-      type %>%
-      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
-      toupper()
+    type <- toupper(args_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (any(do_unit)) {
     unit_pretty <- unit
@@ -690,10 +684,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
   do_initial_size <- do_initial_size & !do_initial_expression
   
   if (any(do_type))
-    type <-
-      type %>%
-      map_chr(function(type) rlang::arg_match(type, c(NA_character_, "fixed", "assignment", "ode"))) %>%
-      toupper()
+    type <- toupper(args_match(type, c(NA_character_, "fixed", "assignment", "ode")))
   
   if (any(do_dimensionality)) {
     dimensionality <- as.integer(dimensionality)
@@ -1060,7 +1051,7 @@ set_react_mapping <- function(c_datamodel, c_reacti, mappings) {
   params <- seq_along_v(c_reacti)
   names(params) <- map_chr(params, ~ c_reacti$getParameterName(.x))
   
-  names(mappings) <- map_chr(names(mappings), function(parameter) rlang::arg_match(parameter, names(params)))
+  names(mappings) <- args_match(names(mappings), name = "parameter", names(params))
   
   iwalk(mappings, ~ {
     set_rparam_mapping(c_datamodel, c_reacti, i = params[[.y]], value = .x)
@@ -1480,9 +1471,7 @@ setEvents <- function(key = NULL, name = NULL, trigger_expression = NULL, fire_a
   do_delayed                  <- if (is.null(delayed))                  false_vec else !is.na(delayed)
   
   if (any(do_delayed)) {
-    delayed <-
-      delayed %>%
-      map_chr(function(delayed) rlang::arg_match(delayed, c(NA_character_, "no", "assignment", "calculation")))
+    delayed <- args_match(delayed, c(NA_character_, "no", "assignment", "calculation"))
     
     # if delayed is set to no we overwrite the expression and set delayed to default (assignment)
     nodelay <- delayed == "no"

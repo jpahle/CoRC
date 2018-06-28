@@ -628,7 +628,7 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
   
   parameters <- tolower(parameters)
   
-  parameters <- map_chr(parameters, function(parameters) rlang::arg_match(parameters, function_role_enum))
+  parameters <- args_match(parameters, function_role_enum)
   
   function_type <- rlang::arg_match(function_type)
   function_type_map <- c(

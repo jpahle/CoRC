@@ -405,7 +405,7 @@ opt_assemble_method <- function(method, c_task) {
   if (hasName(method, "method")) {
     valid_methods <- names(.__E___CTaskEnum__Method)[c_task$getValidMethods() + 1L]
     # hack to get nice error message if method string is not accepted.
-    method$method <- (function(method) rlang::arg_match(method, valid_methods))(method$method)
+    method$method <- args_match(method$method, name = "method", valid_methods)
   }
   
   method
