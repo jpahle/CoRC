@@ -16,14 +16,13 @@ swigfix_resolve_obj_cvector <- function(self, fun, class) {
   # args: self@ref, bool
   vectorsize <- .Call('R_swig_ObjectVectorCore_size', vector, FALSE, PACKAGE='COPASI')
 
-  seq_len_0(vectorsize) %>%
-    map(~ {
-      new(
-        class,
-        # args: self@ref, int
-        ref = .Call('R_swig_ObjectVectorCore_get', vector, .x, PACKAGE='COPASI')
-      )
-    })
+  map(seq_len_0(vectorsize), ~
+    new(
+      class,
+      # args: self@ref, int
+      ref = .Call('R_swig_ObjectVectorCore_get', vector, .x, PACKAGE='COPASI')
+    )
+  )
 }
 
 # @param self slot "ref" of the object which the method is called on
@@ -37,9 +36,8 @@ swigfix_resolve_int_stdvector <- function(self, fun) {
   # args: self@ref, bool
   vectorsize <- .Call('R_swig_IntStdVector_size', vector, FALSE, PACKAGE='COPASI')
   
-  seq_len_0(vectorsize) %>%
-    # args: self@ref, int, bool
-    map_int(~ .Call('R_swig_IntStdVector___getitem__', vector, .x, FALSE, ,PACKAGE='COPASI'))
+  # args: self@ref, int, bool
+  map_int(seq_len_0(vectorsize), ~ .Call('R_swig_IntStdVector___getitem__', vector, .x, FALSE, ,PACKAGE='COPASI'))
 }
 
 # Apply a $function of a swig object to a list of objects
