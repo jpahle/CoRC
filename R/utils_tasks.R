@@ -4,7 +4,10 @@ task_enum <-
   names(.__E___CTaskEnum__Task) %>%
   .[. != "UnsetTask" & . != "__SIZE"]
 
+# wraps the call for processing the task (processRaw) with helpers
+# so that it can be aborted interactively
 process_task <- function(c_task) {
+  # the callback function is a C function from the COPASI R bindings that calls R_CheckUserInterrupt()
   cb <- RProcessCallback(0L)
   
   tryCatch({
