@@ -561,7 +561,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         # c_experiment_set$compile(problem$getMathContainer())
       },
       error = function(e) {
-        file.remove(filepath)
+        file.remove(filename)
         base::stop(e)
       })
     }
