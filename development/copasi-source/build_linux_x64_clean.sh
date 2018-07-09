@@ -4,7 +4,8 @@ set -x
 
 cd copasi-dependencies/
 : ===== Deleting old dependencies build
-rm -rf tmp_linux_x64/ bin_linux_x64/
+[[ -d "tmp_linux_x64" ]] && rm -r tmp_linux_x64/
+[[ -d "bin_linux_x64" ]] && rm -r bin_linux_x64/
 : ===== Building dependencies
 BUILD_DIR=${PWD}/tmp_linux_x64 \
 	INSTALL_DIR=${PWD}/bin_linux_x64 \
@@ -15,7 +16,7 @@ cd ../
 cp CopasiVersion.h COPASI/copasi/
 
 : ===== Deleting old build
-rm -rf corc_linux_x64/
+[[ -d "corc_linux_x64" ]] && rm -r corc_linux_x64/
 mkdir corc_linux_x64/
 cd corc_linux_x64/
 : ===== Running CMake

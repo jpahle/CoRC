@@ -7,7 +7,8 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 
 cd copasi-dependencies/
 echo "===== Deleting old dependencies build"
-rm -rf tmp_darwin_x64/ bin_darwin_x64/
+[[ -d "tmp_darwin_x64" ]] && rm -r tmp_darwin_x64/
+[[ -d "bin_darwin_x64" ]] && rm -r bin_darwin_x64/
 echo "===== Building dependencies"
 BUILD_DIR=${PWD}/tmp_darwin_x64 \
 	INSTALL_DIR=${PWD}/bin_darwin_x64 \
@@ -18,7 +19,7 @@ echo "===== Copying CopasiVersion.h"
 cp CopasiVersion.h COPASI/copasi/
 
 echo "===== Deleting old build"
-rm -rf corc_darwin_x64/
+[[ -d "corc_darwin_x64" ]] && rm -r corc_darwin_x64/
 mkdir corc_darwin_x64/
 cd corc_darwin_x64/
 echo "===== Running CMake"
