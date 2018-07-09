@@ -30,7 +30,7 @@ RUN curl -L https://github.com/madler/zlib/archive/v1.2.11.tar.gz | tar -xz \
 	&& rm -r zlib-*/
 
 # R depencency, current
-RUN curl -L https://tukaani.org/xz/xz-5.2.3.tar.gz | tar -xz \
+RUN curl -L https://tukaani.org/xz/xz-5.2.4.tar.gz | tar -xz \
 	&& cd xz-*/ \
 	&& ./configure \
 	&& make \
@@ -48,7 +48,7 @@ RUN curl -L ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.
 	&& rm -r pcre-*/
 
 # COPASI depencency, current
-RUN curl -L https://cmake.org/files/v3.11/cmake-3.11.1.tar.gz | tar -xz \
+RUN curl -L https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz | tar -xz \
 	&& cd cmake-*/ \
 	&& ./bootstrap \
 	&& make \
