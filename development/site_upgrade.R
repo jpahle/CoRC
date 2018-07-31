@@ -3,8 +3,6 @@
 # reinstall magick to keep up with system imagemagick
 try(remove.packages("magick"))
 install.packages("magick")
-# use latest roxygen out of necessity until a version > 6.0.1 is official for some necessary features
-devtools::install_github("klutometis/roxygen")
 # use latest pkgdown for latest features for now
 devtools::install_github("r-lib/pkgdown")
 # use fixed plotly versions to be able to keep the 8mb or so of plots frozen when updating the rest of the website
