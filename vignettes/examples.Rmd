@@ -59,16 +59,13 @@ timeseries <- list(
   stochastic = runTimeCourse(method = list(method = "directMethod", use_random_seed = T, random_seed = 1))$result
 )
 
-# simplify species names so they are valid R syntax
-timeseries <- map(timeseries, set_tidy_names, TRUE)
-
 # Create the same plot for both timeseries
 plots <- map(
   timeseries,
   plotly::plot_ly,
   type = "scatter3d",
   mode = "lines",
-  x = ~ G.alpha,
+  x = ~ `G-alpha`,
   y = ~ activePLC,
   z = ~ Calcium,
   color = ~ Time
