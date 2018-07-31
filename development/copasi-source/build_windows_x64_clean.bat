@@ -3,7 +3,7 @@ echo "===== Deleting old dependencies build"
 rmdir /s /q tmp_vs15_x64_Release
 rmdir /s /q bin_vs15_x64_Release
 echo "===== Building dependencies"
-.\createX86_vs15_x64_release.bat
+call .\createX86_vs15_x64_release.bat
 cd ..\
 
 echo "===== Looking for R"
