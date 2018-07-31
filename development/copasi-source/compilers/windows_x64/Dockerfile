@@ -1,5 +1,5 @@
 # adapted from https://github.com/StefanScherer/dockerfiles-windows/tree/master/msbuild
-FROM microsoft/windowsservercore:10.0.14393.2189
+FROM microsoft/windowsservercore:10.0.14393.2363
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
