@@ -116,9 +116,6 @@ RUN /opt/R/3.3/bin/Rscript    -e "$R_OPTS install.packages(c('remotes', 'testtha
 RUN /opt/R/3.2/bin/Rscript    -e "$R_32_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 RUN /opt/R/3.1/bin/Rscript    -e "$R_31_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 
-# fix issues because of old R versions
-RUN /opt/R/3.1/bin/Rscript    -e "$R_31_OPTS install.packages('curl'); remotes::install_version('tidyr', '0.7.2')"
-
 WORKDIR /work
 
 # include the test script
