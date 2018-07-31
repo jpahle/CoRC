@@ -70,9 +70,9 @@ RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \
 
 # R
 # for latest R release
-# RUN curl -L https://cran.r-project.org/src/base/R-latest.tar.gz | tar -xz \
+ RUN curl -L https://cran.r-project.org/src/base/R-latest.tar.gz | tar -xz \
 # for latest R alpha, beta, RC
-RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar -xz \
+#RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar -xz \
 	&& cd R-*/ \
  	&& ./configure \
 		--enable-R-shlib \

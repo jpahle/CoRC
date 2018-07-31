@@ -21,7 +21,7 @@ RUN cd copasi-dependencies/ \
 		./createLinux.sh
 
 # make COPASI
-ADD https://github.com/copasi/COPASI/archive/release/Version-4.23.tar.gz COPASI/
+ADD https://github.com/copasi/COPASI/archive/hotfix/Version-4.24.tar.gz COPASI/
 RUN cd COPASI/ \
 	&& tar --strip 1 -xzf *
 
