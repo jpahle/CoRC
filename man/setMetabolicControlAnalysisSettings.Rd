@@ -5,7 +5,8 @@
 \alias{setMCA}
 \title{Set metabolic control analysis settings}
 \usage{
-setMetabolicControlAnalysisSettings(perform_steady_state_analysis = NULL,
+
+  setMetabolicControlAnalysisSettings(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
 setMCA(perform_steady_state_analysis = NULL, executable = NULL,

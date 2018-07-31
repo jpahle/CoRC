@@ -5,8 +5,9 @@
 \title{Create a new compartment}
 \usage{
 newCompartment(name, type = c("fixed", "assignment", "ode"),
-  dimensionality = NULL, initial_size = NULL, initial_expression = NULL,
-  expression = NULL, model = getCurrentModel())
+  dimensionality = NULL, initial_size = NULL,
+  initial_expression = NULL, expression = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}

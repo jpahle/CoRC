@@ -4,7 +4,8 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
+getSpecies(key = NULL, raw_expressions = FALSE,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which species to get.}

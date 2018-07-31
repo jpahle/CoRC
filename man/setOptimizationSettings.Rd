@@ -7,8 +7,9 @@
 \usage{
 setOptimizationSettings(expression = NULL, maximize = NULL,
   subtask = NULL, randomize_start_values = NULL,
-  calculate_statistics = NULL, update_model = NULL, executable = NULL,
-  parameters = NULL, method = NULL, model = getCurrentModel())
+  calculate_statistics = NULL, update_model = NULL,
+  executable = NULL, parameters = NULL, method = NULL,
+  model = getCurrentModel())
 
 setOpt(expression = NULL, maximize = NULL, subtask = NULL,
   randomize_start_values = NULL, calculate_statistics = NULL,

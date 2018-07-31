@@ -4,8 +4,8 @@
 \alias{newKineticFunction}
 \title{Create a new kinetic function}
 \usage{
-newKineticFunction(name, formula, parameters, function_type = c("general",
-  "reversible", "irreversible"))
+newKineticFunction(name, formula, parameters,
+  function_type = c("general", "reversible", "irreversible"))
 }
 \arguments{
 \item{name}{Name to set, as string}

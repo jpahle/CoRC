@@ -1,8 +1,9 @@
-# CoRC 0.3.0.9000
+# CoRC 0.4.0 (2018-08-01)
 
 * Rebase on COPASI release 4.24 sources.
 * Fix sigma point method for cases other than two dependent variables.
 * Use `parallel::parLapplyLB()` for parallel processing as it was fixed in R version 3.5.
+* Minor fixes and code cleanups.
 
 # CoRC 0.3.0 (2018-04-19)
 

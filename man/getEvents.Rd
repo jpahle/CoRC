@@ -4,7 +4,8 @@
 \alias{getEvents}
 \title{Get events}
 \usage{
-getEvents(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
+getEvents(key = NULL, raw_expressions = FALSE,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which events to get.}

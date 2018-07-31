@@ -11,9 +11,9 @@ setParameterEstimationSettings(randomize_start_values = NULL,
   experiments = NULL, method = NULL, model = getCurrentModel())
 
 setPE(randomize_start_values = NULL, create_parameter_sets = NULL,
-  calculate_statistics = NULL, update_model = NULL, executable = NULL,
-  parameters = NULL, experiments = NULL, method = NULL,
-  model = getCurrentModel())
+  calculate_statistics = NULL, update_model = NULL,
+  executable = NULL, parameters = NULL, experiments = NULL,
+  method = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{randomize_start_values}{flag}

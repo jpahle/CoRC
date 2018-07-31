@@ -6,9 +6,9 @@
 \usage{
 newEvent(name, trigger_expression, fire_at_initial_time = FALSE,
   trigger_must_remain_true = TRUE, priority_expression = NULL,
-  delayed = c("no", "assignment", "calculation"), delay_expression = NULL,
-  assignment_target = NULL, assignment_expression = NULL,
-  model = getCurrentModel())
+  delayed = c("no", "assignment", "calculation"),
+  delay_expression = NULL, assignment_target = NULL,
+  assignment_expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{Name to set, as string.}

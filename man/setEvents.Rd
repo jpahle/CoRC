@@ -6,8 +6,9 @@
 \usage{
 setEvents(key = NULL, name = NULL, trigger_expression = NULL,
   fire_at_initial_time = NULL, trigger_must_remain_true = NULL,
-  priority_expression = NULL, delayed = NULL, delay_expression = NULL,
-  assignment_target = NULL, assignment_expression = NULL, data = NULL,
+  priority_expression = NULL, delayed = NULL,
+  delay_expression = NULL, assignment_target = NULL,
+  assignment_expression = NULL, data = NULL,
   model = getCurrentModel())
 }
 \arguments{

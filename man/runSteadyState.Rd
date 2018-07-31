@@ -5,9 +5,9 @@
 \alias{runSS}
 \title{Run to steady state}
 \usage{
-runSteadyState(calculate_jacobian = NULL, perform_stability_analysis = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+runSteadyState(calculate_jacobian = NULL,
+  perform_stability_analysis = NULL, update_model = NULL,
+  executable = NULL, method = NULL, model = getCurrentModel())
 
 runSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
   update_model = NULL, executable = NULL, method = NULL,

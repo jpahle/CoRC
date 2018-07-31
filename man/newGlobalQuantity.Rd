@@ -4,9 +4,9 @@
 \alias{newGlobalQuantity}
 \title{Create a new global quantity}
 \usage{
-newGlobalQuantity(name, type = c("fixed", "assignment", "ode"), unit = NULL,
-  initial_value = NULL, initial_expression = NULL, expression = NULL,
-  model = getCurrentModel())
+newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
+  unit = NULL, initial_value = NULL, initial_expression = NULL,
+  expression = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{name}{string}

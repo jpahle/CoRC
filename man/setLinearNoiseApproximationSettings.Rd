@@ -5,7 +5,8 @@
 \alias{setLNA}
 \title{Set linear noise approximation settings}
 \usage{
-setLinearNoiseApproximationSettings(perform_steady_state_analysis = NULL,
+
+  setLinearNoiseApproximationSettings(perform_steady_state_analysis = NULL,
   executable = NULL, method = NULL, model = getCurrentModel())
 
 setLNA(perform_steady_state_analysis = NULL, executable = NULL,

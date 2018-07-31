@@ -5,8 +5,9 @@
 \title{Set compartments}
 \usage{
 setCompartments(key = NULL, name = NULL, type = NULL,
-  dimensionality = NULL, initial_size = NULL, initial_expression = NULL,
-  expression = NULL, data = NULL, model = getCurrentModel())
+  dimensionality = NULL, initial_size = NULL,
+  initial_expression = NULL, expression = NULL, data = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which compartment to edit by specifying it's key, as string.

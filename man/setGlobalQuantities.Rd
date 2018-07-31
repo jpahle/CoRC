@@ -4,9 +4,9 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(key = NULL, name = NULL, type = NULL, unit = NULL,
-  initial_value = NULL, initial_expression = NULL, expression = NULL,
-  data = NULL, model = getCurrentModel())
+setGlobalQuantities(key = NULL, name = NULL, type = NULL,
+  unit = NULL, initial_value = NULL, initial_expression = NULL,
+  expression = NULL, data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which global quantity to edit by specifying it's key, as string.

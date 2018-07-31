@@ -4,8 +4,8 @@
 \alias{setParameters}
 \title{Set reaction parameters}
 \usage{
-setParameters(key = NULL, name = NULL, value = NULL, mapping = NULL,
-  data = NULL, model = getCurrentModel())
+setParameters(key = NULL, name = NULL, value = NULL,
+  mapping = NULL, data = NULL, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which reaction parameter to edit by specifying it's key, as string.

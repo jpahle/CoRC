@@ -4,7 +4,8 @@
 \alias{setReactionFunction}
 \title{Set a reaction function}
 \usage{
-setReactionFunction(key, fun, mappings = NULL, model = getCurrentModel())
+setReactionFunction(key, fun, mappings = NULL,
+  model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which reaction to edit by specifying it's key, as string.
