@@ -74,6 +74,20 @@ RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.4.4.tar.gz | tar -xz \
 	&& cd ../ \
 	&& rm -r R-*/
 
+# install R-3.5.1 to /opt/R/3.5/
+RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.5.1.tar.gz | tar -xz \
+	&& cd R-*/ \
+ 	&& ./configure \
+		--prefix=/opt/R/3.5 \
+		--enable-R-shlib \
+		--without-recommended-packages --with-x=no --with-aqua=no \
+		--with-tcltk=no --with-ICU=no --disable-java --disable-openmp --disable-nls \
+		--disable-R-profiling --disable-BLAS-shlib --with-libpng=no --with-jpeglib=no --with-libtiff=no \
+	&& make \
+	&& make install \
+	&& cd ../ \
+	&& rm -r R-*/
+
 # install R-latest to /opt/R/latest/
 # this matches latest alpha, beta or rc
 RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar -xz \
@@ -96,6 +110,7 @@ ENV R_31_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/'));"
 # prepare R for CoRC
 RUN Rscript                   -e "$R_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 RUN /opt/R/latest/bin/Rscript -e "$R_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
+RUN /opt/R/3.5/bin/Rscript    -e "$R_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 RUN /opt/R/3.4/bin/Rscript    -e "$R_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 RUN /opt/R/3.3/bin/Rscript    -e "$R_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
 RUN /opt/R/3.2/bin/Rscript    -e "$R_32_OPTS install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'))"
