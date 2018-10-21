@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 ^development$
 ^docs$
-^inst/libs/*$
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^vignettes/examples\.Rmd$
+#useforrelease^inst/libs/*$

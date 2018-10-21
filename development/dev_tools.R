@@ -1,5 +1,8 @@
 # Various helpers to make up for the fact that the swig wrapper prevents decent integration with any IDE.
 
+# quickly reloads all of CoRC and the copasi backed for development.
+# clears the workspace.
+# set ´current_example´ to have it ready for testing.
 reset_copasi <- function() {
   rm(list = ls(envir = .GlobalEnv) %>% .[!(. %in% c("reset_copasi", "current_example", "ls_corc", "inspect"))], envir = .GlobalEnv)
   gc()
@@ -7,7 +10,7 @@ reset_copasi <- function() {
   if (exists("unloadAllModels")) unloadAllModels()
   if (exists("clearCustomKineticFunctions")) clearCustomKineticFunctions()
   
-  devtools::load_all(reset = FALSE)
+  pkgload::load_all(reset = FALSE)
   
   examples <- loadExamples()
   

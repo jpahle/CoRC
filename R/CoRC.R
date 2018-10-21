@@ -59,14 +59,14 @@ pkg_env$c_curr_dm <- NULL
 pkg_env$cl_loaded_dms <- list()
 
 .onLoad <- function(libname, pkgname) {
-  # hack for devtools::load_all()
+  # hack for pkgload::load_all()
   # requires for the package to be installed already
-  if (getNamespaceName(environment(library.dynam.unload)) == "devtools")
+  if (getNamespaceName(environment(library.dynam.unload)) == "pkgload")
     libname <- .libPaths()
   
   backports::import(pkgname, c("anyNA", "dir.exists", "lengths"))
   backports::import(pkgname, "hasName", force = TRUE)
-    
+  
   try(library.dynam("COPASI", pkgname, libname), silent = TRUE)
   # TODO
   # clearing the deque hides the annoying message about COPASI home directory on linux
