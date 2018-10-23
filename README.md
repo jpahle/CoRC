@@ -29,7 +29,7 @@ Installation
 Install the development version from GitHub:
 
 ``` r
-source("https://install-github.me/r-lib/remotes")
+install.packages("remotes")
 remotes::install_github("jpahle/CoRC")
 CoRC::getCopasi()
 ```
