@@ -517,14 +517,12 @@ addExperiments <- function(..., model = getCurrentModel()) {
       # make sure the file gets deleted on error
       tryCatch({
         # Construct individual experiments
-        cl_experiments <-
-          experiments %>%
-          pmap(function(name, first_row, last_row, ...) {
-            exp <- avert_gc(CExperiment(c_experiment_set, name))
-            exp$setFirstRow(first_row)
-            exp$setLastRow(last_row)
-            exp
-          })
+        cl_experiments <- pmap(experiments, function(name, first_row, last_row, ...) {
+          exp <- avert_gc(CExperiment(c_experiment_set, name))
+          exp$setFirstRow(first_row)
+          exp$setLastRow(last_row)
+          exp
+        })
         
         col_count <- ncol(.x)
         col_names <- colnames(.x)

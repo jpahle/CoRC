@@ -227,12 +227,9 @@ set_method_settings <- function(values, c_method) {
     )
   )
   
-  success <- pmap_lgl(
-    data,
-    function(set_fun, object, value, ...) {
-      set_fun(object, value)
-    }
-  )
+  success <- pmap_lgl(data, function(set_fun, object, value, ...) {
+    set_fun(object, value)
+  })
   
   assert_that(
     all(success),
