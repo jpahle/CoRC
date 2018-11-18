@@ -3,6 +3,7 @@ FROM ubuntu:18.04
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 		build-essential \
 		cmake \
+		uuid-dev \
 		r-base-core \
 		swig \
 	&& rm -rf /var/lib/apt/lists/*
@@ -21,7 +22,7 @@ RUN cd copasi-dependencies/ \
 		./createLinux.sh
 
 # make COPASI
-ADD https://github.com/copasi/COPASI/archive/hotfix/Version-4.24.tar.gz COPASI/
+ADD https://github.com/copasi/COPASI/archive/release/Version-4.25.tar.gz COPASI/
 RUN cd COPASI/ \
 	&& tar --strip 1 -xzf *
 
