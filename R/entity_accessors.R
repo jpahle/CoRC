@@ -903,7 +903,7 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   c_reacti <- CReactionInterface()
-  c_reacti$initFromReaction(c_react)
+  c_reacti$init(c_react)
   
   # Workaround because the function vector is somehow only given as bare pointer
   # Coerce it to a string vector object
@@ -1150,7 +1150,7 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
     map_swig_dbl("getDblValue")
   
   mappings <- rep_along(cl_params, NA_character_)
-  mappings[!are_local] <- 
+  mappings[!are_local] <-
     map2_chr(names[!are_local], cl_reacts[!are_local],
       function(name, c_react) {
         val <- get_sv(c_react$getParameterCNs(name))
@@ -1214,16 +1214,16 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
     as_ref(c_datamodel)
 
   mappings <- rep_along(cl_params, NA_character_)
-  mappings[!are_local] <- 
+  mappings[!are_local] <-
     map2_chr(names[!are_local], cl_reacts[!are_local],
       function(name, c_react) {
-        val <- get_sv(c_react$getParameterMapping(name))
+        val <- get_sv(c_react$getParameterCNs(name))
 
         # For now don't support multiple mappings
         if (length(val) > 1)
           return("<MULTIPLE>")
 
-        get_key(c_keyfactory$get(val))
+        get_key(cn_to_object(val[[1]], c_datamodel))
       }
     )
   

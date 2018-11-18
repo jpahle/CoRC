@@ -181,6 +181,17 @@ test_that("setGlobalQuantities() persistence", {
   expect_equal(getGlobalQuantities("Ca")$initial_value, 5.5)
 })
 
+test_that("getReactions()", {
+  reactions_df <- getReactions()
+  expect_length(reactions_df, 6)
+  expect_true(nrow(reactions_df) == length(reaction()))
+})
+
+test_that("getValidReactionFunctions()", {
+  reactionfuns_df <- getValidReactionFunctions("Ca")
+  expect_gte(length(reactionfuns_df), 1)
+})
+
 test_that("getParameters()", {
   parameters_df <- getParameters()
   expect_length(parameters_df, 5)
