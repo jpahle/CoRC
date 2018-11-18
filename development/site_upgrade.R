@@ -1,13 +1,10 @@
-# For upgrading the site I want to have the latest versions of all relevant packages
+# For upgrading the site I want to have specific versions of relevant packages
 
-# reinstall magick to keep up with system imagemagick
-try(remove.packages("magick"))
-install.packages("magick")
-# use latest pkgdown for latest features for now
-devtools::install_github("r-lib/pkgdown")
+# use specific pkgdown to keep page stable for now
+remotes::install_version("pkgdown", "1.3.0", upgrade = "never")
 # use fixed plotly versions to be able to keep the 8mb or so of plots frozen when updating the rest of the website
-remotes::install_version("ggplot2", "3.0.0")
-remotes::install_version("plotly", "4.8.0")
+remotes::install_version("ggplot2", "3.1.0", upgrade = "never")
+remotes::install_version("plotly", "4.8.0", upgrade = "never")
 devtools::document()
 devtools::install()
 devtools::test()
