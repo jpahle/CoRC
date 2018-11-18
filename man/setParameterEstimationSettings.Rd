@@ -36,7 +36,7 @@ Set the method directly with a string or with a list containing the entry named 
 
 The list may contain further method arguments and their values.
 
-Available methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
+Available methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryProgram', 'GeneticAlgorithm', 'GeneticAlgorithmSR', 'HookeJeeves', 'LevenbergMarquardt', 'NL2SOL', 'NelderMead', 'ParticleSwarm', 'Praxis', 'RandomSearch', 'ScatterSearch', 'SimulatedAnnealing', 'SteepestDescent', 'TruncatedNewton'.}
 
 \item{model}{a model object}
 }

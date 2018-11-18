@@ -15,7 +15,7 @@ newKineticFunction(name, formula, parameters,
 \item{parameters}{Parameter types to set, as named character vector.
 Defaults to 'parameter' for every parameter.
 
-Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time'.}
+Allowed values: 'substrate', 'product', 'modifier', 'parameter', 'volume', 'time', '__size'.}
 
 \item{function_type}{Type of function to set, as string.
 Defines if the function is general, reversible or irreversible.}
