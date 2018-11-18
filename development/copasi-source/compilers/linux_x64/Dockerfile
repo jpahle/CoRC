@@ -11,7 +11,7 @@ RUN yum install -y \
 WORKDIR /prep
 
 # R depencency, current
-RUN curl -L http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz | tar -xz \
+RUN curl -L https://sourceforge.net/projects/bzip2/files/bzip2-1.0.6.tar.gz/download | tar -xz \
 	&& cd bzip2-*/ \
 	# force -fPIC for bzip2
 	&& sed -i "s/^CC=gcc$/CC=gcc -fPIC/" Makefile \
@@ -48,7 +48,16 @@ RUN curl -L ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.
 	&& rm -r pcre-*/
 
 # COPASI depencency, current
-RUN curl -L https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz | tar -xz \
+RUN curl -L http://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz/download | tar -xz \
+	&& cd libuuid-*/ \
+	&& ./configure \
+	&& make \
+	&& make install \
+	&& cd ../ \
+	&& rm -r libuuid-*/
+
+# COPASI depencency, current
+RUN curl -L https://cmake.org/files/v3.12/cmake-3.12.3.tar.gz | tar -xz \
 	&& cd cmake-*/ \
 	&& ./bootstrap \
 	&& make \
@@ -70,7 +79,7 @@ RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \
 
 # R
 # for latest R release
- RUN curl -L https://cran.r-project.org/src/base/R-latest.tar.gz | tar -xz \
+RUN curl -L https://cran.r-project.org/src/base/R-latest.tar.gz | tar -xz \
 # for latest R alpha, beta, RC
 #RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar -xz \
 	&& cd R-*/ \
