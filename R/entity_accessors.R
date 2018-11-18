@@ -947,7 +947,7 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
   
   c_model <- c_datamodel$getModel()
   c_reacti <- CReactionInterface()
-  c_reacti$initFromReaction(c_react)
+  c_reacti$init(c_react)
   
   valid_funs <-
     get_sv(
@@ -992,7 +992,7 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   c_reacti <- CReactionInterface()
-  c_reacti$initFromReaction(c_react)
+  c_reacti$init(c_react)
   
   params <- seq_along_v(c_reacti)
   names(params) <- map_chr(params, ~ c_reacti$getParameterName(.x))
@@ -1034,7 +1034,7 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   c_model <- c_datamodel$getModel()
   
   c_reacti <- CReactionInterface()
-  c_reacti$initFromReaction(c_react)
+  c_reacti$init(c_react)
   
   set_react_mapping(c_datamodel, c_reacti, mappings)
   
