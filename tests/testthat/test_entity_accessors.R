@@ -139,6 +139,23 @@ test_that("setCompartments() persistence", {
   expect_equal(getCompartments("Ca")$initial_size, 5.5)
 })
 
+test_that("setCompartments() concentration changes", {
+  init_state = getCompartments("Ca")
+  init_size = init_state$initial_size
+  init_number = getSpecies("Ca{Ca}")$initial_number
+  init_conc = getSpecies("Ca{Ca}")$initial_concentration
+  
+  setCompartments("Ca", initial_size = init_size * 2)
+  expect_equal(getSpecies("Ca{Ca}")$initial_number, init_number)
+  expect_equal(getSpecies("Ca{Ca}")$initial_concentration, init_conc / 2)
+  setCompartments("Ca", initial_size = init_size * 4, preserve_concentrations = TRUE)
+  expect_equal(getSpecies("Ca{Ca}")$initial_number, init_number * 2)
+  expect_equal(getSpecies("Ca{Ca}")$initial_concentration, init_conc / 2)
+  setCompartments(data = init_state, preserve_concentrations = TRUE)
+  expect_equal(getSpecies("Ca{Ca}")$initial_number, init_number / 2)
+  expect_equal(getSpecies("Ca{Ca}")$initial_concentration, init_conc / 2)
+})
+
 test_that("getGlobalQuantities()", {
   quantities_df <- getGlobalQuantities()
   expect_length(quantities_df, 9)

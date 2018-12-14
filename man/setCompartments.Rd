@@ -7,7 +7,7 @@
 setCompartments(key = NULL, name = NULL, type = NULL,
   dimensionality = NULL, initial_size = NULL,
   initial_expression = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+  preserve_concentrations = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Identify which compartment to edit by specifying it's key, as string.
@@ -26,6 +26,9 @@ Also supports fragments of keys, if uniquely matching one compartment.}
 \item{expression}{Expression to set, as string, finite numeric, or logical.}
 
 \item{data}{A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.}
+
+\item{preserve_concentrations}{Whether changes in compartment size should keep species concentrations fixed, as flag.
+If set to \code{TRUE}, size changes will in turn affect species particle numbers. Has no effect on expressions.}
 
 \item{model}{A model object.}
 }
