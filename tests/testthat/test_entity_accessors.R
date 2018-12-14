@@ -29,6 +29,9 @@ test_that("setSpecies() concentrations", {
   setSpecies("B", initial_concentration = 1.1)
   expect_equal(getSpecies("B")$initial_concentration, 1.1)
   
+  setSpecies("B", initial_concentration = 6.6, initial_expression = "")
+  expect_equal(getSpecies("B")$initial_concentration, 6.6)
+  
   setSpecies("B", initial_concentration = NaN)
   expect_equal(getSpecies("B")$initial_concentration, NaN)
   
@@ -47,6 +50,9 @@ test_that("setSpecies() concentrations", {
 test_that("setSpecies() numbers", {
   setSpecies("B", initial_number = 1)
   expect_equal(getSpecies("B")$initial_number, 1)
+  
+  setSpecies("B", initial_number = 6.6, initial_expression = "")
+  expect_equal(getSpecies("B")$initial_number, 6.6)
   
   setSpecies("B", initial_number = NaN)
   expect_equal(getSpecies("B")$initial_number, NaN)
@@ -93,6 +99,9 @@ test_that("getCompartments()", {
 test_that("setCompartments()", {
   setCompartments("Ca", initial_size = 1.1)
   expect_equal(getCompartments("Ca")$initial_size, 1.1)
+  
+  setCompartments("Ca", initial_size = 6.6, initial_expression = "")
+  expect_equal(getCompartments("Ca")$initial_size, 6.6)
   
   setCompartments("Ca", initial_size = NaN)
   expect_equal(getCompartments("Ca")$initial_size, NaN)
@@ -144,6 +153,9 @@ test_that("getGlobalQuantities()", {
 test_that("setGlobalQuantities()", {
   setGlobalQuantities("Ca", initial_value = 1.1)
   expect_equal(getGlobalQuantities("Ca")$initial_value, 1.1)
+  
+  setGlobalQuantities("Ca", initial_value = 6.6, initial_expression = "")
+  expect_equal(getGlobalQuantities("Ca")$initial_value, 6.6)
   
   setGlobalQuantities("Ca", initial_value = NaN)
   expect_equal(getGlobalQuantities("Ca")$initial_value, NaN)

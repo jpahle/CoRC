@@ -154,17 +154,19 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_metabs, FALSE)
-  do_name                  <- if (is.null(name))                  false_vec else !is.na(name)
-  do_type                  <- if (is.null(type))                  false_vec else !is.na(type)
-  do_compartment           <- if (is.null(compartment))           false_vec else !is.na(compartment)
-  do_initial_concentration <- if (is.null(initial_concentration)) false_vec else !is_pure_na(initial_concentration)
-  do_initial_number        <- if (is.null(initial_number))        false_vec else !is_pure_na(initial_number)
-  do_initial_expression    <- if (is.null(initial_expression))    false_vec else !is.na(initial_expression)
-  do_expression            <- if (is.null(expression))            false_vec else !is.na(expression)
+  do_name                     <- if (is.null(name))                  false_vec else !is.na(name)
+  do_type                     <- if (is.null(type))                  false_vec else !is.na(type)
+  do_compartment              <- if (is.null(compartment))           false_vec else !is.na(compartment)
+  do_initial_concentration    <- if (is.null(initial_concentration)) false_vec else !is_pure_na(initial_concentration)
+  do_initial_number           <- if (is.null(initial_number))        false_vec else !is_pure_na(initial_number)
+  do_clear_initial_expression <- if (is.null(initial_expression))    false_vec else initial_expression == ""
+  do_initial_expression       <- if (is.null(initial_expression))    false_vec else !is.na(initial_expression) & !do_clear_initial_expression
+  do_expression               <- if (is.null(expression))            false_vec else !is.na(expression)
 
   # cut pointless actions
-  do_initial_concentration <- do_initial_concentration & !do_initial_number     & !do_initial_expression
-  do_initial_number        <- do_initial_number        & !do_initial_expression
+  do_initial_concentration    <- do_initial_concentration    & !do_initial_number       & !do_initial_expression
+  do_initial_number           <- do_initial_number                                      & !do_initial_expression
+  do_clear_initial_expression <- do_clear_initial_expression | do_initial_concentration | do_initial_number
   
   # assemble compartments
   if (any(do_compartment)) {
@@ -236,14 +238,11 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   for (i in which(do_type))
     cl_metabs[[i]]$setStatus(type[i])
   
+  if (any(do_clear_initial_expression))
+    walk_swig(cl_metabs[do_clear_initial_expression], "setInitialExpression", "")
+  
   # apply initial concentrations
   if (any(do_initial_concentration)) {
-    # TODO
-    # this is a hacky solution
-    # clear initial expression because they are in the way
-    walk_swig(cl_metabs[do_initial_concentration], "setInitialExpression", "")
-    c_model$updateInitialValues("Concentration")
-    
     for (i in which(do_initial_concentration))
       cl_metabs[[i]]$setInitialConcentration(initial_concentration[i])
     
@@ -252,12 +251,6 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   
   # apply initial particlenum
   if (any(do_initial_number)) {
-    # TODO
-    # this is a hacky solution
-    # clear initial expression because they are in the way
-    walk_swig(cl_metabs[do_initial_number], "setInitialExpression", "")
-    c_model$updateInitialValues("ParticleNumbers")
-    
     for (i in which(do_initial_number))
       cl_metabs[[i]]$setInitialValue(initial_number[i])
     
@@ -426,15 +419,17 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, unit = NUL
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_quants, FALSE)
-  do_name               <- if (is.null(name))               false_vec else !is.na(name)
-  do_type               <- if (is.null(type))               false_vec else !is.na(type)
-  do_unit               <- if (is.null(unit))               false_vec else !is.na(unit)
-  do_initial_value      <- if (is.null(initial_value))      false_vec else !is_pure_na(initial_value)
-  do_initial_expression <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression)
-  do_expression         <- if (is.null(expression))         false_vec else !is.na(expression)
+  do_name                     <- if (is.null(name))               false_vec else !is.na(name)
+  do_type                     <- if (is.null(type))               false_vec else !is.na(type)
+  do_unit                     <- if (is.null(unit))               false_vec else !is.na(unit)
+  do_initial_value            <- if (is.null(initial_value))      false_vec else !is_pure_na(initial_value)
+  do_clear_initial_expression <- if (is.null(initial_expression)) false_vec else initial_expression == ""
+  do_initial_expression       <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression) & !do_clear_initial_expression
+  do_expression               <- if (is.null(expression))         false_vec else !is.na(expression)
   
   # cut pointless actions
-  do_initial_value <- do_initial_value & !do_initial_expression
+  do_initial_value            <- do_initial_value            & !do_initial_expression
+  do_clear_initial_expression <- do_clear_initial_expression | do_initial_value
   
   if (any(do_type))
     type <- toupper(args_match(type, c(NA_character_, "fixed", "assignment", "ode")))
@@ -490,13 +485,11 @@ setGlobalQuantities <- function(key = NULL, name = NULL, type = NULL, unit = NUL
   for (i in which(do_unit))
     cl_quants[[i]]$setUnitExpression(unit[i])
   
+  if (any(do_clear_initial_expression))
+    walk_swig(cl_quants[do_clear_initial_expression], "setInitialExpression", "")
+  
   # apply initial value
   if (any(do_initial_value)) {
-    # TODO
-    # this is a hacky solution
-    # clear initial expression because they are in the way
-    walk_swig(cl_quants[do_initial_value], "setInitialExpression", "")
-    
     for (i in which(do_initial_value))
       cl_quants[[i]]$setInitialValue(initial_value[i])
     
@@ -659,13 +652,13 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.null(name)               || is.character(name)                 && length(name) == length(key),
-    is.null(type)               || is.character(type)                 && length(type) == length(key),
-    is.null(dimensionality)     || is.numeric(dimensionality)         && length(dimensionality) == length(key),
-    is.null(initial_size)       || is.numeric(initial_size)           && length(initial_size) == length(key),
-    is.null(initial_expression) || is.cexpression(initial_expression) && length(initial_expression) == length(key),
-    is.null(expression)         || is.cexpression(expression)         && length(expression) == length(key),
-    is.null(data)               || is.data.frame(data)
+    is.null(name)                    || is.character(name)                 && length(name) == length(key),
+    is.null(type)                    || is.character(type)                 && length(type) == length(key),
+    is.null(dimensionality)          || is.numeric(dimensionality)         && length(dimensionality) == length(key),
+    is.null(initial_size)            || is.numeric(initial_size)           && length(initial_size) == length(key),
+    is.null(initial_expression)      || is.cexpression(initial_expression) && length(initial_expression) == length(key),
+    is.null(expression)              || is.cexpression(expression)         && length(expression) == length(key),
+    is.null(data)                    || is.data.frame(data)
   )
   
   # Do this as assertion before we start changing values
@@ -673,15 +666,17 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_comps, FALSE)
-  do_name               <- if (is.null(name))               false_vec else !is.na(name)
-  do_type               <- if (is.null(type))               false_vec else !is.na(type)
-  do_dimensionality     <- if (is.null(dimensionality))     false_vec else !is_pure_na(dimensionality)
-  do_initial_size       <- if (is.null(initial_size))       false_vec else !is_pure_na(initial_size)
-  do_initial_expression <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression)
-  do_expression         <- if (is.null(expression))         false_vec else !is.na(expression)
+  do_name                     <- if (is.null(name))               false_vec else !is.na(name)
+  do_type                     <- if (is.null(type))               false_vec else !is.na(type)
+  do_dimensionality           <- if (is.null(dimensionality))     false_vec else !is_pure_na(dimensionality)
+  do_initial_size             <- if (is.null(initial_size))       false_vec else !is_pure_na(initial_size)
+  do_clear_initial_expression <- if (is.null(initial_expression)) false_vec else initial_expression == ""
+  do_initial_expression       <- if (is.null(initial_expression)) false_vec else !is.na(initial_expression) & !do_clear_initial_expression
+  do_expression               <- if (is.null(expression))         false_vec else !is.na(expression)
   
   # cut pointless actions
-  do_initial_size <- do_initial_size & !do_initial_expression
+  do_initial_size             <- do_initial_size             & !do_initial_expression
+  do_clear_initial_expression <- do_clear_initial_expression | do_initial_size
   
   if (any(do_type))
     type <- toupper(args_match(type, c(NA_character_, "fixed", "assignment", "ode")))
@@ -730,13 +725,11 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
   for (i in which(do_dimensionality))
     cl_comps[[i]]$setDimensionality(dimensionality[i])
   
+  if (any(do_clear_initial_expression))
+    walk_swig(cl_comps[do_clear_initial_expression], "setInitialExpression", "")
+  
   # apply initial size
   if (any(do_initial_size)) {
-    # TODO
-    # this is a hacky solution
-    # clear initial expression because they are in the way
-    walk_swig(cl_comps[do_initial_size], "setInitialExpression", "")
-    
     for (i in which(do_initial_size))
       cl_comps[[i]]$setInitialValue(initial_size[i])
     
