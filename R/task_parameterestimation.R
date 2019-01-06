@@ -428,7 +428,8 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
     experiments = tibble::tibble(
       name = experiment_names,
       first_row = c(1L, head(experiment_lastrows + 1L, -1L)),
-      last_row = experiment_lastrows
+      last_row = experiment_lastrows,
+      .rows = length(experiment_names)
     ),
     types = types,
     mappings = mappings,
@@ -777,9 +778,10 @@ pe_get_results <- function(c_task, settings) {
       "Upper Bound"             = map_swig_dbl(cl_items, "getUpperBoundValue"),
       "Std. Deviation"          = std_dev,
       "Coeff. of Variation [%]" = abs(100 * std_dev / vals),
-      "Gradient"                = get_cv(c_problem$getVariableGradients())
-    ) %>%
-    transform_names()
+      "Gradient"                = get_cv(c_problem$getVariableGradients()),
+      .rows = length(cl_items),
+      .name_repair = transform_names_worker
+    )
   
   experiments <-
     tibble::tibble(
@@ -787,9 +789,10 @@ pe_get_results <- function(c_task, settings) {
       "Objective Value"           = map_swig_dbl(cl_experiments, "getObjectiveValue"),
       "Root Mean Square"          = map_swig_dbl(cl_experiments, "getRMS"),
       "Error Mean"                = map_swig_dbl(cl_experiments, "getErrorMean"),
-      "Error Mean Std. Deviation" = map_swig_dbl(cl_experiments, "getErrorMeanSD")
-    ) %>%
-    transform_names()
+      "Error Mean Std. Deviation" = map_swig_dbl(cl_experiments, "getErrorMeanSD"),
+      .rows = length(cl_experiments),
+      .name_repair = transform_names_worker
+    )
   
   fitted_values <-
     tibble::tibble(
@@ -797,9 +800,10 @@ pe_get_results <- function(c_task, settings) {
       "Objective Value"           = get_cv(c_experiment_set$getDependentObjectiveValues()),
       "Root Mean Square"          = get_cv(c_experiment_set$getDependentRMS()),
       "Error Mean"                = get_cv(c_experiment_set$getDependentErrorMean()),
-      "Error Mean Std. Deviation" = get_cv(c_experiment_set$getDependentErrorMeanSD())
-    ) %>%
-    transform_names()
+      "Error Mean Std. Deviation" = get_cv(c_experiment_set$getDependentErrorMeanSD()),
+      .rows = length(cl_dependent_obj),
+      .name_repair = transform_names_worker
+    )
   
   correlation <- get_annotated_matrix(c_problem$getCorrelations())
   

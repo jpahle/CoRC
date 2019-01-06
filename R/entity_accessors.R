@@ -51,9 +51,10 @@ getSpecies <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMo
     "Rate"                  = map_swig_dbl(cl_metabs, "getConcentrationRate"),
     "Number Rate"           = map_swig_dbl(cl_metabs, "getRate"),
     "Initial Expression"    = initial_expressions,
-    "Expression"            = expressions
-  ) %>%
-    transform_names()
+    "Expression"            = expressions,
+    .rows = length(cl_metabs),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Get species references
@@ -107,9 +108,10 @@ getSpeciesReferences <- function(key = NULL, model = getCurrentModel()) {
     "Rate"                  = cl_metabs %>% map_swig("getConcentrationRateReference") %>% as_ref(c_datamodel),
     "Number Rate"           = cl_metabs %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
     "Initial Expression"    = initial_expressions,
-    "Expression"            = expressions
-  ) %>%
-    transform_names()
+    "Expression"            = expressions,
+    .rows = length(cl_metabs),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set species
@@ -327,9 +329,10 @@ getGlobalQuantities <- function(key = NULL, raw_expressions = FALSE, model = get
     "Value"              = map_swig_dbl(cl_quants, "getValue"),
     "Rate"               = map_swig_dbl(cl_quants, "getRate"),
     "Initial Expression" = initial_expressions,
-    "Expression"         = expressions
-  ) %>%
-    transform_names()
+    "Expression"         = expressions,
+    .rows = length(cl_quants),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Get global quantity references
@@ -374,9 +377,10 @@ getGlobalQuantityReferences <- function(key = NULL, model = getCurrentModel()) {
     "Value"              = cl_quants %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_quants %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
     "Initial Expression" = initial_expressions,
-    "Expression"         = expressions
-  ) %>%
-    transform_names()
+    "Expression"         = expressions,
+    .rows = length(cl_quants),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set global quantities
@@ -570,9 +574,10 @@ getCompartments <- function(key = NULL, raw_expressions = FALSE, model = getCurr
     "Size"               = map_swig_dbl(cl_comps, "getValue"),
     "Rate"               = map_swig_dbl(cl_comps, "getRate"),
     "Initial Expression" = initial_expressions,
-    "Expression"         = expressions
-  ) %>%
-    transform_names()
+    "Expression"         = expressions,
+    .rows = length(cl_comps),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Get compartment references
@@ -621,9 +626,10 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
     "Size"               = cl_comps %>% map_swig("getValueReference") %>% as_ref(c_datamodel),
     "Rate"               = cl_comps %>% map_swig("getRateReference") %>% as_ref(c_datamodel),
     "Initial Expression" = initial_expressions,
-    "Expression"         = expressions
-  ) %>%
-    transform_names()
+    "Expression"         = expressions,
+    .rows = length(cl_comps),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set compartments
@@ -795,9 +801,10 @@ getReactions <- function(key = NULL, model = getCurrentModel()) {
     "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
     "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% get_key(),
     "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
-    "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")
-  ) %>%
-    transform_names()
+    "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux"),
+    .rows = length(cl_reacts),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Get reaction references
@@ -827,9 +834,10 @@ getReactionReferences <- function(key = NULL, model = getCurrentModel()) {
     "Reaction"    = map_swig_chr(cl_reacts, "getReactionScheme"),
     "Rate Law"    = cl_reacts %>% map_swig("getFunction") %>% get_key(),
     "Flux"        = cl_reacts %>% map_swig("getFluxReference") %>% as_ref(c_datamodel),
-    "Number Flux" = cl_reacts %>% map_swig("getParticleFluxReference") %>% as_ref(c_datamodel)
-  ) %>%
-    transform_names()
+    "Number Flux" = cl_reacts %>% map_swig("getParticleFluxReference") %>% as_ref(c_datamodel),
+    .rows = length(cl_reacts),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set reactions
@@ -1168,9 +1176,10 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
     "Name"     = names,
     "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
     "Value"    = values,
-    "Mapping"  = mappings
-  ) %>%
-    transform_names()
+    "Mapping"  = mappings,
+    .rows = length(cl_params),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Get reaction parameter references
@@ -1232,9 +1241,10 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
     "Name"     = names,
     "Reaction" = cl_reacts %>% map_swig_chr("getObjectName"),
     "Value"    = value_refs,
-    "Mapping"  = mappings
-  ) %>%
-    transform_names()
+    "Mapping"  = mappings,
+    .rows = length(cl_params),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set reaction parameters
@@ -1410,9 +1420,10 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
     "Delayed"                  = delayed,
     "Delay Expression"         = delay_expressions,
     "Assignment Target"        = targets,
-    "Assignment Expression"    = assignment_expressions
-  ) %>%
-    transform_names()
+    "Assignment Expression"    = assignment_expressions,
+    .rows = length(cl_events),
+    .name_repair = transform_names_worker
+  )
 }
 
 #' Set events

@@ -250,9 +250,10 @@ ss_get_results <- function(c_task, settings) {
       "Number"          = map_swig_dbl(cl_metabs_ss, "getValue"),
       "Rate"            = map_swig_dbl(cl_metabs_ss, "getConcentrationRate"),
       "Number Rate"     = map_swig_dbl(cl_metabs_ss, "getRate"),
-      "Transition Time" = map_swig_dbl(cl_metabs_ss, "getTransitionTime")
-    ) %>%
-    transform_names()
+      "Transition Time" = map_swig_dbl(cl_metabs_ss, "getTransitionTime"),
+      .rows = length(cl_metabs_ss),
+      .name_repair = transform_names_worker
+    )
   
   cl_comps <-
     get_cdv(c_model$getCompartments()) %>%
@@ -264,9 +265,10 @@ ss_get_results <- function(c_task, settings) {
       "Name"               = map_swig_chr(cl_comps, "getObjectName"),
       "Type"               = cl_comps %>% map_swig_chr("getStatus") %>% tolower(),
       "Size"               = map_swig_dbl(cl_comps, "getValue"),
-      "Rate"               = map_swig_dbl(cl_comps, "getRate")
-    ) %>%
-    transform_names()
+      "Rate"               = map_swig_dbl(cl_comps, "getRate"),
+      .rows = length(cl_comps),
+      .name_repair = transform_names_worker
+    )
   
   cl_quants <- get_cdv(c_model$getModelValues()) %>%
     discard(map_swig_chr(., "getStatus") == "FIXED")
@@ -277,9 +279,10 @@ ss_get_results <- function(c_task, settings) {
       "Name"               = map_swig_chr(cl_quants, "getObjectName"),
       "Type"               = cl_quants %>% map_swig_chr("getStatus") %>% tolower(),
       "Value"              = map_swig_dbl(cl_quants, "getValue"),
-      "Rate"               = map_swig_dbl(cl_quants, "getRate")
-    ) %>%
-    transform_names()
+      "Rate"               = map_swig_dbl(cl_quants, "getRate"),
+      .rows = length(cl_quants),
+      .name_repair = transform_names_worker
+    )
   
   cl_reacts <- get_cdv(c_model$getReactions())
   
@@ -288,9 +291,10 @@ ss_get_results <- function(c_task, settings) {
       key           = get_key(cl_reacts),
       "Name"        = map_swig_chr(cl_reacts, "getObjectName"),
       "Flux"        = map_swig_dbl(cl_reacts, "getFlux"),
-      "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux")
-    ) %>%
-    transform_names()
+      "Number Flux" = map_swig_dbl(cl_reacts, "getParticleFlux"),
+      .rows = length(cl_reacts),
+      .name_repair = transform_names_worker
+    )
   
   jacobian_complete <- NULL
   jacobian_reduced <- NULL

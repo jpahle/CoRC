@@ -483,9 +483,10 @@ opt_get_results <- function(c_task, settings) {
       "Start Value" = map_swig_dbl(cl_items, "getStartValue"),
       "Value"       = get_cv(c_problem$getSolutionVariables()),
       "Upper Bound" = map_swig_dbl(cl_items, "getUpperBoundValue"),
-      "Gradient"    = get_cv(c_problem$getVariableGradients())
-    ) %>%
-    transform_names()
+      "Gradient"    = get_cv(c_problem$getVariableGradients()),
+      .rows = length(cl_items),
+      .name_repair = transform_names_worker
+    )
   
   protocol <- c_method$getMethodLog()$getPlainLog()
   
