@@ -9,7 +9,7 @@
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_parm or list of copasi_parm objects
+#' @param parameters corc_opt_parm or list of corc_opt_parm objects
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model A model object.
@@ -129,7 +129,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_parm or list of copasi_parm objects
+#' @param parameters corc_opt_parm or list of corc_opt_parm objects
 #' @param experiments copasi_exp or list of copasi_exp objects
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
@@ -226,9 +226,9 @@ getPE <- getParameterEstimationSettings
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
 #' @seealso \code{\link{addParameterEstimationParameter}} \code{\link{clearParameterEstimationParameters}}
-#' @return copasi_parm object for input into related functions
+#' @return corc_opt_parm object for input into related functions
 #' @export
-defineParameterEstimationParameter <- copasi_parm
+defineParameterEstimationParameter <- corc_opt_parm
 
 #' Add a parameter estimation parameter
 #' 
@@ -242,14 +242,14 @@ addParameterEstimationParameter <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # flatten all args into a single list
-  # this list can be used to check if the user gave only copasi_parm
+  # this list can be used to check if the user gave only corc_opt_parm
   arglist_compact <- rlang::squash(unname(list(...)))
   
-  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
-  if (!every(arglist_compact, is.copasi_parm))
+  # if not all are corc_opt_parm, try handing the args to define... so we get corc_opt_parm
+  if (!every(arglist_compact, is.corc_opt_parm))
     arglist_compact <- list(defineParameterEstimationParameter(...))
   
-  walk(arglist_compact, validate_copasi_parm)
+  walk(arglist_compact, validate_corc_opt_parm)
   
   cl_obj <-
     map_chr(arglist_compact, "ref") %>%
@@ -483,10 +483,10 @@ addExperiments <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # flatten all args into a single list
-  # this list can be used to check if the user gave only copasi_parm
+  # this list can be used to check if the user gave only corc_opt_parm
   arglist_compact <- rlang::squash(unname(list(...)))
   
-  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
+  # if not all are corc_opt_parm, try handing the args to define... so we get corc_opt_parm
   if (!every(arglist_compact, is.copasi_exp))
     arglist_compact <- list(defineExperiments(...))
   
@@ -608,9 +608,9 @@ clearValidations <- function(model = getCurrentModel()) {
 }
 
 pe_assemble_parameters <- function(parameters, c_problem) {
-  assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.copasi_parm) || is.copasi_parm(parameters))
+  assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.corc_opt_parm) || is.corc_opt_parm(parameters))
   
-  if (is.copasi_parm(parameters))
+  if (is.corc_opt_parm(parameters))
     parameters <- list(parameters)
   
   if (is_empty(parameters))
@@ -621,7 +621,7 @@ pe_assemble_parameters <- function(parameters, c_problem) {
     msg = "This function can not set parameters if there are already parameters set in COPASI."
   )
   
-  walk(parameters, validate_copasi_parm)
+  walk(parameters, validate_corc_opt_parm)
   
   parameters
 }
