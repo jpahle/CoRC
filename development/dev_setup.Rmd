@@ -52,5 +52,12 @@ reset_copasi()
 # Tests
 
 ```{r}
+c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
+c_problem <- as(c_task$getProblem(), "_p_COptProblem")
 
+c_constlist <- c_problem$getConstraintList()
+c_optitem <- c_constlist %>% get_sv() %>% .[[1]]
+c_optitem$getObjectDisplayName()
+
+c_optitem$getObject() %>% get_cn()
 ```

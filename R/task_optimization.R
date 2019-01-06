@@ -19,7 +19,7 @@
 #' @return A list of results.
 #' @family optimization
 #' @export
-runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomize_start_values = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, method = NULL, model = getCurrentModel()) {
+runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, randomize_start_values = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, constraints = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
@@ -42,11 +42,13 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
   
   # does assertions
   parameter_list <- opt_assemble_parameters(parameters, c_problem)
+  constraint_list <- opt_assemble_constraints(constraints, c_problem)
 
   # try to avoid doing changes for performance reasons
   do_settings <- !is_empty(settings)
   do_method <- !is_empty(method_settings)
   do_parameters <- !is_empty(parameter_list)
+  do_constraints <- !is_empty(constraint_list)
   
   c_model <- c_datamodel$getModel()
   
@@ -73,6 +75,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
       set_method_settings(method_settings, c_method)
     if (do_parameters)
       addOptimizationParameter(parameter_list, model = c_datamodel)
+    if (do_constraints)
+      addOptimizationConstraint(constraint_list, model = c_datamodel)
     
     compile_and_check(c_model)
     
@@ -102,6 +106,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
     }
     if (do_parameters)
       clearOptimizationParameters()
+    if (do_constraints)
+      clearOptimizationConstraints()
   })
   
   ret
@@ -330,6 +336,127 @@ clearOptimizationParameters <- function(model = getCurrentModel()) {
   )
 }
 
+new_corc_opt_constr <- function(x, lower, upper) {
+  ret <- structure(
+    list(
+      ref   = x,
+      lower = lower,
+      upper = upper
+    ),
+    class = "corc_opt_constr"
+  )
+  
+  validate_corc_opt_constr(ret)
+  
+  ret
+}
+
+#' @export
+validate_corc_opt_constr <- function(x) {
+  assert_that(
+    all(hasName(x, c("ref", "lower", "upper"))),
+    is.string(x$ref),   noNA(x$ref),
+    is.number(x$lower), noNA(x$lower),
+    is.number(x$upper), noNA(x$upper),
+    x$lower <= x$upper
+  )
+}
+
+#' @export
+is.corc_opt_constr <- function(x) {
+  inherits(x, "corc_opt_constr")
+}
+
+#' @export
+corc_opt_constr <- function(ref, lower_bound = 1e-6, upper_bound = 1e6) {
+  new_corc_opt_parm(
+    ref,
+    lower = lower_bound,
+    upper = upper_bound
+  )
+}
+
+#' Define an optimization constraint
+#' 
+#' @param ref value reference
+#' @param lower_bound lower value bound
+#' @param upper_bound upper value bound
+#' @return corc_opt_constr object for input into related functions
+#' @seealso \code{\link{addOptimizationConstraint}} \code{\link{clearOptimizationConstraints}}
+#' @family optimization
+#' @export
+defineOptimizationConstraint <- corc_opt_constr
+
+#' Add an optimization constraint
+#' 
+#' @param ... objects as returned by \code{\link{defineOptimizationConstraint}}.
+#' Alternatively, the same parameters as used by \code{\link{defineOptimizationConstraint}}.
+#' @param model a model object
+#' @seealso \code{\link{defineOptimizationConstraint}} \code{\link{clearOptimizationConstraints}}
+#' @family optimization
+#' @export
+addOptimizationConstraint <- function(..., model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  # flatten all args into a single list
+  # this list can be used to check if the user gave only corc_opt_parm
+  arglist_compact <- rlang::squash(unname(list(...)))
+  
+  # if not all are corc_opt_parm, try handing the args to define... so we get corc_opt_parm
+  if (!every(arglist_compact, is.corc_opt_parm))
+    arglist_compact <- list(defineOptimizationConstraint(...))
+  
+  walk(arglist_compact, validate_corc_opt_parm)
+  
+  cl_obj <-
+    arglist_compact %>% 
+    map_chr("ref") %>%
+    map(xn_to_object, c_datamodel = c_datamodel)
+  
+  # Test if all refs are valid
+  # This can probably be a more elaborate and safe test (by using dn_to_object(accepted_types))
+  invalid_refs <- map_lgl(cl_obj, is.null)
+  assert_that(
+    !any(invalid_refs),
+    msg = paste0("Given reference(s) ", paste0(which(invalid_refs), collapse = ", "), " are invalid for this model.")
+  )
+  
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
+  
+  walk2(
+    arglist_compact, cl_obj,
+    ~ {
+      c_optitem <- avert_gc(COptItem(c_datamodel))
+      c_optitem$getObjectCN(.y$getCN())
+      c_optitem$setLowerBound(CCommonName(tolower(as.character(.x$lower))))
+      c_optitem$setUpperBound(CCommonName(tolower(as.character(.x$upper))))
+      c_constlist <- c_problem$getConstraintList()
+      c_constlist$append()
+    }
+  )
+  
+  invisible()
+}
+
+#' Clear all optimization constraints
+#' 
+#' @param model a model object
+#' @seealso \code{\link{addOptimizationConstraint}} \code{\link{defineOptimizationConstraint}}
+#' @family optimization
+#' @export
+clearOptimizationConstraints <- function(model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  
+  c_task <- as(c_datamodel$getTask("Optimization"), "_p_COptTask")
+  c_problem <- as(c_task$getProblem(), "_p_COptProblem")
+  
+  walk(
+    seq_len_0(c_problem$getOptItemSize()),
+    ~ c_problem$removeOptItem(0L)
+  )
+}
+
 opt_assemble_parameters <- function(parameters, c_problem) {
   assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.corc_opt_parm) || is.corc_opt_parm(parameters))
   
@@ -347,6 +474,25 @@ opt_assemble_parameters <- function(parameters, c_problem) {
   walk(parameters, validate_corc_opt_parm)
   
   parameters
+}
+
+opt_assemble_constraints <- function(constraints, c_problem) {
+  assert_that(is.null(constraints) || is.list(constraints) && every(constraints, is.corc_opt_constr) || is.corc_opt_constr(constraints))
+  
+  if (is.corc_opt_constr(constraints))
+    constraints <- list(constraints)
+  
+  if (is_empty(constraints))
+    return(list())
+  
+  assert_that(
+    c_problem$getOptItemSize() == 0L,
+    msg = "This function can not set parameters if there are already parameters set in COPASI."
+  )
+  
+  walk(constraints, validate_corc_opt_constr)
+  
+  constraints
 }
 
 # The following functions should be the basis for implementation of any task
