@@ -186,8 +186,11 @@ set_method_settings <- function(values, c_method) {
   struct <- tibble::rowid_to_column(methodstructure(c_method))
   
   data <-
-    tibble::tibble(value = values) %>%
-    dplyr::mutate(rowid = pmatch(names(values), struct$name))
+    tibble::tibble(
+      value = values,
+      rowid = pmatch(names(values), struct$name),
+      .rows = length(values)
+    )
   
   # if rowid is NA, there was no matching name in struct
   matched <- !is.na(data$rowid)
