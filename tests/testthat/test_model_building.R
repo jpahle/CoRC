@@ -106,6 +106,44 @@ test_that("newGlobalQuantity() success", {
   deleteGlobalQuantity(paste0("s", 1:7))
 })
 
+test_that("newKineticFunction() success", {
+  newKineticFunction(
+    "manual MM",
+    "((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)",
+    parameters = list(substrate = "substrate", product = "product")
+  )
+  expect_identical(kinfunction("manual MM"), "FunctionDB.Functions[manual MM]")
+})
+
+test_that("newReaction() success", {
+  newReaction("a = b", name = "r1", fun = "Reversible Michaelis-Menten")
+  expect_identical(getReactions("r1")$rate_law, "FunctionDB.Functions[Reversible Michaelis-Menten]")
+  
+  newReaction(
+    "a = b",
+    name = "r2",
+    fun = "manual MM",
+    mapping = list(
+      substrate = "a",
+      product = "b",
+      Vf = 0.1,
+      Kms = 0.2,
+      Vr = 0.3,
+      Kmp = 0.4
+    )
+  )
+  expect_identical(getReactions("r2")$rate_law, "FunctionDB.Functions[manual MM]")
+  r2_mappings <- getReactionMappings("r2")
+  expect_identical(r2_mappings$substrate, "a")
+  expect_identical(r2_mappings$product, "b")
+  expect_equal(r2_mappings$Vf, 0.1)
+  expect_equal(r2_mappings$Kms, 0.2)
+  expect_equal(r2_mappings$Vr, 0.3)
+  expect_equal(r2_mappings$Kmp, 0.4)
+  
+  deleteReaction(paste0("r", 1:2))
+})
+
 test_that("newEvent() success", {
   newEvent("s1", trigger_expression = FALSE)
   newEvent("s2", trigger_expression = FALSE, assignment_target = character(), assignment_expression = character())
