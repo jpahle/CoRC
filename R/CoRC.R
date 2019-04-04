@@ -29,12 +29,12 @@
 # Output flag for tasks
 OUTPUTFLAG <- 119L
 
-COPASI_BIN_VERSION <- 14L
+COPASI_BIN_VERSION <- 15L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    windows = "925d21897a2f9e3bc2f911a2409082dee029fce477bd869871ddeccabbae0607",
-    darwin  = "80f9fc4e0d4b47cb5cb08d4b976bedb1c3f410d5484cba31064ca6da46d4a3cc",
-    unix    = "0b9a4db42c88e7fe96ef9591814488e74519dbc13ab864d01f608198730e0cc6"
+    windows = "4968d98aa7021a90ba9598db49a6ff535155b03216ee8a8d424a71f95a5c47e4",
+    darwin  = "f335992dabc4099b71c7ac00416b35f3348109a7d5ef7ace07e52b9bd924132a",
+    unix    = "bd267263741429ebce0b5e55c5d485ce58db88728565e11b426d60f9cecefbcf"
   )
 )
 
