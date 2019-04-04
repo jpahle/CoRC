@@ -88,8 +88,10 @@ ga_concentrations <- 1:5
 for (ga_conc in ga_concentrations) {
   setSpecies("G-alpha", initial_concentration = ga_conc)
   
+  ga_state <- getSpecies("G-alpha")
+  
   print(paste(
-    "Current concentration:", getSpecies("G-alpha")$initial_concentration
+    "Current concentration:", ga_state$initial_concentration, ga_state$unit
   ))
   
   # further commands e.g.:
