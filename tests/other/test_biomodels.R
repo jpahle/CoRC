@@ -22,9 +22,9 @@ if (file.exists("bmdls.rds")) {
         map(possibly(readLines, character(), quiet = TRUE)) %>%
         map_chr(paste0, collapse = "\n"),
       exists = sbml_string != "",
-      loadable = rep_along(id, NA),
-      taskable = rep_along(id, NA),
-      cop_string = rep_along(id, NA_character_)
+      loadable = NA,
+      taskable = NA,
+      cop_string = NA_character_
     )
 
   saveRDS(biomodels, "bmdls.rds")
@@ -79,7 +79,7 @@ for (id in biomodels$id) {
 message(
   "unloadable: ",
   biomodels$loadable %>%
-    "!"() %>%
+    `!`() %>%
     which() %>%
     paste0(collapse = ", ")
 )
@@ -90,7 +90,7 @@ message(
     filter(loadable) %>%
     .$cop_string %>%
     grepl("^<\\?xml.*<COPASI.*</COPASI>(\n)?$", .) %>%
-    "!"() %>%
+    `!`() %>%
     which() %>%
     paste0(collapse = ", ")
 )
@@ -98,7 +98,7 @@ message(
 message(
   "cant do time course: ",
   biomodels$taskable %>%
-    "!"() %>%
+    `!`() %>%
     which() %>%
     paste0(collapse = ", ")
 )
