@@ -902,7 +902,7 @@ getValidReactionFunctions <- function(key, model = getCurrentModel()) {
   c_react <- reaction_obj(key, c_datamodel)[[1]]
   
   c_model <- c_datamodel$getModel()
-  c_reacti <- CReactionInterface(c_model)
+  c_reacti <- CReactionInterface()
   c_reacti$initFromReaction(c_react)
   
   # Workaround because the function vector is somehow only given as bare pointer
@@ -946,7 +946,7 @@ setReactionFunction <- function(key, fun, mappings = NULL, model = getCurrentMod
   fun <- c_fun$getObjectName()
   
   c_model <- c_datamodel$getModel()
-  c_reacti <- CReactionInterface(c_model)
+  c_reacti <- CReactionInterface()
   c_reacti$initFromReaction(c_react)
   
   valid_funs <-
@@ -991,7 +991,7 @@ getReactionMappings <- function(key, model = getCurrentModel()) {
   c_react <- reaction_obj(key, c_datamodel)[[1]]
   
   c_model <- c_datamodel$getModel()
-  c_reacti <- CReactionInterface(c_model)
+  c_reacti <- CReactionInterface()
   c_reacti$initFromReaction(c_react)
   
   params <- seq_along_v(c_reacti)
@@ -1033,7 +1033,7 @@ setReactionMappings <- function(key, mappings, model = getCurrentModel()) {
   
   c_model <- c_datamodel$getModel()
   
-  c_reacti <- CReactionInterface(c_model)
+  c_reacti <- CReactionInterface()
   c_reacti$initFromReaction(c_react)
   
   set_react_mapping(c_datamodel, c_reacti, mappings)
@@ -1153,13 +1153,13 @@ getParameters <- function(key = NULL, model = getCurrentModel()) {
   mappings[!are_local] <- 
     map2_chr(names[!are_local], cl_reacts[!are_local],
       function(name, c_react) {
-        val <- get_sv(c_react$getParameterMapping(name))
+        val <- get_sv(c_react$getParameterCNs(name))
         
         # For now don't support multiple mappings
         if (length(val) > 1)
           return("<MULTIPLE>")
   
-        get_key(c_keyfactory$get(val))
+        get_key(cn_to_object(val[[1]], c_datamodel))
       }
     )
   
@@ -1282,12 +1282,11 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   do_param <- do_value | do_mapping
 
   # Do this as assertion before we start changing values
-  # Makes sure mapping is either NA or a COPASI key
+  # Makes sure mapping is either NA or a quantity object
   if (any(do_mapping))
     mapping[do_mapping] <-
       mapping[do_mapping] %>%
-      quantity_obj(c_datamodel) %>%
-      map_swig_chr("getKey")
+      quantity_obj(c_datamodel)
   
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
@@ -1324,7 +1323,7 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
       cl_reacts[[i]]$setParameterValue(names[i], value[i])
     
     for (i in which(do_mapping))
-      cl_reacts[[i]]$setParameterMapping(names[i], mapping[i])
+      cl_reacts[[i]]$setParameterObject(names[i], mapping[[i]])
     
     cl_reacts[do_param] %>%
       unique() %>%
@@ -1396,8 +1395,8 @@ getEvents <- function(key = NULL, raw_expressions = FALSE, model = getCurrentMod
     cl_assignments %>%
     map(~
       .x %>%
-      map_swig_chr("getTargetKey") %>%
-      cop_key_to_obj() %>%
+      map_swig_chr("getTargetCN") %>%
+      map(cn_to_object, c_datamodel) %>%
       get_key()
     )
   

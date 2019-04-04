@@ -1,3 +1,8 @@
+# CoRC 0.4.0.9000 (201X-XX-XX)
+
+* Rebase on COPASI release 4.25 sources.
+* Minor fixes and code cleanups.
+
 # CoRC 0.4.0 (2018-08-01)
 
 * Rebase on COPASI release 4.24 sources.

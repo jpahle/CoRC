@@ -197,6 +197,12 @@ test_that("setParameters()", {
   
   setParameters(regex("^.Ca.\\.k\\d$"), value = 2.2)
   expect_equal(getParameters("(Ca).k1")$value, 2.2)
+  
+  setParameters("v", mapping = "Values[Ca]")
+  expect_identical(getParameters("v")$value, NA_real_)
+  expect_identical(getParameters("v")$mapping, "Values[Ca]")
+  
+  expect_error(setParameters("v", mapping = "failure"))
 })
 
 test_that("setParameters() vectorization", {
