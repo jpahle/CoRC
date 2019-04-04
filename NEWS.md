@@ -3,6 +3,7 @@
 * Rebase on COPASI release 4.25 sources.
 * Add a `preserve_concentrations` argument to `setCompartments()` to preserve species concentrations instead of particle numbers on adjustment of compartment sizes.
 * Fix a bug where clearing initial expressions in setter functions prevented them from adjusting initial values.
+* Enable for `getCopasi()` to fall back on github as a download mirror.
 * Minor fixes and code cleanups.
 
 # CoRC 0.4.0 (2018-08-01)
