@@ -22,6 +22,7 @@
 #'   \item \code{$result_number} is a data frame containing time course output as particle numbers.
 #' }
 #' \strong{Attention}: Both result data frames will be empty if \code{save_result_in_memory} is set to \code{FALSE}.
+#' Test the current value of this parameter with: \code{getTimeCourseSettings()$save_result_in_memory}.
 #' @family time course
 #' @export
 runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {

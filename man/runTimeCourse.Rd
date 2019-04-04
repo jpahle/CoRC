@@ -54,6 +54,7 @@ A list of results.
   \item \code{$result_number} is a data frame containing time course output as particle numbers.
 }
 \strong{Attention}: Both result data frames will be empty if \code{save_result_in_memory} is set to \code{FALSE}.
+Test the current value of this parameter with: \code{getTimeCourseSettings()$save_result_in_memory}.
 }
 \description{
 \code{runTimeCourse} runs a time course and returns the results in a list.
