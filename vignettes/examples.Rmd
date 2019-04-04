@@ -286,7 +286,10 @@ result <-
   runParameterEstimation(
     parameters = fit_parameters,
     experiments = fit_experiments,
-    method = "LevenbergMarquardt",
+    method = list(
+      method = "LevenbergMarquardt",
+      log_verbosity = 2
+    ),
     update_model = TRUE
   )
 
