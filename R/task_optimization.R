@@ -13,7 +13,7 @@
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_parm or list of copasi_parm objects
+#' @param parameters corc_opt_parm or list of corc_opt_parm objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model A model object.
 #' @return A list of results.
@@ -122,7 +122,7 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #' @param calculate_statistics flag
 #' @param update_model flag
 #' @param executable flag
-#' @param parameters copasi_parm or list of copasi_parm objects
+#' @param parameters corc_opt_parm or list of corc_opt_parm objects
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @family optimization
@@ -204,7 +204,7 @@ setOpt<- setOptimizationSettings
 #' @export
 getOpt <- getOptimizationSettings
 
-new_copasi_parm <- function(x, start, lower, upper) {
+new_corc_opt_parm <- function(x, start, lower, upper) {
   ret <- structure(
     list(
       ref   = x,
@@ -212,42 +212,37 @@ new_copasi_parm <- function(x, start, lower, upper) {
       lower = lower,
       upper = upper
     ),
-    class = "copasi_parm"
+    class = "corc_opt_parm"
   )
   
-  validate_copasi_parm(ret)
+  validate_corc_opt_parm(ret)
   
   ret
 }
 
 #' @export
-validate_copasi_parm <- function(x) {
+validate_corc_opt_parm <- function(x) {
   assert_that(
-    all(hasName(x, c("ref", "start", "lower", "upper")))
+    all(hasName(x, c("ref", "start", "lower", "upper"))),
+    is.string(x$ref),   noNA(x$ref),
+    is.number(x$start), noNA(x$start),
+    is.number(x$lower), noNA(x$lower),
+    is.number(x$upper), noNA(x$upper),
+    x$start < Inf,
+    x$start > -Inf,
+    x$lower <= x$start,
+    x$start <= x$upper
   )
-  
-  with(x, {
-    assert_that(
-      is.string(ref),   noNA(ref),
-      is.number(start), noNA(start),
-      is.number(lower), noNA(lower),
-      is.number(upper), noNA(upper),
-      start < Inf,
-      start > -Inf,
-      lower <= start,
-      start <= upper
-    )
-  })
 }
 
 #' @export
-is.copasi_parm <- function(x) {
-  inherits(x, "copasi_parm")
+is.corc_opt_parm <- function(x) {
+  inherits(x, "corc_opt_parm")
 }
 
 #' @export
-copasi_parm <- function(ref, start_value = (lower_bound + upper_bound) / 2, lower_bound = 1e-6, upper_bound = 1e6) {
-  new_copasi_parm(
+corc_opt_parm <- function(ref, start_value = (lower_bound + upper_bound) / 2, lower_bound = 1e-6, upper_bound = 1e6) {
+  new_corc_opt_parm(
     ref,
     start = start_value,
     lower = lower_bound,
@@ -261,11 +256,11 @@ copasi_parm <- function(ref, start_value = (lower_bound + upper_bound) / 2, lowe
 #' @param start_value start value
 #' @param lower_bound lower value bound
 #' @param upper_bound upper value bound
-#' @return copasi_parm object for input into related functions
+#' @return corc_opt_parm object for input into related functions
 #' @seealso \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 #' @family optimization
 #' @export
-defineOptimizationParameter <- copasi_parm
+defineOptimizationParameter <- corc_opt_parm
 
 #' Add an optimization parameter
 #' 
@@ -279,17 +274,18 @@ addOptimizationParameter <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # flatten all args into a single list
-  # this list can be used to check if the user gave only copasi_parm
+  # this list can be used to check if the user gave only corc_opt_parm
   arglist_compact <- rlang::squash(unname(list(...)))
   
-  # if not all are copasi_parm, try handing the args to define... so we get copasi_parm
-  if (!every(arglist_compact, is.copasi_parm))
+  # if not all are corc_opt_parm, try handing the args to define... so we get corc_opt_parm
+  if (!every(arglist_compact, is.corc_opt_parm))
     arglist_compact <- list(defineOptimizationParameter(...))
   
-  walk(arglist_compact, validate_copasi_parm)
+  walk(arglist_compact, validate_corc_opt_parm)
   
   cl_obj <-
-    map_chr(arglist_compact, "ref") %>%
+    arglist_compact %>% 
+    map_chr("ref") %>%
     map(xn_to_object, c_datamodel = c_datamodel)
   
   # Test if all refs are valid
@@ -335,9 +331,9 @@ clearOptimizationParameters <- function(model = getCurrentModel()) {
 }
 
 opt_assemble_parameters <- function(parameters, c_problem) {
-  assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.copasi_parm) || is.copasi_parm(parameters))
+  assert_that(is.null(parameters) || is.list(parameters) && every(parameters, is.corc_opt_parm) || is.corc_opt_parm(parameters))
   
-  if (is.copasi_parm(parameters))
+  if (is.corc_opt_parm(parameters))
     parameters <- list(parameters)
   
   if (is_empty(parameters))
@@ -348,7 +344,7 @@ opt_assemble_parameters <- function(parameters, c_problem) {
     msg = "This function can not set parameters if there are already parameters set in COPASI."
   )
   
-  walk(parameters, validate_copasi_parm)
+  walk(parameters, validate_corc_opt_parm)
   
   parameters
 }

@@ -33,7 +33,7 @@ Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization'
 
 \item{executable}{flag}
 
-\item{parameters}{copasi_parm or list of copasi_parm objects}
+\item{parameters}{corc_opt_parm or list of corc_opt_parm objects}
 
 \item{method}{string or list
 

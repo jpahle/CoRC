@@ -26,7 +26,7 @@ setPE(randomize_start_values = NULL, create_parameter_sets = NULL,
 
 \item{executable}{flag}
 
-\item{parameters}{copasi_parm or list of copasi_parm objects}
+\item{parameters}{corc_opt_parm or list of corc_opt_parm objects}
 
 \item{experiments}{copasi_exp or list of copasi_exp objects}
 

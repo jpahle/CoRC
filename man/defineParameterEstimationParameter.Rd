@@ -17,7 +17,7 @@ defineParameterEstimationParameter(ref, start_value = (lower_bound +
 \item{upper_bound}{upper value bound}
 }
 \value{
-copasi_parm object for input into related functions
+corc_opt_parm object for input into related functions
 }
 \description{
 Define a parameter estimation parameter
