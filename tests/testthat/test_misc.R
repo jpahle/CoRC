@@ -41,8 +41,12 @@ test_that("libs on server are accessible", {
         ext <- ".so"
         
       expect_true(
-        is_url_readable(dl_url_former(os = os, arch = arch, ext = ext)),
-        paste0("Cannot access file for os '", os, "' and arch '", arch, "'.")
+        is_url_readable(dl_url_former_pahle(os = os, arch = arch, ext = ext)),
+        paste0("Cannot access file for os '", os, "' and arch '", arch, "' on pahle server.")
+      )
+      expect_true(
+        is_url_readable(dl_url_former_github(os = os, arch = arch, ext = ext)),
+        paste0("Cannot access file for os '", os, "' and arch '", arch, "' oh github server.")
       )
     }
   }

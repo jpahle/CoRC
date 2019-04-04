@@ -38,11 +38,23 @@ COPASI_BIN_HASHES <- list(
   )
 )
 
-COPASI_BIN_BASE_URL <- "http://juergen.pahle.de/CoRC_libs/"
-dl_url_former <- function(base = COPASI_BIN_BASE_URL, version = COPASI_BIN_VERSION, os, arch, ext = .Platform$dynlib.ext) {
+COPASI_BIN_BASE_URL_PAHLE <- "http://juergen.pahle.de/CoRC_libs/"
+dl_url_former_pahle <- function(base = COPASI_BIN_BASE_URL_PAHLE, version = COPASI_BIN_VERSION, os, arch, ext = .Platform$dynlib.ext) {
   paste0(
     base,
     "v", version, "/",
+    "COPASI_", os,
+    "_", arch,
+    ext
+  )
+}
+
+COPASI_BIN_BASE_URL_GITHUB <- "https://github.com/jpahle/CoRC/"
+dl_url_former_github <- function(base = COPASI_BIN_BASE_URL_GITHUB, version = package_version(getNamespaceVersion(getPackageName())), os, arch, ext = .Platform$dynlib.ext) {
+  paste0(
+    base,
+    "releases/download/",
+    "v", version$major, ".", version$minor, ".", version$patchlevel, "/",
     "COPASI_", os,
     "_", arch,
     ext
@@ -167,18 +179,40 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       }
     }
     
-    dlurl <- dl_url_former(os = os, arch = arch)
+    dlfun <- quietly(possibly(utils::download.file, otherwise = 1))
     
     dlpath <- tempfile(pattern = "COPASI", fileext = .Platform$dynlib.ext)
     
-    # download the binaries
-    dlstatus <- utils::download.file(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
+    dlurl <- dl_url_former_pahle(os = os, arch = arch)
     
-    assert_that(dlstatus == 0, msg = "Downloading COPASI binaries failed.")
+    # download the binaries from pahle url first
+    dlresult_pahle <- dlfun(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
+    dlsuccess_pahle <- dlresult_pahle$result == 0
+    
+    dlvalidity <- FALSE
+    
+    if (dlsuccess_pahle)
+      dlvalidity <- digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os]
+    
+    if (!dlvalidity) {
+      dlurl <- dl_url_former_github(os = os, arch = arch)
+      # download the binaries from github
+      dlresult_github <- dlfun(url = dlurl, destfile = dlpath, method = "auto", quiet = quiet, mode = "wb")
+      dlsuccess_github <- dlresult_github$result == 0
+      
+      if (dlsuccess_github)
+        dlvalidity <- digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os]
+    }
+    
+    if (!dlsuccess_pahle && !dlsuccess_github) {
+      warning(dlresult_pahle$warnings)
+      warning(dlresult_github$warnings)
+      stop("Downloading COPASI binaries failed.")
+    }
     
     # Check if the hash matches
     assert_that(
-      digest::digest(dlpath, algo = "sha256", file = TRUE) == COPASI_BIN_HASHES[[arch]][os],
+      dlvalidity,
       msg = "Downloaded COPASI binaries are corrupted."
     )
   } else {
