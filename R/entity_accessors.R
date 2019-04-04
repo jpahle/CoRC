@@ -645,11 +645,13 @@ getCompartmentReferences <- function(key = NULL, model = getCurrentModel()) {
 #' @param initial_expression Initial expression to set, as string, finite numeric, or logical.
 #' @param expression Expression to set, as string, finite numeric, or logical.
 #' @param data A data frame as given by \code{\link{getCompartments}} which will be applied before the other arguments.
+#' @param preserve_concentrations Whether changes in compartment size should keep species concentrations fixed, as flag.
+#' If set to \code{TRUE}, size changes will in turn affect species particle numbers. Has no effect on expressions.
 #' @param model A model object.
 #' @seealso \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 #' @family compartment functions
 #' @export
-setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, model = getCurrentModel()) {
+setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality = NULL, initial_size = NULL, initial_expression = NULL, expression = NULL, data = NULL, preserve_concentrations = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.null(name)                    || is.character(name)                 && length(name) == length(key),
@@ -658,7 +660,8 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
     is.null(initial_size)            || is.numeric(initial_size)           && length(initial_size) == length(key),
     is.null(initial_expression)      || is.cexpression(initial_expression) && length(initial_expression) == length(key),
     is.null(expression)              || is.cexpression(expression)         && length(expression) == length(key),
-    is.null(data)                    || is.data.frame(data)
+    is.null(data)                    || is.data.frame(data),
+    is.flag(preserve_concentrations) && noNA(preserve_concentrations)
   )
   
   # Do this as assertion before we start changing values
@@ -706,7 +709,7 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setCompartments, data[names(data) %in% c("key", "name", "type", "dimensionality", "initial_size", "initial_expression", "expression")])
+    do.call(setCompartments, c(data[names(data) %in% c("key", "name", "type", "dimensionality", "initial_size", "initial_expression", "expression")], preserve_concentrations = preserve_concentrations))
   
   if (is_empty(cl_comps))
     return(invisible())
@@ -733,7 +736,10 @@ setCompartments <- function(key = NULL, name = NULL, type = NULL, dimensionality
     for (i in which(do_initial_size))
       cl_comps[[i]]$setInitialValue(initial_size[i])
     
-    c_model$updateInitialValues("ParticleNumbers")
+    if (preserve_concentrations)
+      c_model$updateInitialValues("Concentration")
+    else
+      c_model$updateInitialValues("ParticleNumbers")
   }
   
   # apply initial expressions
