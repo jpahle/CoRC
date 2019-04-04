@@ -1,4 +1,4 @@
-# CoRC 0.4.0.9000 (201X-XX-XX)
+# CoRC 0.5.0 (2019-04-05)
 
 * Rebase on COPASI release 4.25 sources.
 * Add a `preserve_concentrations` argument to `setCompartments()` to preserve species concentrations instead of particle numbers on adjustment of compartment sizes.
