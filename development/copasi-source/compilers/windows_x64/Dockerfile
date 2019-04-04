@@ -1,5 +1,6 @@
 # adapted from https://github.com/StefanScherer/dockerfiles-windows/tree/master/msbuild
-FROM microsoft/windowsservercore:10.0.14393.2363
+# FROM microsoft/windowsservercore:10.0.14393.2363
+docker pull mcr.microsoft.com/windows/servercore:ltsc2019-amd64
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 

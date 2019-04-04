@@ -39,7 +39,7 @@ RUN curl -L https://tukaani.org/xz/xz-5.2.4.tar.gz | tar -xz \
 	&& rm -r xz-*/
 
 # R depencency, current
-RUN curl -L ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.gz | tar -xz \
+RUN curl -L ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.43.tar.gz | tar -xz \
 	&& cd pcre-*/ \
 	&& ./configure --enable-utf --enable-unicode-properties --enable-jit --disable-cpp \
 	&& make \
@@ -57,7 +57,7 @@ RUN curl -L http://sourceforge.net/projects/libuuid/files/libuuid-1.0.3.tar.gz/d
 	&& rm -r libuuid-*/
 
 # COPASI depencency, current
-RUN curl -L https://cmake.org/files/v3.12/cmake-3.12.3.tar.gz | tar -xz \
+RUN curl -L https://cmake.org/files/v3.13/cmake-3.13.4.tar.gz | tar -xz \
 	&& cd cmake-*/ \
 	&& ./bootstrap \
 	&& make \

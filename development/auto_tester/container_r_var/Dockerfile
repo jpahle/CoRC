@@ -74,8 +74,8 @@ RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.4.4.tar.gz | tar -xz \
 	&& cd ../ \
 	&& rm -r R-*/
 
-# install R-3.5.1 to /opt/R/3.5/
-RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.5.1.tar.gz | tar -xz \
+# install R-3.5.3 to /opt/R/3.5/
+RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.5.3.tar.gz | tar -xz \
 	&& cd R-*/ \
  	&& ./configure \
 		--prefix=/opt/R/3.5 \

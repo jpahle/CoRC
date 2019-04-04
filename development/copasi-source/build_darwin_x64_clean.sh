@@ -12,7 +12,7 @@ echo "===== Deleting old dependencies build"
 echo "===== Building dependencies"
 BUILD_DIR=${PWD}/tmp_darwin_x64 \
 	INSTALL_DIR=${PWD}/bin_darwin_x64 \
-	./createOSX-qt5.sh
+	./createOSX.sh
 cd ../
 
 echo "===== Copying CopasiVersion.h"

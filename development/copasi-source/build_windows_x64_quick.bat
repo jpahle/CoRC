@@ -19,7 +19,7 @@ cmake ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
   -DENABLE_R=ON ^
-  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
+  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin/" ^
   -DSWIG_EXECUTABLE="C:/swigwin/swig.exe" ^
   -DR_INCLUDE_DIRS="%ProgramFiles%/R/%RVERSION%/include/" ^
   -DR_INTERPRETER="%ProgramFiles%/R/%RVERSION%/bin/R.exe" ^

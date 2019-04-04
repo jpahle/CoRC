@@ -50,7 +50,7 @@ xcode-select --install
 Consider using homebrew for macOS to install other dependencies:
 
 ```{bash, eval=FALSE}
-brew install cmake swig
+brew install cmake swig git
 ```
 
 ## Full
@@ -59,7 +59,7 @@ Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
 cd development/copasi-source/
-./build_darwin_clean.sh
+./build_darwin_x64_clean.sh
 cd ../../
 ```
 

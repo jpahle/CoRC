@@ -1,9 +1,9 @@
 cd copasi-dependencies\
 echo "===== Deleting old dependencies build"
-rmdir /s /q tmp_vs15_x64_Release
-rmdir /s /q bin_vs15_x64_Release
+rmdir /s /q tmp
+rmdir /s /q bin
 echo "===== Building dependencies"
-call .\createX86_vs15_x64_release.bat
+call .\createWindows.bat
 cd ..\
 
 echo "===== Looking for R"
@@ -26,7 +26,7 @@ cmake ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
   -DENABLE_R=ON ^
-  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin_vs15_x64_Release/" ^
+  -DCOPASI_DEPENDENCY_DIR="../copasi-dependencies/bin/" ^
   -DSWIG_EXECUTABLE="C:/swigwin/swig.exe" ^
   -DR_INCLUDE_DIRS="%ProgramFiles%/R/%RVERSION%/include/" ^
   -DR_INTERPRETER="%ProgramFiles%/R/%RVERSION%/bin/R.exe" ^

@@ -7,7 +7,7 @@ library(purrr)
 library(dplyr)
 library(CoRC)
 
-max_biomodels <- 700
+max_biomodels <- 800
 
 message("getting biomodels... this may take a while")
 if (file.exists("bmdls.rds")) {
