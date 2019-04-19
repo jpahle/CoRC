@@ -158,7 +158,7 @@
 <p><strong>Run task</strong>:</p>
 <p>Run functions return a list of results. Included in this list is an entry <code>settings</code> with contains all tasks settings.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
-<span class="co">#&gt; List of 5</span>
+<span class="co">#&gt; List of 6</span>
 <span class="co">#&gt;  $ settings     :List of 10</span>
 <span class="co">#&gt;   ..$ duration              : num 100</span>
 <span class="co">#&gt;   ..$ dt                    : num 0.01</span>
@@ -220,6 +220,7 @@
 <span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-10 6.85e-09 2.31e-08 5.48e-08 ...</span>
 <span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-14 5.31e-13 2.69e-12 8.50e-12 ...</span>
 <span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
+<span class="co">#&gt;  $ task_error   : NULL</span>
 <span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span></code></pre></div>
 </div>
 <div id="task-settings" class="section level1">
@@ -256,7 +257,7 @@
 <a href="#task-execution" class="anchor"></a>Task execution</h1>
 <p>Executing a task will return a list containing all relevant task results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(<span class="kw"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
-<span class="co">#&gt; List of 5</span>
+<span class="co">#&gt; List of 6</span>
 <span class="co">#&gt;  $ settings     :List of 10</span>
 <span class="co">#&gt;   ..$ duration              : num 10</span>
 <span class="co">#&gt;   ..$ dt                    : num 0.001</span>
@@ -318,6 +319,7 @@
 <span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-13 6.85e-12 2.31e-11 5.48e-11 ...</span>
 <span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-18 5.31e-17 2.69e-16 8.50e-16 ...</span>
 <span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
+<span class="co">#&gt;  $ task_error   : NULL</span>
 <span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(<span class="kw"><a href="../reference/runSteadyState.html">runSteadyState</a></span>())

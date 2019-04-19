@@ -5,7 +5,7 @@ setTimeCourseSettings(duration = 1e-6, intervals = 1, update_model = FALSE, meth
 
 test_that("runTimeCourse()", {
   TC <- runTimeCourse()
-  expect_length(TC, 5)
+  expect_length(TC, 6)
   
   expect_is(TC$settings, "list")
   
@@ -19,6 +19,26 @@ test_that("runTimeCourse()", {
   
   expect_type(TC$units$time, "character")
   expect_type(TC$units$concentration, "character")
+  
+  expect_true(hasName(TC, "task_error"))
+  expect_null(TC$task_error)
+})
+
+test_that("runTimeCourse() failure", {
+  expect_error(expect_warning(runTimeCourse(duration = 3000, intervals = 3)))
+  
+  expect_warning(TC <- runTimeCourse(duration = 3000, intervals = 3, soft_error = TRUE))
+  expect_length(TC, 6)
+  
+  expect_length(TC$result, 3)
+  expect_identical(nrow(TC$result), 2L)
+  
+  expect_identical(length(TC$result), length(TC$result_number))
+  expect_identical(nrow(TC$result), nrow(TC$result_number))
+  
+  expect_length(TC$column_keys, length(TC$result))
+  
+  expect_match(TC$task_error, ".+")
 })
 
 test_that("setTimeCourseSettings() method", {

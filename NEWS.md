@@ -1,3 +1,7 @@
+# CoRC 0.5.0.9000
+
+* Add parameter `soft_error` to `runTimeCourse()` to allow for readout of incomplete result tables for failed time courses.
+
 # CoRC 0.5.0 (2019-04-05)
 
 * Rebase on COPASI release 4.25 sources.

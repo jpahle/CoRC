@@ -9,13 +9,13 @@ runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
   suppress_output_before = NULL, output_events = NULL,
   save_result_in_memory = NULL, start_in_steady_state = NULL,
   update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+  soft_error = FALSE, model = getCurrentModel())
 
 runTC(duration = NULL, dt = NULL, intervals = NULL,
   suppress_output_before = NULL, output_events = NULL,
   save_result_in_memory = NULL, start_in_steady_state = NULL,
   update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+  soft_error = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{duration}{The time course duration, as number.}
@@ -45,6 +45,9 @@ The list may contain further method arguments and their values.
 
 Available methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
 
+\item{soft_error}{Whether to divert task processing errors to the \code{task_error} result entry, as flag.
+Allows for readout of incomplete result tables for failed time courses.}
+
 \item{model}{A model object.}
 }
 \value{
@@ -52,6 +55,7 @@ A list of results.
 \itemize{
   \item \code{$result} is a data frame containing time course output as concentrations.
   \item \code{$result_number} is a data frame containing time course output as particle numbers.
+  \item \code{$task_error} is \code{NULL} or, in case \code{soft_error} is set to \code{TRUE} and the time course failed, a string giving an error message.
 }
 \strong{Attention}: Both result data frames will be empty if \code{save_result_in_memory} is set to \code{FALSE}.
 Test the current value of this parameter with: \code{getTimeCourseSettings()$save_result_in_memory}.

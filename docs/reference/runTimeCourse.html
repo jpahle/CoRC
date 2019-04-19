@@ -158,13 +158,13 @@
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_in_steady_state</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>update_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
+  <span class='kw'>soft_error</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())
 
 <span class='fu'>runTC</span>(<span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_in_steady_state</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>update_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
+  <span class='kw'>soft_error</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -214,6 +214,11 @@ Overwrites <code>dt</code> in case of conflict.</p></td>
 <p>Available methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.</p></td>
     </tr>
     <tr>
+      <th>soft_error</th>
+      <td><p>Whether to divert task processing errors to the <code>task_error</code> result entry, as flag.
+Allows for readout of incomplete result tables for failed time courses.</p></td>
+    </tr>
+    <tr>
       <th>model</th>
       <td><p>A model object.</p></td>
     </tr>
@@ -224,6 +229,7 @@ Overwrites <code>dt</code> in case of conflict.</p></td>
     <p>A list of results.</p><ul>
 <li><p><code>$result</code> is a data frame containing time course output as concentrations.</p></li>
 <li><p><code>$result_number</code> is a data frame containing time course output as particle numbers.</p></li>
+<li><p><code>$task_error</code> is <code>NULL</code> or, in case <code>soft_error</code> is set to <code>TRUE</code> and the time course failed, a string giving an error message.</p></li>
 </ul><p><strong>Attention</strong>: Both result data frames will be empty if <code>save_result_in_memory</code> is set to <code>FALSE</code>.
 Test the current value of this parameter with: <code>getTimeCourseSettings()$save_result_in_memory</code>.</p>
     

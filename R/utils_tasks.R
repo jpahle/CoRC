@@ -6,21 +6,25 @@ task_enum <-
 
 # wraps the call for processing the task (processRaw) with helpers
 # so that it can be aborted interactively
-process_task <- function(c_task) {
+process_task <- function(c_task, soft_error = FALSE) {
   # the callback function is a C function from the COPASI R bindings that calls R_CheckUserInterrupt()
   cb <- RProcessCallback(0L)
   
   tryCatch({
     c_task$setCallBack(cb)
     
-    assert_that(
-      grab_msg(c_task$processRaw(TRUE)),
-      msg = "Processing the task failed."
-    )
+    success <- grab_msg(c_task$processRaw(TRUE))
+    msg <- "Processing the task failed."
+    
+    if (!success && !soft_error)
+      stop(msg)
   },
   finally = {
     c_task$clearCallBack()
   })
+  
+  if (!success)
+    msg
 }
 
 #' Autoplot method for COPASI timeseries objects.
