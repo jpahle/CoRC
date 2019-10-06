@@ -379,7 +379,7 @@ Reaction scheme where the products are created from the reactants and the change
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca]" value="6.0221408569999858e+20" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside],Vector=Metabolites[Ca]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[inside],Vector=Metabolites[Ca]" value="301107042.85000002" type="Species" simulationType="reactions"/>
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[1]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[2.5]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
           <ModelParameter cn="CN=Root,Model=Simple test with non-unique object names.,Vector=Compartments[Ca],Vector=Metabolites[Ca{}]" value="6.0221408570000002e+20" type="Species" simulationType="reactions"/>
@@ -433,7 +433,7 @@ Reaction scheme where the products are created from the reactants and the change
       <StateTemplateVariable objectReference="ModelValue_3"/>
     </StateTemplate>
     <InitialState type="initialState">
-      0 6.0221408569999858e+20 0 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 1 0.5 1 1 1 1 0 0 0 
+      0 6.0221408569999858e+20 301107042.85000002 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 6.0221408570000002e+20 1 0.5 1 1 1 1 0 0 0 
     </InitialState>
   </Model>
   <ListOfTasks>

@@ -181,8 +181,8 @@ Reaction scheme where the products are created from the reactants and the change
           <ModelParameter cn="CN=Root,Model=Simple test for parameter estimation in conjunction with simple_exp_data.txt.,Vector=Compartments[compartment]" value="1" type="Compartment" simulationType="fixed"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Species Values" type="Group">
-          <ModelParameter cn="CN=Root,Model=Simple test for parameter estimation in conjunction with simple_exp_data.txt.,Vector=Compartments[compartment],Vector=Metabolites[A]" value="0" type="Species" simulationType="reactions"/>
-          <ModelParameter cn="CN=Root,Model=Simple test for parameter estimation in conjunction with simple_exp_data.txt.,Vector=Compartments[compartment],Vector=Metabolites[B]" value="0" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test for parameter estimation in conjunction with simple_exp_data.txt.,Vector=Compartments[compartment],Vector=Metabolites[A]" value="602214179" type="Species" simulationType="reactions"/>
+          <ModelParameter cn="CN=Root,Model=Simple test for parameter estimation in conjunction with simple_exp_data.txt.,Vector=Compartments[compartment],Vector=Metabolites[B]" value="602214179" type="Species" simulationType="reactions"/>
         </ModelParameterGroup>
         <ModelParameterGroup cn="String=Initial Global Quantities" type="Group">
         </ModelParameterGroup>
@@ -206,7 +206,7 @@ Reaction scheme where the products are created from the reactants and the change
       <StateTemplateVariable objectReference="Compartment_0"/>
     </StateTemplate>
     <InitialState type="initialState">
-      0 0 0 1 
+      0 602214179 602214179 1 
     </InitialState>
   </Model>
   <ListOfTasks>
