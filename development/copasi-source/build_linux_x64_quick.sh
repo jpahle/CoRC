@@ -10,16 +10,16 @@ cd corc_linux_x64/
 : ===== Deleting copasi_wrapper.cpp and COPASI.R
 rm -f copasi/bindings/R/copasi_wrapper.cpp copasi/bindings/R/COPASI.R
 : ===== Running CMake
-cmake \
+cmake3 \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
-	-DR_INCLUDE_DIRS=/usr/local/lib64/R/include/ \
-	-DR_LIB=/usr/local/lib64/R/lib/libR.so \
-	-DR_INTERPRETER=/usr/local/bin/R \
+	-DR_INCLUDE_DIRS=/usr/lib64/R/include/ \
+	-DR_LIB=/usr/lib64/R/lib/libR.so \
+	-DR_INTERPRETER=/usr/bin/R \
 	../COPASI/
 : ===== Running Make
 make binding_r_lib

@@ -9,6 +9,7 @@ cd copasi-dependencies/
 : ===== Building dependencies
 BUILD_DIR=${PWD}/tmp_linux_x64 \
 	INSTALL_DIR=${PWD}/bin_linux_x64 \
+	CMAKE=cmake3 \
 	./createLinux.sh
 cd ../
 
@@ -20,16 +21,16 @@ cp CopasiVersion.h COPASI/copasi/
 mkdir corc_linux_x64/
 cd corc_linux_x64/
 : ===== Running CMake
-cmake \
+cmake3 \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
-	-DR_INCLUDE_DIRS=/usr/local/lib64/R/include/ \
-	-DR_LIB=/usr/local/lib64/R/lib/libR.so \
-	-DR_INTERPRETER=/usr/local/bin/R \
+	-DR_INCLUDE_DIRS=/usr/lib64/R/include/ \
+	-DR_LIB=/usr/lib64/R/lib/libR.so \
+	-DR_INTERPRETER=/usr/bin/R \
 	../COPASI/
 : ===== Running Make
 make binding_r_lib
