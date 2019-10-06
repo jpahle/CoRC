@@ -43,7 +43,7 @@ Set the method directly with a string or with a list containing the entry named 
 
 The list may contain further method arguments and their values.
 
-Available methods: 'deterministic', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
+Available methods: 'deterministic', 'RADAU5', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
 
 \item{soft_error}{Whether to divert task processing errors to the \code{task_error} result entry, as flag.
 Allows for readout of incomplete result tables for failed time courses.}

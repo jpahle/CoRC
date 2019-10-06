@@ -1,4 +1,14 @@
-// Copyright (C) 2012 - 2013 by Pedro Mendes, Virginia Tech Intellectual
+// Copyright (C) 2019 by Pedro Mendes, Rector and Visitors of the
+// University of Virginia, University of Heidelberg, and University
+// of Connecticut School of Medicine.
+// All rights reserved.
+
+// Copyright (C) 2017 - 2018 by Pedro Mendes, Virginia Tech Intellectual
+// Properties, Inc., University of Heidelberg, and University of
+// of Connecticut School of Medicine.
+// All rights reserved.
+
+// Copyright (C) 2012 - 2016 by Pedro Mendes, Virginia Tech Intellectual
 // Properties, Inc., University of Heidelberg, and The University
 // of Manchester.
 // All rights reserved.
@@ -7,11 +17,11 @@
 #define COPASI_VERSION
 
 #define COPASI_VERSION_MAJOR 4
-#define COPASI_VERSION_MINOR 25
-#define COPASI_VERSION_BUILD 207
-#define COPASI_VERSION_MODIFIED false
-#define COPASI_VERSION_COMPATIBILITY {207}
+#define COPASI_VERSION_MINOR 27
+#define COPASI_VERSION_BUILD 217
+#define COPASI_VERSION_MODIFIED true
+#define COPASI_VERSION_COMPATIBILITY {217}
 #define COPASI_VERSION_COMMENT "Source"
-#define COPASI_VERSION_CREATOR "copasi.org"
+#define COPASI_VERSION_CREATOR "jonasfoerster@gmail.com"
 
 #endif // COPASI_VERSION

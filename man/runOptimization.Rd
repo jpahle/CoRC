@@ -22,7 +22,7 @@ runOpt(expression = NULL, maximize = NULL, subtask = NULL,
 
 \item{subtask}{string
 
-Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics'.}
+Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization', 'parameterFitting', 'mca', 'lyap', 'tssAnalysis', 'sens', 'moieties', 'crosssection', 'lna', 'analytics', 'timeSens'.}
 
 \item{randomize_start_values}{flag}
 
