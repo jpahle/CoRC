@@ -1,5 +1,6 @@
 # CoRC 0.5.0.9000
 
+* Base the linux binaries on the manylinux2010 docker container.
 * Add parameter `soft_error` to `runTimeCourse()` to allow for readout of incomplete result tables for failed time courses.
 
 # CoRC 0.5.0 (2019-04-05)
