@@ -1,30 +1,41 @@
 
-<img src="man/figures/logo.png" alt="CoRC logo" width="200"> --- the <b>CO</b>PASI <b>R</b> <b>C</b>onnector
-============================================================================================================
+# <img src="man/figures/logo.png" alt="CoRC logo" width="200"> — the <b>CO</b>PASI <b>R</b> <b>C</b>onnector
 
-Overview
---------
+## Overview
 
 Development Stage: **Beta**
 
-CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI ([copasi.org](http://copasi.org)) and the (statistical) programming environment R ([r-project.org](http://r-project.org)). It provides easy access to the powerful biochemical model editing, simulation and analysis backend of COPASI from the convenient R command line interface. This allows the user to develop elaborate scripts and workflows for analyses that would require a great deal of tedious manual work otherwise. These scripts can then be run interactively from the R command line interface or be sent to cluster or cloud facilities for more demanding calculations.
+CoRC, the COPASI R Connector, links the Complex Pathway Simulator COPASI
+([copasi.org](http://copasi.org)) and the (statistical) programming
+environment R ([r-project.org](http://r-project.org)). It provides easy
+access to the powerful biochemical model editing, simulation and
+analysis backend of COPASI from the convenient R command line interface.
+This allows the user to develop elaborate scripts and workflows for
+analyses that would require a great deal of tedious manual work
+otherwise. These scripts can then be run interactively from the R
+command line interface or be sent to cluster or cloud facilities for
+more demanding calculations.
 
 CoRC features:
 
--   high-level API for COPASI in the R language.
--   Immediate access to R's data analysis capabilities and publication-ready plotting.
--   Reproducible workflows from data generation to analysis and plotting (R scripts and notebooks).
--   Rule-based modification of model structure to test structural variations or create large models.
--   Scaling up assays, e.g. from 3 models to 3000.
--   Handling of multiple models at once.
--   Parallelization on multi-core machines or computing clusters.
+  - high-level API for COPASI in the R language.
+  - Immediate access to R’s data analysis capabilities and
+    publication-ready plotting.
+  - Reproducible workflows from data generation to analysis and plotting
+    (R scripts and notebooks).
+  - Rule-based modification of model structure to test structural
+    variations or create large models.
+  - Scaling up assays, e.g. from 3 models to 3000.
+  - Handling of multiple models at once.
+  - Parallelization on multi-core machines or computing clusters.
 
-It is currently based on COPASI version 4.25 Build (207) and aims to closely follow COPASI releases in the future.
+It is currently based on COPASI version 4.27 Build (217) and aims to
+closely follow COPASI releases in the future.
 
-CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.
+CoRC comes with the Artistic License 2.0. By using CoRC you agree to
+this license.
 
-Installation
-------------
+## Installation
 
 Install the development version from GitHub:
 
@@ -34,10 +45,10 @@ remotes::install_github("jpahle/CoRC")
 CoRC::getCopasi()
 ```
 
-CoRC runs it's own version of the COPASI backend which it will download via the `getCopasi` function.
+CoRC runs it’s own version of the COPASI backend which it will download
+via the `getCopasi` function.
 
-Usage
------
+## Usage
 
 ``` r
 library(CoRC)
