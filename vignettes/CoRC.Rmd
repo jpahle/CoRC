@@ -21,7 +21,6 @@ knitr::opts_chunk$set(
 )
 set.seed(1)
 ```
-<img src="../man/figures/logo.svg" alt="CoRC logo" width="200" align="right"/>
 
 # Getting started
 
