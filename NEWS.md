@@ -1,4 +1,4 @@
-# CoRC 0.5.0.9000
+# CoRC 0.6.0 (2019-10-06)
 
 * Rebase on COPASI release 4.27 sources.
 * Require at least R version 3.2.0.
