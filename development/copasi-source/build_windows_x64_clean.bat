@@ -7,6 +7,7 @@ rmdir /s /q bin
 echo "===== Building dependencies"
 setlocal
 SET BUILD_DIR=C:\copasi-dependencies\tmp
+SET CMAKE_OVERRIDES=DWITH_STATIC_RUNTIME=ON
 call .\createWindows.bat
 rmdir C:\copasi-dependencies
 endlocal
@@ -26,6 +27,7 @@ cmake ^
   -DCMAKE_BUILD_TYPE=Release ^
   -DCMAKE_C_COMPILER=cl ^
   -DCMAKE_CXX_COMPILER=cl ^
+  -DWITH_STATIC_RUNTIME=ON ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
   -DENABLE_R=ON ^

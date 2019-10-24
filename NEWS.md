@@ -1,3 +1,7 @@
+# CoRC 0.6.1 (2019-10-24)
+
+* Remove an undocumented dependency on a Visual Studio runtime on windows.
+
 # CoRC 0.6.0 (2019-10-06)
 
 * Rebase on COPASI release 4.27 sources.
