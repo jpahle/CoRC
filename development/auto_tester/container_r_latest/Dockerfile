@@ -1,4 +1,4 @@
-FROM rocker/r-devel
+FROM r-base:latest
 
 # tidyverse should required packages installed
 # potential misses: remotes, testthat, devtools
