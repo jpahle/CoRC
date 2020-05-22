@@ -70,33 +70,6 @@ pkg_env$c_curr_dm <- NULL
 # the user can crash the R session by using unloaded model references
 pkg_env$cl_loaded_dms <- list()
 
-# if the package was loaded by devtools (pkgload) for development, load the bindings from the libs folder.
-# this is non-standard, as the libs folder typically gets populated during install compilation
-library.dynam <- function(chname, package, lib.loc, verbose = getOption("verbose"), file.ext = .Platform$dynlib.ext, ...) {
-  # if pkgload has injected itself, the package was loaded for development
-  if (getNamespaceName(environment(library.dynam.unload)) == "pkgload") {
-    # sequence modelled after base::library.dynam
-    dll_list <- .dynLibs()
-    dll_path <- system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = package, lib.loc = lib.loc, mustWork = TRUE)
-    dll_ind <- which(map_chr(dll_list, "path") == dll_path)
-    if (!is_empty(dll_ind)) {
-      if (verbose) {
-        if (.Platform$OS.type == "windows")
-          message("DLL '", chname1, "' already loaded")
-        else
-          message("shared object '", chname1, "' already loaded")
-      }
-      dll <- dll_list[[dll_ind]]
-    } else {
-      dll <- dyn.load(dll_path, DLLpath = dirname(dll_path), ...)
-      .dynLibs(c(dll_list, list(dll)))
-    }
-  } else {
-    dll <- base::library.dynam(chname, package, lib.loc, verbose, file.ext, ...)
-  }
-  invisible(dll)
-}
-
 .onLoad <- function(libname, pkgname) {
   backports::import(pkgname, c("anyNA", "dir.exists", "lengths"))
   backports::import(pkgname, "hasName", force = TRUE)
