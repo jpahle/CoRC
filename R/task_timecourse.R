@@ -246,7 +246,7 @@ tc_assemble_settings <- function(duration, dt, intervals, suppress_output_before
   assert_that(
     is.null(duration)               || is.number(duration)               && noNA(duration) && duration >= 0,
     is.null(dt)                     || is.number(dt)                     && noNA(dt)       && dt >= 0,
-    is.null(intervals)              || is.count(intervals)               && noNA(intervals),
+    is.null(intervals)              || is.count(intervals),
     is.null(suppress_output_before) || is.number(suppress_output_before) && noNA(suppress_output_before),
     is.null(output_events)          || is.flag(output_events)            && noNA(output_events),
     is.null(save_result_in_memory)  || is.flag(save_result_in_memory)    && noNA(save_result_in_memory),

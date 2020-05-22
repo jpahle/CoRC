@@ -315,8 +315,8 @@ saveSBML <- function(filename = model$getFileName(), level, version, overwrite =
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(filename), noNA(filename), filename != "",
-    is.count(level),     noNA(level),
-    is.count(version),   noNA(version)
+    is.count(level),
+    is.count(version)
   )
   
   # if (!has_extension(filename, "xml"))
@@ -353,8 +353,8 @@ saveSBML <- function(filename = model$getFileName(), level, version, overwrite =
 saveSBMLToString <- function(level, version, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
-    is.count(level),     noNA(level),
-    is.count(version),   noNA(version)
+    is.count(level),
+    is.count(version)
   )
   
   grab_msg(c_datamodel$exportSBMLToString(sbmlLevel = level, sbmlVersion = version))
