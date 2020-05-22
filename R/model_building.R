@@ -613,6 +613,8 @@ function_role_enum <-
 #' @family reaction functions
 #' @export
 newKineticFunction <- function(name, formula, parameters, function_type = c("general", "reversible", "irreversible")) {
+  assert_binaries()
+  
   assert_that(
     is.string(name), noNA(name),
     is.string(formula), noNA(formula)
@@ -694,6 +696,8 @@ newKineticFunction <- function(name, formula, parameters, function_type = c("gen
 #' @family reaction functions
 #' @export
 deleteKineticFunction <- function(key) {
+  assert_binaries()
+  
   cl_funs <- kinfunction_obj(key)
   
   c_fun_db <- CRootContainer_getFunctionList()
@@ -723,6 +727,8 @@ deleteKineticFunction <- function(key) {
 #' @family reaction functions
 #' @export
 clearCustomKineticFunctions <- function() {
+  assert_binaries()
+  
   c_fun_db <- CRootContainer_getFunctionList()
   
   c_fun_db$loadedFunctions() %>%
