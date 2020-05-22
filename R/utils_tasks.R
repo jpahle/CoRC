@@ -38,7 +38,7 @@ process_task <- function(c_task, soft_error = FALSE) {
 #' @return A ggplot2 plot
 # #' @importFrom ggplot2 autoplot
 #' @export autoplot.copasi_ts
-'autoplot.copasi_ts' <- function(object, ..., use_concentrations = TRUE) {
+`autoplot.copasi_ts` <- function(object, ..., use_concentrations = TRUE) {
   # make sure ggplot2, tidyr is available
   loadNamespace("ggplot2")
   loadNamespace("tidyr")
@@ -52,26 +52,35 @@ process_task <- function(c_task, soft_error = FALSE) {
   else
     tc <- object$result_number
   
-  names_vec <- flatten_chr(list(...))
+  column_keys <- object$column_keys
+  # find time column
+  time_col_i <- match("Time", column_keys)
+  assert_that(!is.na(time_col_i), msg = "No `Time` column present.")
+  time_col <- tc[time_col_i]
+  tc <- tc[-time_col_i]
+  column_keys <- column_keys[-time_col_i]
   
-  # prefer full match to keys
-  matches <- match(names_vec, object$column_keys)
-  matched <- !is.na(matches)
+  selections_vec <- flatten_chr(list(...))
   
-  if (!all(matched)) {
-    # then use partial matching
-    matches[!matched] <- pmatch(names_vec[!matched], names(tc))
+  if (!is_empty(selections_vec)) {
+    # prefer full match to keys
+    matches <- match(selections_vec, column_keys)
     matched <- !is.na(matches)
     
     if (!all(matched)) {
-      warning("Partial matching failed for some entities")
-      matches <- matches[!is.na(matches)]
+      # then use partial matching
+      matches[!matched] <- pmatch(selections_vec[!matched], names(tc))
+      matched <- !is.na(matches)
+      
+      if (!all(matched))
+        stop("Partial matching failed for '", paste0(selections_vec[which(!matched)], collapse = "', '"), "'.")
     }
+    
+    # only add entities selected in ...
+    tc <- tc[, matches]
   }
   
-  # only add entities selected in ...
-  if (!is_empty(matches))
-    tc[, c("Time", matches)]
+  tc <- vctrs::vec_cbind(time_col, tc, .name_repair = "minimal")
   
   units <- object$units
   
@@ -84,8 +93,8 @@ process_task <- function(c_task, soft_error = FALSE) {
   
   # reshape data frame for ggplot and define the plot
   tc %>%
-    tidyr::pivot_longer(-.data$Time, names_to = "Entities", values_to = "Concentration") %>%
-    ggplot2::ggplot(ggplot2::aes_(x = ~ Time, y = ~ Concentration, group = ~ Entities, color = ~ Entities)) +
+    tidyr::pivot_longer(-1, names_to = "Entities", values_to = "Concentration") %>%
+    ggplot2::ggplot(ggplot2::aes_(x = as.name(names(tc)[1]), y = ~ Concentration, group = ~ Entities, color = ~ Entities)) +
     ggplot2::geom_line() +
     ggplot2::labs(
       x = x_label,
