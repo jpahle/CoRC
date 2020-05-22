@@ -34,7 +34,7 @@ COPASI_BIN_HASHES <- list(
   x86_64 = c(
     windows = "4575d4edfbeab92224fbdf0e163c597061a00f5d65cb4dd3f8992f4463e1a6c6",
     darwin  = "e5deb5cf394097a757249acfb336b02245a6eeee0801965b264bd3f77fce1b78",
-    unix    = "411c434af3aa2e03394c0787bab5f436de8c837ce36fc492465bcb65473e67b0"
+    linux   = "411c434af3aa2e03394c0787bab5f436de8c837ce36fc492465bcb65473e67b0"
   )
 )
 
@@ -118,8 +118,8 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     if (substr(R.Version()$os, 1L, 6L) == "darwin")
       os <- "darwin"
     else
-      os <- "unix"
-    # Gather data about os (created for ubuntu but may work for other unix os)
+      os <- "linux"
+    # Gather data about os (created for ubuntu but may work for other linux os)
     # osfile <- readLines("/etc/os-release")
     # 
     # id_string <- stats::na.omit(stringr::str_match(osfile, "^ID=(.+)$"))
@@ -151,7 +151,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
   if (is.null(path)) {
     assert_that(
       !is.null(os),
-      msg = "Unsupported platform. Supply COPASI binaries via the `path` argument."
+      msg = "Unsupported platform. Consider supplying custom COPASI bindings via the `path` argument."
     )
     
     assert_that(
@@ -161,7 +161,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
     
     assert_that(
       os %in% names(COPASI_BIN_HASHES[[arch]]),
-      msg = paste0("There are currently no binaries available for your platform (", os, "_", arch, ").")
+      msg = paste0("There are currently no COPASI bindings available for your platform (", os, "_", arch, ").")
     )
     
     # Don't do anything if the current lib file is good.
@@ -169,7 +169,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
       current_file_hash <- digest::digest(libfile, algo = "sha256", file = TRUE)
       if (current_file_hash == COPASI_BIN_HASHES[[arch]][os]) {
         if (!quiet)
-          message("Skipping download because current binaries are up to date and uncorrupted.")
+          message("Skipping download because current COPASI bindings are up to date and uncorrupted.")
         return(invisible())
       }
     }

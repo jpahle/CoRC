@@ -1,16 +1,26 @@
 # manylinux supplies a base centos5 with recent openssl etc.
 FROM quay.io/pypa/manylinux2010_x86_64
 
-# Make sure to adjust the R version further below
+# This is the main linux compiler
+ENV LINUX_TAG=linux_x86_64
 
-RUN yum update \
+RUN yum update -y \
 	&& yum install -y \
-		cmake3 \
 		libuuid-devel \
+		openssl-devel \
 		R-core-devel \
 	&& yum clean all
 
-WORKDIR /prep
+WORKDIR /prep/
+
+# COPASI depencency, current
+RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.2.tar.gz | tar -xz \
+	&& cd cmake-*/ \
+	&& ./bootstrap \
+	&& make -j$(nproc) \
+	&& make install \
+	&& cd ../ \
+	&& rm -r cmake-*/
 
 # COPASI R bindings depencency, keep 3.0.12
 # RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
@@ -19,9 +29,9 @@ RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \
 	&& cd swig-rel-*/ \
 	&& ./autogen.sh \
 	&& ./configure --disable-dependency-tracking \
-	&& make \
+	&& make -j$(nproc) \
 	&& make install \
 	&& cd ../ \
 	&& rm -r swig-rel-*/
 
-WORKDIR /work
+WORKDIR /work/

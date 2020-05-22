@@ -2,14 +2,14 @@ call C:\BuildTools\Common7\Tools\VsDevCmd.bat -arch=amd64
 
 cd copasi-dependencies\
 echo "===== Deleting old dependencies build"
-rmdir /s /q tmp
-rmdir /s /q bin
+rmdir tmp\ /s /q
+rmdir bin\ /s /q
 echo "===== Building dependencies"
 setlocal
 SET BUILD_DIR=C:\copasi-dependencies\tmp
-SET CMAKE_OVERRIDES=DWITH_STATIC_RUNTIME=ON
+SET CMAKE_OVERRIDES=-DWITH_STATIC_RUNTIME=ON
 call .\createWindows.bat
-rmdir C:\copasi-dependencies
+rmdir C:\copasi-dependencies\ /s /q
 endlocal
 
 echo "===== Looking for R"
@@ -42,8 +42,8 @@ ninja binding_r_lib
 
 cd C:\work\
 echo "===== Export the result"
-rmdir corc_windows_x64\
-robocopy C:\corc_windows_x64\ corc_windows_x64\ /e /nfl /move
+rmdir corc_windows_x64\ /s /q
+robocopy C:\corc_windows_x64\ corc_windows_x64\ /e /nfl /ndl /move
 echo "===== Copying results into libs/"
 mkdir libs\
 copy /Y corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x86_64.dll

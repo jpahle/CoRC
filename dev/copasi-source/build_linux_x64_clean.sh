@@ -2,42 +2,50 @@
 set -e
 set -x
 
+: ===== Setting ENV
+LINUX_TAG=${LINUX_TAG:=default_linux_x64}
+CMAKE=${CMAKE:=cmake}
+
 cd copasi-dependencies/
 : ===== Deleting old dependencies build
-[[ -d "tmp_linux_x64" ]] && rm -r tmp_linux_x64/
-[[ -d "bin_linux_x64" ]] && rm -r bin_linux_x64/
+[[ -d "tmp_${LINUX_TAG}" ]] && rm -r tmp_${LINUX_TAG}/
+[[ -d "bin_${LINUX_TAG}" ]] && rm -r bin_${LINUX_TAG}/
+mkdir tmp_${LINUX_TAG}/
+cd tmp_${LINUX_TAG}/
 : ===== Building dependencies
-BUILD_DIR=${PWD}/tmp_linux_x64 \
-	INSTALL_DIR=${PWD}/bin_linux_x64 \
-	CMAKE=cmake3 \
-	./createLinux.sh
-cd ../
+${CMAKE} \
+	-DGIT_SUBMODULE=OFF \
+	-DCMAKE_INSTALL_PREFIX=../bin_${LINUX_TAG} \
+	-DBUILD_UI_DEPS=FALSE \
+	../
+make -j$(nproc)
+cd ../../
 
 : ===== Copying CopasiVersion.h
 cp CopasiVersion.h COPASI/copasi/
 
 : ===== Deleting old build
-[[ -d "corc_linux_x64" ]] && rm -r corc_linux_x64/
-mkdir corc_linux_x64/
-cd corc_linux_x64/
+[[ -d "corc_${LINUX_TAG}" ]] && rm -r corc_${LINUX_TAG}/
+mkdir corc_${LINUX_TAG}/
+cd corc_${LINUX_TAG}/
 : ===== Running CMake
-cmake3 \
+${CMAKE} \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
-	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_linux_x64/ \
+	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_${LINUX_TAG}/ \
 	-DR_INCLUDE_DIRS=/usr/lib64/R/include/ \
 	-DR_LIB=/usr/lib64/R/lib/libR.so \
 	-DR_INTERPRETER=/usr/bin/R \
 	../COPASI/
 : ===== Running Make
-make binding_r_lib
+make -j$(nproc) binding_r_lib
 cd ../
 
 : ===== Copying results into libs/
 mkdir -p libs/
-cp corc_linux_x64/copasi/bindings/R/COPASI.so libs/COPASI_unix_x86_64.so
-cp corc_linux_x64/copasi/bindings/R/COPASI.so libs/COPASI.so
-cp corc_linux_x64/copasi/bindings/R/COPASI.R libs/swig_wrapper.R
+cp corc_${LINUX_TAG}/copasi/bindings/R/COPASI.so libs/COPASI_${LINUX_TAG}.so
+cp corc_${LINUX_TAG}/copasi/bindings/R/COPASI.so libs/COPASI.so
+cp corc_${LINUX_TAG}/copasi/bindings/R/COPASI.R libs/swig_wrapper.R

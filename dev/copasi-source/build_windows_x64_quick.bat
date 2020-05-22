@@ -8,7 +8,7 @@ echo "===== Copying CopasiVersion.h"
 copy /Y CopasiVersion.h COPASI\copasi\
 
 echo "===== Copying the current build"
-robocopy corc_windows_x64\ C:\corc_windows_x64\ /e /nfl
+robocopy corc_windows_x64\ C:\corc_windows_x64\ /e /nfl /ndl
 mkdir C:\corc_windows_x64\
 cd C:\corc_windows_x64\
 echo "===== Deleting copasi_wrapper.cpp and COPASI.R"
@@ -20,6 +20,7 @@ cmake ^
   -DCMAKE_BUILD_TYPE=Release ^
   -DCMAKE_C_COMPILER=cl ^
   -DCMAKE_CXX_COMPILER=cl ^
+  -DWITH_STATIC_RUNTIME=ON ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
   -DENABLE_R=ON ^
@@ -34,8 +35,8 @@ ninja binding_r_lib
 
 cd C:\work\
 echo "===== Export the result"
-rmdir corc_windows_x64\
-robocopy C:\corc_windows_x64\ corc_windows_x64\ /e /nfl /move
+rmdir corc_windows_x64\ /s /q
+robocopy C:\corc_windows_x64\ corc_windows_x64\ /e /nfl /ndl /move
 echo "===== Copying results into libs/"
 mkdir libs\
 copy /Y corc_windows_x64\copasi\bindings\R\COPASI.dll libs\COPASI_windows_x86_64.dll

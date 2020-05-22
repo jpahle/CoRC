@@ -58,9 +58,9 @@ brew install cmake swig git
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
+cd copasi-source/
 ./build_darwin_x64_clean.sh
-cd ../../
+cd ../
 ```
 
 ## Quick
@@ -69,9 +69,9 @@ Requires copasi-dependencies to be compiled already.
 Uses existing build but might cause issues when copasi_wrapper.cpp is old.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
+cd copasi-source/
 ./build_darwin_x64_quick.sh
-cd ../../
+cd ../
 ```
 
 ## (Optionally) Build GUI
@@ -87,18 +87,18 @@ brew install qt
 Build dependencies:
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/copasi-dependencies/
+cd copasi-source/copasi-dependencies/
 export PATH="/usr/local/opt/qt/bin:$PATH"
 BUILD_DIR=${PWD}/tmp_darwin_x64 \
 	INSTALL_DIR=${PWD}/bin_darwin_x64 \
   ./createOSX-qt5.sh
-cd ../../../
+cd ../../
 ```
 
 Build GUI:
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/corc_darwin_x64/
+cd copasi-source/corc_darwin_x64/
 export PATH="/usr/local/opt/qt/bin:$PATH"
 cmake \
   -DBUILD_GUI=ON \
@@ -106,7 +106,7 @@ cmake \
   -DQT5_USE_WEBENGINE=ON \
   .
 make
-cd ../../../
+cd ../../
 ```
 
 # Windows
@@ -148,46 +148,47 @@ vagrant destroy 2016-box
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
-./d_build_windows_clean.sh
-cd ../../
+cd copasi-source/
+./d_build_windows_x64_clean.sh
+cd ../
 ```
 
 alternatives:
-  on windows: d_build_windows_clean.ps1
-  without docker: build_windows_clean.bat (see windows Dockerfile for system requirements)
+  on windows: d_build_windows_x64_clean.ps1
+  without docker: build_windows_x64_clean.bat (see windows Dockerfile for system requirements)
 
 ## Quick
 
 Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
+cd copasi-source/
 ./d_build_windows_x64_quick.sh
-cd ../../
+cd ../
 ```
 
 alternatives:
-  on windows: d_build_windows_quick.ps1
-  without docker: build_windows_quick.bat (see windows Dockerfile for system requirements)
+  on windows: d_build_windows_x64_quick.ps1
+  without docker: build_windows_x64_quick.bat (see windows Dockerfile for system requirements)
 
 # Linux
 
 For linux we generally use docker.
 Install docker CE and get docker permissions for your user.
+The manylinux2010 container is the basis for the linux binaries.
 
 ## Full
 
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
-./d_build_linux_clean.sh
-cd ../../
+cd copasi-source/
+./d_build_manylinux2010_x64_clean.sh
+cd ../
 ```
 
 alternatives:
-  on windows: d_build_linux_clean.ps1
+  on windows: d_build_manylinux2010_x64_clean.ps1
   without docker: build_linux_clean.sh (see linux Dockerfile for system requirements)
 
 ## Quick
@@ -195,13 +196,13 @@ alternatives:
 Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
-cd dev/copasi-source/
-./d_build_linux_x64_quick.sh
-cd ../../
+cd copasi-source/
+./d_build_manylinux2010_x64_quick.sh
+cd ../
 ```
 
 alternatives:
-  on windows: d_build_linux_quick.ps1
+  on windows: d_build_manylinux2010_x64_quick.ps1
   without docker: build_linux_quick.sh (see linux Dockerfile for system requirements)
 
 # Copying the relevant file into the package repository
