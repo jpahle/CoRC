@@ -1,5 +1,5 @@
 pandoc: 2.3.1
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   CoRC: CoRC.html
@@ -8,6 +8,7 @@ articles:
   issues: issues.html
   model_building: model_building.html
   task_management: task_management.html
+last_built: 2020-05-22T10:14Z
 urls:
   reference: https://jpahle.github.io/CoRC/reference
   article: https://jpahle.github.io/CoRC/articles
