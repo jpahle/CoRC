@@ -110,10 +110,10 @@ plotdata <-
   # calculate mean and sd for all time points
   summarise_all(funs(mean, sd)) %>%
   # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
-  gather("name", "value", -Time) %>%
+  pivot_longer(-Time) %>%
   # split up information on species (a,b,c) and type of value (mean, sd)
   separate(name, c("species", "type"), "_") %>%
-  spread(type, value)
+  pivot_wider(names_from = type, values_from = value)
 
 print(plotdata, n = 6)
 
@@ -230,7 +230,7 @@ scan <-
 plotdata <-
   scan %>%
   bind_rows() %>%
-  gather("reaction", "flux", CGS, TS)
+  pivot_longer(c(CGS, TS), names_to = "reaction", values_to = "flux")
 
 plot <-
   ggplot(data = plotdata, aes(x = adomed, y = flux, group = reaction, tt_cys = cysteine)) +

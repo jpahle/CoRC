@@ -49,6 +49,7 @@ test_that("setTimeCourseSettings() method", {
 
 test_that("autoplot.copasi_ts()", {
   skip_if_not_installed("ggplot2")
+  skip_if_not_installed("tidyr")
   
   TC <- runTimeCourse()
   expect_s3_class(autoplot.copasi_ts(TC), "ggplot")

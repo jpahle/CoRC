@@ -363,7 +363,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   if (is.data.frame(data))
     data <- list(data)
   assert_that(every(data, is.data.frame))
-  data <- map(data, tibble::as_tibble, validate = TRUE)
+  data <- map(data, tibble::as_tibble)
 
   # get experiment names from names of data or use list position ("Experiment_x")
   experiment_names <- names(data) %||% rep_along(data, NA_character_)
@@ -374,7 +374,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   experiment_lengths <- map_int(data, nrow)
   experiment_lastrows <- cumsum(experiment_lengths)
   
-  data <- dplyr::bind_rows(data)
+  data <- vctrs::vec_rbind(!!!data, .name_repair = "check_unique")
   data_cols <- names(data)
   
   # types

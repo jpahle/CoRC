@@ -417,8 +417,8 @@ tc_get_results <- function(c_task, settings) {
     
   names(data_val) <- col_names
   
-  data_val <- dplyr::bind_cols(data_val)
-
+  data_val <- tibble::tibble(!!!data_val, .name_repair = "minimal")
+  
   data_conc <- replace(data_val, are_metab_col, data_conc_subset)
   
   new_copasi_ts(

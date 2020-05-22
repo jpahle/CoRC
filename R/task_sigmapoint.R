@@ -39,6 +39,8 @@
 runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experiments, mean_fit_as_basis = TRUE, cl = NULL, model = getCurrentModel()) {
   # TODO
   warning("This implementation of the sigma point method is almost completely untested.")
+  loadNamespace("dplyr")
+  loadNamespace("tidyr")
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.number(alpha),
@@ -203,7 +205,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     map(~
       .x$parameters %>%
         dplyr::select(.data$parameter, .data$value) %>%
-        tidyr::spread(.data$parameter, .data$value)
+        tidyr::pivot_wider(names_from = .data$parameter, values_from = .data$value)
     ) %>%
     dplyr::bind_rows()
   param_vals_matrix <- as.matrix(param_vals)

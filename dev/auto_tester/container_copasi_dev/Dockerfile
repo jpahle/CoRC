@@ -9,7 +9,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # install some tedious dependencies early
-RUN R -e 'chooseCRANmirror(ind = 1); install.packages(c("remotes", "sessioninfo", "testthat", "purrr", "tidyr", "dplyr", "stringr", "readr"))'
+RUN R -e 'chooseCRANmirror(ind = 1); install.packages(c("remotes", "sessioninfo", "testthat", "vctrs", "purrr", "stringr", "readr"))'
 
 # make COPASI dependencies
 ADD https://github.com/copasi/copasi-dependencies/archive/master.tar.gz copasi-dependencies/

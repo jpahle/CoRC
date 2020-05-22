@@ -39,8 +39,9 @@ process_task <- function(c_task, soft_error = FALSE) {
 # #' @importFrom ggplot2 autoplot
 #' @export autoplot.copasi_ts
 'autoplot.copasi_ts' <- function(object, ..., use_concentrations = TRUE) {
-  # make sure ggplot2 is available
+  # make sure ggplot2, tidyr is available
   loadNamespace("ggplot2")
+  loadNamespace("tidyr")
   
   assert_that(is.flag(use_concentrations) && noNA(use_concentrations))
   
@@ -70,7 +71,7 @@ process_task <- function(c_task, soft_error = FALSE) {
   
   # only add entities selected in ...
   if (!is_empty(matches))
-    tc <- dplyr::select(tc, .data$Time, !!!matches)
+    tc[, c("Time", matches)]
   
   units <- object$units
   
@@ -83,7 +84,7 @@ process_task <- function(c_task, soft_error = FALSE) {
   
   # reshape data frame for ggplot and define the plot
   tc %>%
-    tidyr::gather("Entities", "Concentration", -.data$Time) %>%
+    tidyr::pivot_longer(-.data$Time, names_to = "Entities", values_to = "Concentration") %>%
     ggplot2::ggplot(ggplot2::aes_(x = ~ Time, y = ~ Concentration, group = ~ Entities, color = ~ Entities)) +
     ggplot2::geom_line() +
     ggplot2::labs(
@@ -213,7 +214,7 @@ set_method_settings <- function(values, c_method) {
   
   data <- data[!has_null_value, ]
   
-  data <- dplyr::left_join(data, struct, by = "rowid")
+  data <- tibble::tibble(merge(data, struct, by = "rowid", all.x = TRUE))
   
   skipped <- map_lgl(data$control_fun, is.null)
   
