@@ -4,8 +4,7 @@
 .Ruserdata
 *.DS_Store
 dev/copasi-source/corc_*_*/
-dev/copasi-source/compilers/corc_compiler_*_*
 dev/copasi-source/libs/
 dev/*.nb.html
-inst/doc
-inst/libs
+libs/
+

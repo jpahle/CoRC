@@ -5,4 +5,5 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^vignettes/examples\.Rmd$
-#useforrelease^inst/libs/*$
+^libs/*$
+^inst/libs/*$

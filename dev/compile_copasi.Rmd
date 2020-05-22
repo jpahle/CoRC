@@ -209,13 +209,14 @@ alternatives:
 Will also patch the swig wrapper (COPASI.R) as per patch-swig-wrapper.R
 
 ```{r, eval=FALSE}
-source("../dev/update-swig-in-package.R", chdir = TRUE)
+source("../dev/update-swig-in-package.R", local = new.env(), chdir = TRUE)
 ```
 
 # Installing the package
 
 ```{r, eval=FALSE}
 devtools::install("..")
+CoRC::getCopasi(file.path("..", "libs", paste0("COPASI", .Platform$dynlib.ext)))
 ```
 
 # Getting the current hash for the binary (update it in CoRC.R)

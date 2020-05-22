@@ -18,7 +18,7 @@ stopifnot(
 # apply the wrapper patches
 source("patch-swig-wrapper.R", chdir = TRUE)
 
-libpath <- file.path("..", "inst", "libs")
+libpath <- file.path("..", "libs")
 
 if (!dir.exists(libpath))
   dir.create(libpath, recursive = TRUE)
@@ -28,30 +28,12 @@ stopifnot(
   file.copy(binfile, file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 )
 
-libpath <- file.path("..", "inst", "libs", "x64")
-libpath_fake <- file.path("..", "inst", "libs", "i386")
+instlibpath <- file.path("..", "inst", "libs")
 
-if (!dir.exists(libpath))
-  dir.create(libpath, recursive = TRUE)
-if (!dir.exists(libpath_fake))
-  dir.create(libpath_fake, recursive = TRUE)
+if (!dir.exists(instlibpath))
+  dir.create(instlibpath, recursive = TRUE)
 
 # Copy the binaries (COPASI.xx)
 stopifnot(
-  file.copy(binfile, file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
+  file.copy(binfile, file.path(instlibpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 )
-
-# Also copy binaries to the installed package
-rlibpath <- system.file("libs", paste0("COPASI", .Platform$dynlib.ext), package = pkgname)
-if (rlibpath != "")
-  stopifnot(
-    file.copy(binfile, rlibpath, overwrite = TRUE)
-  )
-
-rlibpath <- system.file("libs", "x64", paste0("COPASI", .Platform$dynlib.ext), package = pkgname)
-if (rlibpath != "")
-  stopifnot(
-    file.copy(binfile, rlibpath, overwrite = TRUE)
-  )
-
-rm(buildpath, rfile, binfile, libpath, rlibpath)

@@ -24,6 +24,7 @@ pkgdown::build_reference()
 
 ```{r, include=FALSE}
 devtools::install()
+CoRC::getCopasi(file.path("libs", paste0("COPASI", .Platform$dynlib.ext)))
 ```
 
 # Load the Package
