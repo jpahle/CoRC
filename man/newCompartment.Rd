@@ -4,10 +4,15 @@
 \alias{newCompartment}
 \title{Create a new compartment}
 \usage{
-newCompartment(name, type = c("fixed", "assignment", "ode"),
-  dimensionality = NULL, initial_size = NULL,
-  initial_expression = NULL, expression = NULL,
-  model = getCurrentModel())
+newCompartment(
+  name,
+  type = c("fixed", "assignment", "ode"),
+  dimensionality = NULL,
+  initial_size = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{name}{string}
@@ -33,10 +38,11 @@ Arguments priority from lowest to highest is \code{initial_size}, \code{initial_
 The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{entity_finders}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{getCompartments}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{entity_finders}},
+\code{\link{getCompartmentReferences}()},
+\code{\link{getCompartments}()},
+\code{\link{setCompartments}()}
 }
 \concept{compartment functions}

@@ -4,8 +4,13 @@
 \alias{newReaction}
 \title{Create a new reaction}
 \usage{
-newReaction(reaction, name = reaction, fun = NULL, mappings = NULL,
-  model = getCurrentModel())
+newReaction(
+  reaction,
+  name = reaction,
+  fun = NULL,
+  mappings = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{reaction}{Reaction equation to set, as string.}
@@ -31,20 +36,21 @@ reaction key
 The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{entity_finders}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{entity_finders}},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 }
 \concept{reaction functions}

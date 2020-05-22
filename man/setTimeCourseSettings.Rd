@@ -5,17 +5,33 @@
 \alias{setTC}
 \title{Set time course settings}
 \usage{
-setTimeCourseSettings(duration = NULL, dt = NULL, intervals = NULL,
-  suppress_output_before = NULL, output_events = NULL,
-  save_result_in_memory = NULL, start_in_steady_state = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+setTimeCourseSettings(
+  duration = NULL,
+  dt = NULL,
+  intervals = NULL,
+  suppress_output_before = NULL,
+  output_events = NULL,
+  save_result_in_memory = NULL,
+  start_in_steady_state = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-setTC(duration = NULL, dt = NULL, intervals = NULL,
-  suppress_output_before = NULL, output_events = NULL,
-  save_result_in_memory = NULL, start_in_steady_state = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+setTC(
+  duration = NULL,
+  dt = NULL,
+  intervals = NULL,
+  suppress_output_before = NULL,
+  output_events = NULL,
+  save_result_in_memory = NULL,
+  start_in_steady_state = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{duration}{number}
@@ -53,7 +69,8 @@ Available methods: 'deterministic', 'RADAU5', 'stochastic', 'directMethod', 'tau
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other time course: \code{\link{getTimeCourseSettings}},
-  \code{\link{runTimeCourse}}
+Other time course: 
+\code{\link{getTimeCourseSettings}()},
+\code{\link{runTimeCourse}()}
 }
 \concept{time course}

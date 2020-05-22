@@ -20,6 +20,7 @@ a numeric vector of initial values
 \seealso{
 \code{\link{getValue}}
 
-Other expression functions: \code{\link{getValue}}
+Other expression functions: 
+\code{\link{getValue}()}
 }
 \concept{expression functions}

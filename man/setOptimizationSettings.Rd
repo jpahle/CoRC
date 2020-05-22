@@ -5,16 +5,31 @@
 \alias{setOpt}
 \title{Set optimization settings}
 \usage{
-setOptimizationSettings(expression = NULL, maximize = NULL,
-  subtask = NULL, randomize_start_values = NULL,
-  calculate_statistics = NULL, update_model = NULL,
-  executable = NULL, parameters = NULL, method = NULL,
-  model = getCurrentModel())
+setOptimizationSettings(
+  expression = NULL,
+  maximize = NULL,
+  subtask = NULL,
+  randomize_start_values = NULL,
+  calculate_statistics = NULL,
+  update_model = NULL,
+  executable = NULL,
+  parameters = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-setOpt(expression = NULL, maximize = NULL, subtask = NULL,
-  randomize_start_values = NULL, calculate_statistics = NULL,
-  update_model = NULL, executable = NULL, parameters = NULL,
-  method = NULL, model = getCurrentModel())
+setOpt(
+  expression = NULL,
+  maximize = NULL,
+  subtask = NULL,
+  randomize_start_values = NULL,
+  calculate_statistics = NULL,
+  update_model = NULL,
+  executable = NULL,
+  parameters = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{expression}{Expression to optimize, as string.}
@@ -52,10 +67,11 @@ Available methods: 'Statistics', 'DifferentialEvolution', 'SRES', 'EvolutionaryP
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other optimization: \code{\link{addOptimizationParameter}},
-  \code{\link{clearOptimizationParameters}},
-  \code{\link{defineOptimizationParameter}},
-  \code{\link{getOptimizationSettings}},
-  \code{\link{runOptimization}}
+Other optimization: 
+\code{\link{addOptimizationParameter}()},
+\code{\link{clearOptimizationParameters}()},
+\code{\link{defineOptimizationParameter}()},
+\code{\link{getOptimizationSettings}()},
+\code{\link{runOptimization}()}
 }
 \concept{optimization}

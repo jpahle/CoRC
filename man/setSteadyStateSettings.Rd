@@ -5,13 +5,23 @@
 \alias{setSS}
 \title{Set steady state settings}
 \usage{
-setSteadyStateSettings(calculate_jacobian = NULL,
-  perform_stability_analysis = NULL, update_model = NULL,
-  executable = NULL, method = NULL, model = getCurrentModel())
+setSteadyStateSettings(
+  calculate_jacobian = NULL,
+  perform_stability_analysis = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-setSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  model = getCurrentModel())
+setSS(
+  calculate_jacobian = NULL,
+  perform_stability_analysis = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{calculate_jacobian}{flag}
@@ -33,7 +43,8 @@ setSS(calculate_jacobian = NULL, perform_stability_analysis = NULL,
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other steady state: \code{\link{getSteadyStateSettings}},
-  \code{\link{runSteadyState}}
+Other steady state: 
+\code{\link{getSteadyStateSettings}()},
+\code{\link{runSteadyState}()}
 }
 \concept{steady state}

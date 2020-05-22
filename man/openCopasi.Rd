@@ -4,8 +4,7 @@
 \alias{openCopasi}
 \title{Open the model in the COPASI GUI}
 \usage{
-openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
-  model = getCurrentModel())
+openCopasi(readin = FALSE, copasi_loc = "CopasiUI", model = getCurrentModel())
 }
 \arguments{
 \item{readin}{if \code{TRUE}, the function waits for COPASI to quit and then reads in the temporary model file, overwriting the given model.}
@@ -18,8 +17,9 @@ openCopasi(readin = FALSE, copasi_loc = "CopasiUI",
 \code{openCopasi} saves the given model to a temporary file and opens it in the COPASI GUI.
 }
 \seealso{
-Other model handlers: \code{\link{getCurrentModel}},
-  \code{\link{getLoadedModels}},
-  \code{\link{setCurrentModel}}
+Other model handlers: 
+\code{\link{getCurrentModel}()},
+\code{\link{getLoadedModels}()},
+\code{\link{setCurrentModel}()}
 }
 \concept{model handlers}

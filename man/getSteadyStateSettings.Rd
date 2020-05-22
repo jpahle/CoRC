@@ -22,7 +22,8 @@ A list of steady state task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other steady state: \code{\link{runSteadyState}},
-  \code{\link{setSteadyStateSettings}}
+Other steady state: 
+\code{\link{runSteadyState}()},
+\code{\link{setSteadyStateSettings}()}
 }
 \concept{steady state}

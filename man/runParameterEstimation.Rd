@@ -5,15 +5,29 @@
 \alias{runPE}
 \title{Run parameter estimation}
 \usage{
-runParameterEstimation(randomize_start_values = NULL,
-  create_parameter_sets = NULL, calculate_statistics = NULL,
-  update_model = NULL, executable = NULL, parameters = NULL,
-  experiments = NULL, method = NULL, model = getCurrentModel())
+runParameterEstimation(
+  randomize_start_values = NULL,
+  create_parameter_sets = NULL,
+  calculate_statistics = NULL,
+  update_model = NULL,
+  executable = NULL,
+  parameters = NULL,
+  experiments = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-runPE(randomize_start_values = NULL, create_parameter_sets = NULL,
-  calculate_statistics = NULL, update_model = NULL,
-  executable = NULL, parameters = NULL, experiments = NULL,
-  method = NULL, model = getCurrentModel())
+runPE(
+  randomize_start_values = NULL,
+  create_parameter_sets = NULL,
+  calculate_statistics = NULL,
+  update_model = NULL,
+  executable = NULL,
+  parameters = NULL,
+  experiments = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{randomize_start_values}{flag}
@@ -50,13 +64,14 @@ A list of results.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other parameter estimation: \code{\link{addExperiments}},
-  \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearExperiments}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{clearValidations}},
-  \code{\link{defineExperiments}},
-  \code{\link{getParameterEstimationSettings}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addExperiments}()},
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearExperiments}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{clearValidations}()},
+\code{\link{defineExperiments}()},
+\code{\link{getParameterEstimationSettings}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

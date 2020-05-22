@@ -23,10 +23,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getGlobalQuantities}} \code{\link{setGlobalQuantities}}
 
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{entity_finders}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{newGlobalQuantity}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{entity_finders}},
+\code{\link{getGlobalQuantities}()},
+\code{\link{newGlobalQuantity}()},
+\code{\link{setGlobalQuantities}()}
 }
 \concept{global quantity functions}

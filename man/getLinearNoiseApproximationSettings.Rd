@@ -22,7 +22,8 @@ A list of metabolic control analysis task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other linear noise approximation: \code{\link{runLinearNoiseApproximation}},
-  \code{\link{setLinearNoiseApproximationSettings}}
+Other linear noise approximation: 
+\code{\link{runLinearNoiseApproximation}()},
+\code{\link{setLinearNoiseApproximationSettings}()}
 }
 \concept{linear noise approximation}

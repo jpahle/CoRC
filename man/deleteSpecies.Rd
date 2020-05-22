@@ -18,9 +18,11 @@ deleteSpecies(key, model = getCurrentModel())
 Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
-Other species functions: \code{\link{entity_finders}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{getSpecies}}, \code{\link{newSpecies}},
-  \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{entity_finders}},
+\code{\link{getSpeciesReferences}()},
+\code{\link{getSpecies}()},
+\code{\link{newSpecies}()},
+\code{\link{setSpecies}()}
 }
 \concept{species functions}

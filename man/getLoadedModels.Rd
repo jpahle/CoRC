@@ -13,7 +13,9 @@ a list of model objects
 \code{getLoadedModels} returns a list of all loaded models.
 }
 \seealso{
-Other model handlers: \code{\link{getCurrentModel}},
-  \code{\link{openCopasi}}, \code{\link{setCurrentModel}}
+Other model handlers: 
+\code{\link{getCurrentModel}()},
+\code{\link{openCopasi}()},
+\code{\link{setCurrentModel}()}
 }
 \concept{model handlers}

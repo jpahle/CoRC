@@ -22,13 +22,14 @@ A list of parameter estimation task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other parameter estimation: \code{\link{addExperiments}},
-  \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearExperiments}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{clearValidations}},
-  \code{\link{defineExperiments}},
-  \code{\link{runParameterEstimation}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addExperiments}()},
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearExperiments}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{clearValidations}()},
+\code{\link{defineExperiments}()},
+\code{\link{runParameterEstimation}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

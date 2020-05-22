@@ -13,12 +13,17 @@ loadSBMLFromString(sbml)
 \code{loadSBMLFromString} loads an SBML model from a string.
 }
 \seealso{
-Other model loading: \code{\link{loadExamples}},
-  \code{\link{loadModelFromString}},
-  \code{\link{loadModel}}, \code{\link{loadSBML}},
-  \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveModel}}, \code{\link{saveSBMLToString}},
-  \code{\link{saveSBML}}, \code{\link{unloadAllModels}},
-  \code{\link{unloadModel}}
+Other model loading: 
+\code{\link{loadExamples}()},
+\code{\link{loadModelFromString}()},
+\code{\link{loadModel}()},
+\code{\link{loadSBML}()},
+\code{\link{newModel}()},
+\code{\link{saveModelToString}()},
+\code{\link{saveModel}()},
+\code{\link{saveSBMLToString}()},
+\code{\link{saveSBML}()},
+\code{\link{unloadAllModels}()},
+\code{\link{unloadModel}()}
 }
 \concept{model loading}

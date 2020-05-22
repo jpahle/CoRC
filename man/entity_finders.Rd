@@ -90,137 +90,161 @@ Various references such as "Value" or "InitialConcentration" are available for s
 The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online article on managing model entities} provides some further context.
 }
 \seealso{
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{getSpecies}}, \code{\link{newSpecies}},
-  \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{getSpeciesReferences}()},
+\code{\link{getSpecies}()},
+\code{\link{newSpecies}()},
+\code{\link{setSpecies}()}
 
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{getSpecies}}, \code{\link{newSpecies}},
-  \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{getSpeciesReferences}()},
+\code{\link{getSpecies}()},
+\code{\link{newSpecies}()},
+\code{\link{setSpecies}()}
 
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{newGlobalQuantity}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{getGlobalQuantities}()},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{newGlobalQuantity}()},
+\code{\link{setGlobalQuantities}()}
 
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{newGlobalQuantity}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{getGlobalQuantities}()},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{newGlobalQuantity}()},
+\code{\link{setGlobalQuantities}()}
 
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{getCompartments}},
-  \code{\link{newCompartment}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{getCompartmentReferences}()},
+\code{\link{getCompartments}()},
+\code{\link{newCompartment}()},
+\code{\link{setCompartments}()}
 
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{getCompartments}},
-  \code{\link{newCompartment}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{getCompartmentReferences}()},
+\code{\link{getCompartments}()},
+\code{\link{newCompartment}()},
+\code{\link{setCompartments}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 
-Other event functions: \code{\link{deleteEvent}},
-  \code{\link{getEvents}}, \code{\link{newEvent}},
-  \code{\link{setEvents}}
+Other event functions: 
+\code{\link{deleteEvent}()},
+\code{\link{getEvents}()},
+\code{\link{newEvent}()},
+\code{\link{setEvents}()}
 
-Other event functions: \code{\link{deleteEvent}},
-  \code{\link{getEvents}}, \code{\link{newEvent}},
-  \code{\link{setEvents}}
+Other event functions: 
+\code{\link{deleteEvent}()},
+\code{\link{getEvents}()},
+\code{\link{newEvent}()},
+\code{\link{setEvents}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 }
 \concept{compartment functions}
 \concept{event functions}

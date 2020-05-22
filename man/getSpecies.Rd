@@ -4,8 +4,7 @@
 \alias{getSpecies}
 \title{Get species}
 \usage{
-getSpecies(key = NULL, raw_expressions = FALSE,
-  model = getCurrentModel())
+getSpecies(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which species to get.}
@@ -26,9 +25,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getSpeciesReferences}} \code{\link{setSpecies}}
 
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{entity_finders}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{newSpecies}}, \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{entity_finders}},
+\code{\link{getSpeciesReferences}()},
+\code{\link{newSpecies}()},
+\code{\link{setSpecies}()}
 }
 \concept{species functions}

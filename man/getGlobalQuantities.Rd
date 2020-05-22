@@ -4,8 +4,11 @@
 \alias{getGlobalQuantities}
 \title{Get global quantities}
 \usage{
-getGlobalQuantities(key = NULL, raw_expressions = FALSE,
-  model = getCurrentModel())
+getGlobalQuantities(
+  key = NULL,
+  raw_expressions = FALSE,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which global quantities to get.}
@@ -26,10 +29,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getGlobalQuantityReferences}} \code{\link{setGlobalQuantities}}
 
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{entity_finders}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{newGlobalQuantity}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{entity_finders}},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{newGlobalQuantity}()},
+\code{\link{setGlobalQuantities}()}
 }
 \concept{global quantity functions}

@@ -15,10 +15,11 @@ Clear all optimization parameters
 \seealso{
 \code{\link{addOptimizationParameter}} \code{\link{defineOptimizationParameter}}
 
-Other optimization: \code{\link{addOptimizationParameter}},
-  \code{\link{defineOptimizationParameter}},
-  \code{\link{getOptimizationSettings}},
-  \code{\link{runOptimization}},
-  \code{\link{setOptimizationSettings}}
+Other optimization: 
+\code{\link{addOptimizationParameter}()},
+\code{\link{defineOptimizationParameter}()},
+\code{\link{getOptimizationSettings}()},
+\code{\link{runOptimization}()},
+\code{\link{setOptimizationSettings}()}
 }
 \concept{optimization}

@@ -22,7 +22,8 @@ A list of metabolic control analysis task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other metabolic control analysis: \code{\link{runMetabolicControlAnalysis}},
-  \code{\link{setMetabolicControlAnalysisSettings}}
+Other metabolic control analysis: 
+\code{\link{runMetabolicControlAnalysis}()},
+\code{\link{setMetabolicControlAnalysisSettings}()}
 }
 \concept{metabolic control analysis}

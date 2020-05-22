@@ -13,12 +13,17 @@ unloadModel(model = getCurrentModel())
 \code{unloadModel} frees memory by unloading the given model from COPASI.
 }
 \seealso{
-Other model loading: \code{\link{loadExamples}},
-  \code{\link{loadModelFromString}},
-  \code{\link{loadModel}},
-  \code{\link{loadSBMLFromString}}, \code{\link{loadSBML}},
-  \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveModel}}, \code{\link{saveSBMLToString}},
-  \code{\link{saveSBML}}, \code{\link{unloadAllModels}}
+Other model loading: 
+\code{\link{loadExamples}()},
+\code{\link{loadModelFromString}()},
+\code{\link{loadModel}()},
+\code{\link{loadSBMLFromString}()},
+\code{\link{loadSBML}()},
+\code{\link{newModel}()},
+\code{\link{saveModelToString}()},
+\code{\link{saveModel}()},
+\code{\link{saveSBMLToString}()},
+\code{\link{saveSBML}()},
+\code{\link{unloadAllModels}()}
 }
 \concept{model loading}

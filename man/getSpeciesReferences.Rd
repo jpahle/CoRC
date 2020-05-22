@@ -23,8 +23,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getSpecies}} \code{\link{setSpecies}}
 
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{entity_finders}}, \code{\link{getSpecies}},
-  \code{\link{newSpecies}}, \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{entity_finders}},
+\code{\link{getSpecies}()},
+\code{\link{newSpecies}()},
+\code{\link{setSpecies}()}
 }
 \concept{species functions}

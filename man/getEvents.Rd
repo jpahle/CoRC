@@ -4,8 +4,7 @@
 \alias{getEvents}
 \title{Get events}
 \usage{
-getEvents(key = NULL, raw_expressions = FALSE,
-  model = getCurrentModel())
+getEvents(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which events to get.}
@@ -30,8 +29,10 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{setEvents}}
 
-Other event functions: \code{\link{deleteEvent}},
-  \code{\link{entity_finders}}, \code{\link{newEvent}},
-  \code{\link{setEvents}}
+Other event functions: 
+\code{\link{deleteEvent}()},
+\code{\link{entity_finders}},
+\code{\link{newEvent}()},
+\code{\link{setEvents}()}
 }
 \concept{event functions}

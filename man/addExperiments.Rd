@@ -18,13 +18,14 @@ Add a parameter estimation experiment
 \seealso{
 \code{\link{defineExperiments}} \code{\link{clearExperiments}}
 
-Other parameter estimation: \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearExperiments}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{clearValidations}},
-  \code{\link{defineExperiments}},
-  \code{\link{getParameterEstimationSettings}},
-  \code{\link{runParameterEstimation}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearExperiments}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{clearValidations}()},
+\code{\link{defineExperiments}()},
+\code{\link{getParameterEstimationSettings}()},
+\code{\link{runParameterEstimation}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

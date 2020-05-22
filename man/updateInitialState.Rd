@@ -13,8 +13,9 @@ updateInitialState(model = getCurrentModel())
 \code{updateInitialState} updates the given model's initial state from the current state.
 }
 \seealso{
-Other model actions: \code{\link{applyInitialState}},
-  \code{\link{compileModel}},
-  \code{\link{convertToIrreversible}}
+Other model actions: 
+\code{\link{applyInitialState}()},
+\code{\link{compileModel}()},
+\code{\link{convertToIrreversible}()}
 }
 \concept{model actions}

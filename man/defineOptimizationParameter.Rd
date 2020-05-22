@@ -4,8 +4,12 @@
 \alias{defineOptimizationParameter}
 \title{Define an optimization parameter}
 \usage{
-defineOptimizationParameter(ref, start_value = (lower_bound +
-  upper_bound)/2, lower_bound = 1e-06, upper_bound = 1e+06)
+defineOptimizationParameter(
+  ref,
+  start_value = (lower_bound + upper_bound)/2,
+  lower_bound = 1e-06,
+  upper_bound = 1e+06
+)
 }
 \arguments{
 \item{ref}{value reference}
@@ -25,10 +29,11 @@ Define an optimization parameter
 \seealso{
 \code{\link{addOptimizationParameter}} \code{\link{clearOptimizationParameters}}
 
-Other optimization: \code{\link{addOptimizationParameter}},
-  \code{\link{clearOptimizationParameters}},
-  \code{\link{getOptimizationSettings}},
-  \code{\link{runOptimization}},
-  \code{\link{setOptimizationSettings}}
+Other optimization: 
+\code{\link{addOptimizationParameter}()},
+\code{\link{clearOptimizationParameters}()},
+\code{\link{getOptimizationSettings}()},
+\code{\link{runOptimization}()},
+\code{\link{setOptimizationSettings}()}
 }
 \concept{optimization}

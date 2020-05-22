@@ -5,12 +5,19 @@
 \alias{setLNA}
 \title{Set linear noise approximation settings}
 \usage{
+setLinearNoiseApproximationSettings(
+  perform_steady_state_analysis = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-  setLinearNoiseApproximationSettings(perform_steady_state_analysis = NULL,
-  executable = NULL, method = NULL, model = getCurrentModel())
-
-setLNA(perform_steady_state_analysis = NULL, executable = NULL,
-  method = NULL, model = getCurrentModel())
+setLNA(
+  perform_steady_state_analysis = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{perform_steady_state_analysis}{flag}
@@ -28,7 +35,8 @@ setLNA(perform_steady_state_analysis = NULL, executable = NULL,
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other linear noise approximation: \code{\link{getLinearNoiseApproximationSettings}},
-  \code{\link{runLinearNoiseApproximation}}
+Other linear noise approximation: 
+\code{\link{getLinearNoiseApproximationSettings}()},
+\code{\link{runLinearNoiseApproximation}()}
 }
 \concept{linear noise approximation}

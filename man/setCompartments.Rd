@@ -4,10 +4,18 @@
 \alias{setCompartments}
 \title{Set compartments}
 \usage{
-setCompartments(key = NULL, name = NULL, type = NULL,
-  dimensionality = NULL, initial_size = NULL,
-  initial_expression = NULL, expression = NULL, data = NULL,
-  preserve_concentrations = FALSE, model = getCurrentModel())
+setCompartments(
+  key = NULL,
+  name = NULL,
+  type = NULL,
+  dimensionality = NULL,
+  initial_size = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  data = NULL,
+  preserve_concentrations = FALSE,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Identify which compartment to edit by specifying it's key, as string.
@@ -45,10 +53,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getCompartments}} \code{\link{getCompartmentReferences}}
 
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{entity_finders}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{getCompartments}},
-  \code{\link{newCompartment}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{entity_finders}},
+\code{\link{getCompartmentReferences}()},
+\code{\link{getCompartments}()},
+\code{\link{newCompartment}()}
 }
 \concept{compartment functions}

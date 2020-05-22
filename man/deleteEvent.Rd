@@ -18,8 +18,10 @@ deleteEvent(key, model = getCurrentModel())
 Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
-Other event functions: \code{\link{entity_finders}},
-  \code{\link{getEvents}}, \code{\link{newEvent}},
-  \code{\link{setEvents}}
+Other event functions: 
+\code{\link{entity_finders}},
+\code{\link{getEvents}()},
+\code{\link{newEvent}()},
+\code{\link{setEvents}()}
 }
 \concept{event functions}

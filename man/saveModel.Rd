@@ -4,8 +4,11 @@
 \alias{saveModel}
 \title{Save the model as a .cps file}
 \usage{
-saveModel(filename = model$getFileName(), overwrite = FALSE,
-  model = getCurrentModel())
+saveModel(
+  filename = model$getFileName(),
+  overwrite = FALSE,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{filename}{a path to save to}
@@ -18,12 +21,17 @@ saveModel(filename = model$getFileName(), overwrite = FALSE,
 \code{saveModel} saves the given model as a .cps file
 }
 \seealso{
-Other model loading: \code{\link{loadExamples}},
-  \code{\link{loadModelFromString}},
-  \code{\link{loadModel}},
-  \code{\link{loadSBMLFromString}}, \code{\link{loadSBML}},
-  \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveSBMLToString}}, \code{\link{saveSBML}},
-  \code{\link{unloadAllModels}}, \code{\link{unloadModel}}
+Other model loading: 
+\code{\link{loadExamples}()},
+\code{\link{loadModelFromString}()},
+\code{\link{loadModel}()},
+\code{\link{loadSBMLFromString}()},
+\code{\link{loadSBML}()},
+\code{\link{newModel}()},
+\code{\link{saveModelToString}()},
+\code{\link{saveSBMLToString}()},
+\code{\link{saveSBML}()},
+\code{\link{unloadAllModels}()},
+\code{\link{unloadModel}()}
 }
 \concept{model loading}

@@ -22,7 +22,8 @@ A list of time course task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other time course: \code{\link{runTimeCourse}},
-  \code{\link{setTimeCourseSettings}}
+Other time course: 
+\code{\link{runTimeCourse}()},
+\code{\link{setTimeCourseSettings}()}
 }
 \concept{time course}

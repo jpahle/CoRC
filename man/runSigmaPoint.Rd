@@ -5,12 +5,27 @@
 \alias{runSP}
 \title{Run sigma point method}
 \usage{
-runSigmaPoint(alpha = 0.5, beta = 2, kappa = 3, var = NULL,
-  experiments, mean_fit_as_basis = TRUE, cl = NULL,
-  model = getCurrentModel())
+runSigmaPoint(
+  alpha = 0.5,
+  beta = 2,
+  kappa = 3,
+  var = NULL,
+  experiments,
+  mean_fit_as_basis = TRUE,
+  cl = NULL,
+  model = getCurrentModel()
+)
 
-runSP(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experiments,
-  mean_fit_as_basis = TRUE, cl = NULL, model = getCurrentModel())
+runSP(
+  alpha = 0.5,
+  beta = 2,
+  kappa = 3,
+  var = NULL,
+  experiments,
+  mean_fit_as_basis = TRUE,
+  cl = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{alpha}{number}

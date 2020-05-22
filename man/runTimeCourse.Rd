@@ -5,17 +5,35 @@
 \alias{runTC}
 \title{Run a time course}
 \usage{
-runTimeCourse(duration = NULL, dt = NULL, intervals = NULL,
-  suppress_output_before = NULL, output_events = NULL,
-  save_result_in_memory = NULL, start_in_steady_state = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  soft_error = FALSE, model = getCurrentModel())
+runTimeCourse(
+  duration = NULL,
+  dt = NULL,
+  intervals = NULL,
+  suppress_output_before = NULL,
+  output_events = NULL,
+  save_result_in_memory = NULL,
+  start_in_steady_state = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  soft_error = FALSE,
+  model = getCurrentModel()
+)
 
-runTC(duration = NULL, dt = NULL, intervals = NULL,
-  suppress_output_before = NULL, output_events = NULL,
-  save_result_in_memory = NULL, start_in_steady_state = NULL,
-  update_model = NULL, executable = NULL, method = NULL,
-  soft_error = FALSE, model = getCurrentModel())
+runTC(
+  duration = NULL,
+  dt = NULL,
+  intervals = NULL,
+  suppress_output_before = NULL,
+  output_events = NULL,
+  save_result_in_memory = NULL,
+  start_in_steady_state = NULL,
+  update_model = NULL,
+  executable = NULL,
+  method = NULL,
+  soft_error = FALSE,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{duration}{The time course duration, as number.}
@@ -67,7 +85,8 @@ Test the current value of this parameter with: \code{getTimeCourseSettings()$sav
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other time course: \code{\link{getTimeCourseSettings}},
-  \code{\link{setTimeCourseSettings}}
+Other time course: 
+\code{\link{getTimeCourseSettings}()},
+\code{\link{setTimeCourseSettings}()}
 }
 \concept{time course}

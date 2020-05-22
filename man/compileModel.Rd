@@ -15,8 +15,9 @@ compileModel(force = FALSE, model = getCurrentModel())
 \code{compileModel} potentially forces compilation of the given model.
 }
 \seealso{
-Other model actions: \code{\link{applyInitialState}},
-  \code{\link{convertToIrreversible}},
-  \code{\link{updateInitialState}}
+Other model actions: 
+\code{\link{applyInitialState}()},
+\code{\link{convertToIrreversible}()},
+\code{\link{updateInitialState}()}
 }
 \concept{model actions}

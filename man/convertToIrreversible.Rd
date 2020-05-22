@@ -13,8 +13,9 @@ convertToIrreversible(model = getCurrentModel())
 \code{convertToIrreversible} converts the given model's reactions to irreversible reactions.
 }
 \seealso{
-Other model actions: \code{\link{applyInitialState}},
-  \code{\link{compileModel}},
-  \code{\link{updateInitialState}}
+Other model actions: 
+\code{\link{applyInitialState}()},
+\code{\link{compileModel}()},
+\code{\link{updateInitialState}()}
 }
 \concept{model actions}

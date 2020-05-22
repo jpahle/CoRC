@@ -4,9 +4,17 @@
 \alias{setGlobalQuantities}
 \title{Set global quantities}
 \usage{
-setGlobalQuantities(key = NULL, name = NULL, type = NULL,
-  unit = NULL, initial_value = NULL, initial_expression = NULL,
-  expression = NULL, data = NULL, model = getCurrentModel())
+setGlobalQuantities(
+  key = NULL,
+  name = NULL,
+  type = NULL,
+  unit = NULL,
+  initial_value = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  data = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Identify which global quantity to edit by specifying it's key, as string.
@@ -41,10 +49,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getGlobalQuantities}} \code{\link{getGlobalQuantityReferences}}
 
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{entity_finders}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{newGlobalQuantity}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{entity_finders}},
+\code{\link{getGlobalQuantities}()},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{newGlobalQuantity}()}
 }
 \concept{global quantity functions}

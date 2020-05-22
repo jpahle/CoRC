@@ -4,8 +4,14 @@
 \alias{setParameters}
 \title{Set reaction parameters}
 \usage{
-setParameters(key = NULL, name = NULL, value = NULL,
-  mapping = NULL, data = NULL, model = getCurrentModel())
+setParameters(
+  key = NULL,
+  name = NULL,
+  value = NULL,
+  mapping = NULL,
+  data = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Identify which reaction parameter to edit by specifying it's key, as string.
@@ -35,20 +41,21 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getParameters}} \code{\link{getParameterReferences}}
 
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{deleteReaction}},
-  \code{\link{entity_finders}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{deleteReaction}()},
+\code{\link{entity_finders}},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 }
 \concept{reaction functions}

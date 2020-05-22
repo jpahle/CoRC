@@ -18,19 +18,21 @@ deleteReaction(key, model = getCurrentModel())
 Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
-Other reaction functions: \code{\link{clearCustomKineticFunctions}},
-  \code{\link{deleteKineticFunction}},
-  \code{\link{entity_finders}},
-  \code{\link{getParameterReferences}},
-  \code{\link{getParameters}},
-  \code{\link{getReactionMappings}},
-  \code{\link{getReactionReferences}},
-  \code{\link{getReactions}},
-  \code{\link{getValidReactionFunctions}},
-  \code{\link{newKineticFunction}},
-  \code{\link{newReaction}}, \code{\link{setParameters}},
-  \code{\link{setReactionFunction}},
-  \code{\link{setReactionMappings}},
-  \code{\link{setReactions}}
+Other reaction functions: 
+\code{\link{clearCustomKineticFunctions}()},
+\code{\link{deleteKineticFunction}()},
+\code{\link{entity_finders}},
+\code{\link{getParameterReferences}()},
+\code{\link{getParameters}()},
+\code{\link{getReactionMappings}()},
+\code{\link{getReactionReferences}()},
+\code{\link{getReactions}()},
+\code{\link{getValidReactionFunctions}()},
+\code{\link{newKineticFunction}()},
+\code{\link{newReaction}()},
+\code{\link{setParameters}()},
+\code{\link{setReactionFunction}()},
+\code{\link{setReactionMappings}()},
+\code{\link{setReactions}()}
 }
 \concept{reaction functions}

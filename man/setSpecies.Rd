@@ -4,10 +4,18 @@
 \alias{setSpecies}
 \title{Set species}
 \usage{
-setSpecies(key = NULL, name = NULL, compartment = NULL,
-  type = NULL, initial_concentration = NULL, initial_number = NULL,
-  initial_expression = NULL, expression = NULL, data = NULL,
-  model = getCurrentModel())
+setSpecies(
+  key = NULL,
+  name = NULL,
+  compartment = NULL,
+  type = NULL,
+  initial_concentration = NULL,
+  initial_number = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  data = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Identify which species to edit by specifying it's key, as string.
@@ -44,9 +52,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getSpecies}} \code{\link{getSpeciesReferences}}
 
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{entity_finders}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{getSpecies}}, \code{\link{newSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{entity_finders}},
+\code{\link{getSpeciesReferences}()},
+\code{\link{getSpecies}()},
+\code{\link{newSpecies}()}
 }
 \concept{species functions}

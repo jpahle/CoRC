@@ -13,13 +13,14 @@ clearValidations(model = getCurrentModel())
 Clear all parameter estimation validation data.
 }
 \seealso{
-Other parameter estimation: \code{\link{addExperiments}},
-  \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearExperiments}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{defineExperiments}},
-  \code{\link{getParameterEstimationSettings}},
-  \code{\link{runParameterEstimation}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addExperiments}()},
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearExperiments}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{defineExperiments}()},
+\code{\link{getParameterEstimationSettings}()},
+\code{\link{runParameterEstimation}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

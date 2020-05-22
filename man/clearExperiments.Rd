@@ -15,13 +15,14 @@ Clear all parameter estimation experiments
 \seealso{
 \code{\link{addExperiments}}
 
-Other parameter estimation: \code{\link{addExperiments}},
-  \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{clearValidations}},
-  \code{\link{defineExperiments}},
-  \code{\link{getParameterEstimationSettings}},
-  \code{\link{runParameterEstimation}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addExperiments}()},
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{clearValidations}()},
+\code{\link{defineExperiments}()},
+\code{\link{getParameterEstimationSettings}()},
+\code{\link{runParameterEstimation}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

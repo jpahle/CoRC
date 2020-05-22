@@ -18,7 +18,9 @@ If working with a single model, the \code{getCurrentModel} function will supply 
 This makes the \code{model} argument used by most of this packages functions safe to ignore in most use cases.
 }
 \seealso{
-Other model handlers: \code{\link{getLoadedModels}},
-  \code{\link{openCopasi}}, \code{\link{setCurrentModel}}
+Other model handlers: 
+\code{\link{getLoadedModels}()},
+\code{\link{openCopasi}()},
+\code{\link{setCurrentModel}()}
 }
 \concept{model handlers}

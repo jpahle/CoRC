@@ -4,11 +4,18 @@
 \alias{newEvent}
 \title{Create a new event}
 \usage{
-newEvent(name, trigger_expression, fire_at_initial_time = FALSE,
-  trigger_must_remain_true = TRUE, priority_expression = NULL,
+newEvent(
+  name,
+  trigger_expression,
+  fire_at_initial_time = FALSE,
+  trigger_must_remain_true = TRUE,
+  priority_expression = NULL,
   delayed = c("no", "assignment", "calculation"),
-  delay_expression = NULL, assignment_target = NULL,
-  assignment_expression = NULL, model = getCurrentModel())
+  delay_expression = NULL,
+  assignment_target = NULL,
+  assignment_expression = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{name}{Name to set, as string.}
@@ -44,8 +51,10 @@ Arguments priority from lowest to highest is \code{initial_value}, \code{initial
 The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
-Other event functions: \code{\link{deleteEvent}},
-  \code{\link{entity_finders}}, \code{\link{getEvents}},
-  \code{\link{setEvents}}
+Other event functions: 
+\code{\link{deleteEvent}()},
+\code{\link{entity_finders}},
+\code{\link{getEvents}()},
+\code{\link{setEvents}()}
 }
 \concept{event functions}

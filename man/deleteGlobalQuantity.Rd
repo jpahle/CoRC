@@ -18,10 +18,11 @@ deleteGlobalQuantity(key, model = getCurrentModel())
 Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
-Other global quantity functions: \code{\link{entity_finders}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{newGlobalQuantity}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{entity_finders}},
+\code{\link{getGlobalQuantities}()},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{newGlobalQuantity}()},
+\code{\link{setGlobalQuantities}()}
 }
 \concept{global quantity functions}

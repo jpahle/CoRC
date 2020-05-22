@@ -4,10 +4,16 @@
 \alias{newSpecies}
 \title{Create a new species}
 \usage{
-newSpecies(name, compartment = NULL, type = c("reactions", "fixed",
-  "assignment", "ode"), initial_concentration = NULL,
-  initial_number = NULL, initial_expression = NULL,
-  expression = NULL, model = getCurrentModel())
+newSpecies(
+  name,
+  compartment = NULL,
+  type = c("reactions", "fixed", "assignment", "ode"),
+  initial_concentration = NULL,
+  initial_number = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{name}{string}
@@ -38,9 +44,11 @@ Arguments priority from lowest to highest is \code{initial_concentration}, \code
 The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
-Other species functions: \code{\link{deleteSpecies}},
-  \code{\link{entity_finders}},
-  \code{\link{getSpeciesReferences}},
-  \code{\link{getSpecies}}, \code{\link{setSpecies}}
+Other species functions: 
+\code{\link{deleteSpecies}()},
+\code{\link{entity_finders}},
+\code{\link{getSpeciesReferences}()},
+\code{\link{getSpecies}()},
+\code{\link{setSpecies}()}
 }
 \concept{species functions}

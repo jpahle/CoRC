@@ -23,10 +23,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getCompartments}} \code{\link{setCompartments}}
 
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{entity_finders}},
-  \code{\link{getCompartments}},
-  \code{\link{newCompartment}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{entity_finders}},
+\code{\link{getCompartments}()},
+\code{\link{newCompartment}()},
+\code{\link{setCompartments}()}
 }
 \concept{compartment functions}

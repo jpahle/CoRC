@@ -4,8 +4,7 @@
 \alias{getCompartments}
 \title{Get compartments}
 \usage{
-getCompartments(key = NULL, raw_expressions = FALSE,
-  model = getCurrentModel())
+getCompartments(key = NULL, raw_expressions = FALSE, model = getCurrentModel())
 }
 \arguments{
 \item{key}{Optionally, a character vector specifying which compartments to get.}
@@ -26,10 +25,11 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getCompartmentReferences}} \code{\link{setCompartments}}
 
-Other compartment functions: \code{\link{deleteCompartment}},
-  \code{\link{entity_finders}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{newCompartment}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{deleteCompartment}()},
+\code{\link{entity_finders}},
+\code{\link{getCompartmentReferences}()},
+\code{\link{newCompartment}()},
+\code{\link{setCompartments}()}
 }
 \concept{compartment functions}

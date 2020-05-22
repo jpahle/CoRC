@@ -17,16 +17,22 @@ setVolumeUnit(unit, model = getCurrentModel())
 \seealso{
 \code{\link{getVolumeUnit}}
 
-Other model property functions: \code{\link{getAreaUnit}},
-  \code{\link{getInitialTime}},
-  \code{\link{getLengthUnit}}, \code{\link{getLinkMatrix}},
-  \code{\link{getModelName}},
-  \code{\link{getQuantityUnit}},
-  \code{\link{getReducedStoichiometryMatrix}},
-  \code{\link{getStoichiometryMatrix}},
-  \code{\link{getTimeUnit}}, \code{\link{getVolumeUnit}},
-  \code{\link{setAreaUnit}}, \code{\link{setInitialTime}},
-  \code{\link{setLengthUnit}}, \code{\link{setModelName}},
-  \code{\link{setQuantityUnit}}, \code{\link{setTimeUnit}}
+Other model property functions: 
+\code{\link{getAreaUnit}()},
+\code{\link{getInitialTime}()},
+\code{\link{getLengthUnit}()},
+\code{\link{getLinkMatrix}()},
+\code{\link{getModelName}()},
+\code{\link{getQuantityUnit}()},
+\code{\link{getReducedStoichiometryMatrix}()},
+\code{\link{getStoichiometryMatrix}()},
+\code{\link{getTimeUnit}()},
+\code{\link{getVolumeUnit}()},
+\code{\link{setAreaUnit}()},
+\code{\link{setInitialTime}()},
+\code{\link{setLengthUnit}()},
+\code{\link{setModelName}()},
+\code{\link{setQuantityUnit}()},
+\code{\link{setTimeUnit}()}
 }
 \concept{model property functions}

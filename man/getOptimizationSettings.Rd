@@ -22,10 +22,11 @@ A list of parameter estimation task settings including method options.
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other optimization: \code{\link{addOptimizationParameter}},
-  \code{\link{clearOptimizationParameters}},
-  \code{\link{defineOptimizationParameter}},
-  \code{\link{runOptimization}},
-  \code{\link{setOptimizationSettings}}
+Other optimization: 
+\code{\link{addOptimizationParameter}()},
+\code{\link{clearOptimizationParameters}()},
+\code{\link{defineOptimizationParameter}()},
+\code{\link{runOptimization}()},
+\code{\link{setOptimizationSettings}()}
 }
 \concept{optimization}

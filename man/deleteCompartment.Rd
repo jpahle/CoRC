@@ -18,10 +18,11 @@ deleteCompartment(key, model = getCurrentModel())
 Deletion quietly works recursively (deletes all connected entities) to prevent invalid model states.
 }
 \seealso{
-Other compartment functions: \code{\link{entity_finders}},
-  \code{\link{getCompartmentReferences}},
-  \code{\link{getCompartments}},
-  \code{\link{newCompartment}},
-  \code{\link{setCompartments}}
+Other compartment functions: 
+\code{\link{entity_finders}},
+\code{\link{getCompartmentReferences}()},
+\code{\link{getCompartments}()},
+\code{\link{newCompartment}()},
+\code{\link{setCompartments}()}
 }
 \concept{compartment functions}

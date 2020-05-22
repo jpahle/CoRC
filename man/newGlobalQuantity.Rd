@@ -4,9 +4,15 @@
 \alias{newGlobalQuantity}
 \title{Create a new global quantity}
 \usage{
-newGlobalQuantity(name, type = c("fixed", "assignment", "ode"),
-  unit = NULL, initial_value = NULL, initial_expression = NULL,
-  expression = NULL, model = getCurrentModel())
+newGlobalQuantity(
+  name,
+  type = c("fixed", "assignment", "ode"),
+  unit = NULL,
+  initial_value = NULL,
+  initial_expression = NULL,
+  expression = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{name}{string}
@@ -35,10 +41,11 @@ Arguments priority from lowest to highest is \code{initial_value}, \code{initial
 The \href{https://jpahle.github.io/CoRC/articles/model_building.html}{online article on model building} provides some further context.
 }
 \seealso{
-Other global quantity functions: \code{\link{deleteGlobalQuantity}},
-  \code{\link{entity_finders}},
-  \code{\link{getGlobalQuantities}},
-  \code{\link{getGlobalQuantityReferences}},
-  \code{\link{setGlobalQuantities}}
+Other global quantity functions: 
+\code{\link{deleteGlobalQuantity}()},
+\code{\link{entity_finders}},
+\code{\link{getGlobalQuantities}()},
+\code{\link{getGlobalQuantityReferences}()},
+\code{\link{setGlobalQuantities}()}
 }
 \concept{global quantity functions}

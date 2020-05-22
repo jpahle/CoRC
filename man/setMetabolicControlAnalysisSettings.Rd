@@ -5,12 +5,19 @@
 \alias{setMCA}
 \title{Set metabolic control analysis settings}
 \usage{
+setMetabolicControlAnalysisSettings(
+  perform_steady_state_analysis = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 
-  setMetabolicControlAnalysisSettings(perform_steady_state_analysis = NULL,
-  executable = NULL, method = NULL, model = getCurrentModel())
-
-setMCA(perform_steady_state_analysis = NULL, executable = NULL,
-  method = NULL, model = getCurrentModel())
+setMCA(
+  perform_steady_state_analysis = NULL,
+  executable = NULL,
+  method = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{perform_steady_state_analysis}{flag}
@@ -28,7 +35,8 @@ setMCA(perform_steady_state_analysis = NULL, executable = NULL,
 The \href{https://jpahle.github.io/CoRC/articles/task_management.html}{online article on managing tasks} provides some further context.
 }
 \seealso{
-Other metabolic control analysis: \code{\link{getMetabolicControlAnalysisSettings}},
-  \code{\link{runMetabolicControlAnalysis}}
+Other metabolic control analysis: 
+\code{\link{getMetabolicControlAnalysisSettings}()},
+\code{\link{runMetabolicControlAnalysis}()}
 }
 \concept{metabolic control analysis}

@@ -4,12 +4,20 @@
 \alias{setEvents}
 \title{Set events}
 \usage{
-setEvents(key = NULL, name = NULL, trigger_expression = NULL,
-  fire_at_initial_time = NULL, trigger_must_remain_true = NULL,
-  priority_expression = NULL, delayed = NULL,
-  delay_expression = NULL, assignment_target = NULL,
-  assignment_expression = NULL, data = NULL,
-  model = getCurrentModel())
+setEvents(
+  key = NULL,
+  name = NULL,
+  trigger_expression = NULL,
+  fire_at_initial_time = NULL,
+  trigger_must_remain_true = NULL,
+  priority_expression = NULL,
+  delayed = NULL,
+  delay_expression = NULL,
+  assignment_target = NULL,
+  assignment_expression = NULL,
+  data = NULL,
+  model = getCurrentModel()
+)
 }
 \arguments{
 \item{key}{Identify which event to edit by specifying it's key, as string.
@@ -50,8 +58,10 @@ The \href{https://jpahle.github.io/CoRC/articles/entity_management.html}{online 
 \seealso{
 \code{\link{getEvents}}
 
-Other event functions: \code{\link{deleteEvent}},
-  \code{\link{entity_finders}}, \code{\link{getEvents}},
-  \code{\link{newEvent}}
+Other event functions: 
+\code{\link{deleteEvent}()},
+\code{\link{entity_finders}},
+\code{\link{getEvents}()},
+\code{\link{newEvent}()}
 }
 \concept{event functions}

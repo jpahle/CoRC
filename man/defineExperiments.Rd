@@ -4,9 +4,14 @@
 \alias{defineExperiments}
 \title{Define a parameter estimation experiment}
 \usage{
-defineExperiments(experiment_type = c("time_course", "steady_state"),
-  data = NULL, types = NULL, mappings = NULL, weight_method = NULL,
-  filename = NULL)
+defineExperiments(
+  experiment_type = c("time_course", "steady_state"),
+  data = NULL,
+  types = NULL,
+  mappings = NULL,
+  weight_method = NULL,
+  filename = NULL
+)
 }
 \arguments{
 \item{experiment_type}{string}
@@ -49,13 +54,14 @@ This function adds required metadata to experimental data for use with CoRC.
 \seealso{
 \code{\link{addExperiments}} \code{\link{clearExperiments}}
 
-Other parameter estimation: \code{\link{addExperiments}},
-  \code{\link{addParameterEstimationParameter}},
-  \code{\link{clearExperiments}},
-  \code{\link{clearParameterEstimationParameters}},
-  \code{\link{clearValidations}},
-  \code{\link{getParameterEstimationSettings}},
-  \code{\link{runParameterEstimation}},
-  \code{\link{setParameterEstimationSettings}}
+Other parameter estimation: 
+\code{\link{addExperiments}()},
+\code{\link{addParameterEstimationParameter}()},
+\code{\link{clearExperiments}()},
+\code{\link{clearParameterEstimationParameters}()},
+\code{\link{clearValidations}()},
+\code{\link{getParameterEstimationSettings}()},
+\code{\link{runParameterEstimation}()},
+\code{\link{setParameterEstimationSettings}()}
 }
 \concept{parameter estimation}

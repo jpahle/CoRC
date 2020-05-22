@@ -20,6 +20,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{stringr}{\code{\link[stringr]{fixed}}, \code{\link[stringr]{coll}}, \code{\link[stringr]{regex}}}
+  \item{stringr}{\code{\link[stringr]{coll}}, \code{\link[stringr]{fixed}}, \code{\link[stringr]{regex}}}
 }}
 

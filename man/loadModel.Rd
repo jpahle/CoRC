@@ -16,12 +16,17 @@ a model object
 \code{loadModel} loads a model into COPASI and returns a reference to it.
 }
 \seealso{
-Other model loading: \code{\link{loadExamples}},
-  \code{\link{loadModelFromString}},
-  \code{\link{loadSBMLFromString}}, \code{\link{loadSBML}},
-  \code{\link{newModel}}, \code{\link{saveModelToString}},
-  \code{\link{saveModel}}, \code{\link{saveSBMLToString}},
-  \code{\link{saveSBML}}, \code{\link{unloadAllModels}},
-  \code{\link{unloadModel}}
+Other model loading: 
+\code{\link{loadExamples}()},
+\code{\link{loadModelFromString}()},
+\code{\link{loadSBMLFromString}()},
+\code{\link{loadSBML}()},
+\code{\link{newModel}()},
+\code{\link{saveModelToString}()},
+\code{\link{saveModel}()},
+\code{\link{saveSBMLToString}()},
+\code{\link{saveSBML}()},
+\code{\link{unloadAllModels}()},
+\code{\link{unloadModel}()}
 }
 \concept{model loading}
