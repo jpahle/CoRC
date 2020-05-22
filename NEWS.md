@@ -1,4 +1,4 @@
-# CoRC 0.6.1.9000
+# CoRC 0.7.0 (2020-05-22)
 
 * Fix system compatility with various linux distros.
 
