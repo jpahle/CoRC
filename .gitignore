@@ -6,5 +6,6 @@
 dev/copasi-source/corc_*_*/
 dev/copasi-source/libs/
 dev/*.nb.html
+dev/auto_tester/*.log
 libs/
 
