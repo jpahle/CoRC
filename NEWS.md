@@ -1,3 +1,11 @@
+# CoRC 0.6.1.9000
+
+* Fix system compatility with various linux distros.
+
+  CoRC used to crash on various untested linux distros.
+  Compatibility has now been confirmed with Ubuntu (16.04, 18.04, 20.04), CentOS (6, 7, 8), and Fedora (30, 32).
+
+
 # CoRC 0.6.1 (2019-10-24)
 
 * Remove an undocumented dependency on a Visual Studio runtime on windows.

@@ -17,6 +17,7 @@ ${CMAKE} \
 	-DGIT_SUBMODULE=OFF \
 	-DCMAKE_INSTALL_PREFIX=../bin_${LINUX_TAG} \
 	-DBUILD_UI_DEPS=FALSE \
+	-DCOMMON_CMAKE_OPTIONS="-DF2C_INTEGER=int;-DF2C_LOGICAL=int" \
 	../
 make -j$(nproc)
 cd ../../
@@ -31,6 +32,8 @@ cd corc_${LINUX_TAG}/
 : ===== Running CMake
 ${CMAKE} \
 	-DCMAKE_BUILD_TYPE=Release \
+	-DF2C_INTEGER=int \
+	-DF2C_LOGICAL=int \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \

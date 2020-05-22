@@ -15,6 +15,8 @@ rm -f copasi/bindings/R/copasi_wrapper.cpp copasi/bindings/R/COPASI.R
 : ===== Running CMake
 ${CMAKE} \
 	-DCMAKE_BUILD_TYPE=Release \
+	-DF2C_INTEGER=int \
+	-DF2C_LOGICAL=int \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
 	-DENABLE_R=ON \
