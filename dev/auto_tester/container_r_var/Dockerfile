@@ -61,6 +61,28 @@ ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr'
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
+FROM fedora:32 AS r_fedora_32
+RUN dnf -y update \
+	&& dnf install -y R-core-devel \
+	&& dnf clean all
+# prevent errors when package docs are installed
+RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
+ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'stringr', 'isnullptr'));"
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+WORKDIR /work
+
+FROM fedora:30 AS r_fedora_30
+RUN dnf -y update \
+	&& dnf install -y R-core-devel \
+	&& dnf clean all
+# prevent errors when package docs are installed
+RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
+ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'stringr', 'isnullptr'));"
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+WORKDIR /work
+
 FROM ubuntu:20.04 AS rbuilder
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	build-essential \
