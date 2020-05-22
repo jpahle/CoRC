@@ -5,6 +5,8 @@
   CoRC used to crash on various untested linux distros.
   Compatibility has now been confirmed with Ubuntu (16.04, 18.04, 20.04), CentOS (6, 7, 8), and Fedora (30, 32).
 
+* Use 'readr' package for write out of experimental data, to prevent erroneous conversion of ´NaN´ to ´NA´.
+* Minor fixes and code cleanups.
 
 # CoRC 0.6.1 (2019-10-24)
 

@@ -5,7 +5,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	r-base-core \
 	&& rm -rf /var/lib/apt/lists/*
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -14,7 +14,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	r-base-core \
 	&& rm -rf /var/lib/apt/lists/*
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -23,7 +23,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	r-base-core \
 	&& rm -rf /var/lib/apt/lists/*
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 ENV UNSTABLE_RSCRIPT=true
 WORKDIR /work
@@ -35,7 +35,7 @@ RUN yum install -y epel-release yum-utils \
 	&& yum install -y R-core-devel \
 	&& yum clean all
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -46,7 +46,7 @@ RUN yum install -y epel-release \
 # prevent errors when package docs are installed
 RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -57,7 +57,7 @@ RUN yum install -y epel-release \
 # prevent errors when package docs are installed
 RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -68,7 +68,7 @@ RUN dnf -y update \
 # prevent errors when package docs are installed
 RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -79,7 +79,7 @@ RUN dnf -y update \
 # prevent errors when package docs are installed
 RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
@@ -100,7 +100,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libbz2-dev \
 	&& rm -rf /var/lib/apt/lists/*
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
-ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'isnullptr'));"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'purrr', 'dplyr', 'tidyr', 'stringr', 'readr', 'isnullptr'));"
 WORKDIR /work
 
 # R-latest matches latest alpha, beta or rc

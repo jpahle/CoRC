@@ -512,8 +512,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         msg = paste0('Experiment file "', filename, '" already exists.')
       )
       assert_that(file.create(filename))
-      write.table(.x, file = filename, sep = "\t", row.names = FALSE)
-      # readr::write_tsv(.x, filepath)
+      readr::write_tsv(.x, filename)
       
       # make sure the file gets deleted on error
       tryCatch({
