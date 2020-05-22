@@ -3,9 +3,10 @@
 .RData
 .Ruserdata
 *.DS_Store
-dev/copasi-source/corc_*_*/
-dev/copasi-source/libs/
-dev/*.nb.html
-dev/auto_tester/*.log
-libs/
-
+/dev/copasi-source/corc_*_*/
+/dev/copasi-source/libs/
+/dev/*.nb.html
+/dev/auto_tester/*.log
+/tests/other/bmdls.rds
+/libs/
+/inst/libs/

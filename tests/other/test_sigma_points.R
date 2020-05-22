@@ -27,8 +27,7 @@ setParameterEstimationSettings(
 # read experimental data
 data_experimental <-
   read_tsv("data/MAPKdata.txt") %>%
-  rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
-  set_tidy_names(TRUE)
+  rename(Time = time, `Mos-P`= "MAPKKK-P", `Erk2-P` = "MAPK-P")
 
 # define the experiments for COPASI
 fit_experiments <- defineExperiments(
@@ -47,3 +46,5 @@ result <-
     experiments = fit_experiments,
     mean_fit_as_basis = TRUE
   )
+
+result

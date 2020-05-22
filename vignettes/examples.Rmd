@@ -98,7 +98,7 @@ timeseries <-
     }),
     # iteration data (1000 random seeds) is given as .x to iteration formula,
     1:1000,
-    # iteration code (formula ~)
+    # iteration code (formula ~ {.x})
     ~ runTimeCourse(method = list(random_seed = .x))$result
   )
 
@@ -108,7 +108,7 @@ plotdata <-
   bind_rows() %>%
   group_by(Time) %>%
   # calculate mean and sd for all time points
-  summarise_all(funs(mean, sd)) %>%
+  summarise_all(list(mean = mean, sd = sd)) %>%
   # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
   pivot_longer(-Time) %>%
   # split up information on species (a,b,c) and type of value (mean, sd)
@@ -206,7 +206,7 @@ scan <-
     }),
     # iteration data (10000 random seeds) is given as .x to iteration formula,
     1:10000,
-    # iteration code (formula ~)
+    # iteration code (formula ~ {.x})
     ~ {
       set.seed(.x)
       cysteine <- 0.3 * 10 ^ runif(1L, min = 0, max = 3)
@@ -254,15 +254,12 @@ This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/9
 loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
 
 # get timeseries for the record
-data_before <-
-  runTimeCourse(1000, 1)$result %>%
-  set_tidy_names(TRUE)
+data_before <- runTimeCourse(1000, 1)$result
 
 # read experimental data
 data_experimental <-
   read_tsv("data/MAPKdata.txt") %>%
-  rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
-  set_tidy_names(TRUE)
+  rename(Time = time, `Mos-P` = "MAPKKK-P", `Erk2-P` = "MAPK-P")
 
 # define the experiments for COPASI
 fit_experiments <- defineExperiments(
@@ -294,13 +291,11 @@ result <-
   )
 
 # get timeseries for the record
-data_after <-
-  runTimeCourse(1000, 1)$result %>%
-  set_tidy_names(TRUE)
+data_after <- runTimeCourse(1000, 1)$result
 
 plots <- list(
-  Erk2.P =
-    ggplot(mapping = aes(x = Time, y = Erk2.P)) +
+  `Erk2-P` =
+    ggplot(mapping = aes(x = Time, y = `Erk2-P`)) +
     geom_point(data = data_experimental, aes(color = "experimental")) +
     geom_line(data = data_before, aes(color = "before")) +
     geom_line(data = data_after, aes(color = "after")) +
@@ -310,8 +305,8 @@ plots <- list(
       y = paste0("Erk2-P (", getQuantityUnit(), ")"),
       color = "Series"
     ),
-  Mos.P =
-    ggplot(mapping = aes(x = Time, y = Mos.P)) +
+  `Mos-P` =
+    ggplot(mapping = aes(x = Time, y = `Mos-P`)) +
     geom_point(data = data_experimental, aes(color = "experimental")) +
     geom_line(data = data_before, aes(color = "before")) +
     geom_line(data = data_after, aes(color = "after")) +
@@ -329,6 +324,6 @@ result$fitted_values
 result$parameters
 result$protocol
 
-plotly::ggplotly(plots$Erk2.P)
-plotly::ggplotly(plots$Mos.P)
+plotly::ggplotly(plots$`Erk2-P`)
+plotly::ggplotly(plots$`Mos-P`)
 ```

@@ -215,6 +215,8 @@ source("../dev/update-swig-in-package.R", local = new.env(), chdir = TRUE)
 
 # Installing the package
 
+Ensures, that the installed package has a working lib
+
 ```{r, eval=FALSE}
 devtools::install("..")
 CoRC::getCopasi(file.path("..", "libs", paste0("COPASI", .Platform$dynlib.ext)))

@@ -25,7 +25,7 @@ CMD [ "/bin/bash" ]
 
 WORKDIR /prep/
 
-# COPASI depencency, current
+# COPASI dependency, current
 RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.0.tar.gz | tar -xz \
 	&& cd cmake-*/ \
 	&& ./bootstrap \
@@ -34,7 +34,7 @@ RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.0.tar.gz | tar -xz \
 	&& cd ../ \
 	&& rm -r cmake-*/
 
-# COPASI R bindings depencency, keep 3.0.12
+# COPASI R bindings dependency, keep 3.0.12
 # RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
 # get from github instead for reliability
 RUN curl -L https://github.com/swig/swig/archive/rel-3.0.12.tar.gz | tar -xz \

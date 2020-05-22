@@ -53,6 +53,8 @@ test_that("autoplot.copasi_ts()", {
   
   TC <- runTimeCourse()
   expect_s3_class(autoplot.copasi_ts(TC), "ggplot")
+  expect_s3_class(autoplot.copasi_ts(TC, use_concentrations = FALSE), "ggplot")
+  expect_error(autoplot.copasi_ts(TC, "failure"))
 })
 
 unloadAllModels()

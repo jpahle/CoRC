@@ -31,7 +31,6 @@ Imports:
     utils,
     vctrs (>= 0.3.0)
 Suggests:
-    knitr,
     pkgdown,
     plotly,
     rmarkdown,
