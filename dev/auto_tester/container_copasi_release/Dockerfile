@@ -22,11 +22,11 @@ RUN cd copasi-dependencies/ \
 		./createLinux.sh
 
 # make COPASI
-ADD https://github.com/copasi/COPASI/archive/develop.tar.gz COPASI/
+ADD https://github.com/copasi/COPASI/archive/release/Version-4.25.tar.gz COPASI/
 RUN cd COPASI/ \
 	&& tar --strip 1 -xzf *
 
-ADD https://raw.githubusercontent.com/jpahle/CoRC/master/development/copasi-source/CopasiVersion.h COPASI/copasi/
+ADD https://raw.githubusercontent.com/jpahle/CoRC/master/dev/copasi-source/CopasiVersion.h COPASI/copasi/
 
 RUN mkdir corc_linux_x64/ \
 	&& cd corc_linux_x64/ \

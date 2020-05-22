@@ -2,7 +2,7 @@
 set -x
 
 # relocate for easy access
-cp CoRC/development/copasi-source/libs/COPASI_unix_x86_64.so COPASI.so
+cp CoRC/dev/copasi-source/libs/COPASI_unix_x86_64.so COPASI.so
 cp CoRC/R/swig_wrapper.R .
 cp CoRC/inst/extdata/test_names.cps .
 

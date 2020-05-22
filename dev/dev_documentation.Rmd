@@ -20,8 +20,8 @@ The changes have since been pulled into the COPASI develop branch.
 A general workflow to load up the COPASI shared library looks like this:
 
 ```{r}
-dyn.load(paste0("../development/copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
-source("../development/copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI.R")
+dyn.load(paste0("../dev/copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI", .Platform$dynlib.ext))
+source("../dev/copasi-source/build_copasi_r_bindings/copasi/bindings/R/COPASI.R")
 cacheMetaData(1)
 ```
 

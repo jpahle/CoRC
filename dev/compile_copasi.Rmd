@@ -58,7 +58,7 @@ brew install cmake swig git
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./build_darwin_x64_clean.sh
 cd ../../
 ```
@@ -69,7 +69,7 @@ Requires copasi-dependencies to be compiled already.
 Uses existing build but might cause issues when copasi_wrapper.cpp is old.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./build_darwin_x64_quick.sh
 cd ../../
 ```
@@ -87,7 +87,7 @@ brew install qt
 Build dependencies:
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/copasi-dependencies/
+cd dev/copasi-source/copasi-dependencies/
 export PATH="/usr/local/opt/qt/bin:$PATH"
 BUILD_DIR=${PWD}/tmp_darwin_x64 \
 	INSTALL_DIR=${PWD}/bin_darwin_x64 \
@@ -98,7 +98,7 @@ cd ../../../
 Build GUI:
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/corc_darwin_x64/
+cd dev/copasi-source/corc_darwin_x64/
 export PATH="/usr/local/opt/qt/bin:$PATH"
 cmake \
   -DBUILD_GUI=ON \
@@ -148,7 +148,7 @@ vagrant destroy 2016-box
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./d_build_windows_clean.sh
 cd ../../
 ```
@@ -162,7 +162,7 @@ alternatives:
 Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./d_build_windows_x64_quick.sh
 cd ../../
 ```
@@ -181,7 +181,7 @@ Install docker CE and get docker permissions for your user.
 Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./d_build_linux_clean.sh
 cd ../../
 ```
@@ -195,7 +195,7 @@ alternatives:
 Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
-cd development/copasi-source/
+cd dev/copasi-source/
 ./d_build_linux_x64_quick.sh
 cd ../../
 ```
@@ -209,7 +209,7 @@ alternatives:
 Will also patch the swig wrapper (COPASI.R) as per patch-swig-wrapper.R
 
 ```{r, eval=FALSE}
-source("../development/update-swig-in-package.R", chdir = TRUE)
+source("../dev/update-swig-in-package.R", chdir = TRUE)
 ```
 
 # Installing the package
