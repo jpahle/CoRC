@@ -1,3 +1,9 @@
+# CoRC 0.7.1 (2020-05-24)
+
+* Hotfix for windows build having an incorrect COPASI Version annotation.
+
+  The COPASI version was incorrectly reported to be 4.12.
+
 # CoRC 0.7.0 (2020-05-22)
 
 * Fix system compatility with various linux distros.
