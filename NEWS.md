@@ -6,7 +6,7 @@
   Compatibility has now been confirmed with Ubuntu (16.04, 18.04, 20.04), CentOS (6, 7, 8), and Fedora (30, 32).
 
 * Use 'readr' package for write out of experimental data, to prevent erroneous conversion of ´NaN´ to ´NA´.
-* Fix behaviour of `autoplot.copasi_ts` function when a timeseries output named 'Time' exists.
+* Fix behaviour of `autoplot.copasi_ts()` function when a timeseries output named 'Time' exists.
 
   'Time' output used to confilict with the invariant time column.
   
