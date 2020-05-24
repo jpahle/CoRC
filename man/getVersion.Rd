@@ -7,7 +7,7 @@
 getVersion()
 }
 \value{
-Numeric vector consisting of the major version, minor version and build numbers.
+Integer vector consisting of the major version, minor version and build numbers.
 }
 \description{
 \code{getVersion} returns the current version numbers of the COPASI binaries.

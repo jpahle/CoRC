@@ -247,7 +247,7 @@ getCopasi <- function(path = NULL, force = FALSE, quiet = FALSE) {
 #'
 #' \code{getVersion} returns the current version numbers of the COPASI binaries.
 #' 
-#' @return Numeric vector consisting of the major version, minor version and build numbers.
+#' @return Integer vector consisting of the major version, minor version and build numbers.
 #' @export
 getVersion <- function() {
   assert_binaries()

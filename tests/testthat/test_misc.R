@@ -17,6 +17,15 @@ is_online <- function() {
   is_url_readable()
 }
 
+test_that("getVersion() is correct", {
+  v <- getVersion()
+  expect_type(v, "integer")
+  expect_length(v, 3)
+  expect_identical(v[["major"]], 4L)
+  expect_identical(v[["minor"]], 27L)
+  expect_identical(v[["build"]], 217L)
+})
+
 test_that("COPASI_BIN_VERSION is count", {
   expect_type(COPASI_BIN_VERSION, "integer")
   expect_length(COPASI_BIN_VERSION, 1L)
