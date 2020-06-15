@@ -154,19 +154,20 @@ scan <- cross_df(
 
 scan <-
   scan %>%
+  rowwise() %>%
   mutate(
     # Calculate steady state fluxes for every row
-    ss_fluxes = pmap(., function(cysteine, adomed) {
+    ss_fluxes = {
       setSpecies("Cysteine", initial_concentration = cysteine)
       setSpecies("adenosyl", initial_concentration = adomed)
       ss <- runSteadyState()
       stopifnot(ss$result == "found")
-      ss$reactions$flux
-    }),
+      list(ss$reactions$flux)
+    },
     # The second flux is CGS
-    CGS = map_dbl(ss_fluxes, 2),
+    CGS = ss_fluxes[2],
     # The third flux is TS
-    TS = map_dbl(ss_fluxes, 3)
+    TS = ss_fluxes[3]
   )
 
 plot <-
