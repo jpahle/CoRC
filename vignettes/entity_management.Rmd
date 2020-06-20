@@ -3,7 +3,7 @@ title: "Model Entity Management"
 author: "Jonas Förster & Jürgen Pahle"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Managing Model Entities}
+  %\VignetteIndexEntry{Model Entity Management}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

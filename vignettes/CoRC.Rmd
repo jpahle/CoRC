@@ -3,7 +3,7 @@ title: "CoRC Introduction"
 author: "Jonas Förster & Jürgen Pahle"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{CoRC}
+  %\VignetteIndexEntry{CoRC Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
