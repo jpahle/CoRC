@@ -1,3 +1,7 @@
+# CoRC 0.7.1.9000
+
+* Rebase on COPASI release 4.28 sources.
+
 # CoRC 0.7.1 (2020-05-24)
 
 * Hotfix for windows build having an incorrect COPASI Version annotation.
