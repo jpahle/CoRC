@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="task_management_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Task Management</h1>
@@ -138,14 +138,15 @@
 <div id="task-functions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#task-functions" class="anchor"></a>Task functions</h1>
-<p>CoRC has implemented a variety of COPASI functions. Tasks generally have an <code>run</code> execution function (e.g. <code>runTimeCourse</code>), a settings <code>set</code> function (e.g. <code>setTimeCourseSettings</code>) and a settings <code>get</code> function (e.g. <code>getTimeCourseSettings</code>).</p>
+<p>CoRC has implemented a variety of COPASI functions. Tasks generally have an <code>run</code> execution function (e.g. <code>runTimeCourse</code>), a settings <code>set</code> function (e.g. <code>setTimeCourseSettings</code>) and a settings <code>get</code> function (e.g. <code>getTimeCourseSettings</code>).</p>
 <p><strong>Get task settings</strong>:</p>
 <p>Get functions return a list of settings in the same format as is expected as input to <code>set</code> functions.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span>())
-<span class="co">#&gt; List of 10</span>
+<span class="co">#&gt; List of 11</span>
 <span class="co">#&gt;  $ duration              : num 1000</span>
 <span class="co">#&gt;  $ dt                    : num 0.1</span>
 <span class="co">#&gt;  $ intervals             : int 10000</span>
+<span class="co">#&gt;  $ automatic_intervals   : logi FALSE</span>
 <span class="co">#&gt;  $ suppress_output_before: num 0</span>
 <span class="co">#&gt;  $ output_events         : logi FALSE</span>
 <span class="co">#&gt;  $ save_result_in_memory : logi TRUE</span>
@@ -167,10 +168,11 @@
 <p>Run functions return a list of results. Included in this list is an entry <code>settings</code> with contains all tasks settings.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
 <span class="co">#&gt; List of 6</span>
-<span class="co">#&gt;  $ settings     :List of 10</span>
+<span class="co">#&gt;  $ settings     :List of 11</span>
 <span class="co">#&gt;   ..$ duration              : num 100</span>
 <span class="co">#&gt;   ..$ dt                    : num 0.01</span>
 <span class="co">#&gt;   ..$ intervals             : int 10000</span>
+<span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span>
 <span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
 <span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
 <span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
@@ -266,10 +268,11 @@
 <p>Executing a task will return a list containing all relevant task results.</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>())
 <span class="co">#&gt; List of 6</span>
-<span class="co">#&gt;  $ settings     :List of 10</span>
+<span class="co">#&gt;  $ settings     :List of 11</span>
 <span class="co">#&gt;   ..$ duration              : num 10</span>
 <span class="co">#&gt;   ..$ dt                    : num 0.001</span>
 <span class="co">#&gt;   ..$ intervals             : int 10000</span>
+<span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span>
 <span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
 <span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
 <span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
@@ -337,7 +340,7 @@
 <span class="co">#&gt;   ..$ perform_stability_analysis: logi TRUE</span>
 <span class="co">#&gt;   ..$ update_model              : logi FALSE</span>
 <span class="co">#&gt;   ..$ executable                : logi FALSE</span>
-<span class="co">#&gt;   ..$ method                    :List of 9</span>
+<span class="co">#&gt;   ..$ method                    :List of 10</span>
 <span class="co">#&gt;   .. ..$ resolution                               : num 1e-09</span>
 <span class="co">#&gt;   .. ..$ derivation_factor                        : num 0.001</span>
 <span class="co">#&gt;   .. ..$ use_newton                               : logi TRUE</span>
@@ -347,15 +350,16 @@
 <span class="co">#&gt;   .. ..$ iteration_limit                          : int 50</span>
 <span class="co">#&gt;   .. ..$ maximum_duration_for_forward_integration : num 1e+09</span>
 <span class="co">#&gt;   .. ..$ maximum_duration_for_backward_integration: num 1e+06</span>
-<span class="co">#&gt;  $ result           : chr "foundEquilibrium"</span>
+<span class="co">#&gt;   .. ..$ target_criterion                         : chr "Distance and Rate"</span>
+<span class="co">#&gt;  $ result           : chr "found"</span>
 <span class="co">#&gt;  $ species          : tibble [11 × 8] (S3: tbl_df/tbl/data.frame)</span>
 <span class="co">#&gt;   ..$ key            : chr [1:11] "CheA{compartment}" "CheAp{compartment}" "CheB{compartment}" "CheBp{compartment}" ...</span>
 <span class="co">#&gt;   ..$ name           : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
 <span class="co">#&gt;   ..$ type           : chr [1:11] "reactions" "reactions" "reactions" "reactions" ...</span>
 <span class="co">#&gt;   ..$ concentration  : num [1:11] 5.185 0.115 0.2082 0.0718 8.8118 ...</span>
 <span class="co">#&gt;   ..$ number         : num [1:11] 4371.5 97 175.5 60.6 7429.2 ...</span>
-<span class="co">#&gt;   ..$ rate           : num [1:11] 2.42e-13 -2.42e-13 -1.85e-16 1.85e-16 -1.90e-13 ...</span>
-<span class="co">#&gt;   ..$ number_rate    : num [1:11] 2.04e-10 -2.04e-10 -1.56e-13 1.56e-13 -1.60e-10 ...</span>
+<span class="co">#&gt;   ..$ rate           : num [1:11] 2.59e-13 -2.59e-13 -1.94e-16 1.94e-16 -3.28e-13 ...</span>
+<span class="co">#&gt;   ..$ number_rate    : num [1:11] 2.18e-10 -2.18e-10 -1.63e-13 1.63e-13 -2.76e-10 ...</span>
 <span class="co">#&gt;   ..$ transition_time: num [1:11] 0.05112 0.00113 2.89824 1 0.08695 ...</span>
 <span class="co">#&gt;  $ compartments     : tibble [0 × 5] (S3: tbl_df/tbl/data.frame)</span>
 <span class="co">#&gt;   ..$ key : chr(0) </span>
@@ -382,7 +386,7 @@
 <span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>
 <span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;  $ protocol         : chr "Try Newton's method. \n   Starting Newton Iterations...\n    Newton step with damping. New value: 9.72201e+08 ("| __truncated__</span></pre></body></html></div>
+<span class="co">#&gt;  $ protocol         : chr "Try Newton's method. \n   Starting Newton Iterations...\n    Newton step with damping. New value: Distance: 2.6"| __truncated__</span></pre></body></html></div>
 </div>
   </div>
 

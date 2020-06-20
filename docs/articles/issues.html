@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="issues_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Issues</h1>
@@ -164,7 +164,7 @@
 <span class="no">filenames</span> <span class="kw">&lt;-</span> <span class="no">fitproblem</span>$<span class="fu">getExperimentSet</span>()$<span class="fu">getFileNames</span>()</pre></body></html></div>
 <p>The filenames are in the correct folder.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpuixVaF/temp_libpath44e367e938f2/CoRC/extdata/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/tmp/RtmpotTaUj/temp_libpath51e2563890b1/CoRC/extdata/test_paramest_exp_data.txt"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="no">filenames</span>)
 <span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
 <p>Now I will save the model into a tmp folder.</p>
@@ -177,7 +177,7 @@
 <span class="no">filenames</span> <span class="kw">&lt;-</span> <span class="no">fitproblem</span>$<span class="fu">getExperimentSet</span>()$<span class="fu">getFileNames</span>()</pre></body></html></div>
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpuixVaF/temp_libpath44e367e938f2/CoRC/extdata/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/tmp/RtmpotTaUj/temp_libpath51e2563890b1/CoRC/extdata/test_paramest_exp_data.txt"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="no">filenames</span>)
 <span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span>()

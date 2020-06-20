@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -171,6 +171,7 @@
   <span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>automatic_intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -186,6 +187,7 @@
   <span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>automatic_intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -212,6 +214,10 @@
       <th>intervals</th>
       <td><p>The time course step count, as count.
 Overwrites <code>dt</code> in case of conflict.</p></td>
+    </tr>
+    <tr>
+      <th>automatic_intervals</th>
+      <td><p>Whether to use automatic intervals, as flag.</p></td>
     </tr>
     <tr>
       <th>suppress_output_before</th>

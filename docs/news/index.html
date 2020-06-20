@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -161,9 +161,20 @@
       <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="corc-0-7-1-2020-05-24" class="section level1">
+    <div id="corc-080-2020-06-25" class="section level1">
+<h1 class="page-header" data-toc-text="0.8.0">
+<a href="#corc-080-2020-06-25" class="anchor"></a>CoRC 0.8.0 (2020-06-25)</h1>
+<ul>
+<li>Rebase on COPASI release 4.28 sources.</li>
+<li>Add support for the time course automatic interval option.</li>
+<li>Fix definition of experimental data with columns of type ‘ignore’.</li>
+<li>Fix <code><a href="../reference/runParameterEstimation.html">runParameterEstimation()</a></code> output, in some cases, listing incorrect parameter start values.</li>
+<li>Minor fixes and code cleanups.</li>
+</ul>
+</div>
+    <div id="corc-071-2020-05-24" class="section level1">
 <h1 class="page-header" data-toc-text="0.7.1">
-<a href="#corc-0-7-1-2020-05-24" class="anchor"></a>CoRC 0.7.1 (2020-05-24)</h1>
+<a href="#corc-071-2020-05-24" class="anchor"></a>CoRC 0.7.1 (2020-05-24)</h1>
 <ul>
 <li>
 <p>Hotfix for windows build having an incorrect COPASI Version annotation.</p>
@@ -171,33 +182,33 @@
 </li>
 </ul>
 </div>
-    <div id="corc-0-7-0-2020-05-22" class="section level1">
+    <div id="corc-070-2020-05-22" class="section level1">
 <h1 class="page-header" data-toc-text="0.7.0">
-<a href="#corc-0-7-0-2020-05-22" class="anchor"></a>CoRC 0.7.0 (2020-05-22)</h1>
+<a href="#corc-070-2020-05-22" class="anchor"></a>CoRC 0.7.0 (2020-05-22)</h1>
 <ul>
 <li>
 <p>Fix system compatility with various linux distros.</p>
 <p>CoRC used to crash on various untested linux distros. Compatibility has now been confirmed with Ubuntu (16.04, 18.04, 20.04), CentOS (6, 7, 8), and Fedora (30, 32).</p>
 </li>
-<li>Use ‘readr’ package for write out of experimental data, to prevent erroneous conversion of ´NaN´ to ´NA´.</li>
+<li><p>Use ‘readr’ package for write out of experimental data, to prevent erroneous conversion of <code>NaN</code> to <code>NA</code>.</p></li>
 <li>
 <p>Fix behaviour of <code><a href="../reference/autoplot.copasi_ts.html">autoplot.copasi_ts()</a></code> function when a timeseries output named ‘Time’ exists.</p>
 <p>‘Time’ output used to confilict with the invariant time column.</p>
 </li>
-<li>Rework tidyverse dependencies to be more light weight.</li>
+<li><p>Rework tidyverse dependencies to be more light weight.</p></li>
 <li><p>Minor fixes and code cleanups.</p></li>
 </ul>
 </div>
-    <div id="corc-0-6-1-2019-10-24" class="section level1">
+    <div id="corc-061-2019-10-24" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.1">
-<a href="#corc-0-6-1-2019-10-24" class="anchor"></a>CoRC 0.6.1 (2019-10-24)</h1>
+<a href="#corc-061-2019-10-24" class="anchor"></a>CoRC 0.6.1 (2019-10-24)</h1>
 <ul>
 <li>Remove an undocumented dependency on a Visual Studio runtime on windows.</li>
 </ul>
 </div>
-    <div id="corc-0-6-0-2019-10-06" class="section level1">
+    <div id="corc-060-2019-10-06" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
-<a href="#corc-0-6-0-2019-10-06" class="anchor"></a>CoRC 0.6.0 (2019-10-06)</h1>
+<a href="#corc-060-2019-10-06" class="anchor"></a>CoRC 0.6.0 (2019-10-06)</h1>
 <ul>
 <li>Rebase on COPASI release 4.27 sources.</li>
 <li>Require at least R version 3.2.0.</li>
@@ -205,9 +216,9 @@
 <li>Add parameter <code>soft_error</code> to <code><a href="../reference/runTimeCourse.html">runTimeCourse()</a></code> to allow for readout of incomplete result tables for failed time courses.</li>
 </ul>
 </div>
-    <div id="corc-0-5-0-2019-04-05" class="section level1">
+    <div id="corc-050-2019-04-05" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
-<a href="#corc-0-5-0-2019-04-05" class="anchor"></a>CoRC 0.5.0 (2019-04-05)</h1>
+<a href="#corc-050-2019-04-05" class="anchor"></a>CoRC 0.5.0 (2019-04-05)</h1>
 <ul>
 <li>Rebase on COPASI release 4.25 sources.</li>
 <li>Add a <code>preserve_concentrations</code> argument to <code><a href="../reference/setCompartments.html">setCompartments()</a></code> to preserve species concentrations instead of particle numbers on adjustment of compartment sizes.</li>
@@ -216,9 +227,9 @@
 <li>Minor fixes and code cleanups.</li>
 </ul>
 </div>
-    <div id="corc-0-4-0-2018-08-01" class="section level1">
+    <div id="corc-040-2018-08-01" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.0">
-<a href="#corc-0-4-0-2018-08-01" class="anchor"></a>CoRC 0.4.0 (2018-08-01)</h1>
+<a href="#corc-040-2018-08-01" class="anchor"></a>CoRC 0.4.0 (2018-08-01)</h1>
 <ul>
 <li>Rebase on COPASI release 4.24 sources.</li>
 <li>Fix sigma point method for cases other than two dependent variables.</li>
@@ -226,9 +237,9 @@
 <li>Minor fixes and code cleanups.</li>
 </ul>
 </div>
-    <div id="corc-0-3-0-2018-04-19" class="section level1">
+    <div id="corc-030-2018-04-19" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
-<a href="#corc-0-3-0-2018-04-19" class="anchor"></a>CoRC 0.3.0 (2018-04-19)</h1>
+<a href="#corc-030-2018-04-19" class="anchor"></a>CoRC 0.3.0 (2018-04-19)</h1>
 <ul>
 <li>Rebase on COPASI release 4.23 sources.</li>
 <li>Prepare for R version 3.5.</li>
@@ -237,9 +248,9 @@
 <li>Add <code><a href="../reference/getVersion.html">getVersion()</a></code> for retrieving the version of the COPASI backend.</li>
 </ul>
 </div>
-    <div id="corc-0-2-1-2018-03-01" class="section level1">
+    <div id="corc-021-2018-03-01" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.1">
-<a href="#corc-0-2-1-2018-03-01" class="anchor"></a>CoRC 0.2.1 (2018-03-01)</h1>
+<a href="#corc-021-2018-03-01" class="anchor"></a>CoRC 0.2.1 (2018-03-01)</h1>
 <ul>
 <li>Breaking: Rename first argument of <code><a href="../reference/newReaction.html">newReaction()</a></code> from <code>scheme</code> to <code>reaction</code>.</li>
 <li>Rebase on latest COPASI 4.23 sources.
@@ -250,9 +261,9 @@
 <li>Minor fixes.</li>
 </ul>
 </div>
-    <div id="corc-0-2-0-2018-02-19" class="section level1">
+    <div id="corc-020-2018-02-19" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.0">
-<a href="#corc-0-2-0-2018-02-19" class="anchor"></a>CoRC 0.2.0 (2018-02-19)</h1>
+<a href="#corc-020-2018-02-19" class="anchor"></a>CoRC 0.2.0 (2018-02-19)</h1>
 <ul>
 <li>Rebase on latest COPASI development sources.</li>
 <li>Add functions to handle SBML models as strings (<code><a href="../reference/loadSBMLFromString.html">loadSBMLFromString()</a></code>, <code><a href="../reference/saveSBMLToString.html">saveSBMLToString()</a></code>).</li>
@@ -262,9 +273,9 @@
 <li>Minor fixes and improvements.</li>
 </ul>
 </div>
-    <div id="corc-0-1-0-2017-12-04" class="section level1">
+    <div id="corc-010-2017-12-04" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.0">
-<a href="#corc-0-1-0-2017-12-04" class="anchor"></a>CoRC 0.1.0 (2017-12-04)</h1>
+<a href="#corc-010-2017-12-04" class="anchor"></a>CoRC 0.1.0 (2017-12-04)</h1>
 <ul>
 <li>Rebase on latest COPASI development sources.</li>
 <li>Add model event functioniality (<code><a href="../reference/entity_finders.html">event()</a></code>, <code><a href="../reference/entity_finders.html">event_strict()</a></code>, <code><a href="../reference/getEvents.html">getEvents()</a></code>, <code><a href="../reference/setEvents.html">setEvents()</a></code>, <code><a href="../reference/newEvent.html">newEvent()</a></code>, <code><a href="../reference/deleteEvent.html">deleteEvent()</a></code>).</li>
@@ -276,9 +287,9 @@
 <li>Use new Copasi XML parser.</li>
 </ul>
 </div>
-    <div id="corc-0-0-1-2017-11-15" class="section level1">
+    <div id="corc-001-2017-11-15" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.1">
-<a href="#corc-0-0-1-2017-11-15" class="anchor"></a>CoRC 0.0.1 (2017-11-15)</h1>
+<a href="#corc-001-2017-11-15" class="anchor"></a>CoRC 0.0.1 (2017-11-15)</h1>
 <ul>
 <li>Initial public beta release</li>
 </ul>

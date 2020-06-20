@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -171,6 +171,7 @@
   <span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>automatic_intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -185,6 +186,7 @@
   <span class='kw'>duration</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>automatic_intervals</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>suppress_output_before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>output_events</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>save_result_in_memory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -200,35 +202,40 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>duration</th>
-      <td><p>number</p></td>
+      <td><p>The time course duration, as number.</p></td>
     </tr>
     <tr>
       <th>dt</th>
-      <td><p>number</p></td>
+      <td><p>The time course output step size, as number.</p></td>
     </tr>
     <tr>
       <th>intervals</th>
-      <td><p>count</p></td>
+      <td><p>The time course step count, as count.
+Overwrites <code>dt</code> in case of conflict.</p></td>
+    </tr>
+    <tr>
+      <th>automatic_intervals</th>
+      <td><p>Whether to use automatic intervals, as flag.</p></td>
     </tr>
     <tr>
       <th>suppress_output_before</th>
-      <td><p>flag</p></td>
+      <td><p>Whether to suppress before a certain time point, as number.</p></td>
     </tr>
     <tr>
       <th>output_events</th>
-      <td><p>flag</p></td>
+      <td><p>Whether to output events as additional steps, as flag.</p></td>
     </tr>
     <tr>
       <th>save_result_in_memory</th>
-      <td><p>flag</p></td>
+      <td><p>Whether to generate an output data frame for the time course, as flag.</p></td>
     </tr>
     <tr>
       <th>start_in_steady_state</th>
-      <td><p>flag</p></td>
+      <td><p>Whether to first go to steady state before running the time course, as flag.</p></td>
     </tr>
     <tr>
       <th>update_model</th>
-      <td><p>flag</p></td>
+      <td><p>Whether to update the model with the state resulting from the time course, as flag.</p></td>
     </tr>
     <tr>
       <th>executable</th>
@@ -243,7 +250,7 @@
     </tr>
     <tr>
       <th>model</th>
-      <td><p>a model object</p></td>
+      <td><p>A model object.</p></td>
     </tr>
     </table>
 
