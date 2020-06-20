@@ -333,17 +333,17 @@ format.copasi_exp <- function (x, ...) {
   c(
     NextMethod(),
     "# Experiment Type:",
-    format(x %@% "experiment_type"),
+    format(attr(x, "experiment_type")),
     "# Experiments:",
-    format(x %@% "experiments"),
+    format(attr(x, "experiments")),
     "# Types:",
-    format(x %@% "types") %>% paste0(names(.), ": ", .),
+    format(attr(x, "types")) %>% paste0(names(.), ": ", .),
     "# Mappings:",
-    format(x %@% "mappings") %>% paste0(names(.), ": ", .),
+    format(attr(x, "mappings")) %>% paste0(names(.), ": ", .),
     "# Weight Method:",
-    format(x %@% "weight_method"),
+    format(attr(x, "weight_method")),
     "# Filename:",
-    format(x %@% "filename")
+    format(attr(x, "filename"))
   )
 }
 
@@ -497,12 +497,12 @@ addExperiments <- function(..., model = getCurrentModel()) {
   map(
     arglist_compact,
     ~ {
-      experiment_type <- .x %@% "experiment_type"
-      experiments <- .x %@% "experiments"
-      types <- .x %@% "types"
-      mappings <- .x %@% "mappings"
-      weight_method <- .x %@% "weight_method"
-      filename <- .x %@% "filename"
+      experiment_type <- attr(.x, "experiment_type")
+      experiments <- attr(.x, "experiments")
+      types <- attr(.x, "types")
+      mappings <- attr(.x, "mappings")
+      weight_method <- attr(.x, "weight_method")
+      filename <- attr(.x, "filename")
       
       # Create experiment file
       assert_that(

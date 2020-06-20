@@ -55,8 +55,8 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   
   data <- experiments
-  types <- data %@% "types"
-  experiments <- data %@% "experiments"
+  types <- attr(data, "types")
+  experiments <- attr(data, "experiments")
   dep_cols <- which(types == "dependent")
   ign_cols <- which(types == "ignore")
   dep_col_count <- length(dep_cols)
