@@ -55,6 +55,41 @@ test_that("runParameterEstimation()", {
   expect_is(PE$protocol, "character")
 })
 
+test_that("ParameterEstimation Experimental Data", {
+  # ts with 2 experiments and some NA data
+  ts <- list(
+    tibble::tibble(
+      time = c(0L, 1L, 2L, 3L),
+      a = c(0, 9, 15, 18),
+      b = c(0, 1, NA, 12),
+      c = NA,
+      d = c(23456, 1235321456.2165, 131854, NA),
+      e = NA_real_,
+      f = 1
+    ),
+    tibble::tibble(
+      time = c(0L, 1L, 2L, 3L),
+      a = c(0, NaN, 15, 18),
+      b = c(0, 1, 5, 12),
+      f = 2
+    )
+  )
+    
+  exp <- defineExperiments(
+    experiment_type = "time_course",
+    data = ts,
+    types = c("time", "dependent", "dependent", "dependent", "ignore", "ignore", "independent"),
+    mappings = c(NA, "{[A]}", "{[B]}", compartment_strict("compartment", reference = "Volume"), NA, NA, compartment_strict("compartment", reference = "InitialVolume"))
+  )
+  
+  clearExperiments()
+  PE <- runParameterEstimation(experiments = exp)
+  
+  expect_equal(nrow(PE$parameters), 3L)
+  expect_equal(nrow(PE$experiments), 2L)
+  expect_equal(nrow(PE$fitted_values), 3L)
+})
+
 test_that("setOptimizationSettings() method", {
   expect_error(setParameterEstimationSettings(method = "..."))
   setParameterEstimationSettings(method = list())

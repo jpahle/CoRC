@@ -387,7 +387,6 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   types <- tolower(types)
   names(types) <- names(types) %||% data_cols
   types <- args_match(types, exp_allowed_types)
-  types <- types[types != "ignore"]
   
   if (experiment_type == "timeCourse")
     assert_that(sum(types == "time") == 1L, msg = 'Time course experiements need exactly one "time" mapping.')
