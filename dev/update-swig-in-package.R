@@ -20,6 +20,9 @@ source("patch-swig-wrapper.R", chdir = TRUE)
 
 libpath <- file.path("..", "libs")
 
+if (.Platform$OS.type == "windows")
+  libpath <- file.path(libpath, "x64")
+
 if (!dir.exists(libpath))
   dir.create(libpath, recursive = TRUE)
 
@@ -29,6 +32,9 @@ stopifnot(
 )
 
 instlibpath <- file.path("..", "inst", "libs")
+
+if (.Platform$OS.type == "windows")
+  instlibpath <- file.path(instlibpath, "x64")
 
 if (!dir.exists(instlibpath))
   dir.create(instlibpath, recursive = TRUE)
