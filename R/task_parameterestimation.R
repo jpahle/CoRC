@@ -406,7 +406,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
   
   if (is.null(weight_method)) {
-    weight_method <- exp_weight_methods[1]
+    weight_method <- toupper(exp_weight_methods[1])
   } else {
     weight_method <- tolower(weight_method)
     weight_method <- rlang::arg_match(weight_method, exp_weight_methods)
@@ -511,7 +511,7 @@ addExperiments <- function(..., model = getCurrentModel()) {
         msg = paste0('Experiment file "', filename, '" already exists.')
       )
       assert_that(file.create(filename))
-      readr::write_tsv(.x, filename)
+      readr::write_tsv(.x, filename, na = "NA")
       
       # make sure the file gets deleted on error
       tryCatch({
@@ -617,7 +617,7 @@ pe_assemble_parameters <- function(parameters, c_problem) {
   
   assert_that(
     c_problem$getOptItemSize() == 0L,
-    msg = "This function can not set parameters if there are already parameters set in COPASI."
+    msg = "This function can not set parameters if there are already parameters set in COPASI. Consider using `clearExperiments()`."
   )
   
   walk(parameters, validate_corc_opt_parm)
@@ -636,7 +636,7 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
   
   assert_that(
     c_problem$getExperimentSet()$getExperimentCount() == 0L,
-    msg = "This function can not set experiments if there are already experiments set in COPASI."
+    msg = "This function can not set experiments if there are already experiments set in COPASI. Consider using `clearExperiments()`."
   )
   
   # force temporary experiment file names so they can be deleted safely
