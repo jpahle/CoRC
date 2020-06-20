@@ -1,7 +1,7 @@
 Package: CoRC
 Type: Package
 Title: COPASI R Connector
-Version: 0.7.1
+Version: 0.7.1.9000
 Authors@R: c(
     person("Jonas", "Förster", email = "jonasfoerster@gmail.com", role = c("aut", "cre")),
     person("Jürgen", "Pahle", email = "juergen.pahle@bioquant.uni-heidelberg.de", role = c("aut"))
