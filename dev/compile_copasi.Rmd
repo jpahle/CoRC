@@ -219,7 +219,10 @@ Ensures, that the installed package has a working lib
 
 ```{r, eval=FALSE}
 devtools::install("..")
-CoRC::getCopasi(file.path("..", "libs", paste0("COPASI", .Platform$dynlib.ext)))
+libpath <- file.path("..", "libs")
+if (.Platform$OS.type == "windows")
+  libpath <- file.path(libpath, "x64")
+CoRC::getCopasi(file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)))
 ```
 
 # Getting the current hash for the binary (update it in CoRC.R)
