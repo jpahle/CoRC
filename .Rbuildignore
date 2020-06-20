@@ -9,4 +9,4 @@
 # otherwise, libs folder gets included with source build
 ^libs/*$
 # inst libs is only for building documentation
-^inst/libs/*$
+^inst/libs$
