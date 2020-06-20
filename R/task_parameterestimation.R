@@ -771,7 +771,7 @@ pe_get_results <- function(c_task, settings) {
     tibble::tibble(
       "Parameter"               = get_key(cl_items),
       "Lower Bound"             = map_swig_dbl(cl_items, "getLowerBoundValue"),
-      "Start Value"             = map_swig_dbl(cl_items, "getStartValue"),
+      "Start Value"             = map_swig_dbl(cl_items, "getLastStartValue"),
       "Value"                   = vals,
       "Upper Bound"             = map_swig_dbl(cl_items, "getUpperBoundValue"),
       "Std. Deviation"          = std_dev,

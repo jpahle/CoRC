@@ -3,6 +3,7 @@
 * Rebase on COPASI release 4.28 sources.
 * Add support for the time course automatic interval option.
 * Fix definition of experimental data with columns of type 'ignore'.
+* Fix `runParameterEstimation()` output, in some cases, listing incorrect parameter start values.
 
 # CoRC 0.7.1 (2020-05-24)
 

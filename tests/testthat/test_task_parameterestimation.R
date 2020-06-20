@@ -55,6 +55,21 @@ test_that("runParameterEstimation()", {
   expect_is(PE$protocol, "character")
 })
 
+test_that("ParameterEstimation parameter start value is valid", {
+  PE <- runParameterEstimation(update_model = FALSE)
+  
+  expect_equal(PE$parameters$start_value, c(1.00, 0.25, 0.10))
+  
+  PE2 <- runParameterEstimation(update_model = TRUE)
+  
+  expect_identical(PE$parameters, PE2$parameters)
+  expect_identical(PE$experiments, PE2$experiments)
+})
+
+unloadAllModels()
+loadExamples(4)
+setParameterEstimationSettings(update_model = FALSE, method = "LevenbergMarquardt")
+
 test_that("ParameterEstimation Experimental Data", {
   # ts with 2 experiments and some NA data
   ts <- list(
