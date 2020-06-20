@@ -8,6 +8,7 @@
 #' @param dt The time course output step size, as number.
 #' @param intervals The time course step count, as count.
 #' Overwrites \code{dt} in case of conflict.
+#' @param automatic_intervals Whether to use automatic intervals, as flag.
 #' @param suppress_output_before Whether to suppress before a certain time point, as number.
 #' @param output_events Whether to output events as additional steps, as flag.
 #' @param save_result_in_memory Whether to generate an output data frame for the time course, as flag.
@@ -28,7 +29,7 @@
 #' Test the current value of this parameter with: \code{getTimeCourseSettings()$save_result_in_memory}.
 #' @family time course
 #' @export
-runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, soft_error = FALSE, model = getCurrentModel()) {
+runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, automatic_intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, soft_error = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(is.flag(soft_error))
   
@@ -37,6 +38,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
     duration               = duration,
     dt                     = dt,
     intervals              = intervals,
+    automatic_intervals     = automatic_intervals,
     suppress_output_before = suppress_output_before,
     output_events          = output_events,
     save_result_in_memory  = save_result_in_memory,
@@ -120,6 +122,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param duration number
 #' @param dt number
 #' @param intervals count
+#' @param automatic_intervals flag
 #' @param suppress_output_before flag
 #' @param output_events flag
 #' @param save_result_in_memory flag
@@ -130,7 +133,7 @@ runTimeCourse <- function(duration = NULL, dt = NULL, intervals = NULL, suppress
 #' @param model a model object
 #' @family time course
 #' @export
-setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
+setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, automatic_intervals = NULL, suppress_output_before = NULL, output_events = NULL, save_result_in_memory = NULL, start_in_steady_state = NULL, update_model = NULL, executable = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
@@ -138,6 +141,7 @@ setTimeCourseSettings <- function(duration = NULL, dt = NULL, intervals = NULL, 
     duration               = duration,
     dt                     = dt,
     intervals              = intervals,
+    automatic_intervals     = automatic_intervals,
     suppress_output_before = suppress_output_before,
     output_events          = output_events,
     save_result_in_memory  = save_result_in_memory,
@@ -242,11 +246,12 @@ is.copasi_ts <- function(x) {
 
 # does assertions
 # returns a list of settings
-tc_assemble_settings <- function(duration, dt, intervals, suppress_output_before, output_events, save_result_in_memory, start_in_steady_state, update_model, executable) {
+tc_assemble_settings <- function(duration, dt, intervals, automatic_intervals, suppress_output_before, output_events, save_result_in_memory, start_in_steady_state, update_model, executable) {
   assert_that(
     is.null(duration)               || is.number(duration)               && noNA(duration) && duration >= 0,
     is.null(dt)                     || is.number(dt)                     && noNA(dt)       && dt >= 0,
     is.null(intervals)              || is.count(intervals),
+    is.null(automatic_intervals)    || is.flag(automatic_intervals)      && noNA(automatic_intervals),
     is.null(suppress_output_before) || is.number(suppress_output_before) && noNA(suppress_output_before),
     is.null(output_events)          || is.flag(output_events)            && noNA(output_events),
     is.null(save_result_in_memory)  || is.flag(save_result_in_memory)    && noNA(save_result_in_memory),
@@ -262,6 +267,7 @@ tc_assemble_settings <- function(duration, dt, intervals, suppress_output_before
     duration               = duration,
     dt                     = dt,
     intervals              = intervals,
+    automatic_intervals    = automatic_intervals,
     suppress_output_before = suppress_output_before,
     output_events          = output_events,
     save_result_in_memory  = save_result_in_memory,
@@ -303,6 +309,7 @@ tc_get_settings <- function(c_task) {
     duration               = c_problem$getDuration(),
     dt                     = c_problem$getStepSize(),
     intervals              = c_problem$getStepNumber(),
+    automatic_intervals    = c_problem$getAutomaticStepSize(),
     suppress_output_before = c_problem$getOutputStartTime(),
     output_events          = as.logical(c_problem$getOutputEvent()),
     save_result_in_memory  = as.logical(c_problem$timeSeriesRequested()),
@@ -327,6 +334,9 @@ tc_set_settings <- function(data, c_task) {
   
   if (!is.null(data$intervals))
     c_problem$setStepNumber(data$intervals)
+  
+  if (!is.null(data$automatic_intervals))
+    c_problem$setAutomaticStepSize(data$automatic_intervals)
   
   if (!is.null(data$suppress_output_before))
     c_problem$setOutputStartTime(data$suppress_output_before)

@@ -9,6 +9,7 @@ runTimeCourse(
   duration = NULL,
   dt = NULL,
   intervals = NULL,
+  automatic_intervals = NULL,
   suppress_output_before = NULL,
   output_events = NULL,
   save_result_in_memory = NULL,
@@ -24,6 +25,7 @@ runTC(
   duration = NULL,
   dt = NULL,
   intervals = NULL,
+  automatic_intervals = NULL,
   suppress_output_before = NULL,
   output_events = NULL,
   save_result_in_memory = NULL,
@@ -42,6 +44,8 @@ runTC(
 
 \item{intervals}{The time course step count, as count.
 Overwrites \code{dt} in case of conflict.}
+
+\item{automatic_intervals}{Whether to use automatic intervals, as flag.}
 
 \item{suppress_output_before}{Whether to suppress before a certain time point, as number.}
 

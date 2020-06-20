@@ -1,6 +1,7 @@
 # CoRC 0.7.1.9000
 
 * Rebase on COPASI release 4.28 sources.
+* Add support for the time course automatic interval option.
 
 # CoRC 0.7.1 (2020-05-24)
 

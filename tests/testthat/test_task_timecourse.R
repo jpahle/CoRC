@@ -41,6 +41,19 @@ test_that("runTimeCourse() failure", {
   expect_match(TC$task_error, ".+")
 })
 
+test_that("runTimeCourse() automatic iterations", {
+  intervals <- 1L
+  TC <- runTimeCourse(intervals = intervals, automatic_intervals = FALSE)
+  
+  expect_identical(TC$setting$automatic_intervals, FALSE)
+  expect_equal(nrow(TC$result), intervals + 1L)
+  
+  TC <- runTimeCourse(intervals = intervals, automatic_intervals = TRUE)
+  
+  expect_identical(TC$setting$automatic_intervals, TRUE)
+  expect_gt(nrow(TC$result), intervals + 1L)
+})
+
 test_that("setTimeCourseSettings() method", {
   expect_error(setTimeCourseSettings(method = "..."))
   setTimeCourseSettings(method = list())

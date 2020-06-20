@@ -9,6 +9,7 @@ setTimeCourseSettings(
   duration = NULL,
   dt = NULL,
   intervals = NULL,
+  automatic_intervals = NULL,
   suppress_output_before = NULL,
   output_events = NULL,
   save_result_in_memory = NULL,
@@ -23,6 +24,7 @@ setTC(
   duration = NULL,
   dt = NULL,
   intervals = NULL,
+  automatic_intervals = NULL,
   suppress_output_before = NULL,
   output_events = NULL,
   save_result_in_memory = NULL,
@@ -39,6 +41,8 @@ setTC(
 \item{dt}{number}
 
 \item{intervals}{count}
+
+\item{automatic_intervals}{flag}
 
 \item{suppress_output_before}{flag}
 
