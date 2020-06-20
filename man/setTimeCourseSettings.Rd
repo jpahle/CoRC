@@ -36,23 +36,24 @@ setTC(
 )
 }
 \arguments{
-\item{duration}{number}
+\item{duration}{The time course duration, as number.}
 
-\item{dt}{number}
+\item{dt}{The time course output step size, as number.}
 
-\item{intervals}{count}
+\item{intervals}{The time course step count, as count.
+Overwrites \code{dt} in case of conflict.}
 
-\item{automatic_intervals}{flag}
+\item{automatic_intervals}{Whether to use automatic intervals, as flag.}
 
-\item{suppress_output_before}{flag}
+\item{suppress_output_before}{Whether to suppress before a certain time point, as number.}
 
-\item{output_events}{flag}
+\item{output_events}{Whether to output events as additional steps, as flag.}
 
-\item{save_result_in_memory}{flag}
+\item{save_result_in_memory}{Whether to generate an output data frame for the time course, as flag.}
 
-\item{start_in_steady_state}{flag}
+\item{start_in_steady_state}{Whether to first go to steady state before running the time course, as flag.}
 
-\item{update_model}{flag}
+\item{update_model}{Whether to update the model with the state resulting from the time course, as flag.}
 
 \item{executable}{flag}
 
@@ -64,7 +65,7 @@ The list may contain further method arguments and their values.
 
 Available methods: 'deterministic', 'RADAU5', 'stochastic', 'directMethod', 'tauLeap', 'adaptiveSA', 'hybrid', 'hybridLSODA', 'hybridODE45', 'stochasticRunkeKuttaRI5'.}
 
-\item{model}{a model object}
+\item{model}{A model object.}
 }
 \description{
 \code{setTimeCourseSettings} sets time course task settings including method options.
