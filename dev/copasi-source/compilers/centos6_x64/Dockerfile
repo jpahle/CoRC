@@ -16,7 +16,6 @@ RUN yum upgrade -y \
 	&& yum groupinstall -y 'Development Tools' \
 	&& yum install -y \
 		openssl-devel \
-		libuuid-devel \
 	&& yum clean all
 
 SHELL [ "/usr/bin/scl", "enable", "devtoolset-8", "--", "/bin/sh", "-c" ]
@@ -24,6 +23,17 @@ ENTRYPOINT [ "/usr/bin/scl", "enable", "devtoolset-8", "--" ]
 CMD [ "/bin/bash" ]
 
 WORKDIR /prep/
+
+# libuuid, keep 1.0.3
+RUN curl -L http://bqfrank.spdns.org/Files/libuuid-1.0.3.tar.gz | tar -xz \
+  && cd libuuid-*/ \
+  && ./configure --disable-dependency-tracking --with-pic --enable-static=yes --enable-shared=no \
+  && make clean \
+  && make -j$(nproc) \
+  && make install \
+  && rm /usr/local/lib/libuuid.la \
+  && cd ../ \
+  && rm -r libuuid-*/
 
 # COPASI dependency, current
 RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.0.tar.gz | tar -xz \
