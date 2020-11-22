@@ -216,6 +216,34 @@ loadSBMLFromString <- function(sbml) {
   c_datamodel
 }
 
+#' Load a combine archive
+#'
+#' \code{loadCombineArchive} loads a combine archive into COPASI and returns a reference to it.
+#'
+#' @param path path
+#' @return a model object
+#' @family model loading
+#' @export
+loadCombineArchive <- function(path) {
+  assert_binaries()
+  assert_that(is.string(path), noNA(path), file.exists(path), is.readable(path))
+  
+  c_datamodel <- CRootContainer_addDatamodel()
+  
+  success <- grab_msg(c_datamodel$openCombineArchive(normalizePathC(path)))
+  
+  # failed imports sometimes generate NULL instead of FALSE
+  if (is.null(success) || !success) {
+    CRootContainer_removeDatamodel(c_datamodel)
+    stop("Failed to load combine archive.")
+  }
+  
+  pkg_env$c_curr_dm <- c_datamodel
+  pkg_env$cl_loaded_dms <- append(pkg_env$cl_loaded_dms, c_datamodel)
+  
+  c_datamodel
+}
+
 #' Unload a model
 #'
 #' \code{unloadModel} frees memory by unloading the given model from COPASI.
@@ -360,6 +388,56 @@ saveSBMLToString <- function(level, version, model = getCurrentModel()) {
   )
   
   grab_msg(c_datamodel$exportSBMLToString(sbmlLevel = level, sbmlVersion = version))
+}
+
+#' Save the model as a combine archive
+#'
+#' \code{saveCombineArchive} exports the given model as a combine archive .omex file.
+#'
+#' @param filename a path to save to
+#' @param include_copasi flag
+#' @param include_sbml flag
+#' @param include_data flag
+#' @param include_sedml flag
+#' @param overwrite is overwriting existing files allowed?
+#' @param model a model object
+#' @family model loading
+#' @export
+saveCombineArchive <- function(filename, include_copasi = TRUE, include_sbml = TRUE, include_data = TRUE, include_sedml = TRUE, overwrite = FALSE, model = getCurrentModel()) {
+  c_datamodel <- assert_datamodel(model)
+  assert_that(
+    is.string(filename), noNA(filename), filename != "",
+    is.flag(include_copasi), noNA(include_copasi),
+    is.flag(include_sbml), noNA(include_sbml),
+    is.flag(include_data), noNA(include_data),
+    is.flag(include_sedml), noNA(include_sedml),
+    is.flag(overwrite), noNA(overwrite)
+  )
+  
+  if (file.exists(filename)) {
+    assert_that(
+      overwrite,
+      msg = paste0("File `", filename, "` already exists and overwrite is set to FALSE.")
+    )
+    filepath <- normalizePathC(filename)
+  } else {
+    filepath <- file.path(normalizePathC(dirname(filename)), basename(filename))
+  }
+  
+  assert_that(
+    # somehow, this function returns FALSE
+    isFALSE(grab_msg(c_datamodel$exportCombineArchive(
+      filepath,
+      includeCOPASI = include_copasi,
+      includeSBML = include_sbml,
+      includeData = include_data,
+      includeSEDML = include_sedml,
+      overwriteFile = overwrite
+    ))),
+    msg = paste0("Model failed to save at `", filename, "`.")
+  )
+  
+  invisible()
 }
 
 #' Load example models

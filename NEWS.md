@@ -13,6 +13,8 @@
 
   Added `biomodels_url()` helper function to assist with generating URLs where desirable.
 
+* Added support for Combine archives via `loadCombineArchive()` and `saveCombineArchive()`.
+
 # CoRC 0.8.0 (2020-06-25)
 
 * Rebase on COPASI release 4.28 sources.

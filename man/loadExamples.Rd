@@ -17,11 +17,13 @@ a list of model objects
 }
 \seealso{
 Other model loading: 
+\code{\link{loadCombineArchive}()},
 \code{\link{loadModelFromString}()},
 \code{\link{loadModel}()},
 \code{\link{loadSBMLFromString}()},
 \code{\link{loadSBML}()},
 \code{\link{newModel}()},
+\code{\link{saveCombineArchive}()},
 \code{\link{saveModelToString}()},
 \code{\link{saveModel}()},
 \code{\link{saveSBMLToString}()},

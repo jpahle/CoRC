@@ -14,11 +14,13 @@ loadSBMLFromString(sbml)
 }
 \seealso{
 Other model loading: 
+\code{\link{loadCombineArchive}()},
 \code{\link{loadExamples}()},
 \code{\link{loadModelFromString}()},
 \code{\link{loadModel}()},
 \code{\link{loadSBML}()},
 \code{\link{newModel}()},
+\code{\link{saveCombineArchive}()},
 \code{\link{saveModelToString}()},
 \code{\link{saveModel}()},
 \code{\link{saveSBMLToString}()},
