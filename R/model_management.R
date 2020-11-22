@@ -60,14 +60,16 @@ getLoadedModels <- function() {
 }
 
 # helper for loading models from connections
-# If x is a readable path, the contents are returned as string, else NULL
+# If x is a readable path, the contents are returned as string
 con_to_string <- function(x) {
-  result <- quietly(readLines)(x)
+  result <- readr::read_file(x)
   
-  # warnings indicate problems like binary files
-  assert_that(is_empty(result$warnings), msg = "Could not interpret path contents.")
+  # check if e.g. binary file
+  assert_that(validEnc(result), msg = "Could not interpret path contents.")
+
+  assert_that(nchar(result) > 0, msg = "Path contents are empty.")
   
-  paste0(result$result, collapse = "\n")
+  result
 }
 
 #' Load an empty model
