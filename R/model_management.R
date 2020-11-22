@@ -293,7 +293,10 @@ unloadAllModels <- function() {
 #' @export
 saveModel <- function(filename = model$getFileName(), overwrite = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
-  assert_that(is.string(filename), noNA(filename), filename != "")
+  assert_that(
+    is.string(filename), noNA(filename), filename != "",
+    is.flag(overwrite), noNA(overwrite)
+  )
 
   # if (!has_extension(filename, "cps"))
   #   filename <- paste0(filename, ".cps")
@@ -341,12 +344,13 @@ saveModelToString <- function(model = getCurrentModel()) {
 #' @param model a model object
 #' @family model loading
 #' @export
-saveSBML <- function(filename = model$getFileName(), level, version, overwrite = FALSE, model = getCurrentModel()) {
+saveSBML <- function(filename, level, version, overwrite = FALSE, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   assert_that(
     is.string(filename), noNA(filename), filename != "",
     is.count(level),
-    is.count(version)
+    is.count(version),
+    is.flag(overwrite), noNA(overwrite)
   )
   
   # if (!has_extension(filename, "xml"))

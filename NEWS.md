@@ -14,6 +14,7 @@
   Added `biomodels_url()` helper function to assist with generating URLs where desirable.
 
 * Added support for Combine archives via `loadCombineArchive()` and `saveCombineArchive()`.
+* Minor fixes and code cleanups.
 
 # CoRC 0.8.0 (2020-06-25)
 

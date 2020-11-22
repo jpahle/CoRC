@@ -5,7 +5,7 @@
 \title{Save the model as a SBML file}
 \usage{
 saveSBML(
-  filename = model$getFileName(),
+  filename,
   level,
   version,
   overwrite = FALSE,
