@@ -37,8 +37,9 @@ process_task <- function(c_task, soft_error = FALSE) {
 #' @param use_concentrations Whether to print concentrations or particle numbers for species, as flag.
 #' @return A ggplot2 plot
 # #' @importFrom ggplot2 autoplot
+#' @method autoplot copasi_ts
 #' @export autoplot.copasi_ts
-`autoplot.copasi_ts` <- function(object, ..., use_concentrations = TRUE) {
+autoplot.copasi_ts <- function(object, ..., use_concentrations = TRUE) {
   # make sure ggplot2, tidyr is available
   loadNamespace("ggplot2")
   loadNamespace("tidyr")

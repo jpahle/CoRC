@@ -4,7 +4,7 @@
 \alias{autoplot.copasi_ts}
 \title{Autoplot method for COPASI timeseries objects.}
 \usage{
-autoplot.copasi_ts(object, ..., use_concentrations = TRUE)
+\method{autoplot}{copasi_ts}(object, ..., use_concentrations = TRUE)
 }
 \arguments{
 \item{object}{The data to be plotted, as returned by \code{\link{runTimeCourse}}. This object is of type \code{copasi_ts}.}
