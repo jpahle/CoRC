@@ -1259,7 +1259,7 @@ getParameterReferences <- function(key = NULL, model = getCurrentModel()) {
 #'
 #' @param key Identify which reaction parameter to edit by specifying it's key, as string.
 #' Also supports fragments of keys, if uniquely matching one reaction parameter.
-#' @param name Name to set, as string.
+#' @param name Parameter is deprecated.
 #' @param value Value to set, as numeric.
 #' @param mapping Key of global quantity to map to, as string.
 #' Also supports fragments of keys, if uniquely matching one global quantity.
@@ -1277,12 +1277,14 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
     is.null(data)     || is.data.frame(data)
   )
   
+  if (!is.null(name))
+    warning("Parameter `name` is deprecated, as parameter names are not modifiable on the reaction level. The parameter is ignored.")
+  
   # Do this as assertion before we start changing values
   cl_params <- parameter_obj(key %||% character(), c_datamodel)
   
   # gather vectors of what to actually do work on
   false_vec <- rep_along(cl_params, FALSE)
-  do_name    <- if (is.null(name))    false_vec else !is.na(name)
   do_value   <- if (is.null(value))   false_vec else !is.na(value)
   do_mapping <- if (is.null(mapping)) false_vec else !is.na(mapping)
   
@@ -1300,16 +1302,12 @@ setParameters <- function(key = NULL, name = NULL, value = NULL, mapping = NULL,
   # if data is provided with the data arg, run a recursive call
   # needs to be kept up to date with the function args
   if (!is.null(data))
-    do.call(setParameters, data[names(data) %in% c("key", "name", "value", "mapping")])
+    do.call(setParameters, data[names(data) %in% c("key", "value", "mapping")])
   
   if (is_empty(cl_params))
     return(invisible())
   
   c_model <- c_datamodel$getModel()
-  
-  # apply names
-  for (i in which(do_name))
-    cl_params[[i]]$setObjectName(name[i])
   
   # Parameters are only those of type PARAMETER I think.
   # So I can safely set a value and make them local or set a mapping

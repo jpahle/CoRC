@@ -17,7 +17,7 @@ setParameters(
 \item{key}{Identify which reaction parameter to edit by specifying it's key, as string.
 Also supports fragments of keys, if uniquely matching one reaction parameter.}
 
-\item{name}{Name to set, as string.}
+\item{name}{Parameter is deprecated.}
 
 \item{value}{Value to set, as numeric.}
 

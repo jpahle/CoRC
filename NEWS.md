@@ -4,6 +4,10 @@
 
   `addExperiments()` is also used by `runParameterEstimation()` and `setParameterEstimationSettings()`.
 
+* Deprecate the `name` parameter of `setParameters()`.
+
+  Renaming parameters on a per reaction basis is not supported by COPASI.
+
 # CoRC 0.8.0 (2020-06-25)
 
 * Rebase on COPASI release 4.28 sources.
