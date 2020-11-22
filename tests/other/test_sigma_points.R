@@ -9,7 +9,7 @@ measurement_error <- 0.1
 
 # Generate a fully fitted model
 
-loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+loadSBML(biomodels_url(id = 10, version = 2, format = "sbml"))
 
 # define the parameters for COPASI
 walk(
@@ -26,7 +26,12 @@ setParameterEstimationSettings(
 
 # read experimental data
 data_experimental <-
-  read_tsv("data/MAPKdata.txt") %>%
+  "data/MAPKdata.txt" %>%
+  read_tsv(col_types = cols(
+    time = col_double(),
+    `MAPKKK-P` = col_double(),
+    `MAPK-P` = col_double()
+  )) %>%
   rename(Time = time, `Mos-P`= "MAPKKK-P", `Erk2-P` = "MAPK-P")
 
 # define the experiments for COPASI

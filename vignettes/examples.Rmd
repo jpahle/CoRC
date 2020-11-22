@@ -49,7 +49,7 @@ These oscialltions can be visualized as a trajectory through a 3D space.
 The example does this once in a deterministic and once in a stochatic fashion.
 
 ```{r}
-loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329?filename=BIOMD0000000329_url.xml")
 
 # Run 24 sec (2 Periods)
 setTimeCourseSettings(24, intervals = 10000)
@@ -140,8 +140,7 @@ plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
-
+loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
 setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
 
 # Cartesian product of the input values
@@ -193,7 +192,7 @@ This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/9
 It is in many ways similar to the previous example but is written to run parallelized.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
+loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
 
 # 10000 repeats of steady state task with random cysteine and adomed
 scan <-
@@ -202,7 +201,7 @@ scan <-
     # perpare worker (.prep),
     .prep = quote({
       library(CoRC)
-      loadSBML("https://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000068")
+      loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
       setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
     }),
     # iteration data (10000 random seeds) is given as .x to iteration formula,
@@ -252,7 +251,7 @@ plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
-loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000010.2?filename=BIOMD0000000010_url.xml")
 
 # get timeseries for the record
 data_before <- runTimeCourse(1000, 1)$result

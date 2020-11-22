@@ -59,7 +59,7 @@ loadExamples()
 When loading a model, the returned object is a reference to the model that will give basic information when printed.
 
 ```{r}
-model <- loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+model <- loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329.2?filename=BIOMD0000000329_url.xml")
 model
 ```
 

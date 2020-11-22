@@ -16,11 +16,8 @@ if (file.exists("bmdls.rds")) {
   biomodels <-
     tibble(
       id = 1:max_biomodels,
-      url = paste0("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000", sprintf("%03d", id)),
-      sbml_string =
-        url %>%
-        map(possibly(readLines, character(), quiet = TRUE)) %>%
-        map_chr(paste0, collapse = "\n"),
+      url = map_chr(id, biomodels_url, format = "sbml"),
+      sbml_string = map_chr(url, CoRC:::con_to_string),
       exists = sbml_string != "",
       loadable = NA,
       taskable = NA,

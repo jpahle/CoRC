@@ -1,3 +1,38 @@
+#' Generate a URL to a BioModels model.
+#'
+#' \code{biomodels_url} generates a URL to a BioModel model file of a specified format.
+#'
+#' @param id The numeric BioModels id, as count.
+#' @param version The version of the model, as count.
+#' @param format The desired file format for the model.
+#' @return A URL to access the BioModels model file.
+#' @export
+biomodels_url <- function(id, version = NA, format = c("sbml", "omex")) {
+  assert_that(
+    is.count(id),
+    is.na(version) || is.count(version)
+  )
+  format <- rlang::arg_match(format)
+  
+  biomdls_string <- sprintf("BIOMD%010d", id)
+  
+  if (is.na(version))
+    version_string <- ""
+  else
+    version_string <- paste0(".", version)
+  
+  base_url <- "https://www.ebi.ac.uk/biomodels/model/download/"
+  
+  if (format == "sbml") {
+    url <- paste0(base_url, biomdls_string, version_string, "?filename=", biomdls_string, "_url.xml")
+  } else if (format == "omex") {
+    url <- paste0(base_url, biomdls_string, version_string)
+  }
+  
+  url
+}
+
+
 # stub for backports
 hasName <- function (...) {}
 

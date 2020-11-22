@@ -9,6 +9,9 @@
   Renaming parameters on a per reaction basis is not supported by COPASI.
 
 * Improved consistency of fetching of models from URLs.
+* Adjust for new BioModels URL scheme.
+
+  Added `biomodels_url()` helper function to assist with generating URLs where desirable.
 
 # CoRC 0.8.0 (2020-06-25)
 
