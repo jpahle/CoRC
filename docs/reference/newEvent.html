@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -167,18 +167,18 @@
     <p><code>newEvent</code> creates a new event.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>newEvent</span>(
-  <span class='no'>name</span>,
-  <span class='no'>trigger_expression</span>,
-  <span class='kw'>fire_at_initial_time</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>trigger_must_remain_true</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>priority_expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>delayed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"no"</span>, <span class='st'>"assignment"</span>, <span class='st'>"calculation"</span>),
-  <span class='kw'>delay_expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>assignment_target</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>assignment_expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>()
-)</pre>
+    <pre class="usage"><span class='fu'>newEvent</span><span class='op'>(</span>
+  <span class='va'>name</span>,
+  <span class='va'>trigger_expression</span>,
+  fire_at_initial_time <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  trigger_must_remain_true <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  priority_expression <span class='op'>=</span> <span class='cn'>NULL</span>,
+  delayed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"no"</span>, <span class='st'>"assignment"</span>, <span class='st'>"calculation"</span><span class='op'>)</span>,
+  delay_expression <span class='op'>=</span> <span class='cn'>NULL</span>,
+  assignment_target <span class='op'>=</span> <span class='cn'>NULL</span>,
+  assignment_expression <span class='op'>=</span> <span class='cn'>NULL</span>,
+  model <span class='op'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,7 +256,7 @@ Arguments priority from lowest to highest is <code>initial_value</code>, <code>i
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

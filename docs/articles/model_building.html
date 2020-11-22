@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -109,7 +109,8 @@
 
       
 
-      </header><script src="model_building_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="model_building_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="model_building_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="model_building_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model Building</h1>
@@ -126,24 +127,26 @@
 <div id="initial-setup" class="section level1">
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">CoRC</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="quick-model-building" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quick-model-building" class="anchor"></a>Quick Model Building</h1>
 <p>Building a quick Michaelis-Menten reaction using COPASI’s automatisms. Working with reaction equations automatically creates required entities the same way the COPASI GUI does.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/newModel.html">newModel</a></span>()
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="st">"Reversible Michaelis-Menten"</span>)
+<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span><span class="op">(</span><span class="st">"a = b"</span>, fun <span class="op">=</span> <span class="st">"Reversible Michaelis-Menten"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span>()
+<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 13</span>
 <span class="co">#&gt;   key   name  compartment type  unit  initial_concent… initial_number</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
@@ -151,12 +154,12 @@
 <span class="co">#&gt; 2 b{co… b     compartment reac… mol/l                1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
-<span class="fu"><a href="../reference/getReactions.html">getReactions</a></span>()
+<span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                               flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                 &lt;dbl&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversible Mich…     0           0</span>
-<span class="fu"><a href="../reference/getParameters.html">getParameters</a></span>()
+<span class="fu"><a href="../reference/getParameters.html">getParameters</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
@@ -165,36 +168,37 @@
 <span class="co">#&gt; 3 (a = b).Vf  Vf    a = b      0.1 &lt;NA&gt;   </span>
 <span class="co">#&gt; 4 (a = b).Vr  Vr    a = b      0.1 &lt;NA&gt;</span>
 
-<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span>()</pre></body></html></div>
+<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="more-detail" class="section level1">
 <h1 class="hasAnchor">
 <a href="#more-detail" class="anchor"></a>More Detail</h1>
 <p>Getting more detail in can be helpful. Here we create a global quantity “substrate concentration” which applies a fixed value to species “a”. This is achieved by assigning the <code>Value</code> reference of the global quantity to species “a”.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/newModel.html">newModel</a></span>()
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-<span class="no">subs_quant</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="kw">initial_value</span> <span class="kw">=</span> <span class="fl">10</span>)
-<span class="no">subs_value</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">quantity</a></span>(<span class="no">subs_quant</span>, <span class="kw">reference</span> <span class="kw">=</span> <span class="st">"Value"</span>)
-<span class="no">subs_value</span>
+<span class="va">subs_quant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span><span class="op">(</span><span class="st">"substrate concentration"</span>, initial_value <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="va">subs_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">quantity</a></span><span class="op">(</span><span class="va">subs_quant</span>, reference <span class="op">=</span> <span class="st">"Value"</span><span class="op">)</span>
+<span class="va">subs_value</span>
 <span class="co">#&gt; [1] "{Values[substrate concentration]}"</span>
 
-<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assignment"</span>, <span class="kw">expression</span> <span class="kw">=</span> <span class="no">subs_value</span>)
+<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span><span class="op">(</span><span class="st">"a"</span>, type <span class="op">=</span> <span class="st">"assignment"</span>, expression <span class="op">=</span> <span class="va">subs_value</span><span class="op">)</span>
 <span class="co">#&gt; Warning: No compartment exists. Created default compartment.</span>
 <span class="co">#&gt; [1] "a{compartment}"</span>
-<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="st">"Reversible Michaelis-Menten"</span>)
+<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span><span class="op">(</span><span class="st">"a = b"</span>, fun <span class="op">=</span> <span class="st">"Reversible Michaelis-Menten"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="fu"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span>()
+<span class="fu"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 9</span>
 <span class="co">#&gt;   key    name  type  unit  initial_value value  rate initial_express… expression</span>
 <span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;     </span>
 <span class="co">#&gt; 1 Value… subs… fixed ""               10   NaN     0 ""               ""</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span>()
+<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 13</span>
 <span class="co">#&gt;   key   name  compartment type  unit  initial_concent… initial_number</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
@@ -202,12 +206,12 @@
 <span class="co">#&gt; 2 b{co… b     compartment reac… mol/l                1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
-<span class="fu"><a href="../reference/getReactions.html">getReactions</a></span>()
+<span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                               flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                 &lt;dbl&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversible Mich…     0           0</span>
-<span class="fu"><a href="../reference/getParameters.html">getParameters</a></span>()
+<span class="fu"><a href="../reference/getParameters.html">getParameters</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
@@ -216,78 +220,80 @@
 <span class="co">#&gt; 3 (a = b).Vf  Vf    a = b      0.1 &lt;NA&gt;   </span>
 <span class="co">#&gt; 4 (a = b).Vr  Vr    a = b      0.1 &lt;NA&gt;</span>
 
-<span class="no">timecourse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="fl">1000</span>)
+<span class="va">timecourse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span>(<span class="no">timecourse</span>)</pre></body></html></div>
-<p><img src="model_building_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
-<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span>()</pre></body></html></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">timecourse</span><span class="op">)</span>
+<span class="co">#&gt; Error: Objects of type copasi_ts not supported by autoplot.</span>
+
+<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="defining-reaction-kinetics-manually" class="section level1">
 <h1 class="hasAnchor">
 <a href="#defining-reaction-kinetics-manually" class="anchor"></a>Defining Reaction Kinetics Manually</h1>
 <p>In previous examples, we used the predefined “Reversible Michaelis-Menten” kinetic functions. In this example we create an equivalent function manually to achieve the same result.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/newModel.html">newModel</a></span>()
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-<span class="fu"><a href="../reference/newCompartment.html">newCompartment</a></span>(<span class="st">"compartment"</span>)
+<span class="fu"><a href="../reference/newCompartment.html">newCompartment</a></span><span class="op">(</span><span class="st">"compartment"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Compartments[compartment]"</span>
-<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"fixed"</span>, <span class="kw">initial_concentration</span> <span class="kw">=</span> <span class="fl">10</span>)
+<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span><span class="op">(</span><span class="st">"a"</span>, type <span class="op">=</span> <span class="st">"fixed"</span>, initial_concentration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; [1] "a{compartment}"</span>
-<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"b"</span>)
+<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "b{compartment}"</span>
-<span class="fu"><a href="../reference/newKineticFunction.html">newKineticFunction</a></span>(
+<span class="fu"><a href="../reference/newKineticFunction.html">newKineticFunction</a></span><span class="op">(</span>
   <span class="st">"manual MM"</span>,
   <span class="st">"((Vf * substrate) / Kms - Vr * product / Kmp) / (1 + substrate / Kms + product / Kms)"</span>,
-  <span class="kw">parameters</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">substrate</span> <span class="kw">=</span> <span class="st">"substrate"</span>, <span class="kw">product</span> <span class="kw">=</span> <span class="st">"product"</span>)
-)
+  parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>substrate <span class="op">=</span> <span class="st">"substrate"</span>, product <span class="op">=</span> <span class="st">"product"</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="co">#&gt; [1] "FunctionDB.Functions[manual MM]"</span>
-<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span>(
+<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span><span class="op">(</span>
   <span class="st">"a = b"</span>,
-  <span class="kw">fun</span> <span class="kw">=</span> <span class="st">"manual MM"</span>,
-  <span class="kw">mapping</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-    <span class="kw">substrate</span> <span class="kw">=</span> <span class="st">"a"</span>,
-    <span class="kw">product</span> <span class="kw">=</span> <span class="st">"b"</span>,
-    <span class="kw">Vf</span> <span class="kw">=</span> <span class="fl">0.1</span>,
-    <span class="kw">Kms</span> <span class="kw">=</span> <span class="fl">0.1</span>,
-    <span class="kw">Vr</span> <span class="kw">=</span> <span class="fl">0.1</span>,
-    <span class="kw">Kmp</span> <span class="kw">=</span> <span class="fl">0.1</span>
-  )
-)
+  fun <span class="op">=</span> <span class="st">"manual MM"</span>,
+  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    substrate <span class="op">=</span> <span class="st">"a"</span>,
+    product <span class="op">=</span> <span class="st">"b"</span>,
+    Vf <span class="op">=</span> <span class="fl">0.1</span>,
+    Kms <span class="op">=</span> <span class="fl">0.1</span>,
+    Vr <span class="op">=</span> <span class="fl">0.1</span>,
+    Kmp <span class="op">=</span> <span class="fl">0.1</span>
+  <span class="op">)</span>
+<span class="op">)</span>
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="no">timecourse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="fl">1000</span>)
+<span class="va">timecourse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span>(<span class="no">timecourse</span>)</pre></body></html></div>
-<p><img src="model_building_files/figure-html/unnamed-chunk-4-1.png" width="100%"></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r">
-<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span>()</pre></body></html></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">timecourse</span><span class="op">)</span>
+<span class="co">#&gt; Error: Objects of type copasi_ts not supported by autoplot.</span>
+
+<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="quantities-as-proxy-for-time-course-output" class="section level1">
 <h1 class="hasAnchor">
 <a href="#quantities-as-proxy-for-time-course-output" class="anchor"></a>Quantities as Proxy for Time Course Output</h1>
 <p>The <code>runTimeCourse</code> function only returns data for actual defined entities of the model. Auxiliarry information like reaction rates can be missing and needs to be added via global quantity assignments. This example creates a global quantity “reaction rate” to generate data for the main reaction’s flux.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/newModel.html">newModel</a></span>()
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A COPASI model reference:</span>
 <span class="co">#&gt; Model name: "New Model"</span>
 <span class="co">#&gt; Number of compartments: 0</span>
 <span class="co">#&gt; Number of species: 0</span>
 <span class="co">#&gt; Number of reactions: 0</span>
 
-<span class="no">subs_quant</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(<span class="st">"substrate concentration"</span>, <span class="kw">initial_value</span> <span class="kw">=</span> <span class="fl">10</span>)
-<span class="no">subs_value</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">quantity</a></span>(<span class="no">subs_quant</span>, <span class="kw">reference</span> <span class="kw">=</span> <span class="st">"Value"</span>)
+<span class="va">subs_quant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span><span class="op">(</span><span class="st">"substrate concentration"</span>, initial_value <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="va">subs_value</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">quantity</a></span><span class="op">(</span><span class="va">subs_quant</span>, reference <span class="op">=</span> <span class="st">"Value"</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span>(<span class="st">"a"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assignment"</span>, <span class="kw">expression</span> <span class="kw">=</span> <span class="no">subs_value</span>)
+<span class="fu"><a href="../reference/newSpecies.html">newSpecies</a></span><span class="op">(</span><span class="st">"a"</span>, type <span class="op">=</span> <span class="st">"assignment"</span>, expression <span class="op">=</span> <span class="va">subs_value</span><span class="op">)</span>
 <span class="co">#&gt; Warning: No compartment exists. Created default compartment.</span>
 <span class="co">#&gt; [1] "a{compartment}"</span>
-<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span>(<span class="st">"a = b"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="st">"Reversible Michaelis-Menten"</span>)
+<span class="fu"><a href="../reference/newReaction.html">newReaction</a></span><span class="op">(</span><span class="st">"a = b"</span>, fun <span class="op">=</span> <span class="st">"Reversible Michaelis-Menten"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "(a = b)"</span>
 
-<span class="fu"><a href="../reference/runTimeCourse.html">runTC</a></span>(<span class="fl">1000</span>)$<span class="no">result</span>
+<span class="fu"><a href="../reference/runTimeCourse.html">runTC</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">$</span><span class="va">result</span>
 <span class="co">#&gt; # A tibble: 101 x 3</span>
 <span class="co">#&gt;     Time     b     a</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -303,14 +309,14 @@
 <span class="co">#&gt; 10    90  5.37    10</span>
 <span class="co">#&gt; # … with 91 more rows</span>
 
-<span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span>(
+<span class="fu"><a href="../reference/newGlobalQuantity.html">newGlobalQuantity</a></span><span class="op">(</span>
   <span class="st">"reaction rate"</span>,
-  <span class="kw">type</span> <span class="kw">=</span> <span class="st">"assignment"</span>,
-  <span class="kw">expression</span> <span class="kw">=</span> <span class="fu"><a href="../reference/entity_finders.html">reaction</a></span>(<span class="st">"a = b"</span>, <span class="kw">reference</span> <span class="kw">=</span> <span class="st">"Flux"</span>)
-)
+  type <span class="op">=</span> <span class="st">"assignment"</span>,
+  expression <span class="op">=</span> <span class="fu"><a href="../reference/entity_finders.html">reaction</a></span><span class="op">(</span><span class="st">"a = b"</span>, reference <span class="op">=</span> <span class="st">"Flux"</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="co">#&gt; [1] "Values[reaction rate]"</span>
 
-<span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span>(<span class="fl">1000</span>)$<span class="no">result</span>
+<span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">$</span><span class="va">result</span>
 <span class="co">#&gt; # A tibble: 101 x 4</span>
 <span class="co">#&gt;     Time     b     a `Values[reaction rate]`</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
@@ -326,7 +332,7 @@
 <span class="co">#&gt; 10    90  5.37    10                  0.0299</span>
 <span class="co">#&gt; # … with 91 more rows</span>
 
-<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span>()</pre></body></html></div>
+<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -345,7 +351,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

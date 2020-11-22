@@ -22,6 +22,9 @@
     <loc>https://jpahle.github.io/CoRC/reference/autoplot.copasi_ts.html</loc>
   </url>
   <url>
+    <loc>https://jpahle.github.io/CoRC/reference/biomodels_url.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/reference/clearCustomKineticFunctions.html</loc>
   </url>
   <url>
@@ -178,6 +181,9 @@
     <loc>https://jpahle.github.io/CoRC/reference/getVolumeUnit.html</loc>
   </url>
   <url>
+    <loc>https://jpahle.github.io/CoRC/reference/loadCombineArchive.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/reference/loadExamples.html</loc>
   </url>
   <url>
@@ -239,6 +245,9 @@
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/runTimeCourse.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/reference/saveCombineArchive.html</loc>
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/saveModel.html</loc>

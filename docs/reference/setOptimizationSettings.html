@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -167,31 +167,31 @@
     <p><code>setOptimizationSettings</code> sets optimization task settings including parameters, experiments and method options.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>setOptimizationSettings</span>(
-  <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subtask</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>randomize_start_values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculate_statistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>update_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>()
-)
+    <pre class="usage"><span class='fu'>setOptimizationSettings</span><span class='op'>(</span>
+  expression <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maximize <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subtask <span class='op'>=</span> <span class='cn'>NULL</span>,
+  randomize_start_values <span class='op'>=</span> <span class='cn'>NULL</span>,
+  calculate_statistics <span class='op'>=</span> <span class='cn'>NULL</span>,
+  update_model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  executable <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parameters <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  model <span class='op'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>setOpt</span>(
-  <span class='kw'>expression</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maximize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>subtask</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>randomize_start_values</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>calculate_statistics</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>update_model</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>executable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span>()
-)</pre>
+<span class='fu'>setOpt</span><span class='op'>(</span>
+  expression <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maximize <span class='op'>=</span> <span class='cn'>NULL</span>,
+  subtask <span class='op'>=</span> <span class='cn'>NULL</span>,
+  randomize_start_values <span class='op'>=</span> <span class='cn'>NULL</span>,
+  calculate_statistics <span class='op'>=</span> <span class='cn'>NULL</span>,
+  update_model <span class='op'>=</span> <span class='cn'>NULL</span>,
+  executable <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parameters <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  model <span class='op'>=</span> <span class='fu'><a href='getCurrentModel.html'>getCurrentModel</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,7 +227,8 @@
     </tr>
     <tr>
       <th>parameters</th>
-      <td><p>corc_opt_parm or list of corc_opt_parm objects</p></td>
+      <td><p>corc_opt_parm or list of corc_opt_parm objects</p>
+<p>See also <code><a href='defineOptimizationParameter.html'>defineOptimizationParameter</a></code>.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -269,7 +270,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
