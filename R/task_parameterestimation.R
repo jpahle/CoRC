@@ -10,7 +10,11 @@
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
+#' 
+#' See also \code{\link{defineParameterEstimationParameter}}.
 #' @param experiments copasi_exp or list of copasi_exp objects
+#' 
+#' See also \code{\link{defineExperiments}}.
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model A model object.
 #' @return A list of results.
@@ -130,7 +134,11 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
+#' 
+#' See also \code{\link{defineParameterEstimationParameter}}.
 #' @param experiments copasi_exp or list of copasi_exp objects
+#' 
+#' See also \code{\link{defineExperiments}}.
 #' @eval rox_method_param("Parameter Estimation", "_p_CFitTask")
 #' @param model a model object
 #' @family parameter estimation

@@ -40,9 +40,13 @@ runPE(
 
 \item{executable}{flag}
 
-\item{parameters}{corc_opt_parm or list of corc_opt_parm objects}
+\item{parameters}{corc_opt_parm or list of corc_opt_parm objects
 
-\item{experiments}{copasi_exp or list of copasi_exp objects}
+See also \code{\link{defineParameterEstimationParameter}}.}
+
+\item{experiments}{copasi_exp or list of copasi_exp objects
+
+See also \code{\link{defineExperiments}}.}
 
 \item{method}{string or list
 

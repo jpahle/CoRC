@@ -14,6 +14,8 @@
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
+#' 
+#' See also \code{\link{defineOptimizationParameter}}.
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model A model object.
 #' @return A list of results.
@@ -123,6 +125,8 @@ runOptimization <- function(expression = NULL, maximize = NULL, subtask = NULL, 
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
+#' 
+#' See also \code{\link{defineOptimizationParameter}}.
 #' @eval rox_method_param("Optimization", "_p_COptTask")
 #' @param model a model object
 #' @family optimization

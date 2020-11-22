@@ -48,7 +48,9 @@ Available tasks: 'steadyState', 'timeCourse', 'scan', 'fluxMode', 'optimization'
 
 \item{executable}{flag}
 
-\item{parameters}{corc_opt_parm or list of corc_opt_parm objects}
+\item{parameters}{corc_opt_parm or list of corc_opt_parm objects
+
+See also \code{\link{defineOptimizationParameter}}.}
 
 \item{method}{string or list
 
