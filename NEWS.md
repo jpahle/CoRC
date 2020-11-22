@@ -1,4 +1,4 @@
-# CoRC 0.8.0.9000
+# CoRC 0.9.0 (2020-11-23)
 
 * Fixed a major issue with `addExperiments()`, where some experimetal data was lost or misassigned.
 
