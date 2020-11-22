@@ -370,7 +370,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   missing_names <- which(is.na(experiment_names))
   experiment_names[missing_names] <- paste0("Experiment_", missing_names)
   
-  # gather info on where the individual experiments start because the all get merged
+  # gather info on where the individual experiments start because they all get merged
   experiment_lengths <- map_int(data, nrow)
   experiment_lastrows <- cumsum(experiment_lengths)
   
@@ -518,8 +518,8 @@ addExperiments <- function(..., model = getCurrentModel()) {
         # Construct individual experiments
         cl_experiments <- pmap(experiments, function(name, first_row, last_row, ...) {
           exp <- avert_gc(CExperiment(c_experiment_set, name))
-          exp$setFirstRow(first_row)
-          exp$setLastRow(last_row)
+          exp$setFirstRow(first_row + 1L)
+          exp$setLastRow(last_row + 1L)
           exp
         })
         

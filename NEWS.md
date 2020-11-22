@@ -1,3 +1,9 @@
+# CoRC 0.8.0.9000
+
+* Fixed a major issue with `addExperiments()`, where some experimetal data was lost or misassigned.
+
+  `addExperiments()` is also used by `runParameterEstimation()` and `setParameterEstimationSettings()`.
+
 # CoRC 0.8.0 (2020-06-25)
 
 * Rebase on COPASI release 4.28 sources.
