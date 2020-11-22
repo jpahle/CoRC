@@ -32,8 +32,9 @@ library(parallel)
 library(CoRC)
 
 # helper to run tasks in parallel on all cores
-mapInParallel <- function(data, fun, ..., .prep = {}) {
+mapInParallel <- function(data, fun, ..., .export = character(), .prep = {}) {
   cl <- makeCluster(detectCores())
+  clusterExport(cl = cl, .export)
   clusterCall(cl = cl, fun = eval, .prep, env = .GlobalEnv)
   result <- parLapplyLB(cl = cl, X = data, fun = as_mapper(fun), ..., chunk.size = 50)
   stopCluster(cl)
@@ -52,11 +53,11 @@ The example does this once in a deterministic and once in a stochatic fashion.
 loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329?filename=BIOMD0000000329_url.xml")
 
 # Run 24 sec (2 Periods)
-setTimeCourseSettings(24, intervals = 10000)
+setTimeCourseSettings(duration = 24, intervals = 10000)
 
 timeseries <- list(
   deterministic = runTimeCourse()$result,
-  stochastic = runTimeCourse(method = list(method = "directMethod", use_random_seed = T, random_seed = 1))$result
+  stochastic = runTimeCourse(method = list(method = "directMethod", use_random_seed = TRUE, random_seed = 1))$result
 )
 
 # Create the same plot for both timeseries
@@ -85,21 +86,25 @@ The example illustrates advantages of parallel processing.
 ```{r}
 # Run 1000 stochastic time series possibly in parallel
 loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
+setTimeCourseSettings(method = list(method = "directMethod", use_random_seed = TRUE))
 
-# timeseries <- 1:1000 %>% map(~ runTimeCourse()$result)
+model_string <- saveModelToString()
+
+# timeseries <- 1:1000 %>% map(~ runTimeCourse(method = list(random_seed = .x))$result)
 timeseries <-
   # Defines parallel evaluation:
   mapInParallel(
-    # perpare worker (.prep),
+    # export the model to the workers
+    .export = "model_string",
+    # prepare worker for the task
     .prep = quote({
       library(CoRC)
-      loadModel("https://raw.githubusercontent.com/copasi/condor-copasi/master/examples/stochastic_test.cps")
-      setTimeCourseSettings(method = list(method = "directMethod", use_random_seed = T))
+      loadModelFromString(model_string)
     }),
-    # iteration data (1000 random seeds) is given as .x to iteration formula,
+    # iteration data (1000 random seeds)
     1:1000,
-    # iteration code (formula ~ {.x})
-    ~ runTimeCourse(method = list(random_seed = .x))$result
+    # iteration function using the seed values
+    function(seed) runTimeCourse(method = list(random_seed = seed))$result
   )
 
 # Combine all results and reshape the data
@@ -108,8 +113,8 @@ plotdata <-
   bind_rows() %>%
   group_by(Time) %>%
   # calculate mean and sd for all time points
-  summarise_all(list(mean = mean, sd = sd)) %>%
-  # gather all values so the column "name" identifies "a_mean", "b_sd" etc.
+  summarise(across(everything(), list(mean = mean, sd = sd)), .groups = "drop") %>%
+  # gather all values so the column `name` identifies "a_mean", "b_sd" etc.
   pivot_longer(-Time) %>%
   # split up information on species (a,b,c) and type of value (mean, sd)
   separate(name, c("species", "type"), "_") %>%
@@ -150,6 +155,8 @@ scan <- cross_df(
     adomed = seq(0, 100, length.out = 51)
   )
 )
+
+print(scan, n = 6)
 
 scan <-
   scan %>%
@@ -193,22 +200,26 @@ It is in many ways similar to the previous example but is written to run paralle
 
 ```{r}
 loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
+setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
+
+model_string <- saveModelToString()
 
 # 10000 repeats of steady state task with random cysteine and adomed
 scan <-
   # Defines parallel evaluation:
   mapInParallel(
-    # perpare worker (.prep),
+    # export the model to the workers
+    .export = "model_string",
+    # prepare worker for the task
     .prep = quote({
       library(CoRC)
-      loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
-      setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
+      loadModelFromString(model_string)
     }),
-    # iteration data (10000 random seeds) is given as .x to iteration formula,
+    # iteration data (10000 random seeds)
     1:10000,
-    # iteration code (formula ~ {.x})
-    ~ {
-      set.seed(.x)
+    # iteration function using the seed values
+    function(seed) {
+      set.seed(seed)
       cysteine <- 0.3 * 10 ^ runif(1L, min = 0, max = 3)
       adomed <- runif(1L, min = 0, max = 100)
       setSpecies(
@@ -254,7 +265,7 @@ This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/9
 loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000010.2?filename=BIOMD0000000010_url.xml")
 
 # get timeseries for the record
-data_before <- runTimeCourse(1000, 1)$result
+data_before <- runTimeCourse(duration = 1000, dt = 1)$result
 
 # read experimental data
 data_experimental <-
@@ -269,15 +280,19 @@ fit_experiments <- defineExperiments(
   weight_method = "mean_square"
 )
 
-# define the parameters for COPASI
-fit_parameters <-
-  map(
-    parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
-    ~ {
-      val <- getParameters(.x)$value
-      defineParameterEstimationParameter(parameter(.x, "Value"), start_value = val, lower_bound = val * 0.1, upper_bound = val * 1.9)
-    }
-  )
+# find all reaction rates, which are reaction parameters named .V*
+v_params <- parameter(regex("\\.V\\d+$"))
+v_params
+
+# define the parameters for COPASI, with start values and bounds
+fit_parameters <- map(v_params, function(param) {
+  val <- getParameters(param)$value
+  defineParameterEstimationParameter(
+    ref = parameter(param, "Value"),
+    start_value = val,
+    lower_bound = val * 0.1,
+    upper_bound = val * 1.9)
+})
 
 result <-
   runParameterEstimation(
@@ -291,7 +306,7 @@ result <-
   )
 
 # get timeseries for the record
-data_after <- runTimeCourse(1000, 1)$result
+data_after <- runTimeCourse(duration = 1000, dt = 1)$result
 
 plots <- list(
   `Erk2-P` =
