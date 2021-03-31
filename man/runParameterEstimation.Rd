@@ -9,6 +9,7 @@ runParameterEstimation(
   randomize_start_values = NULL,
   create_parameter_sets = NULL,
   calculate_statistics = NULL,
+  use_time_sens = NULL,
   update_model = NULL,
   executable = NULL,
   parameters = NULL,
@@ -21,6 +22,7 @@ runPE(
   randomize_start_values = NULL,
   create_parameter_sets = NULL,
   calculate_statistics = NULL,
+  use_time_sens = NULL,
   update_model = NULL,
   executable = NULL,
   parameters = NULL,
@@ -35,6 +37,8 @@ runPE(
 \item{create_parameter_sets}{flag}
 
 \item{calculate_statistics}{flag}
+
+\item{use_time_sens}{flag}
 
 \item{update_model}{flag}
 

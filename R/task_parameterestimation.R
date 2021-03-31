@@ -7,6 +7,7 @@
 #' @param randomize_start_values flag
 #' @param create_parameter_sets flag
 #' @param calculate_statistics flag
+#' @param use_time_sens flag
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
@@ -20,7 +21,7 @@
 #' @return A list of results.
 #' @family parameter estimation
 #' @export
-runParameterEstimation <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+runParameterEstimation <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, use_time_sens = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
@@ -28,6 +29,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
     randomize_start_values = randomize_start_values,
     create_parameter_sets  = create_parameter_sets,
     calculate_statistics   = calculate_statistics,
+    use_time_sens          = use_time_sens,
     update_model           = update_model,
     executable             = executable
   )
@@ -131,6 +133,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #' @param randomize_start_values flag
 #' @param create_parameter_sets flag
 #' @param calculate_statistics flag
+#' @param use_time_sens flag
 #' @param update_model flag
 #' @param executable flag
 #' @param parameters corc_opt_parm or list of corc_opt_parm objects
@@ -143,7 +146,7 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
 #' @param model a model object
 #' @family parameter estimation
 #' @export
-setParameterEstimationSettings <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
+setParameterEstimationSettings <- function(randomize_start_values = NULL, create_parameter_sets = NULL, calculate_statistics = NULL, use_time_sens = NULL, update_model = NULL, executable = NULL, parameters = NULL, experiments = NULL, method = NULL, model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # does assertions
@@ -151,6 +154,7 @@ setParameterEstimationSettings <- function(randomize_start_values = NULL, create
     randomize_start_values = randomize_start_values,
     create_parameter_sets  = create_parameter_sets,
     calculate_statistics   = calculate_statistics,
+    use_time_sens          = use_time_sens,
     update_model           = update_model,
     executable             = executable
   )
@@ -665,11 +669,12 @@ pe_assemble_experiments <- function(experiments, c_problem, temp_filenames = FAL
 
 # does assertions
 # returns a list of settings
-pe_assemble_settings <- function(randomize_start_values, create_parameter_sets, calculate_statistics, update_model, executable) {
+pe_assemble_settings <- function(randomize_start_values, create_parameter_sets, calculate_statistics, use_time_sens, update_model, executable) {
   assert_that(
     is.null(randomize_start_values) || is.flag(randomize_start_values) && noNA(randomize_start_values),
     is.null(create_parameter_sets)  || is.flag(create_parameter_sets)  && noNA(create_parameter_sets),
     is.null(calculate_statistics)   || is.flag(calculate_statistics)   && noNA(calculate_statistics),
+    is.null(use_time_sens)          || is.flag(use_time_sens)          && noNA(use_time_sens),
     is.null(update_model)           || is.flag(update_model)           && noNA(update_model),
     is.null(executable)             || is.flag(executable)             && noNA(executable)
   )
@@ -715,6 +720,7 @@ pe_get_settings <- function(c_task) {
     randomize_start_values = as.logical(c_problem$getRandomizeStartValues()),
     create_parameter_sets  = as.logical(c_problem$getCreateParameterSets()),
     calculate_statistics   = as.logical(c_problem$getCalculateStatistics()),
+    use_time_sens          = as.logical(c_problem$getUseTimeSens()),
     update_model           = as.logical(c_task$isUpdateModel()),
     executable             = as.logical(c_task$isScheduled())
   )
@@ -735,6 +741,9 @@ pe_set_settings <- function(data, c_task) {
   
   if (!is.null(data$calculate_statistics))
     c_problem$setCalculateStatistics(data$calculate_statistics)
+  
+  if (!is.null(data$use_time_sens))
+    c_problem$setUseTimeSens(data$use_time_sens)
   
   if (!is.null(data$update_model))
     c_task$setUpdateModel(data$update_model)
