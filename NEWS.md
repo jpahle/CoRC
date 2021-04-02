@@ -1,3 +1,9 @@
+# CoRC 0.9.0.9000
+
+* Rebased on COPASI release 4.30 sources.
+
+  Disabled JIT compilation for now as it seems to cause crashes.
+  
 # CoRC 0.9.0 (2020-11-23)
 
 * Fixed a major issue with `addExperiments()`, where some experimental data was lost or misassigned.

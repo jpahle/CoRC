@@ -18,18 +18,18 @@ more demanding calculations.
 
 CoRC features:
 
-  - high-level API for COPASI in the R language.
-  - Immediate access to R’s data analysis capabilities and
+-   high-level API for COPASI in the R language.
+-   Immediate access to R’s data analysis capabilities and
     publication-ready plotting.
-  - Reproducible workflows from data generation to analysis and plotting
+-   Reproducible workflows from data generation to analysis and plotting
     (R scripts and notebooks).
-  - Rule-based modification of model structure to test structural
+-   Rule-based modification of model structure to test structural
     variations or create large models.
-  - Scaling up assays, e.g. from 3 models to 3000.
-  - Handling of multiple models at once.
-  - Parallelization on multi-core machines or computing clusters.
+-   Scaling up assays, e.g. from 3 models to 3000.
+-   Handling of multiple models at once.
+-   Parallelization on multi-core machines or computing clusters.
 
-It is currently based on COPASI version 4.28 Build (226) and aims to
+It is currently based on COPASI version 4.30 Build (240) and aims to
 closely follow COPASI releases in the future.
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to

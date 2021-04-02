@@ -27,6 +27,7 @@ cmake \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \
+	-DENABLE_JIT=OFF \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_darwin_x64/ \

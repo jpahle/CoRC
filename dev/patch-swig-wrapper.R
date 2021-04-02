@@ -4,9 +4,7 @@
 
 wrapper_path <- file.path("..", "R", "swig_wrapper.R")
 
-wrapper_con <- file(wrapper_path)
-
-wrapper_lines <- readLines(wrapper_con)
+wrapper_lines <- readLines(wrapper_path)
 
 # replace all checks for null pointers
 # previously this was done by an awkward workaround and string comparison
@@ -36,8 +34,9 @@ wrapper_lines <- stringr::str_replace_all(
   ""
 )
 
+# using wb write mode allows to use lf line ending on windows
+wrapper_con <- file(wrapper_path, open = "wb")
 writeLines(wrapper_lines, wrapper_con)
-
 close(wrapper_con)
 
 rm(wrapper_path, wrapper_con, wrapper_lines)

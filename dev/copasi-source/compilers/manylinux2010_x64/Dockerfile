@@ -24,13 +24,13 @@ RUN curl -L http://bqfrank.spdns.org/Files/libuuid-1.0.3.tar.gz | tar -xz \
   && rm -r libuuid-*/
 
 # COPASI dependency, current
-RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.2.tar.gz | tar -xz \
-	&& cd cmake-*/ \
-	&& ./bootstrap \
-	&& make -j$(nproc) \
-	&& make install \
-	&& cd ../ \
-	&& rm -r cmake-*/
+# RUN curl -L https://cmake.org/files/v3.17/cmake-3.17.2.tar.gz | tar -xz \
+# 	&& cd cmake-*/ \
+# 	&& ./bootstrap \
+# 	&& make -j$(nproc) \
+# 	&& make install \
+# 	&& cd ../ \
+# 	&& rm -r cmake-*/
 
 # COPASI R bindings dependency, keep 3.0.12
 # RUN curl -L "http://downloads.sourceforge.net/project/swig/swig/swig-3.0.12/swig-3.0.12.tar.gz" | tar -zx \
