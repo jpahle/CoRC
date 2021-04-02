@@ -307,12 +307,14 @@ clearParameterEstimationParameters <- function(model = getCurrentModel()) {
   invisible()
 }
 
-new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, weight_method, filename) {
+new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, weights, weight_method, normalize_weights_per_experiment, filename) {
   assert_that(
     is.string(experiment_type),
-    is.character(types), length(types) == ncol(x),
-    is.character(mappings), length(mappings) == ncol(x),
+    is.character(types), has_names(types),
+    is.character(mappings), has_names(mappings),
+    is.numeric(weights), noPureNA(weights), has_names(weights),
     is.string(weight_method),
+    is.flag(normalize_weights_per_experiment),
     is.string(filename)
   )
   
@@ -326,7 +328,9 @@ new_copasi_exp <- function(x, experiment_type, experiments, types, mappings, wei
     experiments = experiments,
     types = types,
     mappings = mappings,
+    weights = weights,
     weight_method = weight_method,
+    normalize_weights_per_experiment = normalize_weights_per_experiment,
     filename = filename
   )
 }
@@ -348,8 +352,12 @@ format.copasi_exp <- function (x, ...) {
     format(attr(x, "types")) %>% paste0(names(.), ": ", .),
     "# Mappings:",
     format(attr(x, "mappings")) %>% paste0(names(.), ": ", .),
+    "# Mappings:",
+    format(attr(x, "weights")) %>% paste0(names(.), ": ", .),
     "# Weight Method:",
     format(attr(x, "weight_method")),
+    "# Normalize Weights per Experiment:",
+    format(attr(x, "normalize_weights_per_experiment")),
     "# Filename:",
     format(attr(x, "filename"))
   )
@@ -359,9 +367,12 @@ exp_weight_methods <- tolower(names(.__E___CExperiment__WeightMethod))
 exp_allowed_types <- c("time", "independent", "dependent", "ignore")
 
 #' @export
-copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data = NULL, types = NULL, mappings = NULL, weight_method = NULL, filename = NULL) {
+copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data = NULL, types = NULL, mappings = NULL, weights = NULL, weight_method = NULL, normalize_weights_per_experiment = FALSE, filename = NULL) {
   types <- to_param_vector(types, "character")
-  mappings <- to_param_vector(mappings, "character")
+  if (!is.null(mappings))
+    mappings <- to_param_vector(mappings, "character")
+  if (!is.null(weights))
+    weights <- to_param_vector(weights, "numeric")
   
   # experiment_type
   experiment_type <- rlang::arg_match(experiment_type)
@@ -387,14 +398,17 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   
   # types
   assert_that(
-    is.character(types),
-    is.null(names(types)) && length(types) == length(data_cols) ||
-    all(names(mappings) %in% data_cols)
+    has_names(types) && !anyDuplicated(names(types)) && all(names(types) %in% data_cols) ||
+    length(types) == length(data_cols)
   )
   
   types <- tolower(types)
-  names(types) <- names(types) %||% data_cols
   types <- args_match(types, exp_allowed_types)
+  if (has_names(types)) {
+    # make a full vector with default values and fill with specified ones
+    types <- replace(rep_along(data_cols, "ignore"), match(names(types), data_cols), types)
+  }
+  names(types) <- data_cols
   
   if (experiment_type == "timeCourse")
     assert_that(sum(types == "time") == 1L, msg = 'Time course experiements need exactly one "time" mapping.')
@@ -403,15 +417,24 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   
   # mappings
   mappings <- mappings %||% data_cols
-  assert_that(
-    is.null(names(mappings)) && length(mappings) == length(data_cols) ||
-    all(names(mappings) %in% data_cols)
-  )
+  if (!has_names(mappings))
+    names(mappings) <- data_cols
   
-  names(mappings) <- names(mappings) %||% data_cols
+  assert_that(!anyDuplicated(names(mappings)) && all(names(mappings) %in% data_cols))
   
   # all mappings to time and ignore are forced to be blank
   mappings[names(types)[types %in% c("time", "ignore")]] <- ""
+  
+  # weights
+  weights <- weights %||% rep_along(data_cols, NaN)
+  assert_that(noPureNA(weights))
+  if (!has_names(weights))
+    names(weights) <- data_cols
+  
+  assert_that(!anyDuplicated(names(weights)) && all(names(weights) %in% data_cols))
+  
+  # all weights for type time, ignore and independent are forced to be NA
+  weights[names(types)[types %in% c("time", "ignore", "independent")]] <- NaN
   
   if (is.null(weight_method)) {
     weight_method <- toupper(exp_weight_methods[1])
@@ -420,6 +443,8 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
     weight_method <- rlang::arg_match(weight_method, exp_weight_methods)
     weight_method <- toupper(weight_method)
   }
+  
+  assert_that(is.flag(normalize_weights_per_experiment), noNA(normalize_weights_per_experiment))
   
   # filename
   assert_that(is.null(filename) || is.string(filename) && noNA(filename))
@@ -440,7 +465,9 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
     ),
     types = types,
     mappings = mappings,
+    weights = weights,
     weight_method = weight_method,
+    normalize_weights_per_experiment = normalize_weights_per_experiment,
     filename = filename
   )
 }
@@ -460,15 +487,25 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
 #' 
 #' Allowed types of columns are: ", rox_print_v(exp_allowed_types), ".
 #' 
-#' Type 'time' is only allowed for time course experiments.")
+#' Type 'time' is only allowed for time course experiments.
+#' 
+#' Can be a named vector to only specify for a subset of data columns.")
 #' @param mappings data column mappings as character vector
 #' 
 #' Expects value references.
 #' 
 #' If no mappings are given, column names can serve as mappings.
+#' 
+#' Can be a named vector to only specify for a subset of data columns.
+#' @param weights data column weights as numeric vector
+#' 
+#' `NaN` corresponds to automatic weight.
+#' 
+#' Can be a named vector to only specify for a subset of data columns.
 #' @eval paste0("@param weight_method string
 #' 
 #' Allowed methods: ", rox_print_v(exp_weight_methods), ".")
+#' @param normalize_weights_per_experiment flag
 #' @param filename optional string
 #' 
 #' When adding the experiments to a COPASI model, this filename will be used.
@@ -502,75 +539,77 @@ addExperiments <- function(..., model = getCurrentModel()) {
   c_problem <- as(c_task$getProblem(), "_p_CFitProblem")
   c_experiment_set <- c_problem$getExperimentSet()
   
-  map(
-    arglist_compact,
-    ~ {
-      experiment_type <- attr(.x, "experiment_type")
-      experiments <- attr(.x, "experiments")
-      types <- attr(.x, "types")
-      mappings <- attr(.x, "mappings")
-      weight_method <- attr(.x, "weight_method")
-      filename <- attr(.x, "filename")
-      
-      # Create experiment file
-      assert_that(
-        # If the user has set a manual filename, try to be safe and not overwrite anything
-        !file.exists(filename) || grepl("CoRC_exp_[0-9a-f]+\\.txt$", filename),
-        msg = paste0('Experiment file "', filename, '" already exists.')
-      )
-      assert_that(file.create(filename))
-      readr::write_tsv(.x, filename, na = "NA")
-      
-      # make sure the file gets deleted on error
-      tryCatch({
-        # Construct individual experiments
-        cl_experiments <- pmap(experiments, function(name, first_row, last_row, ...) {
-          exp <- avert_gc(CExperiment(c_experiment_set, name))
-          exp$setFirstRow(first_row + 1L)
-          exp$setLastRow(last_row + 1L)
-          exp
-        })
-        
-        col_count <- ncol(.x)
-        col_names <- colnames(.x)
-        
-        # Set all experiment's settings
-        walk_swig(cl_experiments, "setHeaderRow", 1L)
-        walk_swig(cl_experiments, "setFileName", normalizePathC(filename))
-        walk_swig(cl_experiments, "setExperimentType", experiment_type)
-        walk_swig(cl_experiments, "setNumColumns", col_count)
-        walk_swig(cl_experiments, "setWeightMethod", weight_method)
-        # walk_swig(cl_experiments, "readColumnNames")
-        
-        # Get the object maps and assign roles and mappings
-        cl_object_maps <- map_swig(cl_experiments, "getObjectMap")
-        walk_swig(cl_object_maps, "setNumCols", col_count)
-        
-        # Transfer values from named vectors to a full representation of all data columns
-        types_ordered <- rep("ignore", col_count)
-        types_ordered[match(names(types), col_names)] <- types
-        mappings_ordered <- rep("", col_count)
-        mappings_ordered[match(names(mappings), col_names)] <-
-          map(mappings, xn_to_object, c_datamodel = c_datamodel) %>%
-          map_chr(get_cn) %>%
-          replace(is.na(.), "")
-        
-        # We have a list of object_maps and all need the same types and mappings
-        types_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setRole", .y - 1L, .x))
-        mappings_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setObjectCN", .y - 1L, .x))
-        
-        # Add all experiments to COPASI
-        cl_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
-        
-        # possibly compile
-        # c_experiment_set$compile(problem$getMathContainer())
-      },
-      error = function(e) {
-        file.remove(filename)
-        base::stop(e)
+  for (args in arglist_compact) {
+    experiment_type <- attr(args, "experiment_type")
+    experiments <- attr(args, "experiments")
+    types <- attr(args, "types")
+    mappings <- attr(args, "mappings")
+    weights <- attr(args, "weights")
+    weight_method <- attr(args, "weight_method")
+    normalize_weights_per_experiment <- attr(args, "normalize_weights_per_experiment")
+    filename <- attr(args, "filename")
+    
+    # Create experiment file
+    assert_that(
+      # If the user has set a manual filename, try to be safe and not overwrite anything
+      !file.exists(filename) || grepl("CoRC_exp_[0-9a-f]+\\.txt$", filename),
+      msg = paste0('Experiment file "', filename, '" already exists.')
+    )
+    assert_that(file.create(filename))
+    readr::write_tsv(args, filename, na = "NA")
+    
+    # make sure the file gets deleted on error
+    tryCatch({
+      # Construct individual experiments
+      cl_experiments <- pmap(experiments, function(name, first_row, last_row, ...) {
+        exp <- avert_gc(CExperiment(c_experiment_set, name))
+        exp$setFirstRow(first_row + 1L)
+        exp$setLastRow(last_row + 1L)
+        exp
       })
-    }
-  )
+      
+      col_count <- ncol(args)
+      col_names <- colnames(args)
+      
+      # Set all experiment's settings
+      walk_swig(cl_experiments, "setHeaderRow", 1L)
+      walk_swig(cl_experiments, "setFileName", normalizePathC(filename))
+      walk_swig(cl_experiments, "setExperimentType", experiment_type)
+      walk_swig(cl_experiments, "setNumColumns", col_count)
+      walk_swig(cl_experiments, "setWeightMethod", weight_method)
+      walk_swig(cl_experiments, "setNormalizeWeightsPerExperiment", normalize_weights_per_experiment)
+      
+      # Get the object maps and assign roles and mappings
+      cl_object_maps <- map_swig(cl_experiments, "getObjectMap")
+      walk_swig(cl_object_maps, "setNumCols", col_count)
+      
+      # Transfer values from named vectors to a full representation of all data columns
+      types_ordered <- rep("ignore", col_count)
+      types_ordered[match(names(types), col_names)] <- types
+      mappings_ordered <- rep("", col_count)
+      mappings_ordered[match(names(mappings), col_names)] <-
+        map(mappings, xn_to_object, c_datamodel = c_datamodel) %>%
+        map_chr(get_cn) %>%
+        replace_na("")
+      weights_ordered <- rep(NaN, col_count)
+      weights_ordered[match(names(weights), col_names)] <- weights
+      
+      # We have a list of object_maps and all need the same types and mappings
+      types_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setRole", .y - 1L, .x))
+      mappings_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setObjectCN", .y - 1L, .x))
+      weights_ordered %>% iwalk(~ walk_swig(cl_object_maps, "setScale", .y - 1L, .x))
+      
+      # Add all experiments to COPASI
+      cl_experiments %>% walk(~ c_experiment_set$addExperiment(.x))
+      
+      # possibly compile
+      # c_experiment_set$compile(problem$getMathContainer())
+    },
+    error = function(e) {
+      file.remove(filename)
+      base::stop(e)
+    })
+  }
 
   invisible()
 }

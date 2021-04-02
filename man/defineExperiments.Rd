@@ -9,7 +9,9 @@ defineExperiments(
   data = NULL,
   types = NULL,
   mappings = NULL,
+  weights = NULL,
   weight_method = NULL,
+  normalize_weights_per_experiment = FALSE,
   filename = NULL
 )
 }
@@ -22,17 +24,29 @@ defineExperiments(
 
 Allowed types of columns are: 'time', 'independent', 'dependent', 'ignore'.
 
-Type 'time' is only allowed for time course experiments.}
+Type 'time' is only allowed for time course experiments.
+
+Can be a named vector to only specify for a subset of data columns.}
 
 \item{mappings}{data column mappings as character vector
 
 Expects value references.
 
-If no mappings are given, column names can serve as mappings.}
+If no mappings are given, column names can serve as mappings.
+
+Can be a named vector to only specify for a subset of data columns.}
+
+\item{weights}{data column weights as numeric vector
+
+`NaN` corresponds to automatic weight.
+
+Can be a named vector to only specify for a subset of data columns.}
 
 \item{weight_method}{string
 
 Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.}
+
+\item{normalize_weights_per_experiment}{flag}
 
 \item{filename}{optional string
 
