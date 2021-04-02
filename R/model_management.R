@@ -80,8 +80,6 @@ con_to_string <- function(x) {
 #' @export
 #' @family model loading
 newModel <- function() {
-  assert_binaries()
-  
   c_datamodel <- CRootContainer_addDatamodel()
   
   pkg_env$c_curr_dm <- c_datamodel
@@ -99,7 +97,6 @@ newModel <- function() {
 #' @family model loading
 #' @export
 loadModel <- function(path) {
-  assert_binaries()
   assert_that(inherits(path, "connection") || is.string(path) && noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
@@ -134,7 +131,6 @@ loadModel <- function(path) {
 #' @family model loading
 #' @export
 loadModelFromString <- function(model) {
-  assert_binaries()
   assert_that(is.string(model), noNA(model))
   
   c_datamodel <- CRootContainer_addDatamodel()
@@ -161,7 +157,6 @@ loadModelFromString <- function(model) {
 #' @family model loading
 #' @export
 loadSBML <- function(path) {
-  assert_binaries()
   assert_that(inherits(path, "connection") || is.string(path) && noNA(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
@@ -197,7 +192,6 @@ loadSBML <- function(path) {
 #' @family model loading
 #' @export
 loadSBMLFromString <- function(sbml) {
-  assert_binaries()
   assert_that(is.string(sbml), noNA(sbml))
   
   c_datamodel <- CRootContainer_addDatamodel()
@@ -225,7 +219,6 @@ loadSBMLFromString <- function(sbml) {
 #' @family model loading
 #' @export
 loadCombineArchive <- function(path) {
-  assert_binaries()
   assert_that(is.string(path), noNA(path), file.exists(path), is.readable(path))
   
   c_datamodel <- CRootContainer_addDatamodel()
@@ -453,8 +446,6 @@ saveCombineArchive <- function(filename, include_copasi = TRUE, include_sbml = T
 #' @family model loading
 #' @export
 loadExamples <- function(indices = NULL) {
-  assert_binaries()
-  
   models <- 
     c(
       "brusselator.cps",

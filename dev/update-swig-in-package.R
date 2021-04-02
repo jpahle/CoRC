@@ -18,10 +18,7 @@ stopifnot(
 # apply the wrapper patches
 source("patch-swig-wrapper.R", chdir = TRUE)
 
-libpath <- file.path("..", "libs")
-
-if (.Platform$OS.type == "windows")
-  libpath <- file.path(libpath, "x64")
+libpath <- file.path("..", "libs", .Platform$r_arch)
 
 if (!dir.exists(libpath))
   dir.create(libpath, recursive = TRUE)
@@ -29,17 +26,4 @@ if (!dir.exists(libpath))
 # Copy the binaries (COPASI.xx)
 stopifnot(
   file.copy(binfile, file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
-)
-
-instlibpath <- file.path("..", "inst", "libs")
-
-if (.Platform$OS.type == "windows")
-  instlibpath <- file.path(instlibpath, "x64")
-
-if (!dir.exists(instlibpath))
-  dir.create(instlibpath, recursive = TRUE)
-
-# Copy the binaries (COPASI.xx)
-stopifnot(
-  file.copy(binfile, file.path(instlibpath, paste0("COPASI", .Platform$dynlib.ext)), overwrite = TRUE)
 )

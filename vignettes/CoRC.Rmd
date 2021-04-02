@@ -24,14 +24,33 @@ set.seed(1)
 
 # Getting started
 
-## Initial Setup
+## Installation
+
+Install the development version from GitHub:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("jpahle/CoRC")
+```
+
+CoRC runs it's own version of the COPASI backend which it will download for your platform during installation.
+
+In case there is no internet connection, the package can be downloaded from the ([github releases](https://github.com/jpahle/CoRC/releases)).
+Both the package and the correct platform-specific libraries need to be downloaded.
+In most cases it's easiest to just specify the location of the libraries prior to installation by setting the `COPASI_LIB_PATH` environment variable.
+E.g. for CoRC Version 0.10.0 on windows:
+
+```{r, eval = FALSE}
+Sys.setenv(COPASI_LIB_PATH = "C:/Users/jonas/Downloads/COPASI_windows_x86_64.dll")
+install.packages("C:/Users/jonas/Downloads/CoRC_0.10.0.tar.gz", repos = NULL)
+```
+
+## Startup
 
 To start, load the library.
 
-```{r setup, results="hide"}
+```{r setup}
 library(CoRC)
-# optionally use this at the start of any script to verify CoRC is ready.
-getCopasi(quiet = TRUE)
 ```
 
 From this point on, CoRC keeps an instance of COPASI running in the background.

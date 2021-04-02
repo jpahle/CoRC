@@ -158,7 +158,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   
   # see if CoRC is ready on cluster
   tryCatch(
-    parallel::clusterEvalQ(cl = cl, CoRC:::assert_binaries()),
+    parallel::clusterEvalQ(cl = cl, library(CoRC)),
     error = function(e) stop("Can't load ", getPackageName(), " on cluster instances.")
   )
   
@@ -166,7 +166,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
   parallel::clusterCall(
     cl = cl,
     function(model_string) {
-      CoRC::loadModelFromString(model_string)
+      loadModelFromString(model_string)
     },
     model_string = base_model
   )
@@ -178,7 +178,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
       cl = cl,
       x = list(data),
       function(experiments) {
-        CoRC::runParameterEstimation(experiments = experiments)
+        runParameterEstimation(experiments = experiments)
       }
     )
   result_init <- result_init[[1]]
@@ -188,7 +188,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     map_parallel(
       cl = cl,
       .x = data_list,
-      .f = ~ CoRC::runParameterEstimation(experiments = .x),
+      .f = ~ runParameterEstimation(experiments = .x),
       chunk.size = 1
     )
   
@@ -196,7 +196,7 @@ runSigmaPoint <- function(alpha = 0.5, beta = 2, kappa = 3, var = NULL, experime
     parallel::stopCluster(cl = cl)
   } else {
     # unload model on all clusters
-    parallel::clusterEvalQ(cl = cl, CoRC::unloadModel())
+    parallel::clusterEvalQ(cl = cl, unloadModel())
   }
   
   # gather all fitted parameter values as matrix

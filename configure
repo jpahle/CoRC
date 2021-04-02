@@ -1,0 +1,36 @@
+#!/bin/sh
+
+echo "$@"
+
+# Parse command-line arguments
+for i in "$@"
+do
+case $i in
+    # Option with value
+    # =================
+
+    # -e=*|--extension=*)
+    # EXTENSION="${i#*=}"
+    # shift # past argument=value
+    # ;;
+    --copasi-lib-path=*)
+    export COPASI_LIB_PATH="${i#*=}"
+    shift # past argument=value
+    ;;
+
+    # Option without a value
+    # ======================
+    # -t|--test)
+    # TEXT_VAR=YES
+    # shift # pass argument with no value
+    # ;;
+
+    # Unknown option
+    # ==============
+    *)
+          # unknown option
+    ;;
+esac
+done
+
+${R_HOME}/bin${R_ARCH_BIN}/Rscript tools/get_copasi.R

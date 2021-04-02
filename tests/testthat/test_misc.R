@@ -26,13 +26,31 @@ test_that("getVersion() is correct", {
   expect_identical(v[["build"]], 240L)
 })
 
-test_that("COPASI_BIN_VERSION is count", {
+# read in lib metadata for checking
+lib_metadata_path <- file.path("..", "..", "tools", "lib_metadata.R")
+lib_metadata_exists <- file.exists(lib_metadata_path)
+
+if (lib_metadata_exists)
+  source(file = lib_metadata_path, local = TRUE)
+
+test_that("PKG_VERSION in lib_metadata.R is equal to real package version", {
+  skip_if_not(lib_metadata_exists)
+  
+  expect_s3_class(PKG_VERSION, "package_version")
+  expect_equal(PKG_VERSION, packageVersion(getPackageName()))
+})
+
+test_that("COPASI_BIN_VERSION in lib_metadata.R is count", {
+  skip_if_not(lib_metadata_exists)
+  
   expect_type(COPASI_BIN_VERSION, "integer")
   expect_length(COPASI_BIN_VERSION, 1L)
   expect_gt(COPASI_BIN_VERSION, 0L)
 })
 
-test_that("COPASI_BIN_HASHES are valid hashes", {
+test_that("COPASI_BIN_HASHES in lib_metadata.R are valid hashes", {
+  skip_if_not(lib_metadata_exists)
+  
   hashes <- unlist(COPASI_BIN_HASHES)
   # for now expect 3 entries
   expect_length(hashes, 3L)
@@ -40,7 +58,7 @@ test_that("COPASI_BIN_HASHES are valid hashes", {
 })
 
 test_that("libs on server are accessible", {
-  skip_if_not(is_online())
+  skip_if_not(lib_metadata_exists && is_online())
   
   for (arch in names(COPASI_BIN_HASHES)) {
     for (os in names(COPASI_BIN_HASHES[[arch]])) {
@@ -55,7 +73,7 @@ test_that("libs on server are accessible", {
       )
       expect_true(
         is_url_readable(dl_url_former_github(os = os, arch = arch, ext = ext)),
-        paste0("Cannot access file for os '", os, "' and arch '", arch, "' oh github server.")
+        paste0("Cannot access file for os '", os, "' and arch '", arch, "' on github server.")
       )
     }
   }

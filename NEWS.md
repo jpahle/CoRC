@@ -4,6 +4,13 @@
 
   Disabled JIT compilation for now as it seems to cause crashes.
   
+* Implemented the download of COPASI platform specific libraries during package installation.
+
+  This makes `getCopasi()` obsolete. The function has been deprecated.
+  
+  Package installation now requires an internet connection by default, which can be circumvented by providing the correct libraries locally with the `COPASI_LIB_PATH` environment variable.
+  One option to set this variable is with the `configure.vars` argument of `install.packages()`.
+
 * Added support for working with weights in experimental data of the parameter estimation task.
 
   `defineExperiments()` has new parameters `weights` and `normalize_weights_per_experiment`.
