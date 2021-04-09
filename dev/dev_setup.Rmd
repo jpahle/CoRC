@@ -42,7 +42,6 @@ library(CoRC)
 library(assertthat)
 library(purrr)
 library(ggplot2)
-.data <- rlang::.data
 
 reset_copasi()
 ```
