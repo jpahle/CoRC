@@ -22,8 +22,8 @@ test_that("getVersion() is correct", {
   expect_type(v, "integer")
   expect_length(v, 3)
   expect_identical(v[["major"]], 4L)
-  expect_identical(v[["minor"]], 28L)
-  expect_identical(v[["build"]], 226L)
+  expect_identical(v[["minor"]], 30L)
+  expect_identical(v[["build"]], 240L)
 })
 
 test_that("COPASI_BIN_VERSION is count", {

@@ -30,9 +30,10 @@ RUN choco install -y R.Project
 
 # download swig win 3.0.12
 # URLS are unreliable:
+# https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip/download
 # https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
 # https://sourceforge.mirrorservice.org/s/sw/swig/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
-RUN wget "https://sourceforge.mirrorservice.org/s/sw/swig/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip" -OutFile swigwin-3.0.12.zip -UseBasicParsing ; `
+RUN wget "https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip/download" -OutFile swigwin-3.0.12.zip -UseBasicParsing -UserAgent "NativeHost" ; `
     Expand-Archive swigwin-3.0.12.zip -DestinationPath . ; `
     rm swigwin-3.0.12.zip ; `
     # rename from version specific to generic
