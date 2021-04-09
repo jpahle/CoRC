@@ -1,15 +1,15 @@
 # CoRC 0.9.0 (2020-11-23)
 
-* Fixed a major issue with `addExperiments()`, where some experimetal data was lost or misassigned.
+* Fixed a major issue with `addExperiments()`, where some experimental data was lost or misassigned.
 
   `addExperiments()` is also used by `runParameterEstimation()` and `setParameterEstimationSettings()`.
 
-* Deprecate the `name` parameter of `setParameters()`.
+* Deprecated the `name` parameter of `setParameters()`.
 
   Renaming parameters on a per reaction basis is not supported by COPASI.
 
 * Improved consistency of fetching of models from URLs.
-* Adjust for new BioModels URL scheme.
+* Adjusted for new BioModels URL scheme.
 
   Added `biomodels_url()` helper function to assist with generating URLs where desirable.
 
