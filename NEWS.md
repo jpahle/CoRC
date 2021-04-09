@@ -4,6 +4,10 @@
 
   Disabled JIT compilation for now as it seems to cause crashes.
   
+* Added support for working with weights in experimental data of the parameter estimation task.
+
+  `defineExperiments()` has new parameters `weights` and `normalize_weights_per_experiment`.
+  
 # CoRC 0.9.0 (2020-11-23)
 
 * Fixed a major issue with `addExperiments()`, where some experimental data was lost or misassigned.

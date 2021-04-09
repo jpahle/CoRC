@@ -36,6 +36,9 @@ biomodels_url <- function(id, version = NA, format = c("sbml", "omex")) {
 # stub for backports
 hasName <- function (...) {}
 
+has_names <- function(x) !is.null(names(x))
+replace_na <- function(x, value) replace(x, is.na(x), value)
+
 # like is.na but ignores NaN
 is_pure_na <- function(x) {
   is.na(x) & !is.nan(x)
