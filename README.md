@@ -37,12 +37,14 @@ this license.
 
 ## Installation
 
-Install the development version from GitHub:
+Install the CoRC package directly from GitHub:
 
 ``` r
 install.packages("remotes")
 remotes::install_github("jpahle/CoRC")
 ```
+
+The installation may take a few minutes.
 
 CoRC runs it’s own version of the COPASI backend which it will download
 for your platform during installation.
@@ -63,7 +65,7 @@ runTimeCourse()$result
 #> # A tibble: 201 x 3
 #>     Time     X     Y
 #>    <dbl> <dbl> <dbl>
-#>  1   0   3.00  3.00 
+#>  1   0   3     3    
 #>  2   0.5 3.41  0.817
 #>  3   1   1.90  1.28 
 #>  4   1.5 0.876 1.87 

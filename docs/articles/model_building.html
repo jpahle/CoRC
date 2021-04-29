@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jpahle/CoRC/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,8 +109,7 @@
 
       
 
-      </header><script src="model_building_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="model_building_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="model_building_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="model_building_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model Building</h1>
@@ -128,7 +127,7 @@
 <h1 class="hasAnchor">
 <a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="quick-model-building" class="section level1">
@@ -148,10 +147,10 @@
 
 <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 13</span>
-<span class="co">#&gt;   key   name  compartment type  unit  initial_concent… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{co… a     compartment reac… mol/l                1        6.02e23</span>
-<span class="co">#&gt; 2 b{co… b     compartment reac… mol/l                1        6.02e23</span>
+<span class="co">#&gt;   key         name  compartment type    unit  initial_concentrat… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartm… a     compartment reacti… mol/l                   1        6.02e23</span>
+<span class="co">#&gt; 2 b{compartm… b     compartment reacti… mol/l                   1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>
@@ -200,10 +199,10 @@
 <span class="co">#&gt; 1 Value… subs… fixed ""               10   NaN     0 ""               ""</span>
 <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 13</span>
-<span class="co">#&gt;   key   name  compartment type  unit  initial_concent… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{co… a     compartment assi… mol/l               10        6.02e24</span>
-<span class="co">#&gt; 2 b{co… b     compartment reac… mol/l                1        6.02e23</span>
+<span class="co">#&gt;   key         name  compartment type     unit  initial_concentra… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartm… a     compartment assignm… mol/l                 10        6.02e24</span>
+<span class="co">#&gt; 2 b{compartm… b     compartment reactio… mol/l                  1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>

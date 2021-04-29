@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jpahle/CoRC/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,8 +109,7 @@
 
       
 
-      </header><script src="issues_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="issues_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="issues_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="issues_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Issues</h1>
@@ -143,9 +142,7 @@
 <p>Todo:</p>
 <ul>
 <li>Add more COPASI tasks</li>
-<li>Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)</li>
 <li>(Internal) Code marked with ‘TODO’ for minor problems</li>
-<li>Check if installation can be as easy as with stringi package</li>
 <li>Consider only ever using setcompileflag instead of compiling</li>
 <li>getListOfPossibleFunctions only returns bare pointer</li>
 </ul>
@@ -168,7 +165,7 @@
 <p>The filenames are in the correct folder.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpJBzihB/temp_libpatha9357d23f29b/CoRC/extdata/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/tmp/RtmpMgOczC/temp_libpath2af3754b0cee/CoRC/extdata/test_paramest_exp_data.txt"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>Now I will save the model into a tmp folder.</p>
@@ -183,7 +180,7 @@
 <p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpJBzihB/temp_libpatha9357d23f29b/CoRC/extdata/test_paramest_exp_data.txt"</span>
+<span class="co">#&gt; [1] "/tmp/RtmpMgOczC/temp_libpath2af3754b0cee/CoRC/extdata/test_paramest_exp_data.txt"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">

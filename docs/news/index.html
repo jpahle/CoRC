@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -134,7 +134,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jpahle/CoRC/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -161,21 +161,43 @@
       <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="corc-0100-2020-04-29" class="section level1">
+<h1 class="page-header" data-toc-text="0.10.0">
+<a href="#corc-0100-2020-04-29" class="anchor"></a>CoRC 0.10.0 (2020-04-29)</h1>
+<ul>
+<li>
+<p>Rebased on COPASI release 4.30 sources.</p>
+<p>Disabled JIT compilation for now as it seems to cause crashes.</p>
+</li>
+<li>
+<p>Implemented the download of COPASI platform specific libraries during package installation.</p>
+<p>This makes <code><a href="../reference/getCopasi-deprecated.html">getCopasi()</a></code> obsolete. The function has been deprecated.</p>
+<p>Package installation now requires an internet connection by default, which can be circumvented by providing the correct libraries locally with the <code>COPASI_LIB_PATH</code> environment variable. One option to set this variable is with the <code>configure.vars</code> argument of <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>.</p>
+</li>
+<li>
+<p>Added support for working with weights in experimental data of the parameter estimation task.</p>
+<p><code><a href="../reference/defineExperiments.html">defineExperiments()</a></code> has new parameters <code>weights</code> and <code>normalize_weights_per_experiment</code>.</p>
+</li>
+<li><p>Fixed a bug in <code><a href="../reference/setSpecies.html">setSpecies()</a></code> where adjusting species initial concentration in conjunction with species type always defaulted to a initial concentration of 0.</p></li>
+<li><p>Various internal adjustments according to R CMD check notes and warnings.</p></li>
+<li><p>Minor additions for package stability tests.</p></li>
+</ul>
+</div>
     <div id="corc-090-2020-11-23" class="section level1">
 <h1 class="page-header" data-toc-text="0.9.0">
 <a href="#corc-090-2020-11-23" class="anchor"></a>CoRC 0.9.0 (2020-11-23)</h1>
 <ul>
 <li>
-<p>Fixed a major issue with <code><a href="../reference/addExperiments.html">addExperiments()</a></code>, where some experimetal data was lost or misassigned.</p>
+<p>Fixed a major issue with <code><a href="../reference/addExperiments.html">addExperiments()</a></code>, where some experimental data was lost or misassigned.</p>
 <p><code><a href="../reference/addExperiments.html">addExperiments()</a></code> is also used by <code><a href="../reference/runParameterEstimation.html">runParameterEstimation()</a></code> and <code><a href="../reference/setParameterEstimationSettings.html">setParameterEstimationSettings()</a></code>.</p>
 </li>
 <li>
-<p>Deprecate the <code>name</code> parameter of <code><a href="../reference/setParameters.html">setParameters()</a></code>.</p>
+<p>Deprecated the <code>name</code> parameter of <code><a href="../reference/setParameters.html">setParameters()</a></code>.</p>
 <p>Renaming parameters on a per reaction basis is not supported by COPASI.</p>
 </li>
 <li><p>Improved consistency of fetching of models from URLs.</p></li>
 <li>
-<p>Adjust for new BioModels URL scheme.</p>
+<p>Adjusted for new BioModels URL scheme.</p>
 <p>Added <code><a href="../reference/biomodels_url.html">biomodels_url()</a></code> helper function to assist with generating URLs where desirable.</p>
 </li>
 <li><p>Added support for Combine archives via <code><a href="../reference/loadCombineArchive.html">loadCombineArchive()</a></code> and <code><a href="../reference/saveCombineArchive.html">saveCombineArchive()</a></code>.</p></li>
@@ -244,7 +266,7 @@
 <li>Rebase on COPASI release 4.25 sources.</li>
 <li>Add a <code>preserve_concentrations</code> argument to <code><a href="../reference/setCompartments.html">setCompartments()</a></code> to preserve species concentrations instead of particle numbers on adjustment of compartment sizes.</li>
 <li>Fix a bug where clearing initial expressions in setter functions prevented them from adjusting initial values.</li>
-<li>Enable for <code><a href="../reference/getCopasi.html">getCopasi()</a></code> to fall back on github as a download mirror.</li>
+<li>Enable for <code><a href="../reference/getCopasi-deprecated.html">getCopasi()</a></code> to fall back on github as a download mirror.</li>
 <li>Minor fixes and code cleanups.</li>
 </ul>
 </div>

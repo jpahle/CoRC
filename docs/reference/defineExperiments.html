@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -135,7 +135,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jpahle/CoRC/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -172,7 +172,9 @@
   data <span class='op'>=</span> <span class='cn'>NULL</span>,
   types <span class='op'>=</span> <span class='cn'>NULL</span>,
   mappings <span class='op'>=</span> <span class='cn'>NULL</span>,
+  weights <span class='op'>=</span> <span class='cn'>NULL</span>,
   weight_method <span class='op'>=</span> <span class='cn'>NULL</span>,
+  normalize_weights_per_experiment <span class='op'>=</span> <span class='cn'>FALSE</span>,
   filename <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
@@ -191,18 +193,30 @@
       <th>types</th>
       <td><p>data column types as character vector</p>
 <p>Allowed types of columns are: 'time', 'independent', 'dependent', 'ignore'.</p>
-<p>Type 'time' is only allowed for time course experiments.</p></td>
+<p>Type 'time' is only allowed for time course experiments.</p>
+<p>Can be a named vector to only specify for a subset of data columns.</p></td>
     </tr>
     <tr>
       <th>mappings</th>
       <td><p>data column mappings as character vector</p>
 <p>Expects value references.</p>
-<p>If no mappings are given, column names can serve as mappings.</p></td>
+<p>If no mappings are given, column names can serve as mappings.</p>
+<p>Can be a named vector to only specify for a subset of data columns.</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>data column weights as numeric vector</p>
+<p>`NaN` corresponds to automatic weight.</p>
+<p>Can be a named vector to only specify for a subset of data columns.</p></td>
     </tr>
     <tr>
       <th>weight_method</th>
       <td><p>string</p>
 <p>Allowed methods: 'mean', 'mean_square', 'sd', 'value_scaling'.</p></td>
+    </tr>
+    <tr>
+      <th>normalize_weights_per_experiment</th>
+      <td><p>flag</p></td>
     </tr>
     <tr>
       <th>filename</th>

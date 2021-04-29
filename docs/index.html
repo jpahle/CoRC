@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -89,7 +89,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jpahle/CoRC/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,18 +129,18 @@
 <li>Handling of multiple models at once.</li>
 <li>Parallelization on multi-core machines or computing clusters.</li>
 </ul>
-<p>It is currently based on COPASI version 4.28 Build (226) and aims to closely follow COPASI releases in the future.</p>
+<p>It is currently based on COPASI version 4.30 Build (240) and aims to closely follow COPASI releases in the future.</p>
 <p>CoRC comes with the Artistic License 2.0. By using CoRC you agree to this license.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Install the development version from GitHub:</p>
+<p>Install the CoRC package directly from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jpahle/CoRC"</span><span class="op">)</span>
-<span class="fu">CoRC</span><span class="fu">::</span><span class="fu"><a href="reference/getCopasi.html">getCopasi</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>CoRC runs it’s own version of the COPASI backend which it will download via the <code>getCopasi</code> function.</p>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jpahle/CoRC"</span><span class="op">)</span></code></pre></div>
+<p>The installation may take a few minutes.</p>
+<p>CoRC runs it’s own version of the COPASI backend which it will download for your platform during installation.</p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -159,7 +159,7 @@
 <span class="co">#&gt; # A tibble: 201 x 3</span>
 <span class="co">#&gt;     Time     X     Y</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   0   3.00  3.00 </span>
+<span class="co">#&gt;  1   0   3     3    </span>
 <span class="co">#&gt;  2   0.5 3.41  0.817</span>
 <span class="co">#&gt;  3   1   1.90  1.28 </span>
 <span class="co">#&gt;  4   1.5 0.876 1.87 </span>
@@ -190,6 +190,12 @@
 <li>
 <a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a> | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing CoRC</a></li>
 </ul>
 </div>
 <div class="developers">
