@@ -61,6 +61,11 @@ dl_url_former_github <- function(base = COPASI_BIN_BASE_URL_GITHUB, version = pa
   )
 }
 
+# The DLLInfo of the COAPSI library allows calling the methods
+# This gets populated in .onLoad
+COPASI <- list(info = new("externalptr"))
+class(COPASI) <- "DLLInfo"
+
 # Package environment for persistent options etc
 pkg_env <- new.env(parent = emptyenv())
 # Variable to keep track of the default c_datamodel
@@ -75,7 +80,7 @@ pkg_env$cl_loaded_dms <- list()
   backports::import(pkgname, "hasName", force = TRUE)
   
   load <- function() {
-    library.dynam("COPASI", pkgname, libname)
+    COPASI <<- library.dynam("COPASI", pkgname, libname)
     # clearing the deque hides the annoying message about COPASI home directory on linux
     CCopasiMessage_clearDeque()
   }
@@ -88,10 +93,13 @@ pkg_env$cl_loaded_dms <- list()
     if (get_copasi(libname, pkgname, Sys.getenv("R_PACKAGE_NAME") == getPackageName()))
       load()
   })
+  
+  invisible()
 }
 
 .onUnload <- function(libpath) {
   try(library.dynam.unload("COPASI", libpath), silent = TRUE)
+  invisible()
 }
 
 #' Get COPASI version numbers

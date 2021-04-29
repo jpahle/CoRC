@@ -387,8 +387,8 @@ tc_get_results <- function(c_task, settings) {
   
   # Timecritical step optimization
   timeSeries_ref <- c_timeseries@ref
-  R_swig_CTimeSeries_getData <- getNativeSymbolInfo("R_swig_CTimeSeries_getData", "COPASI")[["address"]]
-  R_swig_CTimeSeries_getConcentrationData <- getNativeSymbolInfo("R_swig_CTimeSeries_getConcentrationData", "COPASI")[["address"]]
+  R_swig_CTimeSeries_getData <- COPASI$R_swig_CTimeSeries_getData
+  R_swig_CTimeSeries_getConcentrationData <- COPASI$R_swig_CTimeSeries_getConcentrationData
   
   # read out all values
   data_val <-

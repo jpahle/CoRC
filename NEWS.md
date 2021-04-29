@@ -15,6 +15,8 @@
 
   `defineExperiments()` has new parameters `weights` and `normalize_weights_per_experiment`.
   
+* Various internal adjustments according to R CMD check notes and warnings.
+  
 # CoRC 0.9.0 (2020-11-23)
 
 * Fixed a major issue with `addExperiments()`, where some experimental data was lost or misassigned.

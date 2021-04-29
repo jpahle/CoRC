@@ -27,7 +27,7 @@ ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.n
 inspect <- function(object) {
   if (is.function(object)) {
     funtext <- object %>% environment() %>% .$f %>% format()
-    funinfo <- funtext %>% paste0(collapse = "\n") %>% stringr::str_match(stringr::regex("\\n\\s*(?:ans = )?(\\.Call\\(\"(\\w+)\".+PACKAGE = \"COPASI\"\\))\\n", dotall = TRUE))
+    funinfo <- funtext %>% paste0(collapse = "\n") %>% stringr::str_match(stringr::regex("\\n\\s*(?:ans = )?(\\.Call\\(COPASI\\$`?([^,]+)`?,?.*\\))\\n"))
     if (!all(is.na(funinfo))) {
       cat(
         funinfo[,3] %>% stringr::str_sub(8),

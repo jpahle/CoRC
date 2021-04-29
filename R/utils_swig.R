@@ -8,19 +8,19 @@
 # @param fun symbol of the function that gives a bad vector
 # @param class name or symbol for the class that is forced on all list members
 swigfix_resolve_obj_cvector <- function(self, fun, class) {
-  fun <- paste0("R_swig_", as.character(substitute(fun)))
+  fun <- getNativeSymbolInfo(paste0("R_swig_", as.character(substitute(fun))), COPASI, withRegistrationInfo = TRUE)
   class <- paste0("_p_", as.character(substitute(class)))
   
   # args: self@ref, bool
-  vector <- .Call(fun, self@ref, FALSE, PACKAGE='COPASI')
+  vector <- .Call(fun, self@ref, FALSE)
   # args: self@ref, bool
-  vectorsize <- .Call('R_swig_ObjectVectorCore_size', vector, FALSE, PACKAGE='COPASI')
+  vectorsize <- .Call(COPASI$`R_swig_ObjectVectorCore_size`, vector, FALSE)
 
   map(seq_len_0(vectorsize), ~
     new(
       class,
       # args: self@ref, int
-      ref = .Call('R_swig_ObjectVectorCore_get', vector, .x, PACKAGE='COPASI')
+      ref = .Call(COPASI$`R_swig_ObjectVectorCore_get`, vector, .x)
     )
   )
 }
@@ -29,15 +29,15 @@ swigfix_resolve_obj_cvector <- function(self, fun, class) {
 # @param fun symbol of the function that gives a bad vector
 # @param class name or symbol for the class that is forced on all list members
 swigfix_resolve_int_stdvector <- function(self, fun) {
-  fun <- paste0("R_swig_", as.character(substitute(fun)))
+  fun <- getNativeSymbolInfo(paste0("R_swig_", as.character(substitute(fun))), COPASI, withRegistrationInfo = TRUE)
   
   # args: self@ref, bool
-  vector <- .Call(fun, self@ref, FALSE, PACKAGE='COPASI')
+  vector <- .Call(fun, self@ref, FALSE)
   # args: self@ref, bool
-  vectorsize <- .Call('R_swig_IntStdVector_size', vector, FALSE, PACKAGE='COPASI')
+  vectorsize <- .Call(COPASI$`R_swig_IntStdVector_size`, vector, FALSE)
   
   # args: self@ref, int, bool
-  map_int(seq_len_0(vectorsize), ~ .Call('R_swig_IntStdVector___getitem__', vector, .x, FALSE, ,PACKAGE='COPASI'))
+  map_int(seq_len_0(vectorsize), ~ .Call(COPASI$`R_swig_IntStdVector___getitem__`, vector, .x, FALSE))
 }
 
 # Apply a $function of a swig object to a list of objects

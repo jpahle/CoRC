@@ -20,6 +20,13 @@ wrapper_lines <- stringr::str_replace_all(
   '!isnullptr(\\1)'
 )
 
+# Make all .Call use the COPASI DLLInfo for addressing
+wrapper_lines <- stringr::str_replace_all(
+  wrapper_lines,
+  "\\.Call\\('(.*?)'(.*), PACKAGE='COPASI'\\);",
+  ".Call(COPASI$`\\1`\\2);"
+)
+
 # # rename COPASI lib to CoRC
 # wrapper_lines <- stringr::str_replace_all(
 #   wrapper_lines,
