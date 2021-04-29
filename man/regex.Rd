@@ -7,10 +7,9 @@
 \alias{fixed}
 \alias{coll}
 \title{String matching engines from stringr}
-\description{
-CoRC makes use of the string matching engines from the \pkg{stringr} package.
-}
 \details{
+CoRC makes use of the string matching engines from the \pkg{stringr} package.
+
 The functions are described at \link[stringr]{modifiers}.
 By default, matching is done with \code{coll}.
 }

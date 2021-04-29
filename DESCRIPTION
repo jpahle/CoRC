@@ -29,8 +29,9 @@ Imports:
     stringr (>= 1.3.1),
     tibble (>= 3.0.1),
     utils,
-    vctrs (>= 0.3.0)
+    vctrs (>= 0.3.0),
 Suggests:
+    knitr,
     pkgdown,
     plotly,
     rmarkdown,
@@ -61,4 +62,4 @@ Collate:
     'utils_stringr.R'
     'utils_swig.R'
     'utils_tasks.R'
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown

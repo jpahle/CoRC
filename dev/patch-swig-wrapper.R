@@ -27,6 +27,20 @@ wrapper_lines <- stringr::str_replace_all(
   ".Call(COPASI$`\\1`\\2);"
 )
 
+# remove R_SWIG_getCallbackFunctionStack which is called out in R CMD check
+i_empty_lines <- which(wrapper_lines == "")
+i_start <- which(wrapper_lines == "R_SWIG_getCallbackFunctionStack =")
+stopifnot(length(i_start) == 1)
+i_end <- i_empty_lines[i_empty_lines > i_start][1]
+wrapper_lines <- wrapper_lines[-(i_start:i_end)]
+
+# remove R_SWIG_addCallbackFunctionStack which is called out in R CMD check
+i_empty_lines <- which(wrapper_lines == "")
+i_start <- which(wrapper_lines == "R_SWIG_addCallbackFunctionStack =")
+stopifnot(length(i_start) == 1)
+i_end <- i_empty_lines[i_empty_lines > i_start][1]
+wrapper_lines <- wrapper_lines[-(i_start:i_end)]
+
 # # rename COPASI lib to CoRC
 # wrapper_lines <- stringr::str_replace_all(
 #   wrapper_lines,

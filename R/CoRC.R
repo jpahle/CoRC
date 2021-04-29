@@ -26,6 +26,9 @@
 #' @importFrom utils head tail
 "_PACKAGE"
 
+# https://github.com/tidyverse/magrittr/issues/29
+utils::globalVariables(c("."))
+
 # Output flag for tasks
 OUTPUTFLAG <- 119L
 

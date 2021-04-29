@@ -340,6 +340,7 @@ is.copasi_exp <- function(x) {
   inherits(x, "copasi_exp")
 }
 
+#' @method format copasi_exp
 #' @export
 format.copasi_exp <- function (x, ...) {
   c(
