@@ -18,6 +18,8 @@
 * Fixed a bug in `setSpecies()` where adjusting species initial concentration in conjunction with species type always defaulted to a initial concentration of 0.
   
 * Various internal adjustments according to R CMD check notes and warnings.
+
+* Minor additions for package stability tests.
   
 # CoRC 0.9.0 (2020-11-23)
 

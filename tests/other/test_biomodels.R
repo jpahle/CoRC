@@ -7,17 +7,22 @@ library(purrr)
 library(dplyr)
 library(CoRC)
 
-max_biomodels <- 800
+max_biomodels <- 1000
 
 message("getting biomodels... this may take a while")
 if (file.exists("bmdls.rds")) {
   biomodels <- readRDS("bmdls.rds")
 } else {
+  dl_bmdl <- function(id, url) {
+    message(id)
+    tryCatch(CoRC:::con_to_string(url), error = function(e) "")
+  }
+  
   biomodels <-
     tibble(
       id = 1:max_biomodels,
       url = map_chr(id, biomodels_url, format = "sbml"),
-      sbml_string = map_chr(url, CoRC:::con_to_string),
+      sbml_string = map2_chr(id, url, dl_bmdl),
       exists = sbml_string != "",
       loadable = NA,
       taskable = NA,
@@ -26,6 +31,8 @@ if (file.exists("bmdls.rds")) {
 
   saveRDS(biomodels, "bmdls.rds")
 }
+
+message("Available Biomodels: ", sum(biomodels$exists))
 
 message("Testing model loading...")
 for (id in biomodels$id) {

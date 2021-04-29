@@ -2,6 +2,7 @@
 
 export TEST=full
 # export TEST=quick
+# export TEST=biomodels
 
 # R_VARIANT=ubuntu_20_04 ./test_lib_with_rX.sh
 R_VARIANTS=(
