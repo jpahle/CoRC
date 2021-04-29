@@ -237,8 +237,14 @@ setSpecies <- function(key = NULL, name = NULL, compartment = NULL, type = NULL,
   }
   
   # apply types
-  for (i in which(do_type))
-    cl_metabs[[i]]$setStatus(type[i])
+  if (any(do_type)) {
+    for (i in which(do_type))
+      cl_metabs[[i]]$setStatus(type[i])
+    
+    # this is added to prevent a possible following setInitialConcentration + updateInitialValues("Concentration")
+    # from somehow always defaulting to 0 initial concentration.
+    compile_and_check(c_model)
+  }
   
   if (any(do_clear_initial_expression))
     walk_swig(cl_metabs[do_clear_initial_expression], "setInitialExpression", "")

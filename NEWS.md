@@ -14,6 +14,8 @@
 * Added support for working with weights in experimental data of the parameter estimation task.
 
   `defineExperiments()` has new parameters `weights` and `normalize_weights_per_experiment`.
+
+* Fixed a bug in `setSpecies()` where adjusting species initial concentration in conjunction with species type always defaulted to a initial concentration of 0.
   
 * Various internal adjustments according to R CMD check notes and warnings.
   

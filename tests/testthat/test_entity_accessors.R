@@ -44,6 +44,13 @@ test_that("setSpecies() concentrations", {
   setSpecies("B", type = "assignment", expression = "1.1")
   expect_equal(getSpecies("B")$expression, "1.1")
   expect_error(setSpecies("B", type = "failure"))
+  
+  setSpecies("B", type = "fixed", initial_concentration = 2.2)
+  expect_equal(getSpecies("B")$type, "fixed")
+  # this fails when model is not recompiled after setting type.
+  # weirdly, only for species concentrations, not with particle numbers or compartment size etc.
+  expect_equal(getSpecies("B")$initial_concentration, 2.2)
+  
   setSpecies("B", type = "reactions", initial_concentration = 1.1)
 })
 
@@ -59,6 +66,13 @@ test_that("setSpecies() numbers", {
   
   setSpecies("B", initial_number = Inf)
   expect_equal(getSpecies("B")$initial_number, Inf)
+  
+  setSpecies("B", type = "assignment", expression = "1.1")
+  expect_equal(getSpecies("B")$expression, "1.1")
+  
+  setSpecies("B", type = "fixed", initial_number = 2.2)
+  expect_equal(getSpecies("B")$type, "fixed")
+  expect_equal(getSpecies("B")$initial_number, 2.2)
   
   setSpecies(regex("^B"), initial_number = 2)
   expect_equal(getSpecies("B")$initial_number, 2)
@@ -115,7 +129,9 @@ test_that("setCompartments()", {
   setCompartments("Ca", type = "assignment", expression = "1.1")
   expect_equal(getCompartments("Ca")$expression, "1.1")
   expect_error(setCompartments("Ca", type = "failure"))
-  setCompartments("Ca", type = "fixed", initial_size = 1.1)
+  
+  setCompartments("Ca", type = "fixed", initial_size = 2.2)
+  expect_equal(getCompartments("Ca")$initial_size, 2.2)
   
   setCompartments("Ca", dimensionality = 1)
   expect_equal(getCompartments("Ca")$dimensionality, 1)
@@ -186,7 +202,10 @@ test_that("setGlobalQuantities()", {
   setGlobalQuantities("Ca", type = "assignment", expression = "1.1")
   expect_equal(getGlobalQuantities("Ca")$expression, "1.1")
   expect_error(setGlobalQuantities("Ca", type = "failure"))
-  setGlobalQuantities("Ca", type = "fixed", initial_value = 1.1)
+  
+  setGlobalQuantities("Ca", type = "fixed", initial_value = 2.2)
+  expect_equal(getGlobalQuantities("Ca")$type, "fixed")
+  expect_equal(getGlobalQuantities("Ca")$initial_value, 2.2)
   
   setGlobalQuantities("Ca", unit = "s")
   expect_equal(getGlobalQuantities("Ca")$unit, "s")
