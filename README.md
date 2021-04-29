@@ -42,11 +42,10 @@ Install the development version from GitHub:
 ``` r
 install.packages("remotes")
 remotes::install_github("jpahle/CoRC")
-CoRC::getCopasi()
 ```
 
 CoRC runs it’s own version of the COPASI backend which it will download
-via the `getCopasi` function.
+for your platform during installation.
 
 ## Usage
 

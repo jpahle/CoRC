@@ -6,7 +6,11 @@ output:
   html_notebook: default
 ---
 
-# R Version specificity
+# Limitations
+
+These workflows seem to be in some cases dependent on the parent folder of this project being named identical to the package name.
+
+## R Version specificity
 
 For now, it seems that all version of R 3.x have been somewhat compatible.
 There has been cases though, where for example R 3.5 can't run binaries compiled against R 3.4.
@@ -215,14 +219,9 @@ source("../dev/update-swig-in-package.R", local = new.env(), chdir = TRUE)
 
 # Installing the package
 
-Ensures, that the installed package has a working lib
-
 ```{r, eval=FALSE}
+Sys.setenv(COPASI_LIB_PATH = normalizePath(file.path("..", "libs", .Platform$r_arch, paste0("COPASI", .Platform$dynlib.ext))))
 devtools::install("..")
-libpath <- file.path("..", "libs")
-if (.Platform$OS.type == "windows")
-  libpath <- file.path(libpath, "x64")
-CoRC::getCopasi(file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)))
 ```
 
 # Getting the current hash for the binary (update it in CoRC.R)

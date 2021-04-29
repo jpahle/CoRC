@@ -33,9 +33,7 @@ loadExamples(1)
 Todo:
 
 * Add more COPASI tasks
-* Possibly parallel helper function (saveModelToString, load on cluster, evaluate given expressions)
 * (Internal) Code marked with 'TODO' for minor problems
-* Check if installation can be as easy as with stringi package
 * Consider only ever using setcompileflag instead of compiling
 * getListOfPossibleFunctions only returns bare pointer
 

@@ -8,6 +8,8 @@ Use this to load the development environment and frequently run reset_copasi() t
 
 ```{r setup}
 knitr::opts_knit$set(root.dir = normalizePath(".."))
+Sys.setenv(COPASI_LIB_PATH = normalizePath(file.path("..", "libs", .Platform$r_arch, paste0("COPASI", .Platform$dynlib.ext))))
+
 # reset_copasi(), ls_corc(pattern), inspect(object)
 source("dev_tools.R", echo = FALSE)
 current_example = 3L
@@ -18,16 +20,27 @@ current_example = 3L
 ```{r, include=FALSE}
 devtools::document()
 pkgdown::build_reference()
+``` 
+
+# Check the Package
+
+```{r, include=FALSE}
+devtools::test()
+```
+```{r, include=FALSE}
+devtools::check(check_dir = "../CoRC.Rcheck")
+```
+
+# Build the Package
+
+```{r, include=FALSE}
+devtools::build()
 ```
 
 # Install the Package
 
 ```{r, include=FALSE}
 devtools::install()
-libpath <- "libs"
-if (.Platform$OS.type == "windows")
-  libpath <- file.path(libpath, "x64")
-CoRC::getCopasi(file.path(libpath, paste0("COPASI", .Platform$dynlib.ext)))
 ```
 
 # Load the Package

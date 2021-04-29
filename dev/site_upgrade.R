@@ -1,4 +1,5 @@
 # For upgrading the site I want to have specific versions of relevant packages
+Sys.setenv(COPASI_LIB_PATH = normalizePath(file.path("libs", .Platform$r_arch, paste0("COPASI", .Platform$dynlib.ext))))
 
 # use specific pkgdown to keep page stable for now
 remotes::install_version("pkgdown", "1.6.1", upgrade = "never")
@@ -6,9 +7,8 @@ remotes::install_version("pkgdown", "1.6.1", upgrade = "never")
 remotes::install_version("ggplot2", "3.3.2", upgrade = "never")
 remotes::install_version("plotly", "4.9.2.1", upgrade = "never")
 devtools::document()
-# the parallel cluster used in the examples vignette needs to have CoRC installed
+# Pkgdown and the parallel cluster used in the examples vignette needs to have CoRC installed
 devtools::install(upgrade = "never")
-CoRC::getCopasi(file.path("libs", paste0("COPASI", .Platform$dynlib.ext)))
 devtools::test()
 devtools::build_readme()
 pkgdown::clean_site()

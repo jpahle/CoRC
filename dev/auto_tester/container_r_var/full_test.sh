@@ -7,8 +7,7 @@ cp CoRC/R/swig_wrapper.R .
 cp CoRC/inst/extdata/test_names.cps .
 
 # install CoRC and further dependencies
-Rscript -e "$R_OPTS remotes::install_local('CoRC/', INSTALL_opts = '--install-tests');"
-Rscript -e "CoRC::getCopasi(path = 'COPASI.so');"
+COPASI_LIB_PATH=/work/COPASI.so Rscript -e "$R_OPTS remotes::install_local('CoRC/', upgrade = 'never', INSTALL_opts = '--install-tests');"
 
 # Debug info
 Rscript -e "sessioninfo::session_info('CoRC');"

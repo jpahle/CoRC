@@ -39,15 +39,16 @@ CoRC comes with the Artistic License 2.0. By using CoRC you agree to this licens
 
 ## Installation
 
-Install the development version from GitHub:
+Install the CoRC package directly from GitHub:
 
 ```{r, eval = FALSE}
 install.packages("remotes")
 remotes::install_github("jpahle/CoRC")
-CoRC::getCopasi()
 ```
 
-CoRC runs it's own version of the COPASI backend which it will download via the `getCopasi` function.
+The installation may take a few minutes.
+
+CoRC runs it's own version of the COPASI backend which it will download for your platform during installation.
 
 ## Usage
 

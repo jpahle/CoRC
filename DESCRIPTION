@@ -38,6 +38,7 @@ Suggests:
     tidyverse,
 Collate: 
     'CoRC.R'
+    'deprecated.R'
     'entity_accessors.R'
     'entity_finders.R'
     'swig_wrapper.R'
