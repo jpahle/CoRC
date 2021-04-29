@@ -1,4 +1,4 @@
-# CoRC 0.9.0.9000
+# CoRC 0.10.0 (2020-04-29)
 
 * Rebased on COPASI release 4.30 sources.
 
