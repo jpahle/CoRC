@@ -1,0 +1,14 @@
+bibentry(bibtype = "Article",
+  title = "CoRC: the COPASI R Connector",
+  author = c(
+    person("Jonas", "Förster", email = "jonasfoerster@gmail.com", role = c("aut", "cre")),
+    person(c("Frank", "T"), "Bergmann", role = c("ctb")),
+    person("Jürgen", "Pahle", email = "juergen.pahle@bioquant.uni-heidelberg.de", role = c("aut"))
+  ),
+  doi = "10.1093/bioinformatics/btab033",
+  pmid = "33470404",
+  journal = "Bioinformatics",
+  month = "jan",
+  year = 2021,
+  header = "To cite CoRC in publications, please use:"
+)
