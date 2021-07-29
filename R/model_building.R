@@ -497,7 +497,7 @@ newEvent <- function(name, trigger_expression, fire_at_initial_time = FALSE, tri
   }
   
   # assignment_target
-  cl_assignment_targets <- map(assignment_target, dn_to_object, c_datamodel, accepted_types = c("_p_CMetab", "_p_CCompartment", "_p_CModelValue"))
+  cl_assignment_targets <- map(assignment_target, dn_to_object, c_datamodel, accepted_types = c("_p_CMetab", "_p_CCompartment", "_p_CModelValue", "_p_CModel"))
   assert_that(!some(cl_assignment_targets, is.null), msg = "Invalid assignment target given.")
   assignment_target_keys <- map_swig_chr(cl_assignment_targets, "getKey")
   assert_that(
