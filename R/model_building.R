@@ -115,11 +115,7 @@ deleteSpecies <- function(key, model = getCurrentModel()) {
     species_obj(c_datamodel) %>%
     unique() %>%
     map_swig_chr("getKey") %>%
-    walk(~ {
-      # recursive removal without compilation in between seems to cause crashes.
-      c_model$compileIfNecessary()
-      c_model$removeMetabolite(.x, recursive = TRUE)
-    })
+    walk(c_model$removeMetabolite, recursive = TRUE)
   
   compile_and_check(c_model)
   
@@ -225,11 +221,7 @@ deleteGlobalQuantity <- function(key, model = getCurrentModel()) {
     quantity_obj(c_datamodel) %>%
     unique() %>%
     map_swig_chr("getKey") %>%
-    walk(~ {
-      # recursive removal without compilation in between seems to cause crashes.
-      c_model$compileIfNecessary()
-      c_model$removeModelValue(.x, recursive = TRUE)
-    })
+    walk(c_model$removeModelValue, recursive = TRUE)
   
   compile_and_check(c_model)
   
@@ -337,11 +329,7 @@ deleteCompartment <- function(key, model = getCurrentModel()) {
     compartment_obj(c_datamodel) %>%
     unique() %>%
     map_swig_chr("getKey") %>%
-    walk(~ {
-      # recursive removal without compilation in between seems to cause crashes.
-      c_model$compileIfNecessary()
-      c_model$removeCompartment(.x, recursive = TRUE)
-    })
+    walk(c_model$removeCompartment, recursive = TRUE)
   
   compile_and_check(c_model)
   
@@ -431,11 +419,7 @@ deleteReaction <- function(key, model = getCurrentModel()) {
     reaction_obj(c_datamodel) %>%
     unique() %>%
     map_swig_chr("getKey") %>%
-    walk(~ {
-      # recursive removal without compilation in between seems to cause crashes.
-      c_model$compileIfNecessary()
-      c_model$removeReaction(.x, recursive = TRUE)
-    })
+    walk(c_model$removeReaction, recursive = TRUE)
   
   compile_and_check(c_model)
   
@@ -580,11 +564,7 @@ deleteEvent <- function(key, model = getCurrentModel()) {
     event_obj(c_datamodel) %>%
     unique() %>%
     map_swig_chr("getKey") %>%
-    walk(~ {
-      # recursive removal without compilation in between seems to cause crashes.
-      c_model$compileIfNecessary()
-      c_model$removeEvent(.x, recursive = TRUE)
-    })
+    walk(c_model$removeEvent, recursive = TRUE)
   
   compile_and_check(c_model)
   
