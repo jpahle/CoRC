@@ -1,0 +1,223 @@
+---
+title: "0-dev_setup"
+output: html_notebook
+---
+
+```{r setup}
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+# reset_copasi(i), ls_corc(pattern), inspect(object)
+source("tools.R", echo = FALSE)
+current_example = 4L
+```
+
+# Load Development Environment
+
+```{r, include=FALSE}
+library(assertthat)
+library(purrr)
+library(ggplot2)
+.data <- rlang::.data
+
+reset_copasi()
+```
+
+# Reset COPASI
+
+```{r, include=FALSE}
+reset_copasi()
+```
+
+# Tests
+
+Switch R version
+```{bash}
+# 3.4
+sudo ln -sfn 3.4 /Library/Frameworks/R.framework/Versions/Current
+# 3.3
+sudo ln -sfn 3.3 /Library/Frameworks/R.framework/Versions/Current
+# 3.2
+sudo ln -sfn 3.2 /Library/Frameworks/R.framework/Versions/Current
+# 3.1
+sudo ln -sfn 3.1 /Library/Frameworks/R.framework/Versions/Current
+
+/Library/Frameworks/R.framework/Resources/bin/R
+```
+
+Test NULL pointer check for COPASI
+
+```{r}
+reset_copasi()
+dm1 <- get_cdv(CRootContainer_getDatamodelList())[[1]]
+dm2 <- get_cdv(CRootContainer_getDatamodelList())[[2]]
+delete(dm2)
+dm2@ref
+test_orig <- function(self) {
+  if(isS4(self) && .hasSlot(self, "ref"))
+  {
+    if (length(grep("0x0>",capture.output(slot(self, "ref")))) > 0 ||
+      length(grep("nil",capture.output(slot(self, "ref")))) > 0)
+    {
+      return(FALSE)
+    }
+  }
+  TRUE
+}
+
+test_or <- function(object) {
+  if (inherits(object, "ExternalReference")) {
+    ref <- object@ref
+    ref_string <- capture.output(ref)
+    # find pointer: (nil); pointer: 0x0>
+    if (ref_string == "<pointer: 0x0>" || ref_string == "<pointer: (nil)>")
+      return(FALSE)
+  }
+  
+  TRUE
+}
+
+test_in <- function(object) {
+  if (inherits(object, "ExternalReference")) {
+    ref <- object@ref
+    ref_string <- capture.output(ref)
+    # find pointer: (nil); pointer: 0x0>
+    if (ref_string %in% c("<pointer: 0x0>", "<pointer: (nil)>"))
+      return(FALSE)
+  }
+  
+  TRUE
+}
+
+test_grepl2 <- function(object) {
+  if (inherits(object, "ExternalReference")) {
+    ref <- object@ref
+    ref_string <- capture.output(ref)
+    # find pointer: (nil); pointer: 0x0>
+    if (grepl("0x0>$", ref_string) || grepl("\\(nil\\)>$", ref_string))
+      return(FALSE)
+  }
+  
+  TRUE
+}
+
+test_grepl1 <- function(object) {
+  if (inherits(object, "ExternalReference")) {
+    ref <- object@ref
+    # find pointer: (nil); pointer: 0x0>
+    if (grepl("(0x0|\\(nil\\))>$", capture.output(ref)))
+      return(FALSE)
+  }
+  
+  TRUE
+}
+
+test_perl <- function(object) {
+  if (inherits(object, "ExternalReference")) {
+    ref <- object@ref
+    # find pointer: (nil); pointer: 0x0>
+    if (grepl("(0x0|\\(nil\\))>$", capture.output(ref), perl = TRUE))
+      return(FALSE)
+  }
+  
+  TRUE
+}
+
+microbenchmark::microbenchmark(test_orig(dm1), test_orig(dm2), test_or(dm1), test_or(dm2), test_in(dm1), test_in(dm2), test_grepl2(dm1), test_grepl2(dm2), test_grepl1(dm1), test_grepl1(dm2), test_perl(dm1), test_perl(dm2), times = 6000L)
+```
+
+Test NULL pointer check for CoRC
+
+```{r}
+reset_copasi()
+library(isnullptr)
+is_nullbyr <- function(x) capture.output(x) %in% c("<pointer: 0x0>", "<pointer: (nil)>")
+is_nullbyc <- Rcpp::cppFunction("SEXP isnull(SEXP pointer) {return Rf_ScalarLogical(!R_ExternalPtrAddr(pointer));}")
+nullptr <- new("externalptr")
+loadednullptr <- readRDS("ref_null.rds")
+is_nullptr <- function(x) identical(x, nullptr)
+is_loadednullptr <- function(x) identical(x, loadednullptr)
+is_anynullptr <- function(x) identical(x, nullptr) || identical(x, loadednullptr)
+
+valid_ptr <- CCommonName("a")@ref
+deleted_ptr <- avert_gc(CCommonName("a"))
+delete(deleted_ptr)
+deleted_ptr <- deleted_ptr@ref
+
+"VALID PTR"
+is_nullbyr(valid_ptr)
+is_nullbyc(valid_ptr)
+is_nullptr(valid_ptr)
+is_loadednullptr(valid_ptr)
+is_anynullptr(valid_ptr)
+isnullptr(valid_ptr)
+
+"DELETED PTR"
+is_nullbyr(deleted_ptr)
+is_nullbyc(deleted_ptr)
+is_nullptr(deleted_ptr)
+is_loadednullptr(deleted_ptr)
+is_anynullptr(deleted_ptr)
+isnullptr(deleted_ptr)
+
+"NEW PTR"
+is_nullbyr(nullptr)
+is_nullbyc(nullptr)
+is_nullptr(nullptr)
+is_loadednullptr(nullptr)
+is_anynullptr(nullptr)
+isnullptr(nullptr)
+
+"LOADED PTR"
+is_nullbyr(loadednullptr)
+is_nullbyc(loadednullptr)
+is_nullptr(loadednullptr)
+is_loadednullptr(loadednullptr)
+is_anynullptr(loadednullptr)
+isnullptr(loadednullptr)
+
+microbenchmark::microbenchmark(is_nullbyr(valid_ptr), is_nullbyc(valid_ptr), is_nullptr(valid_ptr), is_loadednullptr(valid_ptr), is_anynullptr(valid_ptr), isnullptr(valid_ptr), times = 5000)
+```
+
+Test parameter estimation
+
+```{r}
+library(tidyverse)
+library(CoRC)
+datamodel <- loadModel("simple.cps")
+setTimeCourseSettings(100, 1, method = "deterministic")
+
+# exp_list <- 1:20 %>% map(~ runTimeCourse(method = "directMethod"))
+exp_list <- 1:1 %>% map(~ runTimeCourse())
+autoplot(exp_list[[1]])
+
+getParameters()
+
+exp_struct <- defineExperiments(
+  filename = "corctest",
+  experiment_type = "Time Course",
+  data = exp_list,
+  types = c("time", "dependent", "dependent"),
+  mappings = c(NA, species(c("A", "B"), "Concentration")),
+  weight_method = "mean_square"
+)
+
+param_struct <-
+  parameter(c(
+    "(reaction_1).v",
+    "(reaction_2).k1",
+    "(reaction_3).k1"
+  )) %>%
+  map(~ defineParameter(key = .x, upper.bound = 1, lower.bound = 0))
+
+setParamEstSettings(
+  randomizeStartValues = TRUE,
+  parameters = param_struct,
+  experiments = exp_struct
+)
+addExperiments(exp_struct)
+
+openCopasi()
+
+# ret <- runParamEst()
+# 
+# ret
+```

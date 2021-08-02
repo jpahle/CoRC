@@ -1,0 +1,143 @@
+---
+title: "3D cloud"
+output:
+  html_document:
+    df_print: paged
+---
+
+An attempt to create a nice density visualization from a 3 species.
+
+```{r setup}
+library(tidyverse)
+library(CoRC)
+library(parallel)
+library(plotly)
+
+mapInParallel <- function(data, fun, ..., .prep = {}, .export = character()) {
+  cl <- makeCluster(detectCores())
+  clusterExport(cl = cl, varlist = .export)
+  clusterCall(cl = cl, fun = eval, .prep, env = .GlobalEnv)
+  ret <- clusterApplyLB(cl = cl, x = parallel:::splitList(data, length(data)), fun = lapply, as_mapper(fun), ...)
+  stopCluster(cl)
+  flatten(ret)
+}
+```
+
+```{r}
+loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000329")
+setTC(method = "directMethod")
+```
+
+```{r}
+tc_init <- runTC(duration = 11, method = "deterministic", update_model = TRUE)
+autoplot(tc_init)
+```
+
+```{r}
+tc_full_p <- runTC(duration = 12.8, intervals = 50, method = "deterministic")
+autoplot(tc_full_p)
+tc_full_p$result
+```
+
+create starting conditions
+
+```{r}
+sim_data <-
+  tc_full_p$result %>%
+  select(-Time) %>%
+  transpose() %>%
+  map(as_vector, .type = numeric(1)) %>%
+  map(enframe, name = "key", value = "initial_concentration")
+
+sim_data[[1]]
+```
+
+```{r, eval=FALSE}
+model_string <- saveModelToString()
+
+sim_results <- mapInParallel(
+  .export = "model_string",
+  .prep = quote({
+    library(CoRC)
+    loadModelFromString(model_string)
+  }),
+  sim_data,
+  ~ {
+    setSpecies(data = .x)
+    runTC(300, dt = 1/200)
+  }
+)
+
+saveRDS(sim_results, "point_cloud_sims.rds")
+```
+
+voxelize
+
+```{r, eval=FALSE}
+sim_results <- readRDS("point_cloud_sims.rds")
+
+sims_bound <-
+  sim_results %>%
+  map("result") %>%
+  bind_rows() %>%
+  select(-Time) %>%
+  set_tidy_names(TRUE)
+
+col_names <- names(sims_bound)
+
+voxel_data <-
+  VoxR::vox(
+    data =
+      sims_bound %>%
+      set_names(c("x", "y", "z")),
+    res = 0.25
+  ) %>%
+  as_tibble() %>%
+  set_names(c(col_names, "nbpts"))
+
+saveRDS(voxel_data, "voxel_data.rds")
+```
+
+plot
+
+```{r}
+voxel_data <- readRDS("voxel_data.rds")
+
+ranks <- 10
+
+voxel_data <-
+  voxel_data %>%
+  mutate(rank = ntile(nbpts, ranks))
+
+plot <-
+  plot_ly(
+    type = "scatter3d",
+    mode = "markers",
+    marker = list(
+      size = 2
+    ),
+    showlegend = FALSE,
+    hoverinfo = "skip"
+  ) %>%
+  layout(
+    hovermode = FALSE
+  )
+
+for (i in seq_len(ranks)) {
+  plot <-
+    plot %>%
+    add_markers(
+      data =
+        voxel_data %>%
+        filter(rank == i),
+      color = I("black"),
+      x = ~ G.alpha,
+      y = ~ activePLC,
+      z = ~ Calcium,
+      opacity = 0.3 / ranks * i
+    )
+}
+
+plot
+```
+

@@ -1,0 +1,396 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Develop the sigma point method.
+
+```{r setup}
+library(assertthat)
+library(tidyverse)
+library(CoRC)
+```
+
+Settings
+
+```{r}
+alpha <- 0.5
+beta <- 2
+kappa <- 3
+measurement_error <- 0.1
+```
+
+
+Generate a fully fitted model
+
+```{r, eval=FALSE}
+loadSBML("http://www.ebi.ac.uk/biomodels-main/download?mid=BIOMD0000000010")
+
+# read experimental data
+data_experimental <-
+  read_tsv("../vignettes/data/MAPKdata.txt") %>%
+  rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
+  set_tidy_names(TRUE)
+
+# define the experiments for COPASI
+fit_experiments <- defineExperiments(
+  data = data_experimental,
+  type = c("time", "dependent", "dependent"),
+  mapping = c(NA, "{[Mos-P]}", "{[Erk2-P]}"),
+  weight_method = "mean_square"
+)
+
+# define the parameters for COPASI
+fit_parameters <-
+  map(
+    parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
+    ~ {
+      val <- getParameters(.x)$value
+      defineParameterEstimationParameter(parameter(.x, "Value"), start_value = val, lower_bound = val * 0.1, upper_bound = val * 1.9)
+    }
+  )
+
+result <-
+  runParameterEstimation(
+    parameters = fit_parameters,
+    experiments = fit_experiments,
+    method = "LevenbergMarquardt",
+    update_model = TRUE
+  )
+
+clearExperiments()
+clearParameterEstimationParameters()
+saveModel("sigpoint.cps", overwrite = TRUE)
+unloadModel()
+```
+
+load the model
+
+```{r}
+loadModel("sigpoint.cps")
+```
+
+generate experiment
+
+```{r}
+# read experimental data
+data_experimental <-
+  read_tsv("../vignettes/data/MAPKdata.txt") %>%
+  rename(Time = time, "Mos-P" = "MAPKKK-P", "Erk2-P" = "MAPK-P") %>%
+  set_tidy_names(TRUE)
+
+# define the experiments for COPASI
+fit_experiments <- defineExperiments(
+  data = data_experimental,
+  type = c("time", "dependent", "dependent"),
+  mapping = c(NA, "{[Mos-P]}", "{[Erk2-P]}"),
+  weight_method = "mean_square"
+)
+```
+
+add parameters to fit
+
+```{r}
+# define the parameters for COPASI
+walk(
+  parameter_strict(regex(c("V1$", "V2$", "V5$", "V6$", "V9$", "V10$"))),
+  ~ {
+    val <- getParameters(.x)$value
+    addParameterEstimationParameter(parameter(.x, "Value"), start_value = val, lower_bound = val * 0.1, upper_bound = val * 1.9)
+  }
+)
+```
+
+experimental data perturbation functions
+calc_cov_hoops: as in condor_copasi
+calc_cov_from_error: calc cov matrix form absolute error
+calc_cov_from_data: take list of exp and calc means and cov matrix from data
+
+```{r}
+calc_cov_hoops <- function(datapoint_count, lambdterm, measurement_error) {
+  # Noise added to the data will be assumed to normally distributed within the measurement error with 95% confidence.
+  generate_noise_factor <- function() {
+    # noise_factor <- Inf
+    # Ensures that the generated data is not negative
+    # while (noise_factor > 1)
+      # noise_factor <- lambdterm * abs(rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error)
+      (rnorm(1L, mean = 0, sd = 1/1.96) * measurement_error) ^ 2
+    
+    # noise_factor
+  }
+  
+  noise_matrix <-
+    matrix(
+      replicate(
+        datapoint_count ^ 2,
+        generate_noise_factor()
+      ),
+      nrow = datapoint_count
+    )
+}
+
+calc_cov_from_error <- function(col_count, row_count, measurement_error) {
+  assert_that(is.numeric(measurement_error))
+  
+  datapoint_count <- col_count * row_count
+  dim(measurement_error) <- NULL
+  
+  assert_that(
+    is.scalar(measurement_error) ||
+    length(measurement_error) == datapoint_count ||
+    length(measurement_error) == col_count
+  )
+  
+  if (is.scalar(measurement_error))
+    measurement_error <- rep(measurement_error, datapoint_count)
+  else if (length(measurement_error) == col_count)
+    measurement_error <- rep(measurement_error, each = row_count)
+    
+  diag(measurement_error)
+}
+
+calc_cov_from_data <- function(x_dep_split) {
+  x_dep_matrix <-
+    x_dep_split %>%
+    map(flatten_dbl) %>%
+    flatten_dbl() %>%
+    matrix(ncol = length(x_dep_split)) %>%
+    t()
+  
+  mean_vector <- apply(x_dep_matrix, 2L, mean)
+  cov_matrix <- cov(x_dep_matrix)
+  
+  list(
+    mean = mean_vector,
+    cov = cov_matrix
+  )
+}
+
+perturb_data <- function(x, alpha, beta, kappa, measurement_error) {
+  experiment_type <- attr(x, "experiment_type")
+  experiments <- attr(x, "experiments")
+  types <- attr(x, "types")
+  assert_that(experiment_type == "timeCourse")
+  dep_cols <- which(types == "dependent")
+  time_col <- which(types == "time")
+    
+  x_dep <-
+    x %>%
+    select(dep_cols)
+  
+  dep_cols_count <- length(dep_cols)
+  
+  if (nrow(experiments) > 1L) {
+    x_dep_split <-
+      experiments %>%
+      pmap(function(first_row, last_row, ...) x_dep[first_row:last_row,])
+    
+    result <- calc_cov_from_data(x_dep_split)
+    data_mean <- result$mean
+    data_cov <- result$cov
+  } else {
+    data_mean <- flatten_dbl(x_dep)
+    data_cov <- calc_cov_from_error(dep_cols_count, nrow(x_dep), measurement_error)
+  }
+  
+  datapoint_count <- length(data_mean)
+  
+  lambd <- alpha ^ 2 * (datapoint_count + kappa) - datapoint_count
+  lambdterm <- sqrt(datapoint_count + lambd)
+  
+  data_cov_sqrt <- sqrt(abs(data_cov))
+  
+  assay_count <- datapoint_count * 2L + 1L
+  
+  # every datapoint gets a vector of all sigma values (length = datapoint_count)
+  sigma_point_delta <-
+    rbind(
+      t(rep(0, datapoint_count)),
+      lambdterm * data_cov_sqrt,
+      -lambdterm * data_cov_sqrt
+    )
+  
+  sigma_points <- sweep(sigma_point_delta, 2, data_mean, "+")
+  
+  # dep_data <-
+  #   dep_data %>%
+  #   mutate(value = imap(value, ~ c(
+  #     .x,
+  #     .x * (1 + noise_matrix[, .y]),
+  #     .x * (1 - noise_matrix[, .y])
+  #   )))
+  
+  # replicate the original data frame and replace the
+  # dependent data with new dependent data from sigma points
+  exp_list <-
+    seq_len(assay_count) %>%
+    map(~ {
+      new_dep_data <-
+        sigma_points[.x, ] %>%
+        matrix(ncol = dep_cols)
+      
+      replace(x = x, list = dep_cols, new_dep_data)
+    })
+}
+```
+
+take experiments and perturbate
+
+```{r}
+exp_list <- perturb_data(fit_experiments, alpha, beta, kappa, measurement_error)
+```
+
+run base experiment and update model
+
+```{r}
+result1 <- runParameterEstimation(
+  experiments = exp_list[[1]],
+  method = "LevenbergMarquardt",
+  update_model = TRUE
+)
+```
+
+create cluster
+
+```{r}
+model_string <- saveModelToString()
+library(parallel)
+cl <- makeCluster(detectCores())
+clusterExport(cl = cl, "model_string")
+clusterEvalQ(cl = cl, {
+  library(CoRC)
+  loadModelFromString(model_string)
+  setParameterEstimationSettings(update_model = FALSE, method = "LevenbergMarquardt")
+})
+
+mapInParallel <- function(data, fun, ...) {
+  ret <- clusterApplyLB(cl = cl, x = parallel:::splitList(data, length(data)), fun = lapply, as_mapper(fun), ...)
+  flatten(ret)
+}
+```
+
+run parallel fits
+
+```{r}
+results <-
+  exp_list %>%
+  head(-1) %>%
+  mapInParallel(
+    ~ runParameterEstimation(experiments = .x)
+  )
+
+results <- c(list(result1), results)
+```
+
+```{r}
+obj_vals <- map_dbl(results, pluck, "main", "objective_value")
+param_vals <-
+  results %>%
+  map(~ .x$parameters %>% select(parameter, value) %>% spread(parameter, value)) %>%
+  bind_rows()
+param_vals_matrix <- as.matrix(param_vals)
+```
+
+```{r}
+datapoint_count <- (length(obj_vals) - 1L) / 2
+lambd <- alpha ^ 2 * (datapoint_count + kappa) - datapoint_count
+lambdterm <- sqrt(datapoint_count + lambd)
+
+# 0th mean weight in (30)
+m_weight_0 = lambd / (datapoint_count + lambd)
+# 0th covariance weight in (31)
+c_weight_0 = lambd / (datapoint_count + lambd) + 1L - (alpha ^ 2) + beta
+# ith weight in (32)
+i_weight = 1 / (2 * (datapoint_count + lambd))
+
+m_weight_vec <- c(m_weight_0, rep(i_weight, datapoint_count * 2))
+c_weight_vec <- c(c_weight_0, rep(i_weight, datapoint_count * 2))
+
+# term (28)
+param_vals_means <- colSums(param_vals_matrix * m_weight_vec)
+
+# rowwise subtraction of vector
+# subterm of (29)
+param_vals_matrix_sub_means <- t(t(param_vals_matrix) - param_vals_means)
+
+# term (29)
+# can't figure out how to do mathematically
+# so go back to data frame and do it procedurally
+# by iterating through rows
+param_vals_cov_matrix <-
+  param_vals_matrix_sub_means %>%
+  as_tibble() %>%
+  add_column(weight = c_weight_vec) %>%
+  pmap(function(weight, ...) {
+    row <- as_vector(list(...), numeric(1))
+    weight * row %*% t(row)
+  }) %>%
+  reduce(.Primitive("+"))
+# test cov.wt function
+
+rownames(param_vals_cov_matrix) <- colnames(param_vals_cov_matrix)
+```
+
+assemble results
+
+```{r}
+retVal <- list(
+  fit_task_results = results,
+  means = param_vals_means,
+  cov_matrix = param_vals_cov_matrix
+)
+
+str(retVal, max.level = 2)
+```
+
+Test how I have to use cov matrix for this method
+
+```{r}
+# we use weighted rows
+vals <- 20
+obs <- 100
+
+# generate random matrix
+retVal$
+
+# special case where sum of weights != 1
+# not sure if that can happen for SP method
+row_weights <- rep(1/obs + 0.1, obs)
+
+# simple r ways for straight forward covariance calc
+means <- apply(data, 2L, mean)
+# means <- colSums(data) / nrow(data)
+
+# simple r cov matrix
+cov_matrix <- crossprod(data_sub_means) * (1 / (obs - 1))
+cov_matrix <- cov(data)
+
+# for our case we need weighted one
+# we have our row_weights predefined
+# center is also precalculated
+cov_matrix_r_wt <- cov.wt(data, wt = row_weights, center = means_r, method = "ML")$cov
+
+# how does this compare to the equations in the paper?
+# data_sub_means <- t(t(data) - means)
+data_sub_means <- sweep(data, 2, means)
+
+# to get same behavior as cov.wt, we have to normalize the weights
+row_weights_normalized <- row_weights / sum(row_weights)
+
+# calc as per math formula in the paper
+cov_matrix_manual <-
+  data_sub_means %>%
+  as_tibble %>%
+  add_column(weight = row_weights_normalized) %>%
+  pmap(function(weight, ...) {
+    browser()
+    row <- as_vector(list(...), numeric(1))
+    
+    weight * row %*% t(row)
+    weight * tcrossprod(row)
+  }) %>%
+  reduce(.Primitive("+"))
+
+cov_matrix_r_wt[1,]
+cov_matrix
+```
