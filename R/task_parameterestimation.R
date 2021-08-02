@@ -109,10 +109,11 @@ runParameterEstimation <- function(randomize_start_values = NULL, create_paramet
       clearExperiments()
       
       # delete all experiment files
-      # pe_assemble_experiments makes sure the are all tempfiles
+      # pe_assemble_experiments makes sure they are all tempfiles
       try(
         experiment_list %>%
           map_chr(attr_getter("filename")) %>%
+          keep(file.exists) %>%
           file.remove(),
         silent = TRUE
       )
@@ -353,7 +354,7 @@ format.copasi_exp <- function (x, ...) {
     format(attr(x, "types")) %>% paste0(names(.), ": ", .),
     "# Mappings:",
     format(attr(x, "mappings")) %>% paste0(names(.), ": ", .),
-    "# Mappings:",
+    "# Weights:",
     format(attr(x, "weights")) %>% paste0(names(.), ": ", .),
     "# Weight Method:",
     format(attr(x, "weight_method")),
@@ -452,7 +453,7 @@ copasi_exp <- function(experiment_type = c("time_course", "steady_state"), data 
   if (is.null(filename))
     # if no filename given, just use random one.
     filename <- stringr::str_sub(tempfile("CoRC_exp_", ""), 2L)
-  if (!has_extension(filename, ".txt"))
+  if (!has_extension(filename, "txt"))
     filename <- paste0(filename, ".txt")
   
   new_copasi_exp(
@@ -529,10 +530,10 @@ addExperiments <- function(..., model = getCurrentModel()) {
   c_datamodel <- assert_datamodel(model)
   
   # flatten all args into a single list
-  # this list can be used to check if the user gave only corc_opt_parm
+  # this list can be used to check if the user gave only copasi_exp
   arglist_compact <- rlang::squash(unname(list(...)))
   
-  # if not all are corc_opt_parm, try handing the args to define... so we get corc_opt_parm
+  # if not all are copasi_exp, try handing the args to define... so we get copasi_exp
   if (!every(arglist_compact, is.copasi_exp))
     arglist_compact <- list(defineExperiments(...))
   
@@ -665,7 +666,7 @@ pe_assemble_parameters <- function(parameters, c_problem) {
   
   assert_that(
     c_problem$getOptItemSize() == 0L,
-    msg = "This function can not set parameters if there are already parameters set in COPASI. Consider using `clearExperiments()`."
+    msg = "This function can not set parameters if there are already parameters set in COPASI. Consider using `ParameterEstimationParameters()`."
   )
   
   walk(parameters, validate_corc_opt_parm)

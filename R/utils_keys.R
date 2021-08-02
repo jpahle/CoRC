@@ -59,16 +59,21 @@ xn_to_object <- function(xn, c_datamodel, accepted_types = NULL) {
     return()
   
   if (stringr::str_detect(xn, "^<CN=.*>$"))
-    return(cn_to_object(stringr::str_sub(xn, 2L, -2L), c_datamodel, accepted_types))
+    return(cn_to_object(stringr::str_sub(xn, 2L, -2L), c_datamodel, accepted_types = accepted_types))
   
-  # All references should be wrapped either <CN> or {DN} 
+  # Presumably, all references are wrapped in either <CN> (handled before) or {DN} 
   assert_that(
     stringr::str_detect(xn, "^\\{.*\\}$"),
     msg = paste0("`", xn, "` could not be interpreted as value reference.")
   )
   
-  xn <- unescape_ref(xn)
-  c_obj <- dn_to_object(xn, c_datamodel, accepted_types = accepted_types)
+  dn <- unescape_ref(xn)
+  c_obj <- dn_to_object(dn, c_datamodel, accepted_types = accepted_types)
+  
+  assert_that(
+    !is.null(c_obj),
+    msg = paste0("`", dn, "` in value reference `", xn, "` could not be  be resolved.")
+  )
   
   # if dn_to_object doesn't return a reference I think its always
   # supposed to be the ValueReference
