@@ -16,5 +16,5 @@ LineEndingConversion: Posix
 
 BuildType: Package
 PackageUseDevtools: Yes
-PackageInstallArgs: --no-multiarch --with-keep.source --configure-vars="COPASI_LIB_PATH='$PWD/CoRC/libs/COPASI.so'"
+PackageInstallArgs: --no-multiarch --with-keep.source --install-tests
 PackageRoxygenize: rd,collate,namespace

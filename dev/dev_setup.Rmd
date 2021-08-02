@@ -42,6 +42,9 @@ devtools::build()
 ```{r, include=FALSE}
 devtools::install()
 ```
+```{r, include=FALSE}
+install.packages(".", repos = NULL, type = "source", INSTALL_opts = "--no-multiarch --with-keep.source --install-tests")
+```
 
 # Load the Package
 

@@ -223,6 +223,10 @@ source("../dev/update-swig-in-package.R", local = new.env(), chdir = TRUE)
 Sys.setenv(COPASI_LIB_PATH = normalizePath(file.path("..", "libs", .Platform$r_arch, paste0("COPASI", .Platform$dynlib.ext))))
 devtools::install("..")
 ```
+```{r, eval=FALSE}
+Sys.setenv(COPASI_LIB_PATH = normalizePath(file.path("..", "libs", .Platform$r_arch, paste0("COPASI", .Platform$dynlib.ext))))
+install.packages("..", repos = NULL, type = "source", INSTALL_opts = "--no-multiarch --with-keep.source --install-tests")
+```
 
 # Getting the current hash for the binary (update it in CoRC.R)
 
