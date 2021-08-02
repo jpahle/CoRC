@@ -10,6 +10,16 @@ reset_copasi <- function() {
   if (exists("unloadAllModels")) unloadAllModels()
   if (exists("clearCustomKineticFunctions")) clearCustomKineticFunctions()
   
+  # It seems that sometimes CoRC is randomly loaded already (knitr?).
+  # If so, load_all will fail due to a locked import environment
+  # If import env is locked, unload CoRC
+  if (isNamespaceLoaded("CoRC")) {
+      import_env <- parent.env(getNamespace("CoRC"))
+      stopifnot(environmentName(import_env) == "imports:CoRC")
+      if (environmentIsLocked(import_env))
+        unloadNamespace("CoRC")
+  }
+  
   pkgload::load_all(reset = FALSE)
   
   examples <- loadExamples()
@@ -24,6 +34,10 @@ reset_copasi <- function() {
 ls_corc <- function(pattern) {ls(pattern = pattern, name = "package:CoRC", all.names = TRUE)}
 
 # inspect swig functions and objects
+# e.g.
+# c_datamodel <- CRootContainer_addDatamodel()
+# c_datamodel %>% inspect()
+# c_datamodel$addModel %>% inspect()
 inspect <- function(object) {
   if (is.function(object)) {
     funtext <- object %>% environment() %>% .$f %>% format()
