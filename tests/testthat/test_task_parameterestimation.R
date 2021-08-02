@@ -89,20 +89,33 @@ test_that("ParameterEstimation Experimental Data", {
       f = 2
     )
   )
-    
+  
+  exp_path <- tempfile(fileext = ".txt")
   exp <- defineExperiments(
     experiment_type = "time_course",
     data = ts,
     types = c("time", "dependent", "dependent", "dependent", "ignore", "ignore", "independent"),
-    mappings = c(NA, "{[A]}", "{[B]}", compartment_strict("compartment", reference = "Volume"), NA, NA, compartment_strict("compartment", reference = "InitialVolume"))
+    mappings = c(NA, "{[A]}", "{[B]}", compartment_strict("compartment", reference = "Volume"), NA, NA, compartment_strict("compartment", reference = "InitialVolume")),
+    filename = exp_path
   )
   
   clearExperiments()
-  PE <- runParameterEstimation(experiments = exp)
+  addExperiments(exp)
+  
+  # read in the data to confirm that NaN didnt fall back to NA
+  ts_merged <- vctrs::vec_rbind(!!!ts)
+  ts_readin <- tibble::as_tibble(utils::read.table(exp_path, header = TRUE, sep = "\t", colClasses = purrr::map_chr(ts_merged, typeof)))
+  
+  expect_identical(ts_merged, ts_readin)
+  
+  PE <- runParameterEstimation()
   
   expect_equal(nrow(PE$parameters), 3L)
   expect_equal(nrow(PE$experiments), 2L)
   expect_equal(nrow(PE$fitted_values), 3L)
+  
+  clearExperiments()
+  file.remove(exp_path)
 })
 
 test_that("setOptimizationSettings() method", {

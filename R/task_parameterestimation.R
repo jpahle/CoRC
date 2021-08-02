@@ -558,7 +558,14 @@ addExperiments <- function(..., model = getCurrentModel()) {
       msg = paste0('Experiment file "', filename, '" already exists.')
     )
     assert_that(file.create(filename))
-    readr::write_tsv(args, filename, na = "NA")
+    
+    # for write out, we need to convert numeric to character, to conserve NaN
+    args_out <- args
+    for (i in seq_len(length(args_out)))
+      if (is.numeric(args_out[[i]]))
+        args_out[[i]] <- as.character(args_out[[i]])
+    
+    readr::write_tsv(args_out, filename, na = "NA")
     
     # make sure the file gets deleted on error
     tryCatch({

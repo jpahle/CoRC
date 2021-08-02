@@ -1,4 +1,4 @@
-# CoRC 0.10.0.9003
+# CoRC 0.10.0.9004
 
 * Rebased on COPASI release 4.34 sources.
 
@@ -8,6 +8,11 @@
   Such an event can be created like so:
   
   `newEvent(name = "abort", trigger_expression = "{Prey.ParticleNumber} > 1e5", assignment_target = "Time", assignment_expression = 1e9)`.
+  
+* Fixed a regression where `NaN` in experimental data was lost and converted to `NA`.
+
+  It is now correctly exported to the '.txt' experimental data.
+  This matters because COPASI handles `NaN` differently than `NA`.
 
 * Minor fixes and code cleanups.
 
