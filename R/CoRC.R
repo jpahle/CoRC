@@ -32,12 +32,12 @@ utils::globalVariables(c("."))
 # Output flag for tasks
 OUTPUTFLAG <- 119L
 
-COPASI_BIN_VERSION <- 21L
+COPASI_BIN_VERSION <- 22L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    darwin  = "b0f4043302bd59b65d21e94505e1b61e907457af318cb45896a40a4cfbb04e38",
-    linux   = "4c385b21276ee2e1184ba16bac8e8e613a3839b86bb1897f3a030e6e2be8383c",
-    windows = "f173b2e0567c31d9f0830e171af88843a568617ced0c770d7c993619fd80a119"
+    darwin  = "e1200b125d69ae85f80d1040809e487039a8cd23e34bd3cf9fe91926771d85dd",
+    linux   = "c4bbc9db165405e1aa4736a659ea97fe355c244e611df3846b13757efb402e35",
+    windows = "3366a4aee2037412fda3769636ca7d1d3897b95ec382617f90f45f2faa24cc97"
   )
 )
 

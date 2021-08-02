@@ -2,6 +2,8 @@
 set -e
 set -x
 
+CMAKE=${CMAKE:=cmake}
+
 : ===== Copying CopasiVersion.h
 cp CopasiVersion.h COPASI/copasi/
 
@@ -10,7 +12,7 @@ cd corc_darwin_x64/
 : ===== Deleting copasi_wrapper.cpp and COPASI.R
 rm -f copasi/bindings/R/copasi_wrapper.cpp copasi/bindings/R/COPASI.R
 : ===== Running CMake
-cmake \
+${CMAKE} \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_GUI=OFF \
 	-DBUILD_SE=OFF \

@@ -29,7 +29,7 @@ CoRC features:
 -   Handling of multiple models at once.
 -   Parallelization on multi-core machines or computing clusters.
 
-It is currently based on COPASI version 4.30 Build (240) and aims to
+It is currently based on COPASI version 4.34 Build (251) and aims to
 closely follow COPASI releases in the future.
 
 CoRC comes with the Artistic License 2.0. By using CoRC you agree to
@@ -62,7 +62,7 @@ loadExamples(1)
 #> Number of reactions: 4
 
 runTimeCourse()$result
-#> # A tibble: 201 x 3
+#> # A tibble: 201 × 3
 #>     Time     X     Y
 #>    <dbl> <dbl> <dbl>
 #>  1   0   3     3    

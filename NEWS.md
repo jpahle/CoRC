@@ -1,4 +1,6 @@
-# CoRC 0.10.0.9002
+# CoRC 0.10.0.9003
+
+* Rebased on COPASI release 4.34 sources.
 
 * Enabled setting event `assignment_target` to model properties such as 'Time'.
 

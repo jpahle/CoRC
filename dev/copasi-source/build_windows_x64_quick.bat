@@ -5,7 +5,7 @@ for /f %%i in ('dir /b "%ProgramFiles%\R"') do set RVERSION=%%i
 echo "===== R at %ProgramFiles%\R\%RVERSION%"
 
 echo "===== Copying CopasiVersion.h"
-copy /Y CopasiVersion.h COPASI\copasi\
+copy /Y CopasiVersion.h COPASI\copasi\CopasiVersion.h
 
 echo "===== Copying the current build"
 robocopy corc_windows_x64\ C:\corc_windows_x64\ /e /nfl /ndl
@@ -25,7 +25,7 @@ cmake ^
   -DBUILD_SE=OFF ^
   -DENABLE_JIT=OFF ^
   -DENABLE_R=ON ^
-  -DCOPASI_DEPENDENCY_DIR="C:/work/copasi-dependencies/bin/" ^
+  -DCOPASI_DEPENDENCY_DIR="C:/work/copasi-dependencies/bin_windows_x64/" ^
   -DSWIG_EXECUTABLE="C:/swigwin/swig.exe" ^
   -DR_INCLUDE_DIRS="%ProgramFiles%/R/%RVERSION%/include/" ^
   -DR_INTERPRETER="%ProgramFiles%/R/%RVERSION%/bin/R.exe" ^

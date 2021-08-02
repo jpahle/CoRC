@@ -184,7 +184,13 @@ get_expr_init_val <- function(x, c_datamodel) {
   # CExpressions get destructed on model unloading and
   # are therefore unsafe to keep around until next gc
   c_expression <- avert_gc(CExpression("CoRC_value_expr", c_datamodel))
+  
   grab_msg(c_expression$setInfix(x))
+  # TODO remove this assertion with next copasi version (> 4.34)
+  assert_that(
+    grab_msg(c_expression$compile()$isSuccess()),
+    msg = "Failed to compile expression."
+  )
   
   c_init_expression <- grab_msg(CExpression_createInitialExpression(c_expression, c_datamodel))
   delete(c_expression)
