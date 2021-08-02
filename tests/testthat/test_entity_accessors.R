@@ -307,6 +307,13 @@ test_that("setEvents()", {
   setEvents(regex("Ca$"), trigger_expression = "2.2 < 0")
   expect_identical(getEvents("Ca")$trigger_expression, "2.2 < 0")
   
+  setEvents("Ca1", assignment_target = list("Time"), assignment_expression = list("1.1"))
+  # TODO: this is some Copasi weirdness. Time display name doesnt really exist so some pointless Model name is given.
+  # expect_identical(getEvents("Ca")$assignment_target, list("Time"))
+  expect_identical(getEvents("Ca1")$assignment_expression, list("1.1"))
+  # Reset this due to the Time Bug, which would mess up later tests
+  setEvents("Ca1", assignment_target = list("Ca{}"), assignment_expression = list("1"))
+  
   setEvents("Ca", delay = "assignment", delay_expression = "1.1")
   expect_identical(getEvents("Ca")$delay_expression, "1.1")
   expect_identical(getEvents("Ca")$delayed, "assignment")

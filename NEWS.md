@@ -1,4 +1,11 @@
-# CoRC 0.10.0.9001
+# CoRC 0.10.0.9002
+
+* Enabled setting event `assignment_target` to model properties such as 'Time'.
+
+  This can be useful e.g. for stopping timecourses after an event, like the runaway accumulation of a model species, which could trigger an error for stochastic simulation due to 'Internal step limit exceeded'.
+  Such an event can be created like so:
+  
+  `newEvent(name = "abort", trigger_expression = "{Prey.ParticleNumber} > 1e5", assignment_target = "Time", assignment_expression = 1e9)`.
 
 * Minor fixes and code cleanups.
 

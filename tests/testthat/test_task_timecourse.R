@@ -70,5 +70,23 @@ test_that("autoplot.copasi_ts()", {
   expect_error(autoplot.copasi_ts(TC, "failure"))
 })
 
+test_that("runaway stochastic timecourse abort", {
+  newModel()
+  
+  comp <- newCompartment("A")
+  newSpecies("A", compartment = "A", initial_number = 1)
+  newReaction("A -> 2 A", mappings = list(k1 = 1))
+  
+  setTimeCourseSettings(duration = 30, dt = 1, method = list(method = "directMethod", max_internal_steps = 1e5))
+  
+  expect_warning(expect_error(runTimeCourse()), regexp = "Internal step limit exceeded\\.")
+  
+  abort_time <- 1e9
+  newEvent("abort", trigger_expression = "{A.ParticleNumber} > 2000", assignment_target = "Time", assignment_expression = abort_time)
+  tc <- runTimeCourse()
+  
+  expect_identical(tail(tc$result_number$Time, n = 1), abort_time)
+})
+
 unloadAllModels()
 clearCustomKineticFunctions()
