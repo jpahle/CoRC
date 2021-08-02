@@ -4,6 +4,9 @@ set -x
 
 LINUX_TAG=${LINUX_TAG:=default_linux_x64}
 CMAKE=${CMAKE:=cmake}
+R_INCLUDE_DIRS=${R_INCLUDE_DIRS:=/usr/lib64/R/include/}
+R_LIB=${R_LIB:=/usr/lib64/R/lib/libR.so}
+R_INTERPRETER=${R_INTERPRETER:=/usr/bin/R}
 
 : ===== Copying CopasiVersion.h
 cp CopasiVersion.h COPASI/copasi/
@@ -23,9 +26,9 @@ ${CMAKE} \
 	-DENABLE_R=ON \
 	-DR_USE_DYNAMIC_LOOKUP=ON \
 	-DCOPASI_DEPENDENCY_DIR=../copasi-dependencies/bin_${LINUX_TAG}/ \
-	-DR_INCLUDE_DIRS=/usr/lib64/R/include/ \
-	-DR_LIB=/usr/lib64/R/lib/libR.so \
-	-DR_INTERPRETER=/usr/bin/R \
+	-DR_INCLUDE_DIRS=$R_INCLUDE_DIRS \
+	-DR_LIB=$R_LIB \
+	-DR_INTERPRETER=$R_INTERPRETER \
 	../COPASI/
 : ===== Running Make
 make -j$(nproc) binding_r_lib

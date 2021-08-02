@@ -29,11 +29,11 @@ ENV UNSTABLE_RSCRIPT=true
 WORKDIR /work
 
 FROM centos:8 AS r_centos_8
-RUN yum install -y epel-release yum-utils \
-	&& yum clean all \
-	&& yum config-manager --set-enabled PowerTools \
-	&& yum install -y R-core-devel \
-	&& yum clean all
+RUN dnf -y update \
+	&& dnf install -y dnf-plugins-core epel-release \
+	&& dnf config-manager --set-enabled powertools \
+	&& dnf install -y R-core-devel \
+	&& dnf clean all
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
 ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs', 'purrr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
@@ -54,6 +54,17 @@ FROM centos:6 AS r_centos_6
 RUN yum install -y epel-release \
 	&& yum install -y R-core-devel \
 	&& yum clean all
+# prevent errors when package docs are installed
+RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
+ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs', 'purrr', 'stringr', 'readr', 'isnullptr'));"
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+WORKDIR /work
+
+FROM fedora:34 AS r_fedora_34
+RUN dnf -y update \
+	&& dnf install -y R-core-devel \
+	&& dnf clean all
 # prevent errors when package docs are installed
 RUN Rscript -e 'x <- file.path(R.home("doc"), "html"); if (!file.exists(x)) {dir.create(x, recursive=TRUE); file.copy(system.file("html/R.css", package="stats"), x)}'
 ENV R_OPTS "options(repos = c(CRAN = 'http://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
@@ -120,8 +131,24 @@ RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar
 RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 
+FROM rbuilder AS r_4_1
+RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz | tar -xz \
+	&& cd R-*/ \
+	&& ./configure \
+		--prefix=/opt/R/ \
+		--enable-R-shlib \
+		--without-recommended-packages --with-x=no --with-aqua=no \
+		--with-tcltk=no --with-ICU=no --disable-java --disable-openmp --disable-nls \
+		--disable-R-profiling --disable-BLAS-shlib --with-libpng=no --with-jpeglib=no --with-libtiff=no \
+	&& make \
+	&& make install \
+	&& cd ../ \
+	&& rm -r R-*/
+RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+
 FROM rbuilder AS r_4_0
-RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.0.0.tar.gz | tar -xz \
+RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.0.5.tar.gz | tar -xz \
 	&& cd R-*/ \
 	&& ./configure \
 		--prefix=/opt/R/ \

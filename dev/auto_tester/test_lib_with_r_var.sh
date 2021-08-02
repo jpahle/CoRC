@@ -12,9 +12,11 @@ R_VARIANTS=(
 	centos_8
 	centos_7
 	centos_6
+	fedora_34
 	fedora_32
 	fedora_30
 	latest
+	4_1
 	4_0
 	3_6
 	3_5
