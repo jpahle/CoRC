@@ -23,7 +23,7 @@ cmake ^
   -DWITH_STATIC_RUNTIME=ON ^
   -DBUILD_GUI=OFF ^
   -DBUILD_SE=OFF ^
-  -DENABLE_JIT=OFF ^
+  -DENABLE_JIT=ON ^
   -DENABLE_R=ON ^
   -DCOPASI_DEPENDENCY_DIR="C:/work/copasi-dependencies/bin_windows_x64/" ^
   -DSWIG_EXECUTABLE="C:/swigwin/swig.exe" ^

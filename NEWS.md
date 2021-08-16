@@ -1,6 +1,8 @@
-# CoRC 0.10.0.9004
+# CoRC 0.10.0.9005
 
 * Rebased on COPASI release 4.34 sources.
+
+* Enabled the COPASI just in time compilation that was added in version 4.30.
 
 * Enabled setting event `assignment_target` to model properties such as 'Time'.
 

@@ -86,6 +86,7 @@ pkg_env$cl_loaded_dms <- list()
     COPASI <<- library.dynam("COPASI", pkgname, libname)
     # clearing the deque hides the annoying message about COPASI home directory on linux
     CCopasiMessage_clearDeque()
+    CJitCompiler_SetJitBufferSize(1024 * 8 * 16)
   }
   
   # if loading COPASI fails, download and try again
