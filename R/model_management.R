@@ -2,7 +2,7 @@
 discard_unloaded_models <- function() {
   pkg_env$cl_loaded_dms <-
     pkg_env$cl_loaded_dms %>%
-    discard(map_lgl(., has_null_pointer))
+    discard(has_null_pointer)
 }
 
 #' Get the currently active model
