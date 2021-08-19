@@ -22,7 +22,6 @@ R_VARIANTS=(
 	3_5
 	3_4
 	3_3
-	3_2
 )
 
 # optionally rebuild all first

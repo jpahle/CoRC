@@ -228,19 +228,3 @@ RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 ENV UNSTABLE_RSCRIPT=true
 
-FROM rbuilder AS r_3_2
-RUN curl -L https://cran.r-project.org/src/base/R-3/R-3.2.5.tar.gz | tar -xz \
-	&& cd R-*/ \
-	&& ./configure \
-		--prefix=/opt/R/ \
-		--enable-R-shlib \
-		--without-recommended-packages --with-x=no --with-aqua=no \
-		--with-tcltk=no --with-ICU=no --disable-java --disable-openmp --disable-nls \
-		--disable-R-profiling --disable-BLAS-shlib --with-libpng=no --with-jpeglib=no --with-libtiff=no \
-	&& make \
-	&& make install \
-	&& cd ../ \
-	&& rm -r R-*/
-RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
-RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
-ENV UNSTABLE_RSCRIPT=true
