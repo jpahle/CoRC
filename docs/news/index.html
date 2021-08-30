@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -161,6 +161,24 @@
       <small>Source: <a href='https://github.com/jpahle/CoRC/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="corc-0110-2021-08-30" class="section level1">
+<h1 class="page-header" data-toc-text="0.11.0">
+<a href="#corc-0110-2021-08-30" class="anchor"></a>CoRC 0.11.0 (2021-08-30)</h1>
+<ul>
+<li><p>Rebased on COPASI release 4.34 sources.</p></li>
+<li><p>Enabled the COPASI just in time compilation that was added in version 4.30.</p></li>
+<li>
+<p>Enabled setting event <code>assignment_target</code> to model properties such as ‘Time’.</p>
+<p>This can be useful e.g. for stopping timecourses after an event, like the runaway accumulation of a model species, which could trigger an error for stochastic simulation due to ‘Internal step limit exceeded’. Such an event can be created like so:</p>
+<p><code><a href="../reference/newEvent.html">newEvent(name = "abort", trigger_expression = "{Prey.ParticleNumber} &gt; 1e5", assignment_target = "Time", assignment_expression = 1e9)</a></code>.</p>
+</li>
+<li>
+<p>Fixed a regression where <code>NaN</code> in experimental data was lost and converted to <code>NA</code>.</p>
+<p>It is now correctly exported to the ‘.txt’ experimental data. This matters because COPASI handles <code>NaN</code> differently than <code>NA</code>.</p>
+</li>
+<li><p>Minor fixes and code cleanups.</p></li>
+</ul>
+</div>
     <div id="corc-0100-2021-04-29" class="section level1">
 <h1 class="page-header" data-toc-text="0.10.0">
 <a href="#corc-0100-2021-04-29" class="anchor"></a>CoRC 0.10.0 (2021-04-29)</h1>

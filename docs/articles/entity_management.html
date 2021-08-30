@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="entity_management_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="entity_management_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model Entity Management</h1>
@@ -213,7 +213,7 @@
 <p>To help with this, functions implemented to get model values have similar functions that return references instead of values.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; tibble[,13] [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
+<span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
 <span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>
@@ -228,7 +228,7 @@
 <span class="co">#&gt;  $ initial_expression   : chr ""</span>
 <span class="co">#&gt;  $ expression           : chr ""</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; tibble[,13] [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
+<span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
 <span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
 <span class="co">#&gt;  $ name                 : chr "CheY"</span>
 <span class="co">#&gt;  $ compartment          : chr "compartment"</span>

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
 
       
 
-      </header><script src="model_building_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="model_building_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model Building</h1>
@@ -146,20 +146,20 @@
 <span class="co">#&gt; [1] "(a = b)"</span>
 
 <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 2 x 13</span>
-<span class="co">#&gt;   key         name  compartment type    unit  initial_concentrat… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;               &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartm… a     compartment reacti… mol/l                   1        6.02e23</span>
-<span class="co">#&gt; 2 b{compartm… b     compartment reacti… mol/l                   1        6.02e23</span>
+<span class="co">#&gt; # A tibble: 2 × 13</span>
+<span class="co">#&gt;   key            name  compartment type      unit  initial_concent… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartment} a     compartment reactions mol/l                1        6.02e23</span>
+<span class="co">#&gt; 2 b{compartment} b     compartment reactions mol/l                1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 6</span>
+<span class="co">#&gt; # A tibble: 1 × 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                               flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                 &lt;dbl&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversible Mich…     0           0</span>
 <span class="fu"><a href="../reference/getParameters.html">getParameters</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
+<span class="co">#&gt; # A tibble: 4 × 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
 <span class="co">#&gt; 1 (a = b).Kms Kms   a = b      0.1 &lt;NA&gt;   </span>
@@ -193,25 +193,25 @@
 <span class="co">#&gt; [1] "(a = b)"</span>
 
 <span class="fu"><a href="../reference/getGlobalQuantities.html">getGlobalQuantities</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 9</span>
+<span class="co">#&gt; # A tibble: 1 × 9</span>
 <span class="co">#&gt;   key    name  type  unit  initial_value value  rate initial_express… expression</span>
 <span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;     </span>
 <span class="co">#&gt; 1 Value… subs… fixed ""               10   NaN     0 ""               ""</span>
 <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 2 x 13</span>
-<span class="co">#&gt;   key         name  compartment type     unit  initial_concentra… initial_number</span>
-<span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 a{compartm… a     compartment assignm… mol/l                 10        6.02e24</span>
-<span class="co">#&gt; 2 b{compartm… b     compartment reactio… mol/l                  1        6.02e23</span>
+<span class="co">#&gt; # A tibble: 2 × 13</span>
+<span class="co">#&gt;   key            name  compartment type       unit  initial_concent… initial_number</span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 a{compartment} a     compartment assignment mol/l               10        6.02e24</span>
+<span class="co">#&gt; 2 b{compartment} b     compartment reactions  mol/l                1        6.02e23</span>
 <span class="co">#&gt; # … with 6 more variables: concentration &lt;dbl&gt;, number &lt;dbl&gt;, rate &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   number_rate &lt;dbl&gt;, initial_expression &lt;chr&gt;, expression &lt;chr&gt;</span>
 <span class="fu"><a href="../reference/getReactions.html">getReactions</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 6</span>
+<span class="co">#&gt; # A tibble: 1 × 6</span>
 <span class="co">#&gt;   key     name  reaction rate_law                               flux number_flux</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                                 &lt;dbl&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 (a = b) a = b a = b    FunctionDB.Functions[Reversible Mich…     0           0</span>
 <span class="fu"><a href="../reference/getParameters.html">getParameters</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
+<span class="co">#&gt; # A tibble: 4 × 5</span>
 <span class="co">#&gt;   key         name  reaction value mapping</span>
 <span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;  </span>
 <span class="co">#&gt; 1 (a = b).Kms Kms   a = b      0.1 &lt;NA&gt;   </span>
@@ -293,7 +293,7 @@
 <span class="co">#&gt; [1] "(a = b)"</span>
 
 <span class="fu"><a href="../reference/runTimeCourse.html">runTC</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">$</span><span class="va">result</span>
-<span class="co">#&gt; # A tibble: 101 x 3</span>
+<span class="co">#&gt; # A tibble: 101 × 3</span>
 <span class="co">#&gt;     Time     b     a</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt;  1     0  1       10</span>
@@ -316,7 +316,7 @@
 <span class="co">#&gt; [1] "Values[reaction rate]"</span>
 
 <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">$</span><span class="va">result</span>
-<span class="co">#&gt; # A tibble: 101 x 4</span>
+<span class="co">#&gt; # A tibble: 101 × 4</span>
 <span class="co">#&gt;     Time     b     a `Values[reaction rate]`</span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;                   &lt;dbl&gt;</span>
 <span class="co">#&gt;  1     0  1       10                  0.0811</span>
