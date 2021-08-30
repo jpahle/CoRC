@@ -6,7 +6,7 @@
 ^_pkgdown\.yml$
 ^pkgdown$
 ^vignettes/examples\.Rmd$
-^tests/other/bmdls.rds$
+^tests/other$
 # otherwise, libs folder gets included with source build
 # some development steps might run smoother if libs is just included (comment out line)
 # however, uncomment this for release
