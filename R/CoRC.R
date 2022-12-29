@@ -32,12 +32,12 @@ utils::globalVariables(c("."))
 # Output flag for tasks
 OUTPUTFLAG <- 119L
 
-COPASI_BIN_VERSION <- 22L
+COPASI_BIN_VERSION <- 23L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
     darwin  = "e1200b125d69ae85f80d1040809e487039a8cd23e34bd3cf9fe91926771d85dd",
     linux   = "c4bbc9db165405e1aa4736a659ea97fe355c244e611df3846b13757efb402e35",
-    windows = "3366a4aee2037412fda3769636ca7d1d3897b95ec382617f90f45f2faa24cc97"
+    windows = "33297d499c80d7f7f79c9090c51c058596f96a0195292668dd96e18f08c063f3"
   )
 )
 
@@ -88,7 +88,7 @@ pkg_env$cl_loaded_dms <- list()
     COPASI <<- library.dynam("COPASI", pkgname, libname)
     # clearing the deque hides the annoying message about COPASI home directory on linux
     CCopasiMessage_clearDeque()
-    CJitCompiler_SetJitBufferSize(1024 * 8 * 16)
+    CJitCompilerImplementation_SetJitBufferSize(1024 * 8 * 16)
   }
   
   # if loading COPASI fails, download and try again
