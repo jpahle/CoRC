@@ -1,6 +1,7 @@
-# CoRC 0.11.0.9001
+# CoRC 0.11.0.9002
 
 * Fixed errors due to breaking changes in package dependency 'stringr' version 1.5.0.
+* Minor changes to keep up with function deprecations in tidyverse packages.
 
 # CoRC 0.11.0 (2021-08-30)
 

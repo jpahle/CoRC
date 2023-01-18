@@ -95,7 +95,7 @@ autoplot.copasi_ts <- function(object, ..., use_concentrations = TRUE) {
   # reshape data frame for ggplot and define the plot
   tc %>%
     tidyr::pivot_longer(-1, names_to = "Entities", values_to = "Concentration") %>%
-    ggplot2::ggplot(ggplot2::aes_(x = as.name(names(tc)[1]), y = ~ Concentration, group = ~ Entities, color = ~ Entities)) +
+    ggplot2::ggplot(ggplot2::aes(x = !!names(tc)[1], y = Concentration, group = Entities, color = Entities)) +
     ggplot2::geom_line() +
     ggplot2::labs(
       x = x_label,

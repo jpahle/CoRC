@@ -149,11 +149,9 @@ loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filen
 setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
 
 # Cartesian product of the input values
-scan <- cross_df(
-  list(
-    cysteine = 0.3 * 10 ^ seq(0, 3, length.out = 6),
-    adomed = seq(0, 100, length.out = 51)
-  )
+scan <- expand_grid(
+  cysteine = 0.3 * 10 ^ seq(0, 3, length.out = 6),
+  adomed = seq(0, 100, length.out = 51)
 )
 
 print(scan, n = 6)

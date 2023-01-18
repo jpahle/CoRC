@@ -53,6 +53,9 @@ on_failure(noPureNA) <- function(call, env) {
   paste0(deparse(call$x), " contains ", n, " missing values")
 }
 
+# make empty list of same length as x
+list_along <- function(x) vector("list", length(x))
+
 # extended rlang::arg_match
 # works with arg being a character vector
 # allows for custom symbol name given in error by specifying 'name'
