@@ -57,7 +57,7 @@ species <- function(key = "", reference = NULL, model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -88,7 +88,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CMetab")
   else
     matches <- list_along(key)
@@ -100,7 +100,7 @@ species_obj <- function(key, c_datamodel, reference = NULL) {
     cl_metabs <- get_cdv(c_datamodel$getModel()$getMetabolites())
     keys_model <- get_key(cl_metabs, is_species = TRUE)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -163,7 +163,7 @@ quantity <- function(key = "", reference = NULL, model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -194,7 +194,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CModelValue")
   else
     matches <- list_along(key)
@@ -206,7 +206,7 @@ quantity_obj <- function(key, c_datamodel, reference = NULL) {
     cl_quants <- get_cdv(c_datamodel$getModel()$getModelValues())
     keys_model <- get_key(cl_quants)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -269,7 +269,7 @@ compartment <- function(key = "", reference = NULL, model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       cl_comps %>% map_swig_chr("getObjectDisplayName"),
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -300,7 +300,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CCompartment")
   else
     matches <- list_along(key)
@@ -312,7 +312,7 @@ compartment_obj <- function(key, c_datamodel, reference = NULL) {
     cl_comps <- get_cdv(c_datamodel$getModel()$getCompartments())
     keys_model <- get_key(cl_comps)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -375,7 +375,7 @@ reaction <- function(key = "", reference = NULL, model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -406,7 +406,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CReaction")
   else
     matches <- list_along(key)
@@ -418,7 +418,7 @@ reaction_obj <- function(key, c_datamodel, reference = NULL) {
     cl_reacts <- get_cdv(c_datamodel$getModel()$getReactions())
     keys_model <- get_key(cl_reacts)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -487,7 +487,7 @@ parameter <- function(key = "", reference = NULL, model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -518,7 +518,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CCopasiParameter")
   else
     matches <- list_along(key)
@@ -536,7 +536,7 @@ parameter_obj <- function(key, c_datamodel, reference = NULL) {
       flatten()
     keys_model <- get_key(cl_params)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -598,7 +598,7 @@ event <- function(key = "", model = getCurrentModel()) {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -622,7 +622,7 @@ event_obj <- function(key, c_datamodel) {
   )
   
   # If names are already DN to metabolites we accept them (disabled for regex)
-  if (!inherits(key, "regex"))
+  if (!has_engine(key))
     matches <- map(key, dn_to_object, c_datamodel, accepted_types = "_p_CEvent")
   else
     matches <- list_along(key)
@@ -634,7 +634,7 @@ event_obj <- function(key, c_datamodel) {
     cl_events <- get_cdv(c_datamodel$getModel()$getEvents())
     keys_model <- get_key(cl_events)
     # keys are needed as list, else attributes are lost on subsetting
-    key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+    key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
     
     # find full matches to ObjectDisplayName
     # str_replace as hack to find complete matches
@@ -693,7 +693,7 @@ kinfunction <- function(key = "") {
   } else {
     matches <- stringr::str_which(
       keys,
-      apply_eng(key)
+      apply_engine(key)
     )
   }
   
@@ -720,7 +720,7 @@ kinfunction_obj <- function(key) {
   cl_funs <- c_fun_db$loadedFunctions() %>% get_cdv()
   keys_model <- get_key(cl_funs)
   # keys are needed as list, else attributes are lost on subsetting
-  key_l <- seq_along(key) %>% map(subset_eng, x = apply_eng(key))
+  key_l <- seq_along(key) %>% map(subset_engine, x = apply_engine(key))
   
   # find full matches to ObjectDisplayName
   # str_replace as hack to find complete matches

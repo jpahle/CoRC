@@ -81,6 +81,8 @@ pkg_env$cl_loaded_dms <- list()
 .onLoad <- function(libname, pkgname) {
   backports::import(pkgname, c("anyNA", "dir.exists", "lengths"))
   backports::import(pkgname, "hasName", force = TRUE)
+  if (utils::packageVersion("stringr") < "1.5.0")
+    has_engine <<- function(x) inherits(x, c("fixed", "coll", "regex"))
   
   load <- function() {
     COPASI <<- library.dynam("COPASI", pkgname, libname)

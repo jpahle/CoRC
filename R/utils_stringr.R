@@ -20,17 +20,21 @@ stringr::coll
 #' @rdname regex
 stringr::regex
 
+# checks if a stringr engine is applied
+# this function depends on the version of the stringr package. If an old version is detected, this is overwritten in .onLoad
+has_engine <- function(x) inherits(x, c("stringr_fixed", "stringr_coll", "stringr_regex"))
+
 # apply an engine for a character vector
 # do nothing if engine is already applied
-apply_eng <- function(x, engine = coll) {
-  if (!inherits(x, c("fixed", "coll", "regex")))
+apply_engine <- function(x, engine = coll) {
+  if (!has_engine(x))
     x <- engine(x)
   x
 }
 
 # Subsetting vectors with engine attribute (x[1]) usually clears all attributes
 # This method prevents that
-subset_eng <- function(x, i) {
+subset_engine <- function(x, i) {
   attrs <- attributes(x)
   x <- x[i]
   attributes(x) <- attrs

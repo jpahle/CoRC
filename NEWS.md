@@ -1,3 +1,7 @@
+# CoRC 0.11.0.9001
+
+* Fixed errors due to breaking changes in package dependency 'stringr' version 1.5.0.
+
 # CoRC 0.11.0 (2021-08-30)
 
 * Rebased on COPASI release 4.34 sources.
