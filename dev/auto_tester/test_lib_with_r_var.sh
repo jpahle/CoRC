@@ -6,6 +6,7 @@ export TEST=full
 
 # R_VARIANT=ubuntu_20_04 ./test_lib_with_rX.sh
 R_VARIANTS=(
+	ubuntu_22_04
 	ubuntu_20_04
 	ubuntu_18_04
 	ubuntu_16_04
@@ -16,6 +17,7 @@ R_VARIANTS=(
 	fedora_32
 	fedora_30
 	latest
+	4_2
 	4_1
 	4_0
 	3_6

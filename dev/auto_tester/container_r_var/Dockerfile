@@ -1,5 +1,14 @@
 # syntax = docker/dockerfile:1.0
 
+FROM ubuntu:22.04 AS r_ubuntu_22_04
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	r-base-core \
+	&& rm -rf /var/lib/apt/lists/*
+ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
+ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs', 'purrr', 'stringr', 'readr', 'isnullptr'));"
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+WORKDIR /work
+
 FROM ubuntu:20.04 AS r_ubuntu_20_04
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	r-base-core \
@@ -94,7 +103,7 @@ ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs'
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
-FROM ubuntu:20.04 AS rbuilder
+FROM ubuntu:22.04 AS rbuilder
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	build-essential \
 	cmake \
@@ -131,8 +140,24 @@ RUN curl -L https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz | tar
 RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 
+FROM rbuilder AS r_4_2
+RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.2.2.tar.gz | tar -xz \
+	&& cd R-*/ \
+	&& ./configure \
+		--prefix=/opt/R/ \
+		--enable-R-shlib \
+		--without-recommended-packages --with-x=no --with-aqua=no \
+		--with-tcltk=no --with-ICU=no --disable-java --disable-openmp --disable-nls \
+		--disable-R-profiling --disable-BLAS-shlib --with-libpng=no --with-jpeglib=no --with-libtiff=no \
+	&& make \
+	&& make install \
+	&& cd ../ \
+	&& rm -r R-*/
+RUN ln -s /opt/R/bin/Rscript /opt/R/bin/R /usr/local/bin/
+RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
+
 FROM rbuilder AS r_4_1
-RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz | tar -xz \
+RUN curl -L https://cran.r-project.org/src/base/R-4/R-4.1.3.tar.gz | tar -xz \
 	&& cd R-*/ \
 	&& ./configure \
 		--prefix=/opt/R/ \
