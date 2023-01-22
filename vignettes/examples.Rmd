@@ -267,7 +267,7 @@ data_before <- runTimeCourse(duration = 1000, dt = 1)$result
 
 # read experimental data
 data_experimental <-
-  read_tsv("data/MAPKdata.txt") %>%
+  read_tsv("data/MAPKdata.txt", show_col_types = FALSE) %>%
   rename(Time = time, `Mos-P` = "MAPKKK-P", `Erk2-P` = "MAPK-P")
 
 # define the experiments for COPASI
@@ -335,7 +335,7 @@ unloadModel()
 
 result$fitted_values
 result$parameters
-result$protocol
+str_trunc(result$protocol, width = 800, side = "center")
 
 plotly::ggplotly(plots$`Erk2-P`)
 plotly::ggplotly(plots$`Mos-P`)
