@@ -53,10 +53,12 @@ autoplot.copasi_ts <- function(object, ..., use_concentrations = TRUE) {
   else
     tc <- object$result_number
   
+  time_col_name <- "Time"
+  
   column_keys <- object$column_keys
   # find time column
-  time_col_i <- match("Time", column_keys)
-  assert_that(!is.na(time_col_i), msg = "No `Time` column present.")
+  time_col_i <- match(time_col_name, column_keys)
+  assert_that(!is.na(time_col_i), msg = paste0("No `", time_col_name, "` column present."))
   time_col <- tc[time_col_i]
   tc <- tc[-time_col_i]
   column_keys <- column_keys[-time_col_i]
@@ -95,7 +97,7 @@ autoplot.copasi_ts <- function(object, ..., use_concentrations = TRUE) {
   # reshape data frame for ggplot and define the plot
   tc %>%
     tidyr::pivot_longer(-1, names_to = "Entities", values_to = "Concentration") %>%
-    ggplot2::ggplot(ggplot2::aes(x = !!names(tc)[1], y = Concentration, group = Entities, color = Entities)) +
+    ggplot2::ggplot(ggplot2::aes(x = .data[[time_col_name]], y = .data$Concentration, group = .data$Entities, color = .data$Entities)) +
     ggplot2::geom_line() +
     ggplot2::labs(
       x = x_label,
