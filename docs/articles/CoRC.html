@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.1</span>
       </span>
     </div>
 
@@ -56,7 +58,7 @@
   <a href="../articles/CoRC.html">Get Started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -88,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jpahle/CoRC/">
+  <a href="https://github.com/jpahle/CoRC/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -109,161 +111,192 @@
 
       
 
-      </header><script src="CoRC_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>CoRC Introduction</h1>
-                        <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
+                        <h4 data-toc-skip class="author">Jonas Förster
+&amp; Jürgen Pahle</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/CoRC.Rmd"><code>vignettes/CoRC.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/HEAD/vignettes/CoRC.Rmd" class="external-link"><code>vignettes/CoRC.Rmd</code></a></small>
       <div class="hidden name"><code>CoRC.Rmd</code></div>
 
     </div>
 
     
     
-<div id="getting-started" class="section level1">
-<h1 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting started</h1>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
 <p>Install the CoRC package directly from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"jpahle/CoRC"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jpahle/CoRC"</span><span class="op">)</span></span></code></pre></div>
 <p>The installation may take a few minutes.</p>
-<p>CoRC runs it’s own version of the COPASI backend which it will download for your platform during installation.</p>
-<p>In case there is no internet connection, the package can be downloaded from the (<a href="https://github.com/jpahle/CoRC/releases">github releases</a>). Both the package and the correct platform-specific libraries need to be downloaded. In most cases it’s easiest to just specify the location of the libraries prior to installation by setting the <code>COPASI_LIB_PATH</code> environment variable. E.g. for CoRC Version 0.10.0 on windows:</p>
+<p>CoRC runs it’s own version of the COPASI backend which it will
+download for your platform during installation.</p>
+<p>In case there is no internet connection, the package can be
+downloaded from the (<a href="https://github.com/jpahle/CoRC/releases" class="external-link">github releases</a>).
+Both the package and the correct platform-specific libraries need to be
+downloaded. In most cases it’s easiest to just specify the location of
+the libraries prior to installation by setting the
+<code>COPASI_LIB_PATH</code> environment variable. E.g. for CoRC Version
+0.10.0 on windows:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>COPASI_LIB_PATH <span class="op">=</span> <span class="st">"C:/Users/jonas/Downloads/COPASI_windows_x86_64.dll"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"C:/Users/jonas/Downloads/CoRC_0.10.0.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>COPASI_LIB_PATH <span class="op">=</span> <span class="st">"C:/Users/jonas/Downloads/COPASI_windows_x86_64.dll"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"C:/Users/jonas/Downloads/CoRC_0.10.0.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="startup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#startup" class="anchor"></a>Startup</h2>
+<div class="section level3">
+<h3 id="startup">Startup<a class="anchor" aria-label="anchor" href="#startup"></a>
+</h3>
 <p>To start, load the library.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span></code></pre></div>
-<p>From this point on, CoRC keeps an instance of COPASI running in the background. This instance can load up as many models as desired.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC" class="external-link">CoRC</a></span><span class="op">)</span></span></code></pre></div>
+<p>From this point on, CoRC keeps an instance of COPASI running in the
+background. This instance can load up as many models as desired.</p>
 </div>
-<div id="loading-a-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#loading-a-model" class="anchor"></a>Loading a model</h2>
+<div class="section level3">
+<h3 id="loading-a-model">Loading a model<a class="anchor" aria-label="anchor" href="#loading-a-model"></a>
+</h3>
 <p>Initially, no model is loaded.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error: No model currently in use.</span></code></pre></div>
-<p>You can load a model by using one of the model management commands.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: No model currently in use.</span></span></code></pre></div>
+<p>You can load a model by using one of the model management
+commands.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadModel.html">loadModel</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadModelFromString.html">loadModelFromString</a></span><span class="op">(</span><span class="va">model_string</span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadSBML.html">loadSBML</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadSBMLFromString.html">loadSBMLFromString</a></span><span class="op">(</span><span class="va">sbml_string</span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>When loading a model, the returned object is a reference to the model that will give basic information when printed.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/newModel.html">newModel</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadModel.html">loadModel</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadModelFromString.html">loadModelFromString</a></span><span class="op">(</span><span class="va">model_string</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadSBML.html">loadSBML</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadSBMLFromString.html">loadSBMLFromString</a></span><span class="op">(</span><span class="va">sbml_string</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>When loading a model, the returned object is a reference to the model
+that will give basic information when printed.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadSBML.html">loadSBML</a></span><span class="op">(</span><span class="st">"https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329.2?filename=BIOMD0000000329_url.xml"</span><span class="op">)</span>
-<span class="va">model</span>
-<span class="co">#&gt; # A COPASI model reference:</span>
-<span class="co">#&gt; Model name: "Kummer2000 - Oscillations in Calcium Signalling"</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 3</span>
-<span class="co">#&gt; Number of reactions: 8</span></code></pre></div>
-<p>This reference can be used with most functions using the <code>model</code> argument but can also be safely ignored when working with a single model.</p>
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadSBML.html">loadSBML</a></span><span class="op">(</span><span class="st">"https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329.2?filename=BIOMD0000000329_url.xml"</span><span class="op">)</span></span>
+<span><span class="va">model</span></span>
+<span><span class="co">#&gt; # A COPASI model reference:</span></span>
+<span><span class="co">#&gt; Model name: "Kummer2000 - Oscillations in Calcium Signalling"</span></span>
+<span><span class="co">#&gt; Number of compartments: 1</span></span>
+<span><span class="co">#&gt; Number of species: 3</span></span>
+<span><span class="co">#&gt; Number of reactions: 8</span></span></code></pre></div>
+<p>This reference can be used with most functions using the
+<code>model</code> argument but can also be safely ignored when working
+with a single model.</p>
 </div>
-<div id="workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#workflow" class="anchor"></a>Workflow</h2>
-<p>CoRC contains a plethora of functions for working with COPASI models. The most basic ones required for common workflows are used for manipulation of model entities and running tasks.</p>
+<div class="section level3">
+<h3 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h3>
+<p>CoRC contains a plethora of functions for working with COPASI models.
+The most basic ones required for common workflows are used for
+manipulation of model entities and running tasks.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; tibble [3 × 13] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;  $ key                  : chr [1:3] "G-alpha{compartment}" "activePLC{compartment}" "Calcium{compartment}"</span>
-<span class="co">#&gt;  $ name                 : chr [1:3] "G-alpha" "activePLC" "Calcium"</span>
-<span class="co">#&gt;  $ compartment          : chr [1:3] "compartment" "compartment" "compartment"</span>
-<span class="co">#&gt;  $ type                 : chr [1:3] "reactions" "reactions" "reactions"</span>
-<span class="co">#&gt;  $ unit                 : chr [1:3] "nmol/l" "nmol/l" "nmol/l"</span>
-<span class="co">#&gt;  $ initial_concentration: num [1:3] 0.01 0.01 0.01</span>
-<span class="co">#&gt;  $ initial_number       : num [1:3] 0.602 0.602 0.602</span>
-<span class="co">#&gt;  $ concentration        : num [1:3] NaN NaN NaN</span>
-<span class="co">#&gt;  $ number               : num [1:3] NaN NaN NaN</span>
-<span class="co">#&gt;  $ rate                 : num [1:3] 0 0 0</span>
-<span class="co">#&gt;  $ number_rate          : num [1:3] 0 0 0</span>
-<span class="co">#&gt;  $ initial_expression   : chr [1:3] "" "" ""</span>
-<span class="co">#&gt;  $ expression           : chr [1:3] "" "" ""</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [3 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ key                  : chr [1:3] "G-alpha{compartment}" "activePLC{compartment}" "Calcium{compartment}"</span></span>
+<span><span class="co">#&gt;  $ name                 : chr [1:3] "G-alpha" "activePLC" "Calcium"</span></span>
+<span><span class="co">#&gt;  $ compartment          : chr [1:3] "compartment" "compartment" "compartment"</span></span>
+<span><span class="co">#&gt;  $ type                 : chr [1:3] "reactions" "reactions" "reactions"</span></span>
+<span><span class="co">#&gt;  $ unit                 : chr [1:3] "nmol/l" "nmol/l" "nmol/l"</span></span>
+<span><span class="co">#&gt;  $ initial_concentration: num [1:3] 0.01 0.01 0.01</span></span>
+<span><span class="co">#&gt;  $ initial_number       : num [1:3] 0.602 0.602 0.602</span></span>
+<span><span class="co">#&gt;  $ concentration        : num [1:3] NaN NaN NaN</span></span>
+<span><span class="co">#&gt;  $ number               : num [1:3] NaN NaN NaN</span></span>
+<span><span class="co">#&gt;  $ rate                 : num [1:3] 0 0 0</span></span>
+<span><span class="co">#&gt;  $ number_rate          : num [1:3] 0 0 0</span></span>
+<span><span class="co">#&gt;  $ initial_expression   : chr [1:3] "" "" ""</span></span>
+<span><span class="co">#&gt;  $ expression           : chr [1:3] "" "" ""</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span>, initial_concentration <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span>
-<span class="va">timecourse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">100</span>, intervals <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></code></pre></div>
-<p>This enables quick definition of loops, for example to scan through various concentration values of a species.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span>, initial_concentration <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></span>
+<span><span class="va">timecourse</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">100</span>, intervals <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></code></pre></div>
+<p>This enables quick definition of loops, for example to scan through
+various concentration values of a species.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ga_concentrations</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">ga_conc</span> <span class="kw">in</span> <span class="va">ga_concentrations</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span>, initial_concentration <span class="op">=</span> <span class="va">ga_conc</span><span class="op">)</span>
-  
-  <span class="va">ga_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span><span class="op">)</span>
-  
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>
-    <span class="st">"Current concentration:"</span>, <span class="va">ga_state</span><span class="op">$</span><span class="va">initial_concentration</span>, <span class="va">ga_state</span><span class="op">$</span><span class="va">unit</span>
-  <span class="op">)</span><span class="op">)</span>
-  
-  <span class="co"># further commands e.g.:</span>
-  <span class="co"># runTimecourse()</span>
-  <span class="co"># saveModel(paste0("ga", ga_value, ".cps"))</span>
-<span class="op">}</span>
-<span class="co">#&gt; [1] "Current concentration: 1 nmol/l"</span>
-<span class="co">#&gt; [1] "Current concentration: 2 nmol/l"</span>
-<span class="co">#&gt; [1] "Current concentration: 3 nmol/l"</span>
-<span class="co">#&gt; [1] "Current concentration: 4 nmol/l"</span>
-<span class="co">#&gt; [1] "Current concentration: 5 nmol/l"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ga_concentrations</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">ga_conc</span> <span class="kw">in</span> <span class="va">ga_concentrations</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span>, initial_concentration <span class="op">=</span> <span class="va">ga_conc</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">ga_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"G-alpha"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Current concentration:"</span>, <span class="va">ga_state</span><span class="op">$</span><span class="va">initial_concentration</span>, <span class="va">ga_state</span><span class="op">$</span><span class="va">unit</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># further commands e.g.:</span></span>
+<span>  <span class="co"># runTimecourse()</span></span>
+<span>  <span class="co"># saveModel(paste0("ga", ga_value, ".cps"))</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; [1] "Current concentration: 1 nmol/l"</span></span>
+<span><span class="co">#&gt; [1] "Current concentration: 2 nmol/l"</span></span>
+<span><span class="co">#&gt; [1] "Current concentration: 3 nmol/l"</span></span>
+<span><span class="co">#&gt; [1] "Current concentration: 4 nmol/l"</span></span>
+<span><span class="co">#&gt; [1] "Current concentration: 5 nmol/l"</span></span></code></pre></div>
 </div>
-<div id="corc-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#corc-data" class="anchor"></a>CoRC data</h2>
-<p>Data generated by CoRC is returned as common R structures such as lists, data frames and matrices. Data frames are wrapped in an equivalent structure called a <a href="https://cran.r-project.org/web/packages/tibble/README.html"><code>tibble</code></a> which behaves identical in most circumstances but gives a reasonable overview when printing.</p>
+<div class="section level3">
+<h3 id="corc-data">CoRC data<a class="anchor" aria-label="anchor" href="#corc-data"></a>
+</h3>
+<p>Data generated by CoRC is returned as common R structures such as
+lists, data frames and matrices. Data frames are wrapped in an
+equivalent structure called a <a href="https://cran.r-project.org/web/packages/tibble/README.html" class="external-link"><code>tibble</code></a>
+which behaves identical in most circumstances but gives a reasonable
+overview when printing.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">timecourse</span><span class="op">$</span><span class="va">result</span>
-<span class="co">#&gt; # A tibble: 10,001 × 4</span>
-<span class="co">#&gt;     Time `G-alpha` activePLC  Calcium</span>
-<span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  0       0.02      0.01   0.01    </span>
-<span class="co">#&gt;  2  0.01    0.0227    0.0102 0.000320</span>
-<span class="co">#&gt;  3  0.02    0.0255    0.0103 0.000359</span>
-<span class="co">#&gt;  4  0.03    0.0284    0.0106 0.000400</span>
-<span class="co">#&gt;  5  0.04    0.0314    0.0108 0.000442</span>
-<span class="co">#&gt;  6  0.05    0.0344    0.0111 0.000486</span>
-<span class="co">#&gt;  7  0.06    0.0376    0.0114 0.000530</span>
-<span class="co">#&gt;  8  0.07    0.0408    0.0118 0.000576</span>
-<span class="co">#&gt;  9  0.08    0.0441    0.0122 0.000624</span>
-<span class="co">#&gt; 10  0.09    0.0475    0.0126 0.000672</span>
-<span class="co">#&gt; # … with 9,991 more rows</span></code></pre></div>
-<p>It is encouraged to use the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2 package</a> for generating publication-ready plots from CoRC data. The helper function <code>autoplot.copasi_ts</code> can be used to quickly print timecourse data.</p>
+<code class="sourceCode R"><span><span class="va">timecourse</span><span class="op">$</span><span class="va">result</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10,001 × 4</span></span></span>
+<span><span class="co">#&gt;     Time `G-alpha` activePLC  Calcium</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  0       0.02      0.01   0.01    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  0.01    0.022<span style="text-decoration: underline;">7</span>    0.010<span style="text-decoration: underline;">2</span> 0.000<span style="text-decoration: underline;">320</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  0.02    0.025<span style="text-decoration: underline;">5</span>    0.010<span style="text-decoration: underline;">3</span> 0.000<span style="text-decoration: underline;">359</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  0.03    0.028<span style="text-decoration: underline;">4</span>    0.010<span style="text-decoration: underline;">6</span> 0.000<span style="text-decoration: underline;">400</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  0.04    0.031<span style="text-decoration: underline;">4</span>    0.010<span style="text-decoration: underline;">8</span> 0.000<span style="text-decoration: underline;">442</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  0.05    0.034<span style="text-decoration: underline;">4</span>    0.011<span style="text-decoration: underline;">1</span> 0.000<span style="text-decoration: underline;">486</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  0.06    0.037<span style="text-decoration: underline;">6</span>    0.011<span style="text-decoration: underline;">4</span> 0.000<span style="text-decoration: underline;">530</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  0.07    0.040<span style="text-decoration: underline;">8</span>    0.011<span style="text-decoration: underline;">8</span> 0.000<span style="text-decoration: underline;">576</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  0.08    0.044<span style="text-decoration: underline;">1</span>    0.012<span style="text-decoration: underline;">2</span> 0.000<span style="text-decoration: underline;">624</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  0.09    0.047<span style="text-decoration: underline;">5</span>    0.012<span style="text-decoration: underline;">6</span> 0.000<span style="text-decoration: underline;">672</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 9,991 more rows</span></span></span></code></pre></div>
+<p>It is encouraged to use the <a href="https://cran.r-project.org/web/packages/ggplot2/index.html" class="external-link">ggplot2
+package</a> for generating publication-ready plots from CoRC data. The
+helper function <code>autoplot.copasi_ts</code> can be used to quickly
+print timecourse data.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># library(ggplot2)</span>
-<span class="fu"><a href="../reference/autoplot.copasi_ts.html">autoplot.copasi_ts</a></span><span class="op">(</span><span class="va">timecourse</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># library(ggplot2)</span></span>
+<span><span class="fu"><a href="../reference/autoplot.copasi_ts.html">autoplot.copasi_ts</a></span><span class="op">(</span><span class="va">timecourse</span><span class="op">)</span></span></code></pre></div>
 <p><img src="CoRC_files/figure-html/unnamed-chunk-11-1.png" width="100%"></p>
 </div>
-<div id="final-steps" class="section level2">
-<h2 class="hasAnchor">
-<a href="#final-steps" class="anchor"></a>Final steps</h2>
-<p>Finally, a model can be saved via several model management commands.</p>
+<div class="section level3">
+<h3 id="final-steps">Final steps<a class="anchor" aria-label="anchor" href="#final-steps"></a>
+</h3>
+<p>Finally, a model can be saved via several model management
+commands.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/saveModel.html">saveModel</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span>
-<span class="fu"><a href="../reference/saveModelToString.html">saveModelToString</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="../reference/saveSBML.html">saveSBML</a></span><span class="op">(</span><span class="va">path</span>, level <span class="op">=</span> <span class="fl">3</span>, version <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="../reference/saveSBMLToString.html">saveSBMLToString</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/saveModel.html">saveModel</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/saveModelToString.html">saveModelToString</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/saveSBML.html">saveSBML</a></span><span class="op">(</span><span class="va">path</span>, level <span class="op">=</span> <span class="fl">3</span>, version <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/saveSBMLToString.html">saveSBMLToString</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>To free up memory, unload any loaded models or restart R.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
-<span class="fu"><a href="../reference/unloadAllModels.html">unloadAllModels</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/unloadAllModels.html">unloadAllModels</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h2>
-<p>Information regarding different aspects of CoRC and simple examples can be found in the articles on <a href="https://jpahle.github.io/CoRC/articles/entity_management.html">model entity management</a>, <a href="https://jpahle.github.io/CoRC/articles/task_management.html">task management</a> and <a href="https://jpahle.github.io/CoRC/articles/model_building.html">model building</a> on the CoRC website. More sophisticated examples and case-studies illustrating further benefits of using CoRC can be found in the <a href="https://jpahle.github.io/CoRC/articles/examples.html">examples article</a>.</p>
+<div class="section level3">
+<h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h3>
+<p>Information regarding different aspects of CoRC and simple examples
+can be found in the articles on <a href="https://jpahle.github.io/CoRC/articles/entity_management.html">model
+entity management</a>, <a href="https://jpahle.github.io/CoRC/articles/task_management.html">task
+management</a> and <a href="https://jpahle.github.io/CoRC/articles/model_building.html">model
+building</a> on the CoRC website. More sophisticated examples and
+case-studies illustrating further benefits of using CoRC can be found in
+the <a href="https://jpahle.github.io/CoRC/articles/examples.html">examples
+article</a>.</p>
 </div>
 </div>
   </div>
@@ -279,11 +312,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonas Förster, Jürgen Pahle.</p>
+  <p></p>
+<p>Developed by Jonas Förster, Jürgen Pahle.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

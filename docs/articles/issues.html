@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.1</span>
       </span>
     </div>
 
@@ -56,7 +58,7 @@
   <a href="../articles/CoRC.html">Get Started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -88,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jpahle/CoRC/">
+  <a href="https://github.com/jpahle/CoRC/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -109,36 +111,37 @@
 
       
 
-      </header><script src="issues_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Issues</h1>
-                        <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
+                        <h4 data-toc-skip class="author">Jonas Förster
+&amp; Jürgen Pahle</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/issues.Rmd"><code>vignettes/issues.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/HEAD/vignettes/issues.Rmd" class="external-link"><code>vignettes/issues.Rmd</code></a></small>
       <div class="hidden name"><code>issues.Rmd</code></div>
 
     </div>
 
     
     
-<div id="initial-setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
+<div class="section level2">
+<h2 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A COPASI model reference:</span>
-<span class="co">#&gt; Model name: "The Brusselator"</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 6</span>
-<span class="co">#&gt; Number of reactions: 4</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC" class="external-link">CoRC</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; # A COPASI model reference:</span></span>
+<span><span class="co">#&gt; Model name: "The Brusselator"</span></span>
+<span><span class="co">#&gt; Number of compartments: 1</span></span>
+<span><span class="co">#&gt; Number of species: 6</span></span>
+<span><span class="co">#&gt; Number of reactions: 4</span></span></code></pre></div>
 </div>
-<div id="quicklist" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quicklist" class="anchor"></a>Quicklist</h1>
+<div class="section level2">
+<h2 id="quicklist">Quicklist<a class="anchor" aria-label="anchor" href="#quicklist"></a>
+</h2>
 <p>Todo:</p>
 <ul>
 <li>Add more COPASI tasks</li>
@@ -149,43 +152,46 @@
 <p>Issues:</p>
 <ul>
 <li>getwd() and copasi$getReferenceDirectory() are not in sync</li>
-<li>some S3 classes should have reconstruct functions (hadley/sloop)</li>
+<li>some S3 classes should have reconstruct functions
+(hadley/sloop)</li>
 </ul>
 </div>
-<div id="saving--cps-loses-experimental-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#saving--cps-loses-experimental-data" class="anchor"></a>Saving .cps loses experimental data</h1>
-<p>I commonly want to save a .cps to a tmp folder but when I do that experimental data paths will fail.</p>
+<div class="section level2">
+<h2 id="saving--cps-loses-experimental-data">Saving .cps loses experimental data<a class="anchor" aria-label="anchor" href="#saving--cps-loses-experimental-data"></a>
+</h2>
+<p>I commonly want to save a .cps to a tmp folder but when I do that
+experimental data paths will fail.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Load example which has experimental data.</span>
-<span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-
-<span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span>
-<span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Load example which has experimental data.</span></span>
+<span><span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
+<span><span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The filenames are in the correct folder.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpE1Zegj/temp_libpath395af1dfb42e5/CoRC/extdata/test_paramest_exp_data.txt"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">filenames</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp6ngfP4/temp_libpath91004316feea/CoRC/extdata/test_paramest_exp_data.txt"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>Now I will save the model into a tmp folder.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".cps"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/saveModel.html">saveModel</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
-<span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadModel.html">loadModel</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>
-<span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span>
-<span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>The filenames are now supposedly in the folder where the .cps was saved but there they don’t exist.</p>
+<code class="sourceCode R"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".cps"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/saveModel.html">saveModel</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadModel.html">loadModel</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
+<span><span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The filenames are now supposedly in the folder where the .cps was
+saved but there they don’t exist.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">filenames</span>
-<span class="co">#&gt; [1] "/tmp/RtmpE1Zegj/temp_libpath395af1dfb42e5/CoRC/extdata/test_paramest_exp_data.txt"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">filenames</span></span>
+<span><span class="co">#&gt; [1] "/tmp/Rtmp6ngfP4/temp_libpath91004316feea/CoRC/extdata/test_paramest_exp_data.txt"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">filenames</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -200,11 +206,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonas Förster, Jürgen Pahle.</p>
+  <p></p>
+<p>Developed by Jonas Förster, Jürgen Pahle.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jpahle.github.io/CoRC/404.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/CoRC.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/entity_management.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/examples.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/issues.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/model_building.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/articles/task_management.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/authors.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jpahle.github.io/CoRC/news/index.html</loc>
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/CoRC-package.html</loc>
@@ -181,6 +214,9 @@
     <loc>https://jpahle.github.io/CoRC/reference/getVolumeUnit.html</loc>
   </url>
   <url>
+    <loc>https://jpahle.github.io/CoRC/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://jpahle.github.io/CoRC/reference/loadCombineArchive.html</loc>
   </url>
   <url>
@@ -335,23 +371,5 @@
   </url>
   <url>
     <loc>https://jpahle.github.io/CoRC/reference/updateInitialState.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/CoRC.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/entity_management.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/examples.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/issues.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/model_building.html</loc>
-  </url>
-  <url>
-    <loc>https://jpahle.github.io/CoRC/articles/task_management.html</loc>
   </url>
 </urlset>

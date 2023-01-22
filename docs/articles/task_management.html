@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.1</span>
       </span>
     </div>
 
@@ -56,7 +58,7 @@
   <a href="../articles/CoRC.html">Get Started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -88,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jpahle/CoRC/">
+  <a href="https://github.com/jpahle/CoRC/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -109,292 +111,306 @@
 
       
 
-      </header><script src="task_management_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Task Management</h1>
-                        <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
+                        <h4 data-toc-skip class="author">Jonas Förster
+&amp; Jürgen Pahle</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/task_management.Rmd"><code>vignettes/task_management.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/HEAD/vignettes/task_management.Rmd" class="external-link"><code>vignettes/task_management.Rmd</code></a></small>
       <div class="hidden name"><code>task_management.Rmd</code></div>
 
     </div>
 
     
     
-<div id="initial-setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
+<div class="section level2">
+<h2 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A COPASI model reference:</span>
-<span class="co">#&gt; Model name: "Bacterial chemotaxis model"</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 21</span>
-<span class="co">#&gt; Number of reactions: 14</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC" class="external-link">CoRC</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; # A COPASI model reference:</span></span>
+<span><span class="co">#&gt; Model name: "Bacterial chemotaxis model"</span></span>
+<span><span class="co">#&gt; Number of compartments: 1</span></span>
+<span><span class="co">#&gt; Number of species: 21</span></span>
+<span><span class="co">#&gt; Number of reactions: 14</span></span></code></pre></div>
 </div>
-<div id="task-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#task-functions" class="anchor"></a>Task functions</h1>
-<p>CoRC has implemented a variety of COPASI functions. Tasks generally have an <code>run</code> execution function (e.g. <code>runTimeCourse</code>), a settings <code>set</code> function (e.g. <code>setTimeCourseSettings</code>) and a settings <code>get</code> function (e.g. <code>getTimeCourseSettings</code>).</p>
+<div class="section level2">
+<h2 id="task-functions">Task functions<a class="anchor" aria-label="anchor" href="#task-functions"></a>
+</h2>
+<p>CoRC has implemented a variety of COPASI functions. Tasks generally
+have an <code>run</code> execution function
+(e.g. <code>runTimeCourse</code>), a settings <code>set</code> function
+(e.g. <code>setTimeCourseSettings</code>) and a settings
+<code>get</code> function (e.g. <code>getTimeCourseSettings</code>).</p>
 <p><strong>Get task settings</strong>:</p>
-<p>Get functions return a list of settings in the same format as is expected as input to <code>set</code> functions.</p>
+<p>Get functions return a list of settings in the same format as is
+expected as input to <code>set</code> functions.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; List of 11</span>
-<span class="co">#&gt;  $ duration              : num 1000</span>
-<span class="co">#&gt;  $ dt                    : num 0.1</span>
-<span class="co">#&gt;  $ intervals             : int 10000</span>
-<span class="co">#&gt;  $ automatic_intervals   : logi FALSE</span>
-<span class="co">#&gt;  $ suppress_output_before: num 0</span>
-<span class="co">#&gt;  $ output_events         : logi FALSE</span>
-<span class="co">#&gt;  $ save_result_in_memory : logi TRUE</span>
-<span class="co">#&gt;  $ start_in_steady_state : logi FALSE</span>
-<span class="co">#&gt;  $ update_model          : logi FALSE</span>
-<span class="co">#&gt;  $ executable            : logi FALSE</span>
-<span class="co">#&gt;  $ method                :List of 6</span>
-<span class="co">#&gt;   ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   ..$ integrate_reduced_model: logi FALSE</span>
-<span class="co">#&gt;   ..$ relative_tolerance     : num 1e-06</span>
-<span class="co">#&gt;   ..$ absolute_tolerance     : num 1e-12</span>
-<span class="co">#&gt;   ..$ max_internal_steps     : int 10000</span>
-<span class="co">#&gt;   ..$ max_internal_step_size : num 0</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 11</span></span>
+<span><span class="co">#&gt;  $ duration              : num 1000</span></span>
+<span><span class="co">#&gt;  $ dt                    : num 0.1</span></span>
+<span><span class="co">#&gt;  $ intervals             : int 10000</span></span>
+<span><span class="co">#&gt;  $ automatic_intervals   : logi FALSE</span></span>
+<span><span class="co">#&gt;  $ suppress_output_before: num 0</span></span>
+<span><span class="co">#&gt;  $ output_events         : logi FALSE</span></span>
+<span><span class="co">#&gt;  $ save_result_in_memory : logi TRUE</span></span>
+<span><span class="co">#&gt;  $ start_in_steady_state : logi FALSE</span></span>
+<span><span class="co">#&gt;  $ update_model          : logi FALSE</span></span>
+<span><span class="co">#&gt;  $ executable            : logi FALSE</span></span>
+<span><span class="co">#&gt;  $ method                :List of 6</span></span>
+<span><span class="co">#&gt;   ..$ method                 : chr "deterministic"</span></span>
+<span><span class="co">#&gt;   ..$ integrate_reduced_model: logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ relative_tolerance     : num 1e-06</span></span>
+<span><span class="co">#&gt;   ..$ absolute_tolerance     : num 1e-12</span></span>
+<span><span class="co">#&gt;   ..$ max_internal_steps     : int 10000</span></span>
+<span><span class="co">#&gt;   ..$ max_internal_step_size : num 0</span></span></code></pre></div>
 <p><strong>Set task settings</strong>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 100</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 100</span></span></code></pre></div>
 <p><strong>Run task</strong>:</p>
-<p>Run functions return a list of results. Included in this list is an entry <code>settings</code> with contains all tasks settings.</p>
+<p>Run functions return a list of results. Included in this list is an
+entry <code>settings</code> with contains all tasks settings.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; List of 6</span>
-<span class="co">#&gt;  $ settings     :List of 11</span>
-<span class="co">#&gt;   ..$ duration              : num 100</span>
-<span class="co">#&gt;   ..$ dt                    : num 0.01</span>
-<span class="co">#&gt;   ..$ intervals             : int 10000</span>
-<span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span>
-<span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
-<span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
-<span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
-<span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span>
-<span class="co">#&gt;   ..$ update_model          : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable            : logi FALSE</span>
-<span class="co">#&gt;   ..$ method                :List of 6</span>
-<span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span>
-<span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span>
-<span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span>
-<span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span>
-<span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span>
-<span class="co">#&gt;  $ column_keys  : chr [1:19] "Time" "T1{compartment}" "T3{compartment}" "CheY{compartment}" ...</span>
-<span class="co">#&gt;  $ units        :List of 2</span>
-<span class="co">#&gt;   ..$ time         : chr "s"</span>
-<span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span>
-<span class="co">#&gt;  $ result       : tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 ...</span>
-<span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.000612 0.001225 0.001837 0.002449 ...</span>
-<span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.36e-12 1.09e-11 3.68e-11 8.72e-11 ...</span>
-<span class="co">#&gt;   ..$ CheY    : num [1:10001] 9.7 9.7 9.7 9.7 9.7 ...</span>
-<span class="co">#&gt;   ..$ CheA    : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 3.54e-08 1.42e-07 3.18e-07 5.66e-07 ...</span>
-<span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 6.19e-08 2.73e-07 6.33e-07 1.14e-06 ...</span>
-<span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.94e-17 6.30e-16 3.19e-15 1.01e-14 ...</span>
-<span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0.00 1.63e-05 3.44e-05 5.25e-05 7.06e-05 ...</span>
-<span class="co">#&gt;   ..$ CheB    : num [1:10001] 0.28 0.28 0.28 0.28 0.28 ...</span>
-<span class="co">#&gt;   ..$ T0      : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.000052 0.000173 0.000316 0.000467 ...</span>
-<span class="co">#&gt;   ..$ Tactive : num [1:10001] 0.00 6.64e-05 1.33e-04 1.99e-04 2.66e-04 ...</span>
-<span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0.00 6.64e-05 1.33e-04 1.99e-04 2.65e-04 ...</span>
-<span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.59e-08 6.34e-08 1.43e-07 2.54e-07 ...</span>
-<span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 1.02e-12 8.12e-12 2.74e-11 6.50e-11 ...</span>
-<span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.94e-17 6.30e-16 3.19e-15 1.01e-14 ...</span>
-<span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;  $ result_number: tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 ...</span>
-<span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.516 1.033 1.549 2.065 ...</span>
-<span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.15e-09 9.20e-09 3.10e-08 7.36e-08 ...</span>
-<span class="co">#&gt;   ..$ CheY    : num [1:10001] 8178 8178 8178 8178 8178 ...</span>
-<span class="co">#&gt;   ..$ CheA    : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
-<span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 2.98e-05 1.19e-04 2.69e-04 4.77e-04 ...</span>
-<span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 5.21e-05 2.30e-04 5.34e-04 9.63e-04 ...</span>
-<span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.32e-14 5.31e-13 2.69e-12 8.50e-12 ...</span>
-<span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0 0.0137 0.029 0.0443 0.0596 ...</span>
-<span class="co">#&gt;   ..$ CheB    : num [1:10001] 236 236 236 236 236 ...</span>
-<span class="co">#&gt;   ..$ T0      : num [1:10001] 4468 4468 4467 4467 4466 ...</span>
-<span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.0439 0.1457 0.2667 0.3938 ...</span>
-<span class="co">#&gt;   ..$ Tactive : num [1:10001] 0 0.056 0.112 0.168 0.224 ...</span>
-<span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0 0.056 0.112 0.168 0.224 ...</span>
-<span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.34e-05 5.35e-05 1.20e-04 2.14e-04 ...</span>
-<span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-10 6.85e-09 2.31e-08 5.48e-08 ...</span>
-<span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-14 5.31e-13 2.69e-12 8.50e-12 ...</span>
-<span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
-<span class="co">#&gt;  $ task_error   : NULL</span>
-<span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 6</span></span>
+<span><span class="co">#&gt;  $ settings     :List of 11</span></span>
+<span><span class="co">#&gt;   ..$ duration              : num 100</span></span>
+<span><span class="co">#&gt;   ..$ dt                    : num 0.01</span></span>
+<span><span class="co">#&gt;   ..$ intervals             : int 10000</span></span>
+<span><span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ suppress_output_before: num 0</span></span>
+<span><span class="co">#&gt;   ..$ output_events         : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span></span>
+<span><span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ update_model          : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ executable            : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ method                :List of 6</span></span>
+<span><span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span></span>
+<span><span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span></span>
+<span><span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span></span>
+<span><span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span></span>
+<span><span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span></span>
+<span><span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span></span>
+<span><span class="co">#&gt;  $ column_keys  : chr [1:19] "Time" "T1{compartment}" "T3{compartment}" "CheY{compartment}" ...</span></span>
+<span><span class="co">#&gt;  $ units        :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ time         : chr "s"</span></span>
+<span><span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span></span>
+<span><span class="co">#&gt;  $ result       : tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 ...</span></span>
+<span><span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.000612 0.001225 0.001837 0.002449 ...</span></span>
+<span><span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.36e-12 1.09e-11 3.68e-11 8.72e-11 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheY    : num [1:10001] 9.7 9.7 9.7 9.7 9.7 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheA    : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 3.54e-08 1.42e-07 3.18e-07 5.66e-07 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 6.19e-08 2.73e-07 6.33e-07 1.14e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.94e-17 6.30e-16 3.19e-15 1.01e-14 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0.00 1.63e-05 3.44e-05 5.25e-05 7.06e-05 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheB    : num [1:10001] 0.28 0.28 0.28 0.28 0.28 ...</span></span>
+<span><span class="co">#&gt;   ..$ T0      : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.000052 0.000173 0.000316 0.000467 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive : num [1:10001] 0.00 6.64e-05 1.33e-04 1.99e-04 2.66e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0.00 6.64e-05 1.33e-04 1.99e-04 2.65e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.59e-08 6.34e-08 1.43e-07 2.54e-07 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 1.02e-12 8.12e-12 2.74e-11 6.50e-11 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.94e-17 6.30e-16 3.19e-15 1.01e-14 ...</span></span>
+<span><span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;  $ result_number: tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 ...</span></span>
+<span><span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.516 1.033 1.549 2.065 ...</span></span>
+<span><span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.15e-09 9.20e-09 3.10e-08 7.36e-08 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheY    : num [1:10001] 8178 8178 8178 8178 8178 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheA    : num [1:10001] 4468 4468 4468 4468 4468 ...</span></span>
+<span><span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 2.98e-05 1.19e-04 2.69e-04 4.77e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 5.21e-05 2.30e-04 5.34e-04 9.63e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.32e-14 5.31e-13 2.69e-12 8.50e-12 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0 0.0137 0.029 0.0443 0.0596 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheB    : num [1:10001] 236 236 236 236 236 ...</span></span>
+<span><span class="co">#&gt;   ..$ T0      : num [1:10001] 4468 4468 4467 4467 4466 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.0439 0.1457 0.2667 0.3938 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive : num [1:10001] 0 0.056 0.112 0.168 0.224 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0 0.056 0.112 0.168 0.224 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.34e-05 5.35e-05 1.20e-04 2.14e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-10 6.85e-09 2.31e-08 5.48e-08 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-14 5.31e-13 2.69e-12 8.50e-12 ...</span></span>
+<span><span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span></span>
+<span><span class="co">#&gt;  $ task_error   : NULL</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span></span></code></pre></div>
 </div>
-<div id="task-settings" class="section level1">
-<h1 class="hasAnchor">
-<a href="#task-settings" class="anchor"></a>Task settings</h1>
-<p>Task settings can be set in two ways. The <code>set</code> familiy of functions is the preferred way to set task settings.</p>
+<div class="section level2">
+<h2 id="task-settings">Task settings<a class="anchor" aria-label="anchor" href="#task-settings"></a>
+</h2>
+<p>Task settings can be set in two ways. The <code>set</code> familiy of
+functions is the preferred way to set task settings.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 100</span>
-<span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 10</span></code></pre></div>
-<p>The <code>run</code> familiy of functions will generally take the same arguments as the <code>set</code> familiy of functions but will only set them temporarily.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 100</span></span>
+<span><span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+<p>The <code>run</code> familiy of functions will generally take the
+same arguments as the <code>set</code> familiy of functions but will
+only set them temporarily.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 10</span>
-<span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">settings</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 1</span>
-<span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span>
-<span class="co">#&gt; [1] 10</span></code></pre></div>
-<p>The <code>get</code> familiy of functions will return a list that can be used as a template for calling functions that expect settings as input. A similar list is also given in every output of a <code>run</code> function.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 10</span></span>
+<span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">settings</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">duration</span></span>
+<span><span class="co">#&gt; [1] 10</span></span></code></pre></div>
+<p>The <code>get</code> familiy of functions will return a list that can
+be used as a template for calling functions that expect settings as
+input. A similar list is also given in every output of a
+<code>run</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">method_settings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">method</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">method_settings</span><span class="op">)</span>
-<span class="co">#&gt; List of 6</span>
-<span class="co">#&gt;  $ method                 : chr "deterministic"</span>
-<span class="co">#&gt;  $ integrate_reduced_model: logi FALSE</span>
-<span class="co">#&gt;  $ relative_tolerance     : num 1e-06</span>
-<span class="co">#&gt;  $ absolute_tolerance     : num 1e-12</span>
-<span class="co">#&gt;  $ max_internal_steps     : int 10000</span>
-<span class="co">#&gt;  $ max_internal_step_size : num 0</span>
-
-<span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>method <span class="op">=</span> <span class="va">method_settings</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">method_settings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTimeCourseSettings.html">getTimeCourseSettings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">method</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">method_settings</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 6</span></span>
+<span><span class="co">#&gt;  $ method                 : chr "deterministic"</span></span>
+<span><span class="co">#&gt;  $ integrate_reduced_model: logi FALSE</span></span>
+<span><span class="co">#&gt;  $ relative_tolerance     : num 1e-06</span></span>
+<span><span class="co">#&gt;  $ absolute_tolerance     : num 1e-12</span></span>
+<span><span class="co">#&gt;  $ max_internal_steps     : int 10000</span></span>
+<span><span class="co">#&gt;  $ max_internal_step_size : num 0</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/setTimeCourseSettings.html">setTimeCourseSettings</a></span><span class="op">(</span>method <span class="op">=</span> <span class="va">method_settings</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="task-execution" class="section level1">
-<h1 class="hasAnchor">
-<a href="#task-execution" class="anchor"></a>Task execution</h1>
-<p>Executing a task will return a list containing all relevant task results.</p>
+<div class="section level2">
+<h2 id="task-execution">Task execution<a class="anchor" aria-label="anchor" href="#task-execution"></a>
+</h2>
+<p>Executing a task will return a list containing all relevant task
+results.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; List of 6</span>
-<span class="co">#&gt;  $ settings     :List of 11</span>
-<span class="co">#&gt;   ..$ duration              : num 10</span>
-<span class="co">#&gt;   ..$ dt                    : num 0.001</span>
-<span class="co">#&gt;   ..$ intervals             : int 10000</span>
-<span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span>
-<span class="co">#&gt;   ..$ suppress_output_before: num 0</span>
-<span class="co">#&gt;   ..$ output_events         : logi FALSE</span>
-<span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span>
-<span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span>
-<span class="co">#&gt;   ..$ update_model          : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable            : logi FALSE</span>
-<span class="co">#&gt;   ..$ method                :List of 6</span>
-<span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span>
-<span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span>
-<span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span>
-<span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span>
-<span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span>
-<span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span>
-<span class="co">#&gt;  $ column_keys  : chr [1:19] "Time" "T1{compartment}" "T3{compartment}" "CheY{compartment}" ...</span>
-<span class="co">#&gt;  $ units        :List of 2</span>
-<span class="co">#&gt;   ..$ time         : chr "s"</span>
-<span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span>
-<span class="co">#&gt;  $ result       : tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 ...</span>
-<span class="co">#&gt;   ..$ T1      : num [1:10001] 0.00 6.13e-05 1.23e-04 1.84e-04 2.45e-04 ...</span>
-<span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.36e-15 1.09e-14 3.68e-14 8.73e-14 ...</span>
-<span class="co">#&gt;   ..$ CheY    : num [1:10001] 9.7 9.7 9.7 9.7 9.7 ...</span>
-<span class="co">#&gt;   ..$ CheA    : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 3.54e-10 1.42e-09 3.19e-09 5.66e-09 ...</span>
-<span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 1.96e-10 1.29e-09 3.67e-09 7.48e-09 ...</span>
-<span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.94e-21 6.30e-20 3.19e-19 1.01e-18 ...</span>
-<span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0.00 6.52e-07 2.03e-06 3.67e-06 5.42e-06 ...</span>
-<span class="co">#&gt;   ..$ CheB    : num [1:10001] 0.28 0.28 0.28 0.28 0.28 ...</span>
-<span class="co">#&gt;   ..$ T0      : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0.00 2.20e-07 1.40e-06 3.87e-06 7.63e-06 ...</span>
-<span class="co">#&gt;   ..$ Tactive : num [1:10001] 0.00 6.64e-06 1.33e-05 1.99e-05 2.66e-05 ...</span>
-<span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0.00 6.64e-06 1.33e-05 1.99e-05 2.66e-05 ...</span>
-<span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.59e-10 6.34e-10 1.43e-09 2.54e-09 ...</span>
-<span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 1.02e-15 8.12e-15 2.74e-14 6.50e-14 ...</span>
-<span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.94e-21 6.30e-20 3.19e-19 1.01e-18 ...</span>
-<span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 ...</span>
-<span class="co">#&gt;  $ result_number: tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 ...</span>
-<span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.0516 0.1033 0.1549 0.2066 ...</span>
-<span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.15e-12 9.20e-12 3.10e-11 7.36e-11 ...</span>
-<span class="co">#&gt;   ..$ CheY    : num [1:10001] 8178 8178 8178 8178 8178 ...</span>
-<span class="co">#&gt;   ..$ CheA    : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
-<span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 2.98e-07 1.19e-06 2.69e-06 4.77e-06 ...</span>
-<span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 1.66e-07 1.09e-06 3.09e-06 6.30e-06 ...</span>
-<span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.32e-18 5.32e-17 2.69e-16 8.50e-16 ...</span>
-<span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0 0.00055 0.00171 0.00309 0.00457 ...</span>
-<span class="co">#&gt;   ..$ CheB    : num [1:10001] 236 236 236 236 236 ...</span>
-<span class="co">#&gt;   ..$ T0      : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
-<span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.000186 0.001184 0.003259 0.00643 ...</span>
-<span class="co">#&gt;   ..$ Tactive : num [1:10001] 0 0.0056 0.0112 0.0168 0.0224 ...</span>
-<span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0 0.0056 0.0112 0.0168 0.0224 ...</span>
-<span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.34e-07 5.35e-07 1.20e-06 2.14e-06 ...</span>
-<span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-13 6.85e-12 2.31e-11 5.48e-11 ...</span>
-<span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-18 5.31e-17 2.69e-16 8.50e-16 ...</span>
-<span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span>
-<span class="co">#&gt;  $ task_error   : NULL</span>
-<span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runSteadyState.html">runSteadyState</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; List of 9</span>
-<span class="co">#&gt;  $ settings         :List of 5</span>
-<span class="co">#&gt;   ..$ calculate_jacobian        : logi TRUE</span>
-<span class="co">#&gt;   ..$ perform_stability_analysis: logi TRUE</span>
-<span class="co">#&gt;   ..$ update_model              : logi FALSE</span>
-<span class="co">#&gt;   ..$ executable                : logi FALSE</span>
-<span class="co">#&gt;   ..$ method                    :List of 10</span>
-<span class="co">#&gt;   .. ..$ resolution                               : num 1e-09</span>
-<span class="co">#&gt;   .. ..$ derivation_factor                        : num 0.001</span>
-<span class="co">#&gt;   .. ..$ use_newton                               : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ use_integration                          : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ use_back_integration                     : logi TRUE</span>
-<span class="co">#&gt;   .. ..$ accept_negative_concentrations           : logi FALSE</span>
-<span class="co">#&gt;   .. ..$ iteration_limit                          : int 50</span>
-<span class="co">#&gt;   .. ..$ maximum_duration_for_forward_integration : num 1e+09</span>
-<span class="co">#&gt;   .. ..$ maximum_duration_for_backward_integration: num 1e+06</span>
-<span class="co">#&gt;   .. ..$ target_criterion                         : chr "Distance and Rate"</span>
-<span class="co">#&gt;  $ result           : chr "found"</span>
-<span class="co">#&gt;  $ species          : tibble [11 × 8] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ key            : chr [1:11] "CheA{compartment}" "CheAp{compartment}" "CheB{compartment}" "CheBp{compartment}" ...</span>
-<span class="co">#&gt;   ..$ name           : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span>
-<span class="co">#&gt;   ..$ type           : chr [1:11] "reactions" "reactions" "reactions" "reactions" ...</span>
-<span class="co">#&gt;   ..$ concentration  : num [1:11] 5.185 0.115 0.2082 0.0718 8.8118 ...</span>
-<span class="co">#&gt;   ..$ number         : num [1:11] 4371.5 97 175.5 60.6 7429.2 ...</span>
-<span class="co">#&gt;   ..$ rate           : num [1:11] 2.59e-13 -2.59e-13 -1.94e-16 1.94e-16 -3.28e-13 ...</span>
-<span class="co">#&gt;   ..$ number_rate    : num [1:11] 2.18e-10 -2.18e-10 -1.63e-13 1.63e-13 -2.76e-10 ...</span>
-<span class="co">#&gt;   ..$ transition_time: num [1:11] 0.05112 0.00113 2.89824 1 0.08695 ...</span>
-<span class="co">#&gt;  $ compartments     : tibble [0 × 5] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ key : chr(0) </span>
-<span class="co">#&gt;   ..$ name: chr(0) </span>
-<span class="co">#&gt;   ..$ type: chr(0) </span>
-<span class="co">#&gt;   ..$ size: num(0) </span>
-<span class="co">#&gt;   ..$ rate: num(0) </span>
-<span class="co">#&gt;  $ global_quantities: tibble [0 × 5] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ key  : chr(0) </span>
-<span class="co">#&gt;   ..$ name : chr(0) </span>
-<span class="co">#&gt;   ..$ type : chr(0) </span>
-<span class="co">#&gt;   ..$ value: num(0) </span>
-<span class="co">#&gt;   ..$ rate : num(0) </span>
-<span class="co">#&gt;  $ reactions        : tibble [14 × 4] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;   ..$ key        : chr [1:14] "(Che A phosph)" "(Che B phosph)" "(Che Y phosph)" "(Che Y autodephosph)" ...</span>
-<span class="co">#&gt;   ..$ name       : chr [1:14] "Che A phosph" "Che B phosph" "Che Y phosph" "Che Y autodephosph" ...</span>
-<span class="co">#&gt;   ..$ flux       : num [1:14] 1.42e-13 1.01e-16 1.42e-13 1.24e-16 4.75e-17 ...</span>
-<span class="co">#&gt;   ..$ number_flux: num [1:14] 85505.5 60.6 85445 74.9 28.6 ...</span>
-<span class="co">#&gt;  $ jacobian_complete: num [1:11, 1:11] -3.01e-02 -5.07e-04 0.00 -2.81e+01 8.71e-03 ...</span>
-<span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
-<span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;  $ jacobian_reduced : num [1:7, 1:7] -3.97e-02 1.29e-04 0.00 -2.81e+01 1.23e-02 ...</span>
-<span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
-<span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span>
-<span class="co">#&gt;  $ protocol         : chr "Try Newton's method. \n   Starting Newton Iterations...\n    Newton step with damping. New value: Distance: 2.6"| __truncated__</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runTimeCourse.html">runTimeCourse</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 6</span></span>
+<span><span class="co">#&gt;  $ settings     :List of 11</span></span>
+<span><span class="co">#&gt;   ..$ duration              : num 10</span></span>
+<span><span class="co">#&gt;   ..$ dt                    : num 0.001</span></span>
+<span><span class="co">#&gt;   ..$ intervals             : int 10000</span></span>
+<span><span class="co">#&gt;   ..$ automatic_intervals   : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ suppress_output_before: num 0</span></span>
+<span><span class="co">#&gt;   ..$ output_events         : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ save_result_in_memory : logi TRUE</span></span>
+<span><span class="co">#&gt;   ..$ start_in_steady_state : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ update_model          : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ executable            : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ method                :List of 6</span></span>
+<span><span class="co">#&gt;   .. ..$ method                 : chr "deterministic"</span></span>
+<span><span class="co">#&gt;   .. ..$ integrate_reduced_model: logi FALSE</span></span>
+<span><span class="co">#&gt;   .. ..$ relative_tolerance     : num 1e-06</span></span>
+<span><span class="co">#&gt;   .. ..$ absolute_tolerance     : num 1e-12</span></span>
+<span><span class="co">#&gt;   .. ..$ max_internal_steps     : int 10000</span></span>
+<span><span class="co">#&gt;   .. ..$ max_internal_step_size : num 0</span></span>
+<span><span class="co">#&gt;  $ column_keys  : chr [1:19] "Time" "T1{compartment}" "T3{compartment}" "CheY{compartment}" ...</span></span>
+<span><span class="co">#&gt;  $ units        :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ time         : chr "s"</span></span>
+<span><span class="co">#&gt;   ..$ concentration: chr "µmol / l"</span></span>
+<span><span class="co">#&gt;  $ result       : tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 ...</span></span>
+<span><span class="co">#&gt;   ..$ T1      : num [1:10001] 0.00 6.13e-05 1.23e-04 1.84e-04 2.45e-04 ...</span></span>
+<span><span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.36e-15 1.09e-14 3.68e-14 8.73e-14 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheY    : num [1:10001] 9.7 9.7 9.7 9.7 9.7 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheA    : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 3.54e-10 1.42e-09 3.19e-09 5.66e-09 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 1.96e-10 1.29e-09 3.67e-09 7.48e-09 ...</span></span>
+<span><span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.94e-21 6.30e-20 3.19e-19 1.01e-18 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0.00 6.52e-07 2.03e-06 3.67e-06 5.42e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheB    : num [1:10001] 0.28 0.28 0.28 0.28 0.28 ...</span></span>
+<span><span class="co">#&gt;   ..$ T0      : num [1:10001] 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0.00 2.20e-07 1.40e-06 3.87e-06 7.63e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive : num [1:10001] 0.00 6.64e-06 1.33e-05 1.99e-05 2.66e-05 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0.00 6.64e-06 1.33e-05 1.99e-05 2.66e-05 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.59e-10 6.34e-10 1.43e-09 2.54e-09 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 1.02e-15 8.12e-15 2.74e-14 6.50e-14 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.94e-21 6.30e-20 3.19e-19 1.01e-18 ...</span></span>
+<span><span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 5.3 ...</span></span>
+<span><span class="co">#&gt;  $ result_number: tibble [10,001 × 19] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ Time    : num [1:10001] 0 0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.008 0.009 ...</span></span>
+<span><span class="co">#&gt;   ..$ T1      : num [1:10001] 0 0.0516 0.1033 0.1549 0.2066 ...</span></span>
+<span><span class="co">#&gt;   ..$ T3      : num [1:10001] 0.00 1.15e-12 9.20e-12 3.10e-11 7.36e-11 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheY    : num [1:10001] 8178 8178 8178 8178 8178 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheA    : num [1:10001] 4468 4468 4468 4468 4468 ...</span></span>
+<span><span class="co">#&gt;   ..$ T2      : num [1:10001] 0.00 2.98e-07 1.19e-06 2.69e-06 4.77e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheBp   : num [1:10001] 0.00 1.66e-07 1.09e-06 3.09e-06 6.30e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ T4      : num [1:10001] 0.00 3.32e-18 5.32e-17 2.69e-16 8.50e-16 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheAp   : num [1:10001] 0 0.00055 0.00171 0.00309 0.00457 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheB    : num [1:10001] 236 236 236 236 236 ...</span></span>
+<span><span class="co">#&gt;   ..$ T0      : num [1:10001] 4468 4468 4468 4468 4468 ...</span></span>
+<span><span class="co">#&gt;   ..$ CheYp   : num [1:10001] 0 0.000186 0.001184 0.003259 0.00643 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive : num [1:10001] 0 0.0056 0.0112 0.0168 0.0224 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive0: num [1:10001] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive1: num [1:10001] 0 0.0056 0.0112 0.0168 0.0224 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive2: num [1:10001] 0.00 1.34e-07 5.35e-07 1.20e-06 2.14e-06 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive3: num [1:10001] 0.00 8.56e-13 6.85e-12 2.31e-11 5.48e-11 ...</span></span>
+<span><span class="co">#&gt;   ..$ Tactive4: num [1:10001] 0.00 3.32e-18 5.31e-17 2.69e-16 8.50e-16 ...</span></span>
+<span><span class="co">#&gt;   ..$ Ttotal  : num [1:10001] 4468 4468 4468 4468 4468 ...</span></span>
+<span><span class="co">#&gt;  $ task_error   : NULL</span></span>
+<span><span class="co">#&gt;  - attr(*, "class")= chr "copasi_ts"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/runSteadyState.html">runSteadyState</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 9</span></span>
+<span><span class="co">#&gt;  $ settings         :List of 5</span></span>
+<span><span class="co">#&gt;   ..$ calculate_jacobian        : logi TRUE</span></span>
+<span><span class="co">#&gt;   ..$ perform_stability_analysis: logi TRUE</span></span>
+<span><span class="co">#&gt;   ..$ update_model              : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ executable                : logi FALSE</span></span>
+<span><span class="co">#&gt;   ..$ method                    :List of 10</span></span>
+<span><span class="co">#&gt;   .. ..$ resolution                               : num 1e-09</span></span>
+<span><span class="co">#&gt;   .. ..$ derivation_factor                        : num 0.001</span></span>
+<span><span class="co">#&gt;   .. ..$ use_newton                               : logi TRUE</span></span>
+<span><span class="co">#&gt;   .. ..$ use_integration                          : logi TRUE</span></span>
+<span><span class="co">#&gt;   .. ..$ use_back_integration                     : logi TRUE</span></span>
+<span><span class="co">#&gt;   .. ..$ accept_negative_concentrations           : logi FALSE</span></span>
+<span><span class="co">#&gt;   .. ..$ iteration_limit                          : int 50</span></span>
+<span><span class="co">#&gt;   .. ..$ maximum_duration_for_forward_integration : num 1e+09</span></span>
+<span><span class="co">#&gt;   .. ..$ maximum_duration_for_backward_integration: num 1e+06</span></span>
+<span><span class="co">#&gt;   .. ..$ target_criterion                         : chr "Distance and Rate"</span></span>
+<span><span class="co">#&gt;  $ result           : chr "found"</span></span>
+<span><span class="co">#&gt;  $ species          : tibble [11 × 8] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ key            : chr [1:11] "CheA{compartment}" "CheAp{compartment}" "CheB{compartment}" "CheBp{compartment}" ...</span></span>
+<span><span class="co">#&gt;   ..$ name           : chr [1:11] "CheA" "CheAp" "CheB" "CheBp" ...</span></span>
+<span><span class="co">#&gt;   ..$ type           : chr [1:11] "reactions" "reactions" "reactions" "reactions" ...</span></span>
+<span><span class="co">#&gt;   ..$ concentration  : num [1:11] 5.185 0.115 0.2082 0.0718 8.8118 ...</span></span>
+<span><span class="co">#&gt;   ..$ number         : num [1:11] 4371.5 97 175.5 60.6 7429.2 ...</span></span>
+<span><span class="co">#&gt;   ..$ rate           : num [1:11] 2.42e-13 -2.42e-13 -1.85e-16 1.85e-16 -1.90e-13 ...</span></span>
+<span><span class="co">#&gt;   ..$ number_rate    : num [1:11] 2.04e-10 -2.04e-10 -1.56e-13 1.56e-13 -1.60e-10 ...</span></span>
+<span><span class="co">#&gt;   ..$ transition_time: num [1:11] 0.05112 0.00113 2.89824 1 0.08695 ...</span></span>
+<span><span class="co">#&gt;  $ compartments     : tibble [0 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ key : chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ name: chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ type: chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ size: num(0) </span></span>
+<span><span class="co">#&gt;   ..$ rate: num(0) </span></span>
+<span><span class="co">#&gt;  $ global_quantities: tibble [0 × 5] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ key  : chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ name : chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ type : chr(0) </span></span>
+<span><span class="co">#&gt;   ..$ value: num(0) </span></span>
+<span><span class="co">#&gt;   ..$ rate : num(0) </span></span>
+<span><span class="co">#&gt;  $ reactions        : tibble [14 × 4] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ key        : chr [1:14] "(Che A phosph)" "(Che B phosph)" "(Che Y phosph)" "(Che Y autodephosph)" ...</span></span>
+<span><span class="co">#&gt;   ..$ name       : chr [1:14] "Che A phosph" "Che B phosph" "Che Y phosph" "Che Y autodephosph" ...</span></span>
+<span><span class="co">#&gt;   ..$ flux       : num [1:14] 1.42e-13 1.01e-16 1.42e-13 1.24e-16 4.75e-17 ...</span></span>
+<span><span class="co">#&gt;   ..$ number_flux: num [1:14] 85505.5 60.6 85445 74.9 28.6 ...</span></span>
+<span><span class="co">#&gt;  $ jacobian_complete: num [1:11, 1:11] -3.01e-02 -5.07e-04 0.00 -2.81e+01 8.71e-03 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:11] "T1" "T3" "CheY" "CheA" ...</span></span>
+<span><span class="co">#&gt;  $ jacobian_reduced : num [1:7, 1:7] -3.97e-02 1.29e-04 0.00 -2.81e+01 1.23e-02 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span></span>
+<span><span class="co">#&gt;   .. ..$ : chr [1:7] "T1" "T3" "CheY" "CheA" ...</span></span>
+<span><span class="co">#&gt;  $ protocol         : chr "Try Newton's method. \n   Starting Newton Iterations...\n    Newton step with damping. New value: Distance: 2.6"| __truncated__</span></span></code></pre></div>
 </div>
   </div>
 
@@ -409,11 +425,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonas Förster, Jürgen Pahle.</p>
+  <p></p>
+<p>Developed by Jonas Förster, Jürgen Pahle.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

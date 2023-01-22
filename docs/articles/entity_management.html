@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.1</span>
       </span>
     </div>
 
@@ -56,7 +58,7 @@
   <a href="../articles/CoRC.html">Get Started</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -88,7 +90,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jpahle/CoRC/">
+  <a href="https://github.com/jpahle/CoRC/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -109,190 +111,234 @@
 
       
 
-      </header><script src="entity_management_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Model Entity Management</h1>
-                        <h4 class="author">Jonas Förster &amp; Jürgen Pahle</h4>
+                        <h4 data-toc-skip class="author">Jonas Förster
+&amp; Jürgen Pahle</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/master/vignettes/entity_management.Rmd"><code>vignettes/entity_management.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jpahle/CoRC/blob/HEAD/vignettes/entity_management.Rmd" class="external-link"><code>vignettes/entity_management.Rmd</code></a></small>
       <div class="hidden name"><code>entity_management.Rmd</code></div>
 
     </div>
 
     
     
-<div id="initial-setup" class="section level1">
-<h1 class="hasAnchor">
-<a href="#initial-setup" class="anchor"></a>Initial Setup</h1>
+<div class="section level2">
+<h2 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC">CoRC</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A COPASI model reference:</span>
-<span class="co">#&gt; Model name: "Bacterial chemotaxis model"</span>
-<span class="co">#&gt; Number of compartments: 1</span>
-<span class="co">#&gt; Number of species: 21</span>
-<span class="co">#&gt; Number of reactions: 14</span>
-<span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "CheA{compartment}"     "CheAp{compartment}"    "CheB{compartment}"    </span>
-<span class="co">#&gt;  [4] "CheBp{compartment}"    "CheY{compartment}"     "CheYp{compartment}"   </span>
-<span class="co">#&gt;  [7] "CheR{compartment}"     "Tactive{compartment}"  "CheZ{compartment}"    </span>
-<span class="co">#&gt; [10] "T0{compartment}"       "T1{compartment}"       "T2{compartment}"      </span>
-<span class="co">#&gt; [13] "T3{compartment}"       "T4{compartment}"       "L{compartment}"       </span>
-<span class="co">#&gt; [16] "Tactive0{compartment}" "Tactive1{compartment}" "Tactive2{compartment}"</span>
-<span class="co">#&gt; [19] "Tactive3{compartment}" "Tactive4{compartment}" "Ttotal{compartment}"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jpahle/CoRC" class="external-link">CoRC</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; # A COPASI model reference:</span></span>
+<span><span class="co">#&gt; Model name: "Bacterial chemotaxis model"</span></span>
+<span><span class="co">#&gt; Number of compartments: 1</span></span>
+<span><span class="co">#&gt; Number of species: 21</span></span>
+<span><span class="co">#&gt; Number of reactions: 14</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "CheA{compartment}"     "CheAp{compartment}"    "CheB{compartment}"    </span></span>
+<span><span class="co">#&gt;  [4] "CheBp{compartment}"    "CheY{compartment}"     "CheYp{compartment}"   </span></span>
+<span><span class="co">#&gt;  [7] "CheR{compartment}"     "Tactive{compartment}"  "CheZ{compartment}"    </span></span>
+<span><span class="co">#&gt; [10] "T0{compartment}"       "T1{compartment}"       "T2{compartment}"      </span></span>
+<span><span class="co">#&gt; [13] "T3{compartment}"       "T4{compartment}"       "L{compartment}"       </span></span>
+<span><span class="co">#&gt; [16] "Tactive0{compartment}" "Tactive1{compartment}" "Tactive2{compartment}"</span></span>
+<span><span class="co">#&gt; [19] "Tactive3{compartment}" "Tactive4{compartment}" "Ttotal{compartment}"</span></span></code></pre></div>
 </div>
-<div id="identifying-entities" class="section level1">
-<h1 class="hasAnchor">
-<a href="#identifying-entities" class="anchor"></a>Identifying entities</h1>
-<p>There are various types of model entities supported for identification by a given string. The strings are matched against the available names of e.g. species, compartments, or global quantities. The fuctions are listed below and return entitiy <code>key</code>s when entities are identified.</p>
+<div class="section level2">
+<h2 id="identifying-entities">Identifying entities<a class="anchor" aria-label="anchor" href="#identifying-entities"></a>
+</h2>
+<p>There are various types of model entities supported for
+identification by a given string. The strings are matched against the
+available names of e.g. species, compartments, or global quantities. The
+fuctions are listed below and return entitiy <code>key</code>s when
+entities are identified.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheA"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheA{compartment}"  "CheAp{compartment}"</span>
-<span class="fu"><a href="../reference/entity_finders.html">compartment</a></span><span class="op">(</span><span class="st">"comp"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Compartments[compartment]"</span>
-<span class="fu"><a href="../reference/entity_finders.html">quantity</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span>
-<span class="co">#&gt; character(0)</span>
-<span class="fu"><a href="../reference/entity_finders.html">reaction</a></span><span class="op">(</span><span class="st">"Che B phosph"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "(Che B phosph)"</span>
-<span class="fu"><a href="../reference/entity_finders.html">parameter</a></span><span class="op">(</span><span class="st">"4).kR"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "(Rm4).kR"</span>
-<span class="fu"><a href="../reference/entity_finders.html">kinfunction</a></span><span class="op">(</span><span class="st">"Michaelis-Menten"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "FunctionDB.Functions[Henri-Michaelis-Menten (irreversible)]"</span>
-<span class="co">#&gt; [2] "FunctionDB.Functions[Reversible Michaelis-Menten]"</span>
-<span class="fu"><a href="../reference/entity_finders.html">event</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; character(0)</span></code></pre></div>
-<p>There are <code>_strict</code> variants that will always return a vector of <code>key</code>s of the same length as the input or throw an error. Accordingly, the behavior for <code>NA</code> or non-uniquely matching strings is to throw an error. This allows the <code>_strict</code> variants to uniquely identify species by giving the full name, when the other methods might then still return multiple matches.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheA"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheA{compartment}"  "CheAp{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">compartment</a></span><span class="op">(</span><span class="st">"comp"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Compartments[compartment]"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">quantity</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">reaction</a></span><span class="op">(</span><span class="st">"Che B phosph"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "(Che B phosph)"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">parameter</a></span><span class="op">(</span><span class="st">"4).kR"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "(Rm4).kR"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">kinfunction</a></span><span class="op">(</span><span class="st">"Michaelis-Menten"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "FunctionDB.Functions[Henri-Michaelis-Menten (irreversible)]"</span></span>
+<span><span class="co">#&gt; [2] "FunctionDB.Functions[Reversible Michaelis-Menten]"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">event</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code></pre></div>
+<p>There are <code>_strict</code> variants that will always return a
+vector of <code>key</code>s of the same length as the input or throw an
+error. Accordingly, the behavior for <code>NA</code> or non-uniquely
+matching strings is to throw an error. This allows the
+<code>_strict</code> variants to uniquely identify species by giving the
+full name, when the other methods might then still return multiple
+matches.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheY{compartment}"</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheYp{compartment}"</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CheY"</span>, <span class="st">"CheYp"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"Che"</span><span class="op">)</span>
-<span class="co">#&gt; Error: "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: key contains 1 missing values</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"failure"</span><span class="op">)</span>
-<span class="co">#&gt; Error: Couldn't match species "failure".</span></code></pre></div>
-<p>CoRC makes use of the regex functionality of the ‘stringr’ R package. You can therefore wrap any string via <code><a href="../reference/regex.html">regex(string)</a></code> to enable regex matching.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheY{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheYp{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CheY"</span>, <span class="st">"CheYp"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheY{compartment}"  "CheYp{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"Che"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `map2()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In index: 1.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: key contains 1 missing values</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"failure"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: Couldn't match species "failure".</span></span></code></pre></div>
+<p>CoRC makes use of the regex functionality of the ‘stringr’ R package.
+You can therefore wrap any string via <code>regex(string)</code> to
+enable regex matching.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"Che.p"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "CheAp{compartment}" "CheBp{compartment}" "CheYp{compartment}"</span></code></pre></div>
-<p>In cases, where a function argument <code>key</code> is clear to always expect the same kind of entity, identification can also be handled by the function itself. These methods will always use the <code>_strict</code> variants to reliably match species.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"Che.p"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CheAp{compartment}" "CheBp{compartment}" "CheYp{compartment}"</span></span></code></pre></div>
+<p>In cases, where a function argument <code>key</code> is clear to
+always expect the same kind of entity, identification can also be
+handled by the function itself. These methods will always use the
+<code>_strict</code> variants to reliably match species.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheY"  "CheYp"</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheY"</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"CheY"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheY"</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheY"</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"Che"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; Error: "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"Che.p"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheY"  "CheYp"</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheY"</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"CheY"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheY"</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheY"</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"Che"</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `map2()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In index: 1.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> "Che" matches species "CheA{compartment}", "CheAp{compartment}", "CheB{compartment}", "CheBp{compartment}", "CheY{compartment}", "CheYp{compartment}", "CheR{compartment}", "CheZ{compartment}".</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"Che.p"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheAp" "CheBp" "CheYp"</span></span></code></pre></div>
 </div>
-<div id="using-references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#using-references" class="anchor"></a>Using References</h1>
-<p>The identifying functions can also return value references if specified. Such references identify specific values, of which most COPASI entities can have multiple. This allows to differentiate for example between ‘Concentration’ and ‘Initial Concentration’ of a species. References are needed e.g. for definition of optimization task parameters. They also allow for building expressions, which are needed e.g. in value assignments and the optimization task. Expressions in CoRC behave similar to how they work in COPASI.</p>
+<div class="section level2">
+<h2 id="using-references">Using References<a class="anchor" aria-label="anchor" href="#using-references"></a>
+</h2>
+<p>The identifying functions can also return value references if
+specified. Such references identify specific values, of which most
+COPASI entities can have multiple. This allows to differentiate for
+example between ‘Concentration’ and ‘Initial Concentration’ of a
+species. References are needed e.g. for definition of optimization task
+parameters. They also allow for building expressions, which are needed
+e.g. in value assignments and the optimization task. Expressions in CoRC
+behave similar to how they work in COPASI.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "{[CheY]_0}"  "{[CheYp]_0}"</span></code></pre></div>
-<p>These functions however can not give any clues about what references are available.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "{[CheY]_0}"  "{[CheYp]_0}"</span></span></code></pre></div>
+<p>These functions however can not give any clues about what references
+are available.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span>, reference <span class="op">=</span> <span class="st">"failure"</span><span class="op">)</span>
-<span class="co">#&gt; Error: Failed to gather reference "failure".</span></code></pre></div>
-<p>To help with this, functions implemented to get model values have similar functions that return references instead of values.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheY"</span>, reference <span class="op">=</span> <span class="st">"failure"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `map2()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In index: 1.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Failed to gather reference "failure".</span></span></code></pre></div>
+<p>To help with this, functions implemented to get model values have
+similar functions that return references instead of values.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
-<span class="co">#&gt;  $ name                 : chr "CheY"</span>
-<span class="co">#&gt;  $ compartment          : chr "compartment"</span>
-<span class="co">#&gt;  $ type                 : chr "reactions"</span>
-<span class="co">#&gt;  $ unit                 : chr "µmol/l"</span>
-<span class="co">#&gt;  $ initial_concentration: num 9.7</span>
-<span class="co">#&gt;  $ initial_number       : num 8178</span>
-<span class="co">#&gt;  $ concentration        : num NaN</span>
-<span class="co">#&gt;  $ number               : num NaN</span>
-<span class="co">#&gt;  $ rate                 : num 0</span>
-<span class="co">#&gt;  $ number_rate          : num 0</span>
-<span class="co">#&gt;  $ initial_expression   : chr ""</span>
-<span class="co">#&gt;  $ expression           : chr ""</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span>
-<span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span>
-<span class="co">#&gt;  $ name                 : chr "CheY"</span>
-<span class="co">#&gt;  $ compartment          : chr "compartment"</span>
-<span class="co">#&gt;  $ type                 : chr "reactions"</span>
-<span class="co">#&gt;  $ unit                 : chr "µmol/l"</span>
-<span class="co">#&gt;  $ initial_concentration: chr "{[CheY]_0}"</span>
-<span class="co">#&gt;  $ initial_number       : chr "{CheY.InitialParticleNumber}"</span>
-<span class="co">#&gt;  $ concentration        : chr "{[CheY]}"</span>
-<span class="co">#&gt;  $ number               : chr "{CheY.ParticleNumber}"</span>
-<span class="co">#&gt;  $ rate                 : chr "{CheY.Rate}"</span>
-<span class="co">#&gt;  $ number_rate          : chr "{CheY.ParticleNumberRate}"</span>
-<span class="co">#&gt;  $ initial_expression   : chr NA</span>
-<span class="co">#&gt;  $ expression           : chr NA</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span></span>
+<span><span class="co">#&gt;  $ name                 : chr "CheY"</span></span>
+<span><span class="co">#&gt;  $ compartment          : chr "compartment"</span></span>
+<span><span class="co">#&gt;  $ type                 : chr "reactions"</span></span>
+<span><span class="co">#&gt;  $ unit                 : chr "µmol/l"</span></span>
+<span><span class="co">#&gt;  $ initial_concentration: num 9.7</span></span>
+<span><span class="co">#&gt;  $ initial_number       : num 8178</span></span>
+<span><span class="co">#&gt;  $ concentration        : num NaN</span></span>
+<span><span class="co">#&gt;  $ number               : num NaN</span></span>
+<span><span class="co">#&gt;  $ rate                 : num 0</span></span>
+<span><span class="co">#&gt;  $ number_rate          : num 0</span></span>
+<span><span class="co">#&gt;  $ initial_expression   : chr ""</span></span>
+<span><span class="co">#&gt;  $ expression           : chr ""</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/getSpeciesReferences.html">getSpeciesReferences</a></span><span class="op">(</span><span class="st">"CheY"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tibble [1 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;  $ key                  : chr "CheY{compartment}"</span></span>
+<span><span class="co">#&gt;  $ name                 : chr "CheY"</span></span>
+<span><span class="co">#&gt;  $ compartment          : chr "compartment"</span></span>
+<span><span class="co">#&gt;  $ type                 : chr "reactions"</span></span>
+<span><span class="co">#&gt;  $ unit                 : chr "µmol/l"</span></span>
+<span><span class="co">#&gt;  $ initial_concentration: chr "{[CheY]_0}"</span></span>
+<span><span class="co">#&gt;  $ initial_number       : chr "{CheY.InitialParticleNumber}"</span></span>
+<span><span class="co">#&gt;  $ concentration        : chr "{[CheY]}"</span></span>
+<span><span class="co">#&gt;  $ number               : chr "{CheY.ParticleNumber}"</span></span>
+<span><span class="co">#&gt;  $ rate                 : chr "{CheY.Rate}"</span></span>
+<span><span class="co">#&gt;  $ number_rate          : chr "{CheY.ParticleNumberRate}"</span></span>
+<span><span class="co">#&gt;  $ initial_expression   : chr NA</span></span>
+<span><span class="co">#&gt;  $ expression           : chr NA</span></span></code></pre></div>
 </div>
-<div id="building-expressions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#building-expressions" class="anchor"></a>Building expressions</h1>
-<p>Any expression can easily be built as a string. In the following example, several related species are selected via a REGEX rule and the reference to their initial concentration is requested. The expression is then built by concatenating these references with a plus sign. <code>getValue</code> calculates this expressions value and thereby the sum of the individual species.</p>
+<div class="section level2">
+<h2 id="building-expressions">Building expressions<a class="anchor" aria-label="anchor" href="#building-expressions"></a>
+</h2>
+<p>Any expression can easily be built as a string. In the following
+example, several related species are selected via a REGEX rule and the
+reference to their initial concentration is requested. The expression is
+then built by concatenating these references with a plus sign.
+<code>getValue</code> calculates this expressions value and thereby the
+sum of the individual species.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">matching_init_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"^T[0-4]"</span><span class="op">)</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span>
-<span class="va">matching_init_conc</span>
-<span class="co">#&gt; [1] "{[T0]_0}" "{[T1]_0}" "{[T2]_0}" "{[T3]_0}" "{[T4]_0}"</span>
-<span class="va">expression</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">matching_init_conc</span>, collapse <span class="op">=</span> <span class="st">" + "</span><span class="op">)</span>
-<span class="va">expression</span>
-<span class="co">#&gt; [1] "{[T0]_0} + {[T1]_0} + {[T2]_0} + {[T3]_0} + {[T4]_0}"</span>
-<span class="fu"><a href="../reference/getValue.html">getValue</a></span><span class="op">(</span><span class="va">expression</span><span class="op">)</span>
-<span class="co">#&gt; [1] 5.3</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">matching_init_conc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fu"><a href="../reference/regex.html">regex</a></span><span class="op">(</span><span class="st">"^T[0-4]"</span><span class="op">)</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span></span>
+<span><span class="va">matching_init_conc</span></span>
+<span><span class="co">#&gt; [1] "{[T0]_0}" "{[T1]_0}" "{[T2]_0}" "{[T3]_0}" "{[T4]_0}"</span></span>
+<span><span class="va">expression</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">matching_init_conc</span>, collapse <span class="op">=</span> <span class="st">" + "</span><span class="op">)</span></span>
+<span><span class="va">expression</span></span>
+<span><span class="co">#&gt; [1] "{[T0]_0} + {[T1]_0} + {[T2]_0} + {[T3]_0} + {[T4]_0}"</span></span>
+<span><span class="fu"><a href="../reference/getValue.html">getValue</a></span><span class="op">(</span><span class="va">expression</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 5.3</span></span></code></pre></div>
 </div>
-<div id="using-numbers-for-referencing" class="section level1">
-<h1 class="hasAnchor">
-<a href="#using-numbers-for-referencing" class="anchor"></a>Using numbers for referencing</h1>
-<p>Numbers can in principle be used by getting all entities and picking an index from that vector:</p>
+<div class="section level2">
+<h2 id="using-numbers-for-referencing">Using numbers for referencing<a class="anchor" aria-label="anchor" href="#using-numbers-for-referencing"></a>
+</h2>
+<p>Numbers can in principle be used by getting all entities and picking
+an index from that vector:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt; [1] "CheY{compartment}"</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; [1] "CheY"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "CheY{compartment}"</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; [1] "CheY"</span></span></code></pre></div>
 <p>It is under consideration to allow for a simpler method:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; Error: key is not a string (a length one character vector).</span>
-<span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; Error: key is not a character vector</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">name</span>
-<span class="co">#&gt; Error: key is not a character vector</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: key is not a string (a length one character vector).</span></span>
+<span><span class="fu"><a href="../reference/entity_finders.html">species_strict</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: key is not a character vector</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span><span class="op">$</span><span class="va">name</span></span>
+<span><span class="co">#&gt; Error: key is not a character vector</span></span></code></pre></div>
 </div>
-<div id="entity-modification" class="section level1">
-<h1 class="hasAnchor">
-<a href="#entity-modification" class="anchor"></a>Entity modification</h1>
-<p>For most kinds of entities there is a finder function (e.g. <code>species</code>), a getter function (e.g. <code>getSpecies</code>) and a setter function (e.g. <code>setSpecies</code>).</p>
-<p>Another way to access model values is by evaluating expressions (e.g. <code>getValue</code>):</p>
+<div class="section level2">
+<h2 id="entity-modification">Entity modification<a class="anchor" aria-label="anchor" href="#entity-modification"></a>
+</h2>
+<p>For most kinds of entities there is a finder function
+(e.g. <code>species</code>), a getter function
+(e.g. <code>getSpecies</code>) and a setter function
+(e.g. <code>setSpecies</code>).</p>
+<p>Another way to access model values is by evaluating expressions
+(e.g. <code>getValue</code>):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span><span class="op">$</span><span class="va">initial_concentration</span>
-<span class="co">#&gt; [1] 0</span>
-
-<span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span>, initial_concentration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span><span class="op">$</span><span class="va">initial_concentration</span>
-<span class="co">#&gt; [1] 1</span>
-
-<span class="va">yp_init_expression</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheYp"</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span>
-<span class="va">yp_init_expression</span>
-<span class="co">#&gt; [1] "{[CheYp]_0}"</span>
-<span class="fu"><a href="../reference/getValue.html">getValue</a></span><span class="op">(</span><span class="va">yp_init_expression</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span><span class="op">$</span><span class="va">initial_concentration</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/setSpecies.html">setSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span>, initial_concentration <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/getSpecies.html">getSpecies</a></span><span class="op">(</span><span class="st">"CheYp"</span><span class="op">)</span><span class="op">$</span><span class="va">initial_concentration</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span></span>
+<span><span class="va">yp_init_expression</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/entity_finders.html">species</a></span><span class="op">(</span><span class="st">"CheYp"</span>, reference <span class="op">=</span> <span class="st">"InitialConcentration"</span><span class="op">)</span></span>
+<span><span class="va">yp_init_expression</span></span>
+<span><span class="co">#&gt; [1] "{[CheYp]_0}"</span></span>
+<span><span class="fu"><a href="../reference/getValue.html">getValue</a></span><span class="op">(</span><span class="va">yp_init_expression</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 </div>
   </div>
 
@@ -307,11 +353,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Jonas Förster, Jürgen Pahle.</p>
+  <p></p>
+<p>Developed by Jonas Förster, Jürgen Pahle.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
