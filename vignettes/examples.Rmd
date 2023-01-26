@@ -50,7 +50,7 @@ These oscialltions can be visualized as a trajectory through a 3D space.
 The example does this once in a deterministic and once in a stochatic fashion.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000329?filename=BIOMD0000000329_url.xml")
+loadSBML(biomodels_url(id=329))
 
 # Run 24 sec (2 Periods)
 setTimeCourseSettings(duration = 24, intervals = 10000)
