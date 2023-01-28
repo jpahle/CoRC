@@ -145,7 +145,7 @@ plotly::ggplotly(plot, tooltip = c("group", "x", "y", "tt_sd"))
 This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
+loadSBML(biomodels_url(id=68))
 setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
 
 # Cartesian product of the input values
@@ -197,7 +197,7 @@ This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/9
 It is in many ways similar to the previous example but is written to run parallelized.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000068.2?filename=BIOMD0000000068_url.xml")
+loadSBML(biomodels_url(id=68))
 setSteadyStateSettings(calculate_jacobian = FALSE, perform_stability_analysis = FALSE)
 
 model_string <- saveModelToString()
@@ -260,7 +260,7 @@ plotly::ggplotly(plot, tooltip = c("tt_cys", "x", "y"))
 This implements an example from the [Mendes2009 paper](https://doi.org/10.1007/978-1-59745-525-1_2) on COPASI use cases.
 
 ```{r}
-loadSBML("https://www.ebi.ac.uk/biomodels/model/download/BIOMD0000000010.2?filename=BIOMD0000000010_url.xml")
+loadSBML(biomodels_url(id=10))
 
 # get timeseries for the record
 data_before <- runTimeCourse(duration = 1000, dt = 1)$result
