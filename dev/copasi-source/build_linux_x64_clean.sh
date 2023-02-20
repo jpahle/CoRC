@@ -17,6 +17,7 @@ mkdir tmp_${LINUX_TAG}/
 cd tmp_${LINUX_TAG}/
 : ===== Building dependencies
 ${CMAKE} \
+	-DCMAKE_BUILD_TYPE=Release \
 	-DGIT_SUBMODULE=OFF \
 	-DCMAKE_INSTALL_PREFIX=../bin_${LINUX_TAG} \
 	-DBUILD_UI_DEPS=OFF \
