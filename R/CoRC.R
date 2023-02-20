@@ -37,7 +37,7 @@ COPASI_BIN_HASHES <- list(
   x86_64 = c(
     darwin  = "e1200b125d69ae85f80d1040809e487039a8cd23e34bd3cf9fe91926771d85dd",
     linux   = "339802546ff9184b9f3bf92c4646e663b452305778405afbeafd965e30031ef6",
-    windows = "40eddd412db0f292fa966483f169d488ed1901815c6cd836832a15aedbe0d6bf  "
+    windows = "40eddd412db0f292fa966483f169d488ed1901815c6cd836832a15aedbe0d6bf"
   )
 )
 
