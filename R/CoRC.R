@@ -35,9 +35,12 @@ OUTPUTFLAG <- 119L
 COPASI_BIN_VERSION <- 23L
 COPASI_BIN_HASHES <- list(
   x86_64 = c(
-    darwin  = "e1200b125d69ae85f80d1040809e487039a8cd23e34bd3cf9fe91926771d85dd",
-    linux   = "339802546ff9184b9f3bf92c4646e663b452305778405afbeafd965e30031ef6",
+    darwin  = "b640559c6fb55f08d775efa7dafb0764affd5b417e34d13a03341bb8043944fd",
+    linux   = "712f6a7b605821b6c300494a818a1014fa29fc57cb94a2a9162ea2251fecd7ea",
     windows = "40eddd412db0f292fa966483f169d488ed1901815c6cd836832a15aedbe0d6bf"
+  ),
+  aarch64 = c(
+    darwin  = "722d064961b0adaef4d8c941ef17771fd2262ffca477e2342704359f41e5f633"
   )
 )
 
