@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CoRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ experimental data paths will fail.</p>
 <code class="sourceCode R"><span><span class="co"># Load example which has experimental data.</span></span>
 <span><span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadExamples.html">loadExamples</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
-<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
+<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
 <span><span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The filenames are in the correct folder.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -180,7 +180,7 @@ experimental data paths will fail.</p>
 <span><span class="fu"><a href="../reference/unloadModel.html">unloadModel</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">datamodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/loadModel.html">loadModel</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
-<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
+<span><span class="va">fitproblem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">datamodel</span><span class="op">$</span><span class="fu">getTask</span><span class="op">(</span><span class="st">"Parameter Estimation"</span><span class="op">)</span><span class="op">$</span><span class="fu">getProblem</span><span class="op">(</span><span class="op">)</span>, <span class="st">"_p_CFitProblem"</span><span class="op">)</span></span>
 <span><span class="va">filenames</span> <span class="op">&lt;-</span> <span class="va">fitproblem</span><span class="op">$</span><span class="fu">getExperimentSet</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getFileNames</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>The filenames are now supposedly in the folder where the .cps was
 saved but there they don’t exist.</p>
