@@ -1,5 +1,7 @@
 # CoRC 0.11.1.9001
 
+* Added support for macOS on ARM (aarch64)
+
 * Rebased on COPASI release 4.39 sources.
 
   Included a further fix to prevent a crashing bug in this version of COPASI

@@ -35,7 +35,7 @@ test_that("COPASI_BIN_VERSION is count", {
 test_that("COPASI_BIN_HASHES are valid hashes", {
   hashes <- unlist(COPASI_BIN_HASHES)
   # for now expect 3 entries
-  expect_length(hashes, 3L)
+  expect_length(hashes, 4L)
   expect_match(hashes, "^[A-Fa-f0-9]{64}$")
 })
 
