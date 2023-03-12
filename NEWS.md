@@ -1,4 +1,8 @@
-# CoRC 0.11.1.9000
+# CoRC 0.11.1.9001
+
+* Rebased on COPASI release 4.39 sources.
+
+  Included a further fix to prevent a crashing bug in this version of COPASI
 
 * Switched to using manylinux 2014 (up from 2010) for compilation of linux binaries
 

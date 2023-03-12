@@ -9,9 +9,10 @@ task_enum <-
 process_task <- function(c_task, soft_error = FALSE) {
   # the callback function is a C function from the COPASI R bindings that calls R_CheckUserInterrupt()
   cb <- RProcessCallback(0L)
+  level <- CProcessReportLevel(cb)
   
   tryCatch({
-    c_task$setCallBack(cb)
+    c_task$setCallBack(level)
     
     success <- grab_msg(c_task$processRaw(TRUE))
     msg <- "Processing the task failed."
