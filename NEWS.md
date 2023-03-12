@@ -1,3 +1,7 @@
+# CoRC 0.11.1.9000
+
+* Switched to using manylinux 2014 (up from 2010) for compilation of linux binaries
+
 # CoRC 0.11.1 (2023-01-22)
 
 * Fixed errors due to breaking changes in package dependency 'stringr' version 1.5.0.

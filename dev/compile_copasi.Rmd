@@ -179,7 +179,7 @@ alternatives:
 
 For linux we generally use docker.
 Install docker CE and get docker permissions for your user.
-The manylinux2010 container is the basis for the linux binaries.
+The manylinux2014 container is the basis for the linux binaries.
 
 ## Full
 
@@ -187,12 +187,12 @@ Clears relevant folders before building.
 
 ```{bash, eval=FALSE}
 cd copasi-source/
-./d_build_manylinux2010_x64_clean.sh
+./d_build_manylinux2014_x64_clean.sh
 cd ../
 ```
 
 alternatives:
-  on windows: d_build_manylinux2010_x64_clean.ps1
+  on windows: d_build_manylinux2014_x64_clean.ps1
   without docker: build_linux_clean.sh (see linux Dockerfile for system requirements)
 
 ## Quick
@@ -201,12 +201,12 @@ Requires copasi-dependencies to be compiled already.
 
 ```{bash, eval=FALSE}
 cd copasi-source/
-./d_build_manylinux2010_x64_quick.sh
+./d_build_manylinux2014_x64_quick.sh
 cd ../
 ```
 
 alternatives:
-  on windows: d_build_manylinux2010_x64_quick.ps1
+  on windows: d_build_manylinux2014_x64_quick.ps1
   without docker: build_linux_quick.sh (see linux Dockerfile for system requirements)
 
 # Copying the relevant file into the package repository
