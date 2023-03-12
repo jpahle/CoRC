@@ -54,7 +54,7 @@ xcode-select --install
 Consider using homebrew for macOS to install other dependencies:
 
 ```{bash, eval=FALSE}
-brew install cmake swig git
+brew install cmake swig@3
 ```
 
 ## Full
