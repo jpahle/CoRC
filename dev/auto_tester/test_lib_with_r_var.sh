@@ -13,17 +13,16 @@ R_VARIANTS=(
 	centos_8
 	centos_7
 	centos_6
-	fedora_34
-	fedora_32
+	fedora_37
 	fedora_30
 	latest
 	4_2
 	4_1
 	4_0
 	3_6
-	3_5
-	3_4
-	3_3
+	# 3_5 # seems to be broken as I can't compile R 3.5 in this container anymore
+	# 3_4 # seems to be broken as I can't compile R 3.4 in this container anymore
+	# 3_3 # seems to be broken as I can't compile R 3.3 in this container anymore
 )
 
 # optionally rebuild all first

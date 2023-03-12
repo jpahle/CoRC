@@ -19,6 +19,14 @@ RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
 FROM ubuntu:18.04 AS r_ubuntu_18_04
+# Get R from CRAN as the system version is too far out of date
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+	software-properties-common \
+	dirmngr \
+	wget \
+	&& rm -rf /var/lib/apt/lists/*
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	r-base-core \
 	&& rm -rf /var/lib/apt/lists/*
@@ -28,13 +36,22 @@ RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
 FROM ubuntu:16.04 AS r_ubuntu_16_04
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# Get R from CRAN as the system version is too far out of date
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+	software-properties-common \
+	dirmngr \
+	wget \
+	apt-transport-https \
+	ca-certificates \
+	&& rm -rf /var/lib/apt/lists/*
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+RUN apt-get update --allow-unauthenticated && DEBIAN_FRONTEND=noninteractive apt-get install -y --allow-unauthenticated \
 	r-base-core \
 	&& rm -rf /var/lib/apt/lists/*
 ENV R_OPTS "options(repos = c(CRAN = 'https://cloud.r-project.org/')); options(Ncpus = as.integer(system2('nproc', stdout = TRUE))); options(warn = 2);"
 ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs', 'purrr', 'stringr', 'readr', 'isnullptr'));"
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
-ENV UNSTABLE_RSCRIPT=true
 WORKDIR /work
 
 FROM centos:8 AS r_centos_8
@@ -70,7 +87,7 @@ ENV R_DEPS_CMD "install.packages(c('remotes', 'testthat', 'sessioninfo', 'vctrs'
 RUN Rscript -e "$R_OPTS $R_DEPS_CMD"
 WORKDIR /work
 
-FROM fedora:34 AS r_fedora_34
+FROM fedora:37 AS r_fedora_37
 RUN dnf -y update \
 	&& dnf install -y R-core-devel \
 	&& dnf clean all
