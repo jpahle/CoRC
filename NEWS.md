@@ -1,4 +1,4 @@
-# CoRC 0.11.1.9001
+# CoRC 0.12.0 (2023-03-12)
 
 * Added support for macOS on ARM (aarch64)
 
