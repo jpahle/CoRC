@@ -16,6 +16,7 @@ mkdir tmp_darwin_x64/
 cd tmp_darwin_x64/
 : ===== Building dependencies
 cmake \
+	-DCMAKE_BUILD_TYPE=Release \
 	-DGIT_SUBMODULE=OFF \
 	-DCMAKE_INSTALL_PREFIX=../bin_darwin_x64 \
 	-DBUILD_UI_DEPS=OFF \
